@@ -1,0 +1,9 @@
+backend/nashda-stt/app/base/pytorch_model.bin filter=lfs diff=lfs merge=lfs -text
+exec/내쉬다_gif.zip filter=lfs diff=lfs merge=lfs -text
+은공지능ucc.mp4 filter=lfs diff=lfs merge=lfs -text
+img/비밀번호[[:space:]]찾기.gif filter=lfs diff=lfs merge=lfs -text
+img/회원가입.gif filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.bin filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+*.gif filter=lfs diff=lfs merge=lfs -text
