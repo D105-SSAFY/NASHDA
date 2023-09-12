@@ -13,16 +13,17 @@ spring:
       max-file-size: 300MB
       max-request-size: 300MB
   datasource:
-    #    MySQL ??
-    #    url: jdbc:mysql://j9d105.p.ssafy.io:3306/D105?serverTimezone=UTC&characterEncoding=UTF-8
-    #    username: nash
-    #    password: d105nashda
-    #    driver-class-name: com.mysql.cj.jdbc.Driver
+#        MySQL ??
+#        url: jdbc:mysql://j9d105.p.ssafy.io:3306/D105?serverTimezone=UTC&characterEncoding=UTF-8
+#        username: nash
+#        password: d105nashda
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+
 
     #   H2 ??
-    url:  jdbc:h2:tcp://localhost/~/nashda
-    username: jjin
-    password: silverjjin2
+    url:  jdbc:h2:tcp://localhost/~/test
+    username: sa
+    password:
     driver-class-name: org.h2.Driver
 
   #    hikari:
@@ -35,7 +36,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update #create update none
+      ddl-auto: create #create update none
     # show-sql: true
     properties:
       hibernate:

@@ -1,9 +1,11 @@
 package com.nashda.user.entity;
 
+import com.nashda.common.Entity.TimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,7 +13,9 @@ import java.util.Date;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+@Table(name = "MEMBER")  // 테이블 지정
+@EntityListeners(AuditingEntityListener.class)
+public class Member extends TimeEntity {
     @Id //Primary Key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //autoincreasement 설정
 
@@ -42,13 +46,6 @@ public class Member {
 
     @Column(name = "conversation_count")
     private int conversationCount;
-
-    @Column(name = "create_on")
-    private Date createOn;
-
-    @Column(name = "update_on")
-    private Date updateOn;
-
 
     @Builder
     public Member(String email, String name, String nickname, String password, int age, int hobbyIdx, int jobIdx, int status, int progress, int wordCount, int sentenceCount, int conversationCount) {
