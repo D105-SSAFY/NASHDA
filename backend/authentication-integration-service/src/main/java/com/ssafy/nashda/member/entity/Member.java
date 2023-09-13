@@ -1,19 +1,16 @@
-package com.ssafy.nashda.user.entity;
+package com.ssafy.nashda.member.entity;
 
-import com.nashda.common.Entity.TimeEntity;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.ssafy.nashda.common.Entity.TimeEntity;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Getter
 @Entity
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "MEMBER")  // 테이블 지정
+@Table(name = "member")  // 테이블 지정
 @EntityListeners(AuditingEntityListener.class)
 public class Member extends TimeEntity {
     @Id //Primary Key
@@ -47,8 +44,9 @@ public class Member extends TimeEntity {
     @Column(name = "conversation_count")
     private int conversationCount;
 
+
     @Builder
-    public Member(String email, String name, String nickname, String password, int age, int hobbyIdx, int jobIdx, int status, int progress, int wordCount, int sentenceCount, int conversationCount) {
+    public Member(String email, String name, String nickname, String password, int age, int hobbyIdx, int jobIdx) {
         this.email = email;
         this.name = name;
         this.nickname = nickname;
@@ -56,12 +54,5 @@ public class Member extends TimeEntity {
         this.age = age;
         this.hobbyIdx = hobbyIdx;
         this.jobIdx = jobIdx;
-        this.status = status;
-        this.progress = progress;
-        this.wordCount = wordCount;
-        this.sentenceCount = sentenceCount;
-        this.conversationCount = conversationCount;
     }
-
-
 }
