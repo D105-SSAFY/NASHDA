@@ -9,18 +9,17 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class NoticeReqDto {
-    private Long member;
     private String title;
     private String content;
 
     @Builder
-    public NoticeReqDto(Member member, String title, String content) {
-        this.member = member.getMemberNum();
-        this.title = title;
-        this.content = content;
+    public NoticeReqDto(Notice notice) {
+        this.title = notice.getTitle();
+        this.content = notice.getContent();
+
     }
 
-    public Notice toEntity(Member member, Notice notice) {
+    public Notice toEntity(Member member) {
         return Notice.builder()
                 .member(member)
                 .title(title)
