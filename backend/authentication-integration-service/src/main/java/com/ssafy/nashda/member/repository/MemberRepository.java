@@ -1,5 +1,5 @@
 package com.ssafy.nashda.member.repository;
-import com.ssafy.nashda.member.dto.Request.MemberSignUpReqDto;
+
 import com.ssafy.nashda.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -8,6 +8,6 @@ import java.io.IOException;
 public interface MemberService {
 
     //회원가입
-    void signUp(MemberSignUpReqDto signUpReqDto) throws IOException;
+    Long signUp(MemberSignUpReqDto signUpReqDto) throws IOException;
     Member findByEmail(String email);
 }
