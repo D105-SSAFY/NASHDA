@@ -18,6 +18,7 @@
             "error",
             { "endOfLine": "auto", "tabWidth": 4, "useTabs": false }
         ],
-        "react/react-in-jsx-scope": "off"
+        "react/react-in-jsx-scope": "off",
+        "react/prop-types": "off"
     }
 }
