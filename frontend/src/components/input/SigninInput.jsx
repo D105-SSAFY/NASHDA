@@ -13,8 +13,9 @@ export default function SigninInput({
         ref,
     },
 }) {
+    // eslint-disable-next-line no-return-assign
     return (
-        <div style={{ width: "30%", position: "relative", margin: "10px" }}>
+        <Styled.StyledDiv>
             <Styled.StyledLabel htmlFor={id}>{text}</Styled.StyledLabel>
             <Styled.StyledInput
                 type={type}
@@ -26,6 +27,6 @@ export default function SigninInput({
                 value={value}
                 readOnly={(readOnly ??= false)}
             ></Styled.StyledInput>
-        </div>
+        </Styled.StyledDiv>
     );
 }
