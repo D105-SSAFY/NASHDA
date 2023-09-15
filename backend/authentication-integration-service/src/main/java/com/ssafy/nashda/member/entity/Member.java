@@ -10,10 +10,8 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "member")  // 테이블 지정
-@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
+@Table
 public class Member extends TimeEntity {
     @Id //Primary Key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //autoincreasement 설정
@@ -70,4 +68,7 @@ public class Member extends TimeEntity {
         this.hobbyIdx = hobbyIdx;
         this.jobIdx = jobIdx;
     }
+
+
+
 }

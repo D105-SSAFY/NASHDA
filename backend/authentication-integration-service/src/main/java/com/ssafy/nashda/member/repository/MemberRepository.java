@@ -8,7 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
-
-    //email을 조회해서 해당하는 사용자가 있는지 확인
     Optional<Member> findByEmail(String email);
 }

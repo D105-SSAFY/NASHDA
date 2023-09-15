@@ -1,10 +1,15 @@
 package com.ssafy.nashda.member.dto.Request;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.ssafy.nashda.member.entity.Member;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.DynamicUpdate;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Getter
-@Setter
+@NoArgsConstructor
 public class MemberSignUpReqDto {
     //회원가입 시 받을 dto = 정보
     String name;
@@ -14,4 +19,15 @@ public class MemberSignUpReqDto {
     int jobIdx;
     int hobbyIdx;
     int age;
+
+
+    public Member toEntity() {
+        return Member.builder().email(email)
+                .name(name)
+                .nickname(nickname)
+                .password(password)
+                .age(age)
+                .hobbyIdx(hobbyIdx)
+                .jobIdx(jobIdx).build();
+    }
 }
