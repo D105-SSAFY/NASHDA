@@ -17,8 +17,14 @@ public class NoticeServiceImpl implements NoticeService {
     private final NoticeRepository noticeRepository;
 
     // 게시글 생성
+//    @Override
+//    public Long insert(NoticeReqDto noticeReqDto, Member member) {
+//        return noticeRepository.save(noticeReqDto.toEntity(member)).getIndex();
+//    }
+
     @Override
-    public Long insert(NoticeReqDto noticeReqDto, Member member) {
-        return noticeRepository.save(noticeReqDto.toEntity(member)).getIndex();
+    public Long insert(NoticeReqDto noticeReqDto) {
+        return noticeRepository.save(noticeReqDto.toEntity()).getIndex();
     }
+
 }

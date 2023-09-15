@@ -11,8 +11,8 @@ import java.util.List;
 public interface NoticeService {
 
     // 게시글 생성
-    Long insert (NoticeReqDto notice, Member member);
-
+//    Long insert (NoticeReqDto noticeReqDto, Member member);
+    Long insert (NoticeReqDto noticeReqDto);
     // 게시글 수정
 //    void update (NoticeReqDto notice, Member member);
 
