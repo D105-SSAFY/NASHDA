@@ -1,6 +1,8 @@
 package com.ssafy.nashda.notice.service;
 
 import com.ssafy.nashda.notice.dto.NoticeReqDto;
+import com.ssafy.nashda.notice.dto.NoticeResDto;
+import com.ssafy.nashda.notice.entity.Notice;
 import com.ssafy.nashda.notice.repository.NoticeRepository;
 import com.ssafy.nashda.user.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @RequiredArgsConstructor // final이 붙거나 @NotNull이 붙은 필드의 생성자 추가
 @Transactional
@@ -25,6 +28,11 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public Long insert(NoticeReqDto noticeReqDto) {
         return noticeRepository.save(noticeReqDto.toEntity()).getIndex();
+    }
+
+    @Override
+    public List<Notice> findAll() {
+        return noticeRepository.findAll();
     }
 
 }

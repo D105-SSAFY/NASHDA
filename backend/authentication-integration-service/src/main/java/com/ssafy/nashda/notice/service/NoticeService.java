@@ -20,7 +20,7 @@ public interface NoticeService {
 //    void delete(Long noticeIndex, Member member);
 
     // 게시글 전체 조회
-//    List<NoticeResDto> findAll();
+    List<Notice> findAll();
 
     // 게시글 상세 조회
 //    NoticeReqDto findById(Long noticeIndex);

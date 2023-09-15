@@ -17,12 +17,16 @@ public class NoticeResDto {
     private LocalDateTime createOn;
     private LocalDateTime updateOn;
 
-    public NoticeResDto(Notice entity) {
-        this.index = entity.getIndex();
-        this.title = entity.getTitle();
-        this.content = entity.getContent();
-        this.view = entity.getView();
-        this.createOn = entity.getCreateOn();
-        this.updateOn = entity.getUpdateOn();
+    public NoticeResDto(Notice notice) {
+        this.index = notice.getIndex();
+        this.title = notice.getTitle();
+        this.content = notice.getContent();
+        this.view = notice.getView();
+        this.createOn = notice.getCreateOn();
+        this.updateOn = notice.getUpdateOn();
+    }
+
+    public NoticeAllResDto(Notice notice) {
+        this.index = notice.getIndex();
     }
 }
