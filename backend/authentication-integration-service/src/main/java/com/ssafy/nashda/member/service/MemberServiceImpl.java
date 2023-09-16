@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.Optional;
 
 @Service("MemberService")
@@ -47,5 +46,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member findByEmail(String email) {
         return memberRepository.findByEmail(email).orElseThrow(() -> new CustomException(ExceptionEnum.USER_NOT_EXIST));
+    }
+
+    @Override
+    public Optional<Member> findByNickname(String nickname) {
+        return memberRepository.findByNickname(nickname);
     }
 }

@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Getter
 @NoArgsConstructor
 public class MemberSignUpReqDto {
-    //회원가입 시 받을 dto = 정보
+    //회원가입 시 받을 dto = 정 보
     String name;
     String nickname;
     String password;
