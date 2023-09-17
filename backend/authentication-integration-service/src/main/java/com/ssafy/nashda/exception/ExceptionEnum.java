@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ExceptionEnum {
     USER_EXIST(HttpStatus.BAD_REQUEST, 4000, "회원이 존재합니다."),
-            USER_NOT_EXIST(HttpStatus.BAD_REQUEST, 4001, "회원이 존재하지 않습니다.");
+    USER_NOT_EXIST(HttpStatus.BAD_REQUEST, 4001, "회원이 존재하지 않습니다."),
+    USER_NOT_MATCH(HttpStatus.BAD_REQUEST, 4004, "아이디 혹은 비밀번호를 확인하세요.");
 
     private HttpStatus status;
     private int code;

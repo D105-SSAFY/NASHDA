@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class MemberSignUpReqDto {
     //회원가입 시 받을 dto = 정 보
