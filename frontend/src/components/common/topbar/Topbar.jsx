@@ -16,9 +16,7 @@ export default function Topbar() {
                 <nav>
                     <t.NavList>
                         <li>
-                            <t.NavLink to="/greeting">
-                                내쉬다는 무엇인가요?
-                            </t.NavLink>
+                            <t.NavLink to="/greeting">내쉬다는 무엇인가요?</t.NavLink>
                         </li>
                         <t.NavListItem visible={isLogin}>
                             <t.NavLink to="/mypage">내 정보</t.NavLink>

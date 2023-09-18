@@ -4,7 +4,7 @@ export default function MainPage() {
     return (
         <>
             <s.Header>
-                s<s.HeadingOne>MainPage</s.HeadingOne>
+                <s.HeadingOne>MainPage</s.HeadingOne>
             </s.Header>
             <s.Main>
                 <s.Section>
@@ -13,14 +13,10 @@ export default function MainPage() {
                     </s.SectionHeader>
                     <s.SectionList>
                         <s.SectionListItem>
-                            <s.SectionListLink to={"/signin"}>
-                                signin
-                            </s.SectionListLink>
+                            <s.SectionListLink to={"/signin"}>signin</s.SectionListLink>
                         </s.SectionListItem>
                         <s.SectionListItem>
-                            <s.SectionListLink to={"/signup"}>
-                                signup
-                            </s.SectionListLink>
+                            <s.SectionListLink to={"/signup"}>signup</s.SectionListLink>
                         </s.SectionListItem>
                     </s.SectionList>
                 </s.Section>
