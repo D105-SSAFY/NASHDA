@@ -15,6 +15,8 @@ import { GlobalStyle } from "style/GlobalStyle";
 import MainPage from "pages/mainpage/MainPage";
 import SigninPage from "pages/userpage/signinpage/SigninPage";
 import SignupPage from "pages/userpage/signuppage/SignupPage";
+import Layout from "components/common/layout/Layout";
+import Greeting from "pages/intropage/greeting/Greeting";
 
 export default function App() {
     return (
@@ -24,12 +26,24 @@ export default function App() {
                     <GlobalStyle />
                     <BrowserRouter forceRefresh={true}>
                         <Routes>
-                            {/* main page */}
-                            <Route path="/" element={<MainPage />} />
+                            <Route path="/" element={<Layout />}>
+                                <Route path="/" element={<MainPage />} />
 
-                            {/* user pages */}
-                            <Route path="/signin" element={<SigninPage />} />
-                            <Route path="/signup" element={<SignupPage />} />
+                                {/* user pages */}
+                                <Route
+                                    path="/greeting"
+                                    element={<Greeting />}
+                                />
+                                <Route
+                                    path="/signin"
+                                    element={<SigninPage />}
+                                />
+                                <Route
+                                    path="/signup"
+                                    element={<SignupPage />}
+                                />
+                            </Route>
+                            {/* main page */}
                         </Routes>
                     </BrowserRouter>
                 </ThemeProvider>
