@@ -1,6 +1,6 @@
-import React from "react";
-// Import * as g from "./style";
+import React from 'react';
+import * as g from './style';
 
 export default function Greeting() {
-    return <div>Greeting</div>;
+    return <g.Box></g.Box>;
 }
