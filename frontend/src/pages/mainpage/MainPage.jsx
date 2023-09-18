@@ -4,7 +4,7 @@ export default function MainPage() {
     return (
         <>
             <s.Header>
-                <s.HeadingOne>MainPage</s.HeadingOne>
+                s<s.HeadingOne>MainPage</s.HeadingOne>
             </s.Header>
             <s.Main>
                 <s.Section>
