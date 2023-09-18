@@ -3,15 +3,12 @@ export const StyledMain = styled.main`
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
 `;
 export const StyledMainSection = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 800px;
-    height: 95%;
-    /* border : black solid 1px; */
 `;
 export const StyledVid = styled.video`
     width: ${(props) => props.width};
@@ -19,7 +16,7 @@ export const StyledVid = styled.video`
 `;
 
 export const StyledSiginBtn = styled.button`
-    margin-left: 180px;
+    margin-left: 220px;
     margin-top: 20px;
 `;
 export const StyledImg = styled.img`
@@ -29,7 +26,7 @@ export const StyledImg = styled.img`
 export const StyledSigninTitle = styled.h3`
     font-size: 30px;
     font-weight: bold;
-    margin-top: -80px;
+    margin-top: -100px;
     margin-bottom: 35px;
 `;
 export const StyledForm = styled.form`
@@ -37,16 +34,17 @@ export const StyledForm = styled.form`
     flex-direction: column;
     align-items: center;
     width: 100%;
+    margin-top: 20px;
 `;
-export const StyledTextSection = styled.section`
+export const StyledAnchorSection = styled.section`
     display: flex;
     flex-direction: column;
-    width: 30%;
-    height: 10%;
+    width: 35%;
     /* border : black solid 1px; */
     margin-top: 20px;
 `;
-export const StyledText = styled.p`
+export const StyledAnchor = styled.a`
+    display: inline;
     font-size: ${(props) => props.size};
     font-weight: bold;
     margin-bottom: 8px;
@@ -55,6 +53,6 @@ export const StyledFooter = styled.footer`
     display: flex;
     flex-direction: column;
     width: 800px;
-    height: 10%;
+    height: 5%;
     /* border : black solid 1px; */
 `;

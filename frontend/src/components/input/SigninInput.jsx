@@ -11,6 +11,7 @@ export default function SigninInput({
         value,
         readOnly,
         ref,
+        check,
     },
 }) {
     // eslint-disable-next-line no-return-assign
@@ -27,6 +28,9 @@ export default function SigninInput({
                 value={value}
                 readOnly={(readOnly ??= false)}
             ></Styled.StyledInput>
+            <Styled.StyledButton check={(check ??= false)}>
+                인증
+            </Styled.StyledButton>
         </Styled.StyledDiv>
     );
 }
