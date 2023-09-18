@@ -1,6 +1,6 @@
 package com.ssafy.nashda.user.entity;
 
-import com.nashda.common.Entity.TimeEntity;
+import com.ssafy.nashda.common.Entity.TimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
