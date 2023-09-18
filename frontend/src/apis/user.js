@@ -193,7 +193,6 @@ export const updateProfile = async ({ email, password, name, nickname, age = nul
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include',
             body: JSON.stringify({
                 email,
                 password,
@@ -202,7 +201,8 @@ export const updateProfile = async ({ email, password, name, nickname, age = nul
                 age,
                 job,
                 hobby
-            })
+            }),
+            credentials: 'include'
         });
 
         const result = await response.json();

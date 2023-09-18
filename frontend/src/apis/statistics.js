@@ -6,8 +6,8 @@ export const strick = async ({ email, user }) => {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include',
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ email }),
+            credentials: 'include'
         });
 
         const result = await response.json();
@@ -26,8 +26,8 @@ export const strickDetail = async ({ email, date, user }) => {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include',
-            body: JSON.stringify({ email, date })
+            body: JSON.stringify({ email, date }),
+            credentials: 'include'
         });
 
         const result = await response.json();
@@ -46,8 +46,8 @@ export const achievement = async ({ email, user }) => {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include',
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ email }),
+            credentials: 'include'
         });
 
         const result = await response.json();
@@ -66,8 +66,8 @@ export const gameBlankWeek = async ({ email, week, user }) => {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include',
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ email }),
+            credentials: 'include'
         });
 
         const result = await response.json();
@@ -86,8 +86,8 @@ export const gameSpeedWeek = async ({ email, week, user }) => {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include',
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ email }),
+            credentials: 'include'
         });
 
         const result = await response.json();
@@ -106,8 +106,8 @@ export const practiceWord = async ({ email, user }) => {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include',
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ email }),
+            credentials: 'include'
         });
 
         const result = await response.json();
@@ -126,8 +126,8 @@ export const practiceSimul = async ({ email, user }) => {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include',
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ email }),
+            credentials: 'include'
         });
 
         const result = await response.json();
@@ -146,8 +146,8 @@ export const practiceSimulBackground = async ({ email, background, user }) => {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include',
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ email }),
+            credentials: 'include'
         });
 
         const result = await response.json();
