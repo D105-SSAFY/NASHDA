@@ -1,10 +1,16 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import * as t from "./style";
 
 import AirIcon from "@mui/icons-material/Air";
 
 export default function Topbar() {
+    const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+
+    console.log(user, dispatch);
+
     const [isLogin, setIsLogin] = useState(false);
 
     const loginToggle = () => {
