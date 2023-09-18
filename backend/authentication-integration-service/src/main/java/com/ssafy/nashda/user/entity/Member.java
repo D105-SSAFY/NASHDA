@@ -1,6 +1,6 @@
 package com.ssafy.nashda.user.entity;
 
-import com.ssafy.nashda.common.Entity.TimeEntity;
+import com.ssafy.nashda.common.entity.TimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Getter
 @Entity

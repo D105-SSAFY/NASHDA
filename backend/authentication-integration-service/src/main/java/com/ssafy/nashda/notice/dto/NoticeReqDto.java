@@ -16,12 +16,18 @@ public class NoticeReqDto {
     public NoticeReqDto(Notice notice) {
         this.title = notice.getTitle();
         this.content = notice.getContent();
-
     }
 
-    public Notice toEntity(Member member) {
+//    public Notice toEntity(Member member) {
+//        return Notice.builder()
+//                .member(member)
+//                .title(title)
+//                .content(content)
+//                .build();
+//    }
+
+    public Notice toEntity() {
         return Notice.builder()
-                .member(member)
                 .title(title)
                 .content(content)
                 .build();
