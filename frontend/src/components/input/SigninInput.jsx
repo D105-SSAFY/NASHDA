@@ -1,18 +1,6 @@
 import * as Styled from "./style";
 
-export default function SigninInput({
-    data: {
-        text,
-        type,
-        id,
-        name,
-        onChangeFunc,
-        placeholder,
-        value,
-        readOnly,
-        ref,
-    },
-}) {
+export default function SigninInput({ data: { text, type, id, name, onChangeFunc, placeholder, value, readOnly, ref } }) {
     // eslint-disable-next-line no-return-assign
     return (
         <Styled.StyledDiv>
