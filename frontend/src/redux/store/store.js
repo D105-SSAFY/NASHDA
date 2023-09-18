@@ -1,10 +1,7 @@
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import userSlice from "redux/slice/userSlice";
 
-import {
-    createStateSyncMiddleware,
-    initMessageListener,
-} from "redux-state-sync";
+import { createStateSyncMiddleware, initMessageListener } from "redux-state-sync";
 
 import { persistStore, persistReducer } from "redux-persist";
 // Import storage from "redux-persist/lib/storage";
