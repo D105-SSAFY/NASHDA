@@ -1,10 +1,9 @@
 package com.ssafy.nashda.member.entity;
 
-import com.ssafy.nashda.common.Entity.TimeEntity;
+import com.ssafy.nashda.common.entity.TimeEntity;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 

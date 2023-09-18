@@ -1,7 +1,6 @@
-package com.ssafy.nashda.common.Entity;
+package com.ssafy.nashda.common.entity;
 
 import lombok.Getter;
-import net.bytebuddy.asm.Advice;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -11,7 +10,6 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Getter
 @MappedSuperclass
