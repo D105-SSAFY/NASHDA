@@ -18,6 +18,7 @@
             "error",
             { "endOfLine": "auto", "tabWidth": 4, "useTabs": false, "printWidth": 150 }
         ],
+        "react/jsx-one-expression-per-line": "off",
         "react/react-in-jsx-scope": "off",
         "react/prop-types": "off"
     }
