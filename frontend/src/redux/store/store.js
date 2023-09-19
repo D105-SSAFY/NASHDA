@@ -10,11 +10,11 @@ import storageSession from "redux-persist/lib/storage/session";
 const persistConfig = {
     key: "root",
     // Storage,
-    storage: storageSession,
+    storage: storageSession
 };
 
 const rootReducer = combineReducers({
-    user: userSlice,
+    user: userSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -23,9 +23,9 @@ const store = createStore(
     persistedReducer,
     applyMiddleware(
         createStateSyncMiddleware({
-            blacklist: ["persist/PERSIST", "persist/REHYDRATE"],
-        }),
-    ),
+            blacklist: ["persist/PERSIST", "persist/REHYDRATE"]
+        })
+    )
 );
 
 initMessageListener(store);

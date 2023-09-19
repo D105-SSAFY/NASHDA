@@ -17,6 +17,7 @@ import SigninPage from "pages/userpage/signinpage/SigninPage";
 import SignupPage from "pages/userpage/signuppage/SignupPage";
 import Layout from "components/common/layout/Layout";
 import Intro from "pages/intropage/Intro";
+import MyPage from "pages/userpage/mypage/MyPage";
 
 export default function App() {
     return (
@@ -32,6 +33,7 @@ export default function App() {
                                 {/* user pages */}
                                 <Route path="/signin" element={<SigninPage />} />
                                 <Route path="/signup" element={<SignupPage />} />
+                                <Route path="/mypage" element={<MyPage />} />
                             </Route>
                             {/* main page */}
                         </Routes>
