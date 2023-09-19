@@ -1,6 +1,6 @@
 package com.ssafy.nashda.question.entity;
 
-import com.ssafy.nashda.common.Entity.TimeEntity;
+import com.ssafy.nashda.common.entity.TimeEntity;
 import lombok.*;
 
 import javax.persistence.*;

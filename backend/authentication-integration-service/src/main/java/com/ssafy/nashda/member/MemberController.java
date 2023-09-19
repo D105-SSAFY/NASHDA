@@ -65,7 +65,7 @@ public class MemberController {
         } else {
             if (!userEmailFromToken.equals(member.get().getEmail())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body(new BaseResponseBody<>(403, "거~부~"));
+                        .body(new BaseResponseBody<>(4003, "거~부~"));
             }
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "회원 정보 조회 성공", new MemberInfoResDto(member.get())));
         }

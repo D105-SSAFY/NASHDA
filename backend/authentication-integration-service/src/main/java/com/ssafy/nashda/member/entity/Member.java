@@ -2,10 +2,12 @@ package com.ssafy.nashda.member.entity;
 
 import com.ssafy.nashda.common.entity.TimeEntity;
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.ColumnDefault;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
+
 
 import javax.persistence.*;
 
