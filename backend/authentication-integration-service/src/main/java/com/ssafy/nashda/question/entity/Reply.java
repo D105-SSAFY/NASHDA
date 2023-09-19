@@ -11,11 +11,11 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reply extends TimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
     private Long index;
 
-    @OneToOne(mappedBy = "reply", cascade = CascadeType.PERSIST)
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "question_index")
     private Question question;
 
     @Column(nullable = false)
