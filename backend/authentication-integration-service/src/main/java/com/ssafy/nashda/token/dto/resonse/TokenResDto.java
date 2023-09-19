@@ -5,11 +5,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Builder
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@AllArgsConstructor
+@Setter
 public class TokenResDto {
+    private String refreshToken;
+    private String accessToken;
 
-    String refreshToken;
-    String accessToken;
 }

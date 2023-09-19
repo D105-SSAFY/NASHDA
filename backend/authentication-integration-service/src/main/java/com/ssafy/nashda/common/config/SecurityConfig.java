@@ -3,6 +3,7 @@ package com.ssafy.nashda.common.config;
 import com.ssafy.nashda.member.service.MemberService;
 import com.ssafy.nashda.token.config.TokenFilter;
 import com.ssafy.nashda.token.config.TokenProvider;
+import com.ssafy.nashda.token.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final TokenProvider tokenProvider;
+    private final RedisUtil redisUtil;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -33,9 +35,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/user/signup", "/api/user/login").permitAll()
-//                .anyRequest().authenticated()
+                .antMatchers("/api/user/refresh").permitAll()
+                .antMatchers("/api/user/mypage/**").authenticated()
                 .and()
-                .addFilterBefore(new TokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new TokenFilter(tokenProvider, redisUtil), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

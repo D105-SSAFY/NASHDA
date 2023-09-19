@@ -3,9 +3,12 @@ package com.ssafy.nashda.token.service;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.service.MemberService;
 import com.ssafy.nashda.token.config.TokenProvider;
+import com.ssafy.nashda.token.dto.resonse.TokenResDto;
 import com.ssafy.nashda.token.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
 
 @RequiredArgsConstructor
 @Service
@@ -17,28 +20,47 @@ public class TokenServiceImpl implements TokenService {
 
 
     @Override
-    public String createNewAccessToken(String refreshToken) {
-// 토큰 유효성 검사에 실패하면 예외 발생
-        if (!tokenProvider.validToken(refreshToken)) {
-            throw new IllegalArgumentException("토큰 유효성 실패");
-        }
+    public TokenResDto createRefreshToken(Member member) {
 
-        // refreshToken을 이용해서 user.email을 찾는다
-        String email = tokenProvider.getEmailFromToken(refreshToken);
-        Member member = memberService.findByEmail(email);
+// Refresh token 생성, 유효 기간을 더 길게 설정
+        String refreshToken = tokenProvider.generateToken(member, Duration.ofDays(7));
 
-        // 레디스에서 accessToken을 얻는다
-        String existingAccessToken = redisUtil.getAccessToken(refreshToken);
+        // Access token 생성, 유효 기간을 더 짧게 설정
+        String accessToken = tokenProvider.generateToken(member, Duration.ofHours(1));
 
-        if (existingAccessToken != null) {
-            // 기존 accessToken이 있다면, 그것을 반환한다
-            return existingAccessToken;
-        } else {
-            // 기존 accessToken이 없다면, 새로운 것을 생성하고 레디스에 저장한다
-            String newAccessToken = tokenProvider.createAccessToken(member);
-            redisUtil.setAccessToken(refreshToken, newAccessToken);
-            return newAccessToken;
-        }
+        // Redis에 저장
+        redisUtil.saveRefreshToken(member.getEmail(), refreshToken);
+        redisUtil.saveAccessToken(refreshToken, accessToken);
+
+        System.out.println("key 저장");
+
+        return new TokenResDto(refreshToken, accessToken);
 
     }
+
+    @Override
+    public String createAccessToken(String refreshToken) {
+
+        //refreshtoken으로 user정보 조회
+        String memberEail = tokenProvider.getUserEmail(refreshToken);
+
+        Member member = memberService.findByEmail(memberEail);
+
+        //accesstoken생성
+        String accessToken = tokenProvider.generateToken(member, Duration.ofDays(1));
+
+        redisUtil.saveAccessToken(refreshToken, accessToken);
+
+
+        return accessToken;
+    }
+
+    @Override
+    public boolean findByRefreshToken(String refreshToken) {
+
+        String refreshInRedis = redisUtil.getRefreshToken(refreshToken);
+
+        return refreshInRedis != null;
+    }
+
 }
