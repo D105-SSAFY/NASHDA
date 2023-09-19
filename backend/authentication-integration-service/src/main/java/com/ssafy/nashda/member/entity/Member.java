@@ -1,20 +1,25 @@
-package com.ssafy.nashda.user.entity;
+package com.ssafy.nashda.member.entity;
 
+<<<<<<< HEAD:backend/authentication-integration-service/src/main/java/com/ssafy/nashda/member/entity/Member.java
+import com.ssafy.nashda.common.entity.TimeEntity;
+import com.sun.istack.NotNull;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+=======
 import com.ssafy.nashda.common.Entity.TimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+>>>>>>> 8ea53d3ebd3d9a0e8d5784b0f9738d2e789b907d:backend/authentication-integration-service/src/main/java/com/ssafy/nashda/user/entity/Member.java
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "MEMBER")  // 테이블 지정
-@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
+@Table
 public class Member extends TimeEntity {
     @Id //Primary Key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //autoincreasement 설정
@@ -22,10 +27,17 @@ public class Member extends TimeEntity {
     @Column(name = "member_number")
     private Long memberNum;
 
+    @NotNull
     private String email;
+
+
+    @NotNull
     private String name;
+    @NotNull
     private String nickname;
+    @NotNull
     private String password;
+
 
     private int age;
 
@@ -35,20 +47,27 @@ public class Member extends TimeEntity {
     @Column(name = "job_index")
     private int jobIdx;
 
+    @ColumnDefault("1")
     private int status;
+
+    @ColumnDefault("0")
     private int progress;
 
+    @ColumnDefault("0")
     @Column(name = "word_count")
     private int wordCount;
 
+    @ColumnDefault("0")
     @Column(name = "sentence_count")
     private int sentenceCount;
 
     @Column(name = "conversation_count")
+    @ColumnDefault("0")
     private int conversationCount;
 
+
     @Builder
-    public Member(String email, String name, String nickname, String password, int age, int hobbyIdx, int jobIdx, int status, int progress, int wordCount, int sentenceCount, int conversationCount) {
+    public Member(String email, String name, String nickname, String password, int age, int hobbyIdx, int jobIdx) {
         this.email = email;
         this.name = name;
         this.nickname = nickname;
@@ -56,12 +75,8 @@ public class Member extends TimeEntity {
         this.age = age;
         this.hobbyIdx = hobbyIdx;
         this.jobIdx = jobIdx;
-        this.status = status;
-        this.progress = progress;
-        this.wordCount = wordCount;
-        this.sentenceCount = sentenceCount;
-        this.conversationCount = conversationCount;
     }
+
 
 
 }
