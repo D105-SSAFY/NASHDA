@@ -41,16 +41,23 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public String createAccessToken(String refreshToken) {
 
-        //refreshtoken으로 user정보 조회
-        String memberEail = tokenProvider.getUserEmail(refreshToken);
+        // refreshtoken으로 user 정보 조회
+        String memberEmail = tokenProvider.getUserEmail(refreshToken);
 
-        Member member = memberService.findByEmail(memberEail);
+        if (memberEmail == null) {
+            return null; // or throw an exception
+        }
 
-        //accesstoken생성
+        Member member = memberService.findByEmail(memberEmail);
+
+        if (member == null) {
+            return null; // or throw an exception
+        }
+
+        // accesstoken 생성
         String accessToken = tokenProvider.generateToken(member, Duration.ofDays(1));
 
         redisUtil.saveAccessToken(refreshToken, accessToken);
-
 
         return accessToken;
     }

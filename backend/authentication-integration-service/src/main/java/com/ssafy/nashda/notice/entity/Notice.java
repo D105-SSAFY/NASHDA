@@ -1,10 +1,9 @@
 package com.ssafy.nashda.notice.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ssafy.nashda.common.Entity.TimeEntity;
-import com.ssafy.nashda.user.entity.Member;
+
+import com.ssafy.nashda.common.entity.TimeEntity;
+import com.ssafy.nashda.member.entity.Member;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 

@@ -1,18 +1,14 @@
 package com.ssafy.nashda.member.entity;
 
-<<<<<<< HEAD:backend/authentication-integration-service/src/main/java/com/ssafy/nashda/member/entity/Member.java
+
 import com.ssafy.nashda.common.entity.TimeEntity;
 import com.sun.istack.NotNull;
-import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-=======
-import com.ssafy.nashda.common.Entity.TimeEntity;
-import lombok.AccessLevel;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
->>>>>>> 8ea53d3ebd3d9a0e8d5784b0f9738d2e789b907d:backend/authentication-integration-service/src/main/java/com/ssafy/nashda/user/entity/Member.java
 
 import javax.persistence.*;
 
