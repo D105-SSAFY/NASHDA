@@ -1,7 +1,7 @@
 package com.ssafy.nashda.notice.entity;
 
 import com.ssafy.nashda.common.entity.TimeEntity;
-import com.ssafy.nashda.user.entity.Member;
+import com.ssafy.nashda.member.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;
