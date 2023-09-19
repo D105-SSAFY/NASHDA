@@ -91,11 +91,7 @@ export default function SigninPage() {
                         }}
                     />
                     <Styled.StyledSiginBtn>
-                        <Styled.StyledImg
-                            src={image2}
-                            alt="로그인"
-                            onClick={handleCheck}
-                        />
+                        <Styled.StyledImg src={image2} alt="로그인" onClick={handleCheck} />
                     </Styled.StyledSiginBtn>
                 </Styled.StyledForm>
 
