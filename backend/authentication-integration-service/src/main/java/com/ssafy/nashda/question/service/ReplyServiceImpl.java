@@ -35,6 +35,9 @@ public class ReplyServiceImpl implements ReplyService {
                 .question(question)
                 .build();
 
+        // 질문에 답변 연결
+        question.setReply(reply);
+
         Reply savedReply = replyRepository.save(reply);
 
         return savedReply.getQuestion().getIndex();
