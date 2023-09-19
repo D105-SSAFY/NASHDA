@@ -1,14 +1,14 @@
-const url = "";
-const header = { "Content-Type": "appliction/json" };
+const url = '';
+const header = { 'Content-Type': 'appliction/json' };
 export async function Signin(id, password) {
     try {
         const response = await fetch(`${url}/login`, {
-            method: "POST",
+            method: 'POST',
             headers: header,
             body: JSON.stringify({
                 email: id,
-                password,
-            }),
+                password
+            })
         });
         const result = await response.json();
         if (result.status === 200) {
