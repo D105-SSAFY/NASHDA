@@ -1,22 +1,23 @@
 // Router
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 // Store
-import { PersistGate } from "redux-persist/integration/react";
-import { Provider } from "react-redux";
-import store, { persistor } from "redux/store/store.js";
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from 'react-redux';
+import store, { persistor } from 'redux/store/store.js';
 
 // Style
-import { ThemeProvider } from "styled-components";
-import { theme } from "style/Theme";
-import { GlobalStyle } from "style/GlobalStyle";
+import { ThemeProvider } from 'styled-components';
+import { theme } from 'style/Theme';
+import { GlobalStyle } from 'style/GlobalStyle';
 
 // Pages
-import MainPage from "pages/mainpage/MainPage";
-import SigninPage from "pages/userpage/signinpage/SigninPage";
-import SignupPage from "pages/userpage/signuppage/SignupPage";
-import Layout from "components/common/layout/Layout";
-import Greeting from "pages/intropage/greeting/Greeting";
+// import MainPage from 'pages/mainpage/MainPage';
+import SigninPage from 'pages/userpage/signinpage/SigninPage';
+import SignupPage from 'pages/userpage/signuppage/SignupPage';
+import Layout from 'components/common/layout/Layout';
+import Greeting from 'pages/intropage/greeting/Greeting';
+import Intro from 'pages/intropage/Intro';
 
 export default function App() {
     return (
@@ -27,7 +28,7 @@ export default function App() {
                     <BrowserRouter forceRefresh={true}>
                         <Routes>
                             <Route path="/" element={<Layout />}>
-                                <Route path="/" element={<MainPage />} />
+                                <Route path="/" element={<Intro />} />
 
                                 {/* user pages */}
                                 <Route path="/greeting" element={<Greeting />} />
