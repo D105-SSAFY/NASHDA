@@ -1,7 +1,6 @@
 package com.ssafy.nashda.notice.dto;
 
 import com.ssafy.nashda.notice.entity.Notice;
-import com.ssafy.nashda.user.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

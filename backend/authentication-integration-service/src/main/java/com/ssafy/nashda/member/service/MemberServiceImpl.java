@@ -1,7 +1,7 @@
 package com.ssafy.nashda.member.service;
 
-import com.ssafy.nashda.exception.CustomException;
-import com.ssafy.nashda.exception.ExceptionEnum;
+import com.ssafy.nashda.common.error.code.ErrorCode;
+import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.member.dto.Reponse.MemberInfoResDto;
 import com.ssafy.nashda.member.dto.Request.MemberSignInReqDto;
 import com.ssafy.nashda.member.dto.Request.MemberSignUpReqDto;
@@ -52,7 +52,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member findByEmail(String email) {
-        return memberRepository.findByEmail(email).orElseThrow(() -> new CustomException(ExceptionEnum.USER_NOT_EXIST));
+        return memberRepository.findByEmail(email).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
     }
 
     @Override
@@ -64,12 +64,12 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public MemberInfoResDto singIn(MemberSignInReqDto signinInfo) throws IOException, InterruptedException {
 
-        Member member = memberRepository.findByEmail(signinInfo.getEmail()).orElseThrow(() -> new CustomException(ExceptionEnum.USER_NOT_EXIST));
+        Member member = memberRepository.findByEmail(signinInfo.getEmail()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
 
         if (passwordEncoder.matches(signinInfo.getPassword(), member.getPassword())) {
             return new MemberInfoResDto(member);
         } else {
-            throw new CustomException(ExceptionEnum.USER_NOT_MATCH);
+            throw new BadRequestException(ErrorCode.USER_NOT_MATCH);
 
         }
 
