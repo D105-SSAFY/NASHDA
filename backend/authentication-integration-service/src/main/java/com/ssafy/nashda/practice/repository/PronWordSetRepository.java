@@ -6,6 +6,11 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
+/**
+ * 발음 - 절 Collection MongoDB Spring Data 인터페이스
+ * 2023-09-18
+ * 조경호
+ * */
 public interface PronWordSetRepository extends MongoRepository<PronWordSet, String>{
-    public Optional<PronWordSet> findByNum(int num);
+    public Optional<PronWordSet> findByNum(long num);
 }

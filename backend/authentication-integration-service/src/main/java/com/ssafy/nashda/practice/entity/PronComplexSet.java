@@ -2,25 +2,27 @@ package com.ssafy.nashda.practice.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Transient;
 
-
 /**
- * 발음 - 단어 문제 해당 Document
+ * 발음 - 복합절 문제 해당 Document
  * 2023-09-19
  * 조경호
  * */
-@Document(collection = "pronunciation_word_set")
+
+@Document(collection = "pronunciation_complex_set")
+@Getter
 @Builder
 @AllArgsConstructor
-@Data
-public class PronWordSet {
+@RequiredArgsConstructor
+public class PronComplexSet {
     @Transient
-    public static final String SEQUENCE_NAME = "pronunciation_word_sequence";
+    public static final String SEQUENCE_NAME = "pronunciation_complex_sequence";
 
     @Id
     private String id;

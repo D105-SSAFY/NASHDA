@@ -3,12 +3,12 @@ package com.ssafy.nashda.practice.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class PracticePronRequestDto {
-    private long index;
+@RequiredArgsConstructor
+public class PronSTTResponseDto {
+    private String stt;
 }
