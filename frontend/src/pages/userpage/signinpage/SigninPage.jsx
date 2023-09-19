@@ -14,13 +14,13 @@ export default function SigninPage() {
 
     const [inputs, setInputs] = useState({
         id: "",
-        password: "",
+        password: ""
     });
 
     const handleChange = (e) => {
         setInputs({
             ...inputs,
-            [e.target.name]: e.target.value,
+            [e.target.name]: e.target.value
         });
 
         console.log(inputs);
@@ -47,8 +47,8 @@ export default function SigninPage() {
         if (result) {
             dispatch(
                 loginUser({
-                    accessToken: result.accessToken,
-                }),
+                    accessToken: result.accessToken
+                })
             );
             navigate("/");
         }
@@ -68,7 +68,7 @@ export default function SigninPage() {
                             name: "id",
                             type: "text",
                             onChangeFunc: handleChange,
-                            value: inputs.id,
+                            value: inputs.id
                         }}
                     />
                     <SigninInput
@@ -78,7 +78,7 @@ export default function SigninPage() {
                             name: "password",
                             type: "password",
                             onChangeFunc: handleChange,
-                            value: inputs.password,
+                            value: inputs.password
                         }}
                     />
                     <Styled.StyledSiginBtn>
