@@ -19,13 +19,25 @@ export const StyledLabel = styled.label`
 export const StyledInput = styled.input`
     width: 100%;
     border-radius: 8px;
-    border: solid 1.5px black;
+    border: solid 1.8px black;
     font-size: 15px;
     background-color: ${(props) => (props.readOnly ? "#eee" : "")};
-    height: 35px;
+    height: 40px;
     text-indent: 1.2em;
+    size: 30;
     &:focus {
         outline: 1px solid blue;
         outline: ${(props) => (props.readOnly ? "none" : "")};
     }
+`;
+
+export const StyledButton = styled.button`
+    position: absolute;
+    height: auto;
+    font-size: 12px;
+    font-weight: bold;
+    color: #8f47f5;
+    display: ${(props) => (props.check ? "" : "none")};
+    right: 10px;
+    top: 10px;
 `;

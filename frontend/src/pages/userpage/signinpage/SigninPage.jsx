@@ -56,10 +56,19 @@ export default function SigninPage() {
 
     return (
         <Styled.StyledMain>
-            <header style={{ height: "5%" }}>내쉬다</header>
             <Styled.StyledMainSection>
-                <Styled.StyledVid src={video1} alt="그림" width="100%" height="55%" autoPlay muted loop></Styled.StyledVid>
-                <Styled.StyledSigninTitle>오늘 잘 부탁드릴게요.</Styled.StyledSigninTitle>
+                <Styled.StyledVid
+                    src={video1}
+                    alt="그림"
+                    width="100%"
+                    height="450px"
+                    autoPlay
+                    muted
+                    loop
+                ></Styled.StyledVid>
+                <Styled.StyledSigninTitle>
+                    오늘 잘 부탁드릴게요.
+                </Styled.StyledSigninTitle>
                 <Styled.StyledForm>
                     <SigninInput
                         data={{
@@ -86,12 +95,16 @@ export default function SigninPage() {
                     </Styled.StyledSiginBtn>
                 </Styled.StyledForm>
 
-                <Styled.StyledTextSection>
-                    <Styled.StyledText size="14px">비밀번호 찾기</Styled.StyledText>
-                    <Styled.StyledText size="14px">회원가입</Styled.StyledText>
-                </Styled.StyledTextSection>
-                <Styled.StyledFooter></Styled.StyledFooter>
+                <Styled.StyledAnchorSection>
+                    <Styled.StyledAnchor size="14px">
+                        비밀번호 찾기
+                    </Styled.StyledAnchor>
+                    <Styled.StyledAnchor href="/signup" size="14px">
+                        회원가입
+                    </Styled.StyledAnchor>
+                </Styled.StyledAnchorSection>
             </Styled.StyledMainSection>
+            <Styled.StyledFooter></Styled.StyledFooter>
         </Styled.StyledMain>
     );
 }

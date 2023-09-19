@@ -1,6 +1,19 @@
 import * as Styled from "./style";
 
-export default function SigninInput({ data: { text, type, id, name, onChangeFunc, placeholder, value, readOnly, ref } }) {
+export default function SigninInput({
+    data: {
+        text,
+        type,
+        id,
+        name,
+        onChangeFunc,
+        placeholder,
+        value,
+        readOnly,
+        ref,
+        check,
+    },
+}) {
     // eslint-disable-next-line no-return-assign
     return (
         <Styled.StyledDiv>
@@ -15,6 +28,9 @@ export default function SigninInput({ data: { text, type, id, name, onChangeFunc
                 value={value}
                 readOnly={(readOnly ??= false)}
             ></Styled.StyledInput>
+            <Styled.StyledButton check={(check ??= false)}>
+                인증
+            </Styled.StyledButton>
         </Styled.StyledDiv>
     );
 }
