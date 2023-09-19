@@ -23,7 +23,7 @@ public class Question extends TimeEntity {
 //    @JoinColumn(name = "member_number", nullable = false)
 //    private Member member;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "reply_index")
     private Reply reply;
 
@@ -33,4 +33,10 @@ public class Question extends TimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+    @Builder
+    public Question (String title, String content, Reply reply) {
+        this.title = title;
+        this.content = content;
+        this.reply = reply;
+    }
 }

@@ -15,7 +15,7 @@ public class Reply extends TimeEntity {
     @Column(updatable = false)
     private Long index;
 
-    @OneToOne(mappedBy = "reply")
+    @OneToOne(mappedBy = "reply", cascade = CascadeType.PERSIST)
     private Question question;
 
     @Column(nullable = false)
@@ -25,7 +25,9 @@ public class Reply extends TimeEntity {
     private String content;
 
     @Builder
-    public Reply(String title, String content) {
-
+    public Reply(String title, String content, Question question) {
+        this.title = title;
+        this.content = content;
+        this.question = question;
     }
 }
