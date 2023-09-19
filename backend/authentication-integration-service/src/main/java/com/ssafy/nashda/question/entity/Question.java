@@ -1,7 +1,7 @@
 package com.ssafy.nashda.question.entity;
-import com.ssafy.nashda.user.entity.Member;
+import com.ssafy.nashda.member.entity.Member;
 
-import com.ssafy.nashda.common.Entity.TimeEntity;
+import com.ssafy.nashda.common.entity.TimeEntity;
 import jdk.jfr.Category;
 import lombok.*;
 
@@ -24,7 +24,7 @@ public class Question extends TimeEntity {
 //    private Member member;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "reply_index")
+    @JoinColumn(name= "reply_index")
     private Reply reply;
 
     @Column(nullable = false)
@@ -33,10 +33,16 @@ public class Question extends TimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+    public void setReply(Reply reply) {
+        this.reply = reply;
+        if (reply != null) {
+            reply.setQuestion(this);
+        }
+    }
+
     @Builder
-    public Question (String title, String content, Reply reply) {
+    public Question (String title, String content) {
         this.title = title;
         this.content = content;
-        this.reply = reply;
     }
 }

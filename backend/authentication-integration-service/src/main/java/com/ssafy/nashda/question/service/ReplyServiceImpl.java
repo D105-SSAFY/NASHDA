@@ -37,7 +37,7 @@ public class ReplyServiceImpl implements ReplyService {
 
         Reply savedReply = replyRepository.save(reply);
 
-        return savedReply.getIndex();
+        return savedReply.getQuestion().getIndex();
     }
 
     @Transactional
