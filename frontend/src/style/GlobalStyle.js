@@ -1,16 +1,28 @@
 import { createGlobalStyle } from "styled-components";
 import { reset } from "styled-reset";
+import PrVr from "../assets/fonts/PretendardVariable.ttf";
 
 export const GlobalStyle = createGlobalStyle`
     ${reset}
 
-    *, *::before, *::after {
-        box-sizing: border-box;
+    @font-face {
+        font-family: 'PrVr';
+        src: local('PrVr'), local('PrVr');
+        font-style: normal;
+        src: url(${PrVr}) format('truetype');
     }
 
-    a {
-        color: inherit;
-        text-decoration: none;
+    html {
+        font-size: 10px;
+    }
+
+    body {
+        font-family: "PrVr", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;;
+        text-rendering: optimizeLegibility;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
     }
 
     li {
@@ -32,6 +44,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     a {
+        color: inherit;
         text-decoration: none;
     }
-`
+`;

@@ -1,32 +1,26 @@
-import * as Styled from "./style";
+import * as s from './style';
 
 export default function MainPage() {
     return (
         <>
-            <Styled.Header>
-                <Styled.HeadingOne>MainPage</Styled.HeadingOne>
-            </Styled.Header>
-            <Styled.Main>
-                <Styled.Section>
-                    <Styled.SectionHeader>
-                        <Styled.SectionHeadingTwo>
-                            Links
-                        </Styled.SectionHeadingTwo>
-                    </Styled.SectionHeader>
-                    <Styled.SectionList>
-                        <Styled.SectionListItem>
-                            <Styled.SectionListLink to={"/signin"}>
-                                signin
-                            </Styled.SectionListLink>
-                        </Styled.SectionListItem>
-                        <Styled.SectionListItem>
-                            <Styled.SectionListLink to={"/signup"}>
-                                signup
-                            </Styled.SectionListLink>
-                        </Styled.SectionListItem>
-                    </Styled.SectionList>
-                </Styled.Section>
-            </Styled.Main>
+            <s.Header>
+                <s.HeadingOne>MainPage</s.HeadingOne>
+            </s.Header>
+            <s.Main>
+                <s.Section>
+                    <s.SectionHeader>
+                        <s.SectionHeadingTwo>Links</s.SectionHeadingTwo>
+                    </s.SectionHeader>
+                    <s.SectionList>
+                        <s.SectionListItem>
+                            <s.SectionListLink to={'/signin'}>signin</s.SectionListLink>
+                        </s.SectionListItem>
+                        <s.SectionListItem>
+                            <s.SectionListLink to={'/signup'}>signup</s.SectionListLink>
+                        </s.SectionListItem>
+                    </s.SectionList>
+                </s.Section>
+            </s.Main>
         </>
     );
 }

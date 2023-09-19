@@ -1,10 +1,8 @@
 package com.ssafy.nashda.notice.service;
 
+import com.ssafy.nashda.notice.dto.NoticeDetailResDto;
 import com.ssafy.nashda.notice.dto.NoticeReqDto;
-import com.ssafy.nashda.notice.dto.NoticeResDto;
 import com.ssafy.nashda.notice.entity.Notice;
-import com.ssafy.nashda.notice.repository.NoticeRepository;
-import com.ssafy.nashda.user.entity.Member;
 
 import java.util.List;
 
@@ -12,17 +10,17 @@ public interface NoticeService {
 
     // 게시글 생성
 //    Long insert (NoticeReqDto noticeReqDto, Member member);
-    Long insert (NoticeReqDto noticeReqDto);
+    Long createNotice (NoticeReqDto noticeReqDto);
     // 게시글 수정
-//    void update (NoticeReqDto notice, Member member);
+    void updateNotice (Long index, NoticeReqDto noticeReqDto);
 
     // 게시글 삭제
-//    void delete(Long noticeIndex, Member member);
+    void deleteNotice(Long noticeIndex);
 
     // 게시글 전체 조회
-    List<Notice> findAll();
+    List<Notice> getNotices();
 
-    // 게시글 상세 조회
-//    NoticeReqDto findById(Long noticeIndex);
+    // 게시글 상세 조회 및 조회수 업데이트
+    NoticeDetailResDto getNotice(Long noticeIndex);
 
 }

@@ -6,14 +6,14 @@ export const userSlice = createSlice({
         accessToken: "",
     },
     reducers: {
-        loginUser: (state, action) => {
+        loginUser(state, action) {
             state.accessToken = action.payload.accessToken;
-            
+
             return state;
         },
-        clearUser: (state) => {
+        clearUser(state) {
             state.accessToken = "";
-            
+
             return state;
         },
     },

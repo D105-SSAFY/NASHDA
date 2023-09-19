@@ -1,4 +1,4 @@
-import { css } from "styled-components"
+import { css } from "styled-components";
 
 const IROnly = css`
     position: absolute;
@@ -8,6 +8,6 @@ const IROnly = css`
     height: 1px;
     margin: -1px;
     overflow: hidden;
-`
+`;
 
 export default IROnly;
