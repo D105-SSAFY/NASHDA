@@ -55,18 +55,23 @@ public class MemberController {
     public ResponseEntity<? extends BaseResponseBody> memberInfo(
             @PathVariable String nickname, HttpServletRequest request) throws IOException {
 
-        String token = request.getHeader("Authorization").substring("Bearer".length()).trim();
-        String userEmailFromToken = tokenProvider.getUserEmail(token);
+
+
 
         Optional<Member> member = memberService.findByNickname(nickname);
 
         if (member.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new BaseResponseBody<>(404, "회원 정보가 없습니다."));
         } else {
-            if (!userEmailFromToken.equals(member.get().getEmail())) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body(new BaseResponseBody<>(4003, "거~부~"));
+            //회원 정보가 존재 하기는 하다. 그럼 이제 token검증 시간!
+            String token = request.getHeader("Authorization").substring("Bearer ".length()).trim();
+            if(!tokenService.tokenMathchEmail(token, member.get().getEmail())){
+                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(4000, "너랑 맞지 않눈 회원인뒝~~~"));
             }
+            if(!tokenService.accessTokenInRedis(token)){
+                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(4001, "redis에 없움~~~"));
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "회원 정보 조회 성공", new MemberInfoResDto(member.get())));
         }
     }

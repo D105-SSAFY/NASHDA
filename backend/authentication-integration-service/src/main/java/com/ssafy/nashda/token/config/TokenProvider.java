@@ -58,7 +58,7 @@ public class TokenProvider {
                     .parseClaimsJws(token); // 토큰 파싱 및 서명 검증
             return true;
         } catch (Exception e) {
-            log.error("Token validation failed", e); // 로그 출력
+            log.error("토큰 검증 실패", e); // 로그 출력
             return false;
         }
     }

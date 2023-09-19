@@ -30,59 +30,34 @@ public class RedisUtil {
         return (String) redisTemplate.opsForHash().get("email:code", email);
     }
 
-    //refreshToken저장
+/*    //refreshToken저장
     public void saveRefreshToken(String email, String token) {
         redisTemplate.opsForHash().put("email:refresh", email, token);
         redisTemplate.expire("email:refresh", 2, TimeUnit.HOURS);
+    }*/
+
+    public void saveAccessToken(String email, String accessToken) {
+        redisTemplate.opsForHash().put("email:access", email, accessToken);
+        redisTemplate.expire("email:access", 30, TimeUnit.MINUTES);
     }
 
-    public void saveAccessToken(String refreshToken, String accessToken) {
-        redisTemplate.opsForHash().put("refresh:access", refreshToken, accessToken);
-        redisTemplate.expire("refresh:access", 30, TimeUnit.MINUTES);
+    public String getAccessToken(String email) {
+        return (String) redisTemplate.opsForHash().get("email:access", email);
     }
-
-    //이메일로 인증 코드 조회
-    public String getRefreshToken(String email) {
-        return (String) redisTemplate.opsForHash().get("email:refresh", email);
-    }
-
-
-    public String getAccessToken(String refreshToken) {
-        return (String) redisTemplate.opsForHash().get("refresh:access", refreshToken);
-    }
-
-    //signin에서 key값을 삭제
-    public boolean deleteCodeKey(String key) {
-        return redisTemplate.opsForHash().delete("email:code", key) > 0;
-    }
-
-    //token에서 key값을 삭제
-    public void deleteRefreshToken(String key) {
-        redisTemplate.opsForHash().delete("email:refresh", key);
-
-    }
-
 
     public boolean hasAccessToken(String accessToken) {
 
-        // Firstly, get user email from access token
+        //accesstoken에서 email을 추출해서 해당 redis set이 있는지를 확인한다.
         String userEmail = tokenProvider.getUserEmail(accessToken);
-        if(userEmail == null) {
+
+        if (userEmail == null || userEmail.isEmpty()) {
             return false;
         }
 
-        String refreshToken = getRefreshToken(userEmail);
-        if(refreshToken == null) {
-            return false;
-        }
+        String redisAccessToken = getAccessToken(userEmail);
 
-
-
-        String retrievedAccessToken = getAccessToken(refreshToken);
-
-        return accessToken.equals(retrievedAccessToken);
+        return redisAccessToken.equals(accessToken);
     }
-
 
 
 }

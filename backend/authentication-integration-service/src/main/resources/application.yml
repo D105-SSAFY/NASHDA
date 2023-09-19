@@ -9,12 +9,12 @@ server:
 
 spring:
   redis:
-    host: localhost
+    host: j9d105.p.ssafy.io
     port: 6379
-  session :
-    timeout : 600
+  session:
+    timeout: 600
     store-type: redis
-    redis :
+    redis:
       namespace: spring:session
       flush-mode: on-save
   data:
@@ -28,17 +28,17 @@ spring:
   datasource:
 
     #        MySQL ??
-    #        url: jdbc:mysql://j9d105.p.ssafy.io:3306/D105?serverTimezone=UTC&characterEncoding=UTF-8
-    #        username: nash
-    #        password: d105nashda
-    #        driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://j9d105.p.ssafy.io:3306/D105?serverTimezone=UTC&characterEncoding=UTF-8
+    username: nash
+    password: d105nashda
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 
     #   H2 ??
-    url:  jdbc:h2:tcp://localhost/~/nashda
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+  #    url:  jdbc:h2:tcp://localhost/~/nashda
+  #    username: sa
+  #    password:
+  #    driver-class-name: org.h2.Driver
 
   #    hikari:
   #      maximum-pool-size:1

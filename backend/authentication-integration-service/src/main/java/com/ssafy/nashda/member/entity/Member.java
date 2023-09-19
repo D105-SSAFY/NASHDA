@@ -14,11 +14,10 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table
+@Table(name = "members")
 public class Member extends TimeEntity {
     @Id //Primary Key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //autoincreasement 설정
-
     @Column(name = "member_number")
     private Long memberNum;
 
