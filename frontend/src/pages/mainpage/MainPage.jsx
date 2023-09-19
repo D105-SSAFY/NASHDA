@@ -1,4 +1,4 @@
-import * as s from './style';
+import * as s from "./style";
 
 export default function MainPage() {
     return (
@@ -13,10 +13,10 @@ export default function MainPage() {
                     </s.SectionHeader>
                     <s.SectionList>
                         <s.SectionListItem>
-                            <s.SectionListLink to={'/signin'}>signin</s.SectionListLink>
+                            <s.SectionListLink to={"/signin"}>signin</s.SectionListLink>
                         </s.SectionListItem>
                         <s.SectionListItem>
-                            <s.SectionListLink to={'/signup'}>signup</s.SectionListLink>
+                            <s.SectionListLink to={"/signup"}>signup</s.SectionListLink>
                         </s.SectionListItem>
                     </s.SectionList>
                 </s.Section>

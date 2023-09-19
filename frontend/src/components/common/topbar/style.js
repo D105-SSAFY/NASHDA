@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Header = styled.header`
     width: 100%;
@@ -50,7 +50,7 @@ export const NavList = styled.ul`
 `;
 
 export const NavListItem = styled.li`
-    display: ${(props) => (props.visible ? 'block' : 'none')};
+    display: ${(props) => (props.visible ? "block" : "none")};
 `;
 
 export const NavLink = styled(Link)`

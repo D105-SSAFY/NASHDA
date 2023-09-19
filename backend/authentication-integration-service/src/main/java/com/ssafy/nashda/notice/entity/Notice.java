@@ -1,6 +1,5 @@
 package com.ssafy.nashda.notice.entity;
 
-
 import com.ssafy.nashda.common.entity.TimeEntity;
 import com.ssafy.nashda.member.entity.Member;
 import lombok.*;
@@ -11,7 +10,6 @@ import javax.persistence.*;
 @Setter
 @Entity // 객체와 테이블 매핑
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "notice_board") // 클래스명과 데이터베이스 테이블명이 다르면 지정해줘야 함.
 public class Notice extends TimeEntity {
     @Id // PK 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT 설정

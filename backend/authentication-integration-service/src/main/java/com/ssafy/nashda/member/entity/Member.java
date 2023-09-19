@@ -1,6 +1,5 @@
 package com.ssafy.nashda.member.entity;
 
-
 import com.ssafy.nashda.common.entity.TimeEntity;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.ColumnDefault;
@@ -8,7 +7,7 @@ import org.hibernate.annotations.ColumnDefault;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 
 import javax.persistence.*;
 
@@ -72,7 +71,6 @@ public class Member extends TimeEntity {
         this.hobbyIdx = hobbyIdx;
         this.jobIdx = jobIdx;
     }
-
 
 
 }
