@@ -122,10 +122,10 @@ public class PracticeController {
     public ResponseEntity<? extends BaseResponseBody> getPronunciation(@RequestPart(value="file", required = false) MultipartFile sound,
                                                                        @RequestBody PracticePronRequestDto practicePronRequestDto) throws Exception {
 
-        practicePronService.
+        String stt = practicePronService.getSTT(sound, practicePronRequestDto.getIndex(), practicePronRequestDto.getType());
 
         return new ResponseEntity<>(new BaseResponseBody(200, "발음 연습 결과 전송 완료",
-                new PronSTTResponseDto("dd")),
+                new PronSTTResponseDto(stt)),
                 HttpStatus.OK);
     }
 

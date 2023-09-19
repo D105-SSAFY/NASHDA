@@ -122,23 +122,24 @@ public class PracticePronServiceImpl implements PracticePronService {
     public String getSTT(MultipartFile multipartFile, long index, String type) {
 
         // STT 부분
-//        MultipartFile to  File      
+//        MultipartFile to  File
+
         String sttResult = "";
         // 통계 저장 부분
-        String originPron;
-        switch(type){
-            case "word":
-                pronWordSetRepository.findByNum(index);
-                break;
-            case "phase":
-                break;
-            case "simple":
-                break;
-            case "complex":
-                break;
-        }
+//        String originPron;
+//        switch(type){
+//            case "word":
+//                pronWordSetRepository.findByNum(index);
+//                break;
+//            case "phase":
+//                break;
+//            case "simple":
+//                break;
+//            case "complex":
+//                break;
+//        }
 
-        return "123";
+        return sttResult;
     }
 
 
