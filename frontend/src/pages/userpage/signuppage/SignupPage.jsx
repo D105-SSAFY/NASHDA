@@ -11,13 +11,13 @@ export default function SignupPage() {
         password: "",
         checkedPassword: "",
         name: "",
-        nickname: "",
+        nickname: ""
     });
 
     const handleChange = (e) => {
         setInputs({
             ...inputs,
-            [e.target.name]: e.target.value,
+            [e.target.name]: e.target.value
         });
 
         console.log(inputs);
@@ -59,18 +59,8 @@ export default function SignupPage() {
     return (
         <Styled.StyledMain>
             <Styled.StyledMainSection>
-                <Styled.StyledVid
-                    src={video1}
-                    alt="그림"
-                    width="100%"
-                    height="450px"
-                    autoPlay
-                    muted
-                    loop
-                ></Styled.StyledVid>
-                <Styled.StyledSigninTitle>
-                    숨을 내쉬다.
-                </Styled.StyledSigninTitle>
+                <Styled.StyledVid src={video1} alt="그림" width="100%" height="450px" autoPlay muted loop></Styled.StyledVid>
+                <Styled.StyledSigninTitle>숨을 내쉬다.</Styled.StyledSigninTitle>
                 <Styled.StyledForm>
                     <SigninInput
                         data={{
@@ -80,7 +70,7 @@ export default function SignupPage() {
                             type: "text",
                             onChangeFunc: handleChange,
                             value: inputs.id,
-                            check: true,
+                            check: true
                         }}
                     />
                     <SigninInput
@@ -90,7 +80,7 @@ export default function SignupPage() {
                             name: "certificatedNumber",
                             type: "text",
                             onChangeFunc: handleChange,
-                            value: inputs.certificatedNumber,
+                            value: inputs.certificatedNumber
                         }}
                     />
                     <Styled.StyledLine></Styled.StyledLine>
@@ -101,7 +91,7 @@ export default function SignupPage() {
                             name: "password",
                             type: "password",
                             onChangeFunc: handleChange,
-                            value: inputs.password,
+                            value: inputs.password
                         }}
                     />
                     <SigninInput
@@ -111,7 +101,7 @@ export default function SignupPage() {
                             name: "checkedPassword",
                             type: "password",
                             onChangeFunc: handleChange,
-                            value: inputs.checkedPassword,
+                            value: inputs.checkedPassword
                         }}
                     />
                     <Styled.StyledLine></Styled.StyledLine>
@@ -122,7 +112,7 @@ export default function SignupPage() {
                             name: "name",
                             type: "text",
                             onChangeFunc: handleChange,
-                            value: inputs.name,
+                            value: inputs.name
                         }}
                     />
                     <SigninInput
@@ -132,12 +122,10 @@ export default function SignupPage() {
                             name: "nickname",
                             type: "text",
                             onChangeFunc: handleChange,
-                            value: inputs.nickname,
+                            value: inputs.nickname
                         }}
                     />
-                    <Styled.StyledSignupBtn onClick={handleCheck}>
-                        회원가입 완료
-                    </Styled.StyledSignupBtn>
+                    <Styled.StyledSignupBtn onClick={handleCheck}>회원가입 완료</Styled.StyledSignupBtn>
                 </Styled.StyledForm>
                 <Styled.StyledFooter></Styled.StyledFooter>
             </Styled.StyledMainSection>

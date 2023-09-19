@@ -7,8 +7,8 @@ export async function Signin(id, password) {
             headers: header,
             body: JSON.stringify({
                 email: id,
-                password,
-            }),
+                password
+            })
         });
         const result = await response.json();
         if (result.status === 200) {
