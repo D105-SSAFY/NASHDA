@@ -17,12 +17,16 @@ spring:
     redis :
       namespace: spring:session
       flush-mode: on-save
+  data:
+    mongodb:
+      uri: mongodb://nash:d105nashda@j9d105.p.ssafy.io:27017/nashda?authSource=admin&authMechanism=SCRAM-SHA-1
 
   servlet:
     multipart:
       max-file-size: 300MB
       max-request-size: 300MB
   datasource:
+
     #        MySQL ??
     #        url: jdbc:mysql://j9d105.p.ssafy.io:3306/D105?serverTimezone=UTC&characterEncoding=UTF-8
     #        username: nash

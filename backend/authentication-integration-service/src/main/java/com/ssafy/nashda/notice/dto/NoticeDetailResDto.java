@@ -22,4 +22,5 @@ public class NoticeDetailResDto {
         this.view = notice.getView();
         this.updateOn = notice.getUpdateOn();
     }
+
 }
