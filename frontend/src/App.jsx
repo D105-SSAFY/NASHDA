@@ -43,10 +43,14 @@ export default function App() {
                                 <Route path="/signin" element={<SigninPage />} />
                                 <Route path="/signup" element={<SignupPage />} />
 <<<<<<< HEAD
+<<<<<<< HEAD
                                 <Route path="/mypage" element={<MyPage />} />
 =======
                                 <Route path="/resetpw" element={<ResetpwPage />} />
 >>>>>>> 39c5709 (Feat : 회원가입 페이지 및 비밀번호 찾기 페이지 구현)
+=======
+                                <Route path="/resetpw" element={<ResetpwPage />} />
+>>>>>>> 39c5709713575e0e8f5ab802ab0481614199bf8b
                             </Route>
                             {/* main page */}
                         </Routes>

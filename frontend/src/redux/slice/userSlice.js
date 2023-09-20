@@ -4,10 +4,14 @@ export const userSlice = createSlice({
     name: 'user',
     initialState: {
 <<<<<<< HEAD
+<<<<<<< HEAD
         accessToken: ""
 =======
         accessToken: ''
 >>>>>>> 39c5709 (Feat : 회원가입 페이지 및 비밀번호 찾기 페이지 구현)
+=======
+        accessToken: ''
+>>>>>>> 39c5709713575e0e8f5ab802ab0481614199bf8b
     },
     reducers: {
         loginUser(state, action) {
