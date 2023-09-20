@@ -1,8 +1,8 @@
-import * as Styled from "./style";
-import video1 from "../../../assets/image/nashda_move.mov";
-import image2 from "../../../assets/image/signinbtn.png";
-import SigninInput from "../../../components/input/SigninInput";
-import { Signin } from "../../../services/UserServices";
+import * as s from "./style";
+import video1 from "assets/image/nashda_move.mov";
+import image2 from "assets/image/signinbtn.png";
+import SigninInput from "components/input/FormInputCol";
+import { login } from "apis/user";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "redux/slice/userSlice";
@@ -13,7 +13,7 @@ export default function SigninPage() {
     const navigate = useNavigate();
 
     const [inputs, setInputs] = useState({
-        id: "",
+        email: "",
         password: ""
     });
 
@@ -29,9 +29,9 @@ export default function SigninPage() {
     const handleCheck = async (e) => {
         e.preventDefault();
 
-        if (!inputs.id) {
+        if (!inputs.email) {
             // eslint-disable-next-line no-alert
-            alert("아이디를 입력해주세요!");
+            alert("이메일을 입력해주세요!");
             return;
         }
 
@@ -41,8 +41,7 @@ export default function SigninPage() {
             return;
         }
 
-        // eslint-disable-next-line new-cap
-        const result = await Signin(inputs.id, inputs.password);
+        const result = await login(inputs.email, inputs.password);
 
         if (result) {
             dispatch(
@@ -51,23 +50,26 @@ export default function SigninPage() {
                 })
             );
             navigate("/");
+        } else {
+            // eslint-disable-next-line no-alert
+            alert("로그인에 실패했습니다!");
         }
     };
 
     return (
-        <Styled.StyledMain>
-            <Styled.StyledMainSection>
-                <Styled.StyledVid src={video1} alt="그림" width="100%" height="450px" autoPlay muted loop></Styled.StyledVid>
-                <Styled.StyledSigninTitle>오늘 잘 부탁드릴게요.</Styled.StyledSigninTitle>
-                <Styled.StyledForm>
+        <s.StyledMain>
+            <s.StyledMainSection>
+                <s.StyledVid src={video1} alt="그림" autoPlay muted loop></s.StyledVid>
+                <s.StyledSigninTitle>오늘 잘 부탁드릴게요.</s.StyledSigninTitle>
+                <s.StyledForm>
                     <SigninInput
                         data={{
                             text: "이메일",
-                            id: "id",
-                            name: "id",
+                            id: "email",
+                            name: "email",
                             type: "text",
                             onChangeFunc: handleChange,
-                            value: inputs.id
+                            value: inputs.email
                         }}
                     />
                     <SigninInput
@@ -80,19 +82,17 @@ export default function SigninPage() {
                             value: inputs.password
                         }}
                     />
-                    <Styled.StyledSiginBtn>
-                        <Styled.StyledImg src={image2} alt="로그인" onClick={handleCheck} />
-                    </Styled.StyledSiginBtn>
-                </Styled.StyledForm>
+                    <s.StyledSiginBtn>
+                        <s.StyledImg src={image2} alt="로그인" onClick={handleCheck} />
+                    </s.StyledSiginBtn>
+                </s.StyledForm>
 
-                <Styled.StyledAnchorSection>
-                    <Styled.StyledAnchor size="14px">비밀번호 찾기</Styled.StyledAnchor>
-                    <Styled.StyledAnchor href="/signup" size="14px">
-                        회원가입
-                    </Styled.StyledAnchor>
-                </Styled.StyledAnchorSection>
-            </Styled.StyledMainSection>
-            <Styled.StyledFooter></Styled.StyledFooter>
-        </Styled.StyledMain>
+                <s.StyledLinkSection>
+                    <s.StyledLink to="/resetpw">비밀번호 찾기</s.StyledLink>
+                    <s.StyledLink to="/signup">회원가입</s.StyledLink>
+                </s.StyledLinkSection>
+            </s.StyledMainSection>
+            <s.StyledFooter></s.StyledFooter>
+        </s.StyledMain>
     );
 }
