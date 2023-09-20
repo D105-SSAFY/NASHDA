@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Optional;
 
-
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -35,7 +34,7 @@ public class MemberController {
     private final TokenService tokenService;
 
     @PostMapping("/signup")
-    public ResponseEntity<? extends BaseResponseBody> signIn(
+    public ResponseEntity<? extends BaseResponseBody> signUp(
             @RequestBody MemberSignUpReqDto signUpReqDto) throws IOException {
         memberService.signUp(signUpReqDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(200, "회원가입 성공"));
@@ -49,11 +48,13 @@ public class MemberController {
         if (member.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new BaseResponseBody<>(404, "회원 정보가 없습니다."));
         } else {
-            //회원 정보가 존재 하기는 하다. 그럼 이제 token검증 시간!
+           /* //회원 정보가 존재 하기는 하다. 그럼 이제 token검증 시간!
             String token = request.getHeader("Authorization").substring("Bearer ".length()).trim();
             if (!tokenService.tokenMathchEmail(token, member.get().getEmail())) {
-                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(4000, "너랑 맞지 않눈 회원인뒝~~~"));
-            }
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new BaseResponseBody<>(4000, "너랑 맞지 않눈 회원인뒝~~~"));
+            }*/
+
+
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "회원 정보 조회 성공", new MemberInfoResDto(member.get())));
         }
     }
@@ -76,6 +77,13 @@ public class MemberController {
 
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(201, "로그인 성공", tokens));
+    }
+
+    @PutMapping("/unregist")
+    public ResponseEntity<? extends BaseResponseBody> unRegist(
+            @RequestBody MemberSignInReqDto signInReqDto) throws IOException {
+        memberService.unRegist(signInReqDto);
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "회원탈퇴 성공"));
     }
 
     public Member findMemberByToken(String token) {
