@@ -46,6 +46,4 @@ public class TokenFilter extends OncePerRequestFilter {
         return null;
     }
 
-
-
 }
