@@ -38,11 +38,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors
-                        .configurationSource(corsConfigurationSource()))
+                        .disable())
                 .csrf(csrf -> csrf
                         .disable())
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-
                         .antMatchers("/user/signin", "/users/signup").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -58,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8081", "http://i9d105.p.ssafy.io:8081","https://i9d105.p.ssafy.io"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8081", "http://i9d105.p.ssafy.io:8081","https://i9d105.p.ssafy.io", "http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type", "x-auth-token", "X-CSRF-TOKEN"));
         configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
