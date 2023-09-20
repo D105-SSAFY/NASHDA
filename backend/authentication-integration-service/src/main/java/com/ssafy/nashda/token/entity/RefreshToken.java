@@ -1,3 +1,4 @@
+/*
 package com.ssafy.nashda.token.entity;
 
 //refreshtoken이랑 useremail을 매핑해놓은 테이블
@@ -43,3 +44,4 @@ public class RefreshToken {
 
 
 }
+*/

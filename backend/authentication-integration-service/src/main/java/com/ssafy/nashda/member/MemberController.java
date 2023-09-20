@@ -55,9 +55,6 @@ public class MemberController {
     public ResponseEntity<? extends BaseResponseBody> memberInfo(
             @PathVariable String nickname, HttpServletRequest request) throws IOException {
 
-
-
-
         Optional<Member> member = memberService.findByNickname(nickname);
 
         if (member.isEmpty()) {
@@ -65,13 +62,9 @@ public class MemberController {
         } else {
             //회원 정보가 존재 하기는 하다. 그럼 이제 token검증 시간!
             String token = request.getHeader("Authorization").substring("Bearer ".length()).trim();
-            if(!tokenService.tokenMathchEmail(token, member.get().getEmail())){
+            if (!tokenService.tokenMathchEmail(token, member.get().getEmail())) {
                 return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(4000, "너랑 맞지 않눈 회원인뒝~~~"));
             }
-            if(!tokenService.accessTokenInRedis(token)){
-                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(4001, "redis에 없움~~~"));
-            }
-
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "회원 정보 조회 성공", new MemberInfoResDto(member.get())));
         }
     }
@@ -87,8 +80,8 @@ public class MemberController {
         Member member = memberService.findByEmail(memberInfo.getEmail());
 
         TokenResDto tokens = tokenService.createRefreshToken(member);
-;
-        if(member==null){
+        ;
+        if (member == null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(401, "로그인 실패"));
         }
 
@@ -96,6 +89,12 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(201, "로그인 성공", tokens));
     }
 
+    public Member findMemberByToken(String token) {
+        String email = tokenProvider.getUserEmail(token);
+        Member member = memberService.findByEmail(email);
+
+        return member;
+    }
 
 
 }

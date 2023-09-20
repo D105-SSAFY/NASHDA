@@ -2,7 +2,6 @@ package com.ssafy.nashda.token.service;
 
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.token.dto.resonse.TokenResDto;
-import com.ssafy.nashda.token.entity.RefreshToken;
 
 public interface TokenService {
 
@@ -12,11 +11,8 @@ public interface TokenService {
     //refreshToken으로 accesstoken생성
     public String createAccessToken(String refreshToken);
 
-    //mysql에 대항 RefreshToken이 존재하는지 확인.
-    public RefreshToken findByRefreshToken(String refreshToken);
-
-    //해당 accesstoken이 redis에 존재하는지 확인
-    public boolean accessTokenInRedis(String accessToken);
+    /*해당 email에 대한 refreshtoken을 가져옴*/
+/*    public String findRefreshByEmail(String refreshToken);*/
 
     public boolean tokenMathchEmail(String token, String email);
 

@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.util.Optional;
 
 public interface MemberService {
-
-    //회원가입
     Long signUp(MemberSignUpReqDto signUpReqDto) throws IOException;
+
     Member findByEmail(String email);
+
     Optional<Member> findByNickname(String nickname);
-    //로그인
-    MemberInfoResDto singIn(MemberSignInReqDto signinInfo) throws IOException,InterruptedException;
+
+    MemberInfoResDto singIn(MemberSignInReqDto signinInfo) throws IOException, InterruptedException;
 
 }

@@ -1,3 +1,4 @@
+/*
 package com.ssafy.nashda.token.repository;
 
 import com.ssafy.nashda.member.entity.Member;
@@ -12,3 +13,4 @@ public interface  RefreshTokenRepository extends JpaRepository<RefreshToken, Lon
     Optional<RefreshToken> findByMember(Member member);
     Optional<RefreshToken> findByRefreshToken(String refreshToken);
 }
+*/

@@ -59,6 +59,9 @@ public class Member extends TimeEntity {
     @ColumnDefault("0")
     private int conversationCount;
 
+    @ColumnDefault("0")
+    private int type;
+
 
     @Builder
     public Member(String email, String name, String nickname, String password, int age, int hobbyIdx, int jobIdx) {
