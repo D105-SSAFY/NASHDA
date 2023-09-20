@@ -40,6 +40,7 @@ public class MemberServiceImpl implements MemberService {
                     signUpReqDto.getAge(),
                     signUpReqDto.getHobbyIdx(),
                     signUpReqDto.getJobIdx());
+            memberRepository.save(member);
         } else {
             throw new BadRequestException(ErrorCode.USER_EXIST);
         }
@@ -65,10 +66,14 @@ public class MemberServiceImpl implements MemberService {
             throw new BadRequestException(ErrorCode.USER_NOT_MATCH);
         }
     }
-
     @Override
     public void unRegist(MemberSignInReqDto signInReqDto) throws IOException {
-
+        Member member = memberRepository.findByEmail(signInReqDto.getEmail()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
+        if (passwordEncoder.matches(signInReqDto.getPassword(), member.getPassword())) {
+            memberRepository.delete(member);
+        } else {
+            throw new BadRequestException(ErrorCode.USER_NOT_MATCH);
+        }
     }
 
 
