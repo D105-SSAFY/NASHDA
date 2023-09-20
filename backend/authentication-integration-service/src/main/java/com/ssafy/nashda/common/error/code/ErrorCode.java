@@ -19,6 +19,7 @@ public enum ErrorCode {
     NOT_EXISTS_BOARD_ID(HttpStatus.BAD_REQUEST, 400, "존재하지 않는 게시판 아이디입니다.");
 
 
+
     private HttpStatus httpStatus;
     private int errorCode;
     private String message;

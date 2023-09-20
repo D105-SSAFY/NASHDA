@@ -12,8 +12,8 @@ export const StyledMainSection = styled.section`
     /* border : black solid 1px; */
 `;
 export const StyledVid = styled.video`
-    width: ${(props) => props.width};
-    height: ${(props) => props.height};
+    width: 100%;
+    height: 450px;
 `;
 
 export const StyledSignupBtn = styled.button`
@@ -25,7 +25,7 @@ export const StyledImg = styled.img`
     height: 56px;
 `;
 
-export const StyledSigninTitle = styled.h3`
+export const StyledSignupTitle = styled.h3`
     font-size: 30px;
     font-weight: bold;
     margin-top: -100px;

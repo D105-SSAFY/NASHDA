@@ -36,28 +36,24 @@ public class RedisUtil {
         redisTemplate.expire("email:refresh", 2, TimeUnit.HOURS);
     }*/
 
-    public void saveAccessToken(String email, String accessToken) {
-        redisTemplate.opsForHash().put("email:access", email, accessToken);
-        redisTemplate.expire("email:access", 30, TimeUnit.MINUTES);
+    public void saveRefreshToken(String email, String accessToken) {
+        redisTemplate.opsForHash().put("email:token", email, accessToken);
+        redisTemplate.expire("email:token", 2, TimeUnit.HOURS);
     }
 
-    public String getAccessToken(String email) {
-        return (String) redisTemplate.opsForHash().get("email:access", email);
+    public String getRefreshTokens(String email) {
+        return (String) redisTemplate.opsForHash().get("email:token", email);
     }
 
-    public boolean hasAccessToken(String accessToken) {
+    public boolean isMatchToken(String refreshToken){
+        //refreshtoken이 해당 유저의 refreshtoken이 맞는지 확인한다.
+        String tokenEmail = tokenProvider.getUserEmail(refreshToken);
+        String redisToken = getRefreshTokens(tokenEmail);
 
-        //accesstoken에서 email을 추출해서 해당 redis set이 있는지를 확인한다.
-        String userEmail = tokenProvider.getUserEmail(accessToken);
+        if(redisToken!=null && redisToken.equals(redisToken)) return true;
+        return false;
 
-        if (userEmail == null || userEmail.isEmpty()) {
-            return false;
-        }
 
-        String redisAccessToken = getAccessToken(userEmail);
-
-        return redisAccessToken.equals(accessToken);
     }
-
 
 }

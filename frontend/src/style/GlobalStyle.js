@@ -1,6 +1,6 @@
-import { createGlobalStyle } from "styled-components";
-import { reset } from "styled-reset";
-import PrVr from "../assets/fonts/PretendardVariable.ttf";
+import { createGlobalStyle } from 'styled-components';
+import { reset } from 'styled-reset';
+import PrVr from '../assets/fonts/PretendardVariable.ttf';
 
 export const GlobalStyle = createGlobalStyle`
     ${reset}

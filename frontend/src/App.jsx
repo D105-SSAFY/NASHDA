@@ -15,6 +15,7 @@ import { GlobalStyle } from "style/GlobalStyle";
 // import MainPage from 'pages/mainpage/MainPage';
 import SigninPage from "pages/userpage/signinpage/SigninPage";
 import SignupPage from "pages/userpage/signuppage/SignupPage";
+import ResetpwPage from "pages/userpage/resetpwpage/ResetpwPage";
 import Layout from "components/common/layout/Layout";
 import Intro from "pages/intropage/Intro";
 import MyPage from "pages/userpage/mypage/MyPage";
@@ -34,6 +35,7 @@ export default function App() {
                                 <Route path="/signin" element={<SigninPage />} />
                                 <Route path="/signup" element={<SignupPage />} />
                                 <Route path="/mypage" element={<MyPage />} />
+                                <Route path="/resetpw" element={<ResetpwPage />} />
                             </Route>
                             {/* main page */}
                         </Routes>
