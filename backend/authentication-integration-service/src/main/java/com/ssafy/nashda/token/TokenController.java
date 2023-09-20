@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class TokenController {
     private final TokenService tokenService;
 
