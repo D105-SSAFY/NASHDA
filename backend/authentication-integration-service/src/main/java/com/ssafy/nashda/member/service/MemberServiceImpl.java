@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service("MemberService")
@@ -73,9 +75,26 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void unRegist(MemberSignInReqDto signInReqDto) throws IOException {
-        Member member = memberRepository.findByEmail(signInReqDto.getEmail()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
-        if (passwordEncoder.matches(signInReqDto.getPassword(), member.getPassword())) {
+    public void unRegist(Map<String, Object> memberInfo) throws IOException {
+/*
+        Object emailObj = memberInfo.get("email");
+        Object passwordObj = memberInfo.get("password");
+
+        if (emailObj == null || passwordObj == null) {
+            throw new BadRequestException(ErrorCode.INVALID_INPUT);
+        }
+
+        String email = emailObj.toString();
+        String password = passwordObj.toString();
+*/
+
+        //먼저 map값이 null인지 확인
+        if (memberInfo.get("email") == null || memberInfo.get("password") == null)
+            throw new BadRequestException(ErrorCode.INVALID_INPUT);
+
+        Member member = memberRepository.findByEmail(memberInfo.get("email").toString()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
+
+        if (passwordEncoder.matches(memberInfo.get("password").toString(), member.getPassword())) {
             memberRepository.delete(member);
         } else {
             throw new BadRequestException(ErrorCode.USER_NOT_MATCH);
