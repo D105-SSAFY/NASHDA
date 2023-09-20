@@ -2,6 +2,7 @@ package com.ssafy.nashda.member;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.member.dto.Reponse.MemberInfoResDto;
+import com.ssafy.nashda.member.dto.Request.DataDto;
 import com.ssafy.nashda.member.dto.Request.MemberSignInReqDto;
 import com.ssafy.nashda.member.dto.Request.MemberSignUpReqDto;
 import com.ssafy.nashda.member.entity.Member;
@@ -18,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -39,22 +39,17 @@ public class MemberController {
         memberService.signUp(signUpReqDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(200, "회원가입 성공"));
     }
-    @GetMapping("/mypage/{nickname}")
-    public ResponseEntity<? extends BaseResponseBody> memberInfo(
-            @PathVariable String nickname, HttpServletRequest request) throws IOException {
 
+    @GetMapping("/mypage")
+    public ResponseEntity<? extends BaseResponseBody> memberInfo(
+            @RequestHeader("Authorization") String token) throws IOException {
+
+        String nickname = findMemberByToken(token).getNickname();
         Optional<Member> member = memberService.findByNickname(nickname);
 
         if (member.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new BaseResponseBody<>(404, "회원 정보가 없습니다."));
         } else {
-           /* //회원 정보가 존재 하기는 하다. 그럼 이제 token검증 시간!
-            String token = request.getHeader("Authorization").substring("Bearer ".length()).trim();
-            if (!tokenService.tokenMathchEmail(token, member.get().getEmail())) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new BaseResponseBody<>(4000, "너랑 맞지 않눈 회원인뒝~~~"));
-            }*/
-
-
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "회원 정보 조회 성공", new MemberInfoResDto(member.get())));
         }
     }
@@ -80,11 +75,30 @@ public class MemberController {
     }
 
     @PutMapping("/unregist")
-    public ResponseEntity<? extends BaseResponseBody> unRegist(
-            @RequestBody MemberSignInReqDto signInReqDto) throws IOException {
-        memberService.unRegist(signInReqDto);
+    public ResponseEntity<? extends BaseResponseBody> unRegist(@RequestHeader("Authorization") String token,
+            @RequestBody DataDto password) throws IOException {
+        Member member = findMemberByToken(token);
+        MemberSignInReqDto dto = new MemberSignInReqDto(member.getEmail(), password.getData());
+        memberService.unRegist(dto);
         return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "회원탈퇴 성공"));
     }
+
+    @PostMapping("/checkemail")
+    public ResponseEntity<? extends BaseResponseBody> checkEmail(@RequestBody DataDto emailDto) throws IOException {
+        if(memberService.checkEmail(emailDto.getData()))  return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "유효한 이메일"));
+        else  return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(400, "이메일 중복"));
+    }
+
+    @PostMapping("/checknickname")
+    public ResponseEntity<? extends BaseResponseBody> checkNickName(@RequestBody DataDto emailDto) throws IOException {
+        System.out.println(emailDto.getData());
+        if(memberService.checkNickname(emailDto.getData()))  return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "유효한 닉네임"));
+        else  return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(400, "닉네임 중복"));
+    }
+
+
+
+
 
     public Member findMemberByToken(String token) {
         String parsedToken = token.substring("Bearer ".length()).trim();
