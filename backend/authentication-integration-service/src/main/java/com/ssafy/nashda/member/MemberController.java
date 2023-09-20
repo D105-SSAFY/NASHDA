@@ -38,10 +38,6 @@ public class MemberController {
     public ResponseEntity<? extends BaseResponseBody> signIn(
             @RequestBody MemberSignUpReqDto signUpReqDto) throws IOException {
         memberService.signUp(signUpReqDto);
-        /*if (num == -1) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(400, "회원가입 실패"));
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(200, "회원가입 성공"));*/
         return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(200, "회원가입 성공"));
     }
     @GetMapping("/mypage/{nickname}")
