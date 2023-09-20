@@ -5,15 +5,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Transient;
+
 
 /**
  * 발음 - 복합절 문제 해당 Document
  * 2023-09-19
  * 조경호
- * */
+ */
 
 @Document(collection = "pronunciation_complex_set")
 @Getter

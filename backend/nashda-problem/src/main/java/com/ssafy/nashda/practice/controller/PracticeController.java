@@ -37,18 +37,17 @@ public class PracticeController {
 //        PronWordSet pronWordSet = practicePronService.savePronWordSet();// Sequence Num 불러오기
 //        practicePronService.savePronPhaseSet();
 //        practicePronService.savePronSimpleSet();
-        practicePronService.savePronComplexSet();
-
-        return new ResponseEntity<>(new BaseResponseBody(200, "문제 만들기 테스트 성공"), HttpStatus.OK);
+//        practicePronService.savePronComplexSet();
+        log.info("OKOK");
+        return new ResponseEntity<>(new BaseResponseBody(200, "소통 테스트 성공22222"), HttpStatus.OK);
     }
 
-    // 문제 개수 확인
-    @GetMapping("/pron/word")
-    public ResponseEntity<? extends BaseResponseBody> getPronWordNum() throws Exception {
+    @GetMapping("/pron/nums/{type}")
+    public ResponseEntity<? extends BaseResponseBody> getPromSetNum(@PathVariable("type") String type) throws Exception{
 
-        long pronSetNum = practicePronService.getPronSetNum(PronWordSet.SEQUENCE_NAME); // Sequence Num 불러오기
-
-        return new ResponseEntity<>(new BaseResponseBody(200, "단어 문제 개수 불러오기 성공", pronSetNum),
+        long sequenceNum = practicePronService.getPronSetNum(type);
+        log.debug("sequenceNum : {}", sequenceNum);
+        return new ResponseEntity<>(new BaseResponseBody(200, "문제 개수 불러오기 성공", sequenceNum),
                 HttpStatus.OK);
     }
 
@@ -61,15 +60,7 @@ public class PracticeController {
                 HttpStatus.OK);
     }
 
-    // 문제 개수 확인
-    @GetMapping("/pron/phase")
-    public ResponseEntity<? extends BaseResponseBody> getPronPhaseNum() throws Exception {
 
-        long pronSetNum = practicePronService.getPronSetNum(PronPhaseSet.SEQUENCE_NAME); // Sequence Num 불러오기
-
-        return new ResponseEntity<>(new BaseResponseBody(200, "구 문제 개수 불러오기 성공", pronSetNum),
-                HttpStatus.OK);
-    }
 
     // 해당 문제 불러오기
     @GetMapping("/pron/phase/{index}")
@@ -80,15 +71,6 @@ public class PracticeController {
                 HttpStatus.OK);
     }
 
-    // 문제 개수 확인
-    @GetMapping("/pron/simple")
-    public ResponseEntity<? extends BaseResponseBody> getPronSimpleNum() throws Exception {
-
-        long pronSetNum = practicePronService.getPronSetNum(PronSimpleSet.SEQUENCE_NAME); // Sequence Num 불러오기
-
-        return new ResponseEntity<>(new BaseResponseBody(200, "단순절 문제 개수 불러오기 성공", pronSetNum),
-                HttpStatus.OK);
-    }
 
     // 해당 문제 불러오기
     @GetMapping("/pron/simple/{index}")
@@ -96,16 +78,6 @@ public class PracticeController {
         PronSimpleSet pronSimpleSet = practicePronService.getPronSimpleSets(index);
 
         return new ResponseEntity<>(new BaseResponseBody(200, "단순절 문제 불러오기 성공", new PronResponseDto(pronSimpleSet)),
-                HttpStatus.OK);
-    }
-
-    // 문제 개수 확인
-    @GetMapping("/pron/complex")
-    public ResponseEntity<? extends BaseResponseBody> getPronComplexNum() throws Exception {
-
-        long pronSetNum = practicePronService.getPronSetNum(PronComplexSet.SEQUENCE_NAME); // Sequence Num 불러오기
-
-        return new ResponseEntity<>(new BaseResponseBody(200, "복합절 문제 개수 불러오기 성공", pronSetNum),
                 HttpStatus.OK);
     }
 
