@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Override
+    /*@Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors
@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf(csrf -> csrf
                         .disable())
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .antMatchers("/user/signin", "/users/signup").permitAll()
+                        .antMatchers("api/user/signin", "api/users/signup").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new TokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
@@ -52,6 +52,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .logoutSuccessUrl("/signin")
                         .permitAll()
                 );
+    }*/
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .cors() 
+                .and()
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("api/user/signin", "api/users/signup").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(new TokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .formLogin().disable()
+                .logout()
+                .logoutSuccessUrl("/signin")
+                .permitAll();
     }
 
 /*    @Bean
