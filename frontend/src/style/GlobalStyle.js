@@ -32,6 +32,9 @@ export const GlobalStyle = createGlobalStyle`
     button, a {
         background-color: inherit;
         border: none;
+
+        font-family: 'PrVr', 'Noto Sans KR', sans-serif;
+
         cursor: pointer;
 
         &:focus {

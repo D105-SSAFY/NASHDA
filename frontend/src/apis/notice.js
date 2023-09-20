@@ -1,6 +1,6 @@
 export const noticeSend = async ({ title, content, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/notice`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/notice`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -20,7 +20,7 @@ export const noticeSend = async ({ title, content, user }) => {
 
 export const noticeList = async ({ user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/notice`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/notice`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,9 +37,9 @@ export const noticeList = async ({ user }) => {
     }
 };
 
-export const noticeEdit = async ({ idx, title, content, user }) => {
+export const noticeEdit = async ({ index, title, content, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/notice/${idx}`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/notice/${index}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -57,9 +57,9 @@ export const noticeEdit = async ({ idx, title, content, user }) => {
     }
 };
 
-export const noticeGet = async ({ idx, user }) => {
+export const noticeGet = async ({ index, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/notice/${idx}`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/notice/${index}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,9 +76,9 @@ export const noticeGet = async ({ idx, user }) => {
     }
 };
 
-export const noticeDelete = async ({ idx, user }) => {
+export const noticeDelete = async ({ index, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/notice/${idx}`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/notice/${index}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
