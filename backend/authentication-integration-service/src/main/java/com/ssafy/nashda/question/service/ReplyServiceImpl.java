@@ -34,11 +34,13 @@ public class ReplyServiceImpl implements ReplyService {
                     .title(replyReqDto.getTitle())
                     .content(replyReqDto.getContent())
                     .question(question)
+                    .member(member)
                     .build();
 
             // 질문에 답변 연결
             question.setReply(reply);
             replyRepository.save(reply);
+            return;
         }
 
         throw new BadRequestException(ErrorCode.NOT_VALID_AUTHORIZATION);
@@ -67,6 +69,7 @@ public class ReplyServiceImpl implements ReplyService {
                 } else {
                     throw new BadRequestException(ErrorCode.NOT_EXISTS_CONTENT);
                 }
+                return;
 
             }
         }
@@ -80,7 +83,9 @@ public class ReplyServiceImpl implements ReplyService {
         });
 
         if (member.getStatus() == 0) {
+            log.info("0");
             replyRepository.deleteById(index);
+            log.info("1");
             return;
         }
         throw new BadRequestException(ErrorCode.NOT_VALID_AUTHORIZATION);

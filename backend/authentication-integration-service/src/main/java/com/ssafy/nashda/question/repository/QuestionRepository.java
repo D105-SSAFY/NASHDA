@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Modifying(clearAutomatically = true)
-    @Query("SELECT q FROM Question q WHERE q.member.memberNum = :member_number")
-    List<Question> findQuestionsByMember(@Param("member_number") Member member);
+    @Query("SELECT q FROM Question q WHERE q.member.memberNum = :memberNum")
+    List<Question> findQuestionsByMember(Long memberNum);
 }

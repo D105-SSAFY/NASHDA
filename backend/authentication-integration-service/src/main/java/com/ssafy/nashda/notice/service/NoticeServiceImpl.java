@@ -25,9 +25,9 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public void createNotice(Member member, NoticeReqDto noticeReqDto) {
-
         if (member.getStatus() == 0) {
             noticeRepository.save(noticeReqDto.toEntity(member));
+            return;
         }
         throw new BadRequestException(ErrorCode.NOT_VALID_AUTHORIZATION);
     }
@@ -69,6 +69,7 @@ public class NoticeServiceImpl implements NoticeService {
                 } else {
                     throw new BadRequestException(ErrorCode.NOT_EXISTS_CONTENT);
                 }
+                return;
             }
         }
 

@@ -29,11 +29,10 @@ public class QuestionServiceImpl implements QuestionService {
         questionRepository.save(questionReqDto.toEntity(member));
     }
 
-    // 멤버를 받아서 해당 멤버가 작성한 질문 사항만 보여줘야 함.
     @Override
     @Transactional
     public List<Question> getQuestions(Member member) {
-        return questionRepository.findQuestionsByMember(member);
+        return questionRepository.findQuestionsByMember(member.getMemberNum());
     }
 
     @Override
@@ -64,11 +63,16 @@ public class QuestionServiceImpl implements QuestionService {
 
                 if (title != null) {
                     question.setTitle(title);
+                } else {
+                    throw new BadRequestException(ErrorCode.NOT_EXISTS_TITLE);
                 }
 
                 if (content != null) {
                     question.setContent(content);
+                } else {
+                    throw new BadRequestException(ErrorCode.NOT_EXISTS_CONTENT);
                 }
+                return;
             }
         }
         throw new BadRequestException(ErrorCode.NOT_EQUAL_USER);
@@ -80,6 +84,7 @@ public class QuestionServiceImpl implements QuestionService {
 
         if (member.getMemberNum().equals(question.getMember().getMemberNum())) {
             questionRepository.deleteById(index);
+            return;
         }
         throw new BadRequestException(ErrorCode.NOT_EQUAL_USER);
     }

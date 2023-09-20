@@ -15,7 +15,7 @@ public enum ErrorCode {
     // 인증, 인가
     NOT_VALID_TOKEN(HttpStatus.UNAUTHORIZED, 401, "해당 토큰은 유효한 토큰이 아닙니다."),
     NOT_EXISTS_AUTHORIZATION(HttpStatus.UNAUTHORIZED, 401, "Authorization Header가 빈 값입니다."),
-    NOT_VALID_AUTHORIZATION(HttpStatus.UNAUTHORIZED, 401, "관리자만이 글을 생성할 수 있습니다."),
+    NOT_VALID_AUTHORIZATION(HttpStatus.UNAUTHORIZED, 401, "사용자는 관리자의 권한을 가지고 있지 않습니다."),
     NOT_EQUAL_USER(HttpStatus.UNAUTHORIZED, 401, "질문을 작성한 유저가 아닙니다."),
 
     // 공지사항
