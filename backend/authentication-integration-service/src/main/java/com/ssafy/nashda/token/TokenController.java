@@ -22,15 +22,11 @@ public class TokenController {
 
     @PostMapping("/refresh")
     public ResponseEntity<? extends BaseResponseBody> refreshToken(HttpServletRequest request) {
-        System.out.println("뮁");
-
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             String refreshToken = bearerToken.substring("Bearer ".length());
             try {
-                // refreshtoken을 이용해서 accesstoken새로 생성
                 String accessToken = tokenService.createAccessToken(refreshToken);
-
                 return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, accessToken));
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(4001, "accesstoken발급 실패: " + e.getMessage()));

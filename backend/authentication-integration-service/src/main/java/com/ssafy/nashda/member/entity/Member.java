@@ -23,15 +23,12 @@ public class Member extends TimeEntity {
 
     @NotNull
     private String email;
-
-
     @NotNull
     private String name;
     @NotNull
     private String nickname;
     @NotNull
     private String password;
-
 
     private int age;
 
@@ -58,11 +55,7 @@ public class Member extends TimeEntity {
     @Column(name = "conversation_count")
     @ColumnDefault("0")
     private int conversationCount;
-
-    @ColumnDefault("0")
-    private int type;
-
-
+    
     @Builder
     public Member(String email, String name, String nickname, String password, int age, int hobbyIdx, int jobIdx) {
         this.email = email;

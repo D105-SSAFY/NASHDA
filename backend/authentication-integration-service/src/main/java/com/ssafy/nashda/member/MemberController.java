@@ -34,23 +34,15 @@ public class MemberController {
     private final TokenProvider tokenProvider;
     private final TokenService tokenService;
 
-
-    //    @ApiOperation(value = "회원가입")
     @PostMapping("/signup")
     public ResponseEntity<? extends BaseResponseBody> signIn(
             @RequestBody MemberSignUpReqDto signUpReqDto) throws IOException {
-//        Member member = memberController.findMemberByToken(accessToken);
-
         Long num = memberService.signUp(signUpReqDto);
-
         if (num == -1) {
             return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(400, "회원가입 실패"));
         }
-
         return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(201, "회원가입 성공"));
     }
-
-    //    @ApiOperation(value = "닉네임을 사용해 member정보 조회")
     @GetMapping("/mypage/{nickname}")
     public ResponseEntity<? extends BaseResponseBody> memberInfo(
             @PathVariable String nickname, HttpServletRequest request) throws IOException {
