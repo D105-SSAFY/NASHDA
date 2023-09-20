@@ -1,5 +1,6 @@
 package com.ssafy.nashda.notice.service;
 
+import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.notice.dto.NoticeDetailResDto;
 import com.ssafy.nashda.notice.dto.NoticeReqDto;
 import com.ssafy.nashda.notice.entity.Notice;
@@ -9,8 +10,7 @@ import java.util.List;
 public interface NoticeService {
 
     // 게시글 생성
-//    Long insert (NoticeReqDto noticeReqDto, Member member);
-    Long createNotice (NoticeReqDto noticeReqDto);
+    Long createNotice (Member member, NoticeReqDto noticeReqDto);
     // 게시글 수정
     void updateNotice (Long index, NoticeReqDto noticeReqDto);
 

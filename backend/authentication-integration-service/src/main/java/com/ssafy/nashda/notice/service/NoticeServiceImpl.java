@@ -1,5 +1,6 @@
 package com.ssafy.nashda.notice.service;
 
+import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.notice.dto.NoticeDetailResDto;
 import com.ssafy.nashda.notice.dto.NoticeReqDto;
 import com.ssafy.nashda.notice.entity.Notice;
@@ -19,16 +20,10 @@ import java.util.Optional;
 public class NoticeServiceImpl implements NoticeService {
     private final NoticeRepository noticeRepository;
 
-    // 게시글 생성
-//    @Override
-//    public Long insert(NoticeReqDto noticeReqDto, Member member) {
-//        return noticeRepository.save(noticeReqDto.toEntity(member)).getIndex();
-//    }
-
     @Override
     @Transactional
-    public Long createNotice(NoticeReqDto noticeReqDto) {
-        return noticeRepository.save(noticeReqDto.toEntity()).getIndex();
+    public Long createNotice(Member member, NoticeReqDto noticeReqDto) {
+        return noticeRepository.save(noticeReqDto.toEntity(member)).getIndex();
     }
 
     @Override
