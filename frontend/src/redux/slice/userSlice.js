@@ -1,9 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export const userSlice = createSlice({
-    name: "user",
+    name: 'user',
     initialState: {
+<<<<<<< HEAD
         accessToken: ""
+=======
+        accessToken: ''
+>>>>>>> 39c5709 (Feat : 회원가입 페이지 및 비밀번호 찾기 페이지 구현)
     },
     reducers: {
         loginUser(state, action) {
@@ -12,7 +16,7 @@ export const userSlice = createSlice({
             return state;
         },
         clearUser(state) {
-            state.accessToken = "";
+            state.accessToken = '';
 
             return state;
         }
