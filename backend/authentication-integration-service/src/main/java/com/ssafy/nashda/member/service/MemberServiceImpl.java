@@ -7,6 +7,7 @@ import com.ssafy.nashda.member.dto.Request.MemberSignInReqDto;
 import com.ssafy.nashda.member.dto.Request.MemberSignUpReqDto;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.repository.MemberRepository;
+import com.ssafy.nashda.token.config.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenProvider tokenProvider;
 
     @Override
     @Transactional
@@ -74,4 +76,5 @@ public class MemberServiceImpl implements MemberService {
         }
 
     }
+
 }
