@@ -26,7 +26,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class MemberController {
 
     private final MemberService memberService;
@@ -91,12 +91,8 @@ public class MemberController {
 
     public Member findMemberByToken(String token) {
         String parsedToken = token.substring("Bearer ".length()).trim();
-
         String email = tokenProvider.getUserEmail(parsedToken);
-        Member member = memberService.findByEmail(email);
-
-        return member;
+        return memberService.findByEmail(email);
     }
-
 
 }
