@@ -5,12 +5,12 @@
 export const refresh = async (user) => {
     try {
         const response = await fetch(`${process.env.API_URL}/user/refresh`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.refreshToken}`
             },
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -28,9 +28,9 @@ export const refresh = async (user) => {
 export const login = async ({ email, password }) => {
     try {
         const response = await fetch(`${process.env.API_URL}/user/login`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({ email, password })
         });
@@ -49,9 +49,9 @@ export const login = async ({ email, password }) => {
 export const sendCode = async (email) => {
     try {
         const response = fetch(`${process.env.API_URL}/user/sendcode`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({ email })
         });
@@ -71,8 +71,8 @@ export const sendCode = async (email) => {
 export const signUp = async ({ email, password, name, nickname, age = null, job = null, hobby = null }) => {
     try {
         const response = fetch(`${process.env.API_URL}/user/signup`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 email,
                 password,
@@ -82,7 +82,7 @@ export const signUp = async ({ email, password, name, nickname, age = null, job 
                 job,
                 hobby
             }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -99,13 +99,13 @@ export const signUp = async ({ email, password, name, nickname, age = null, job 
 export const logOut = async ({ email, user }) => {
     try {
         const response = fetch(`${process.env.API_URL}/user/logout`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ email }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -122,13 +122,13 @@ export const logOut = async ({ email, user }) => {
 export const signOut = async ({ email, password, user }) => {
     try {
         const response = fetch(`${process.env.API_URL}/user/signout`, {
-            method: 'PUT',
+            method: "PUT",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ email, password }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -145,13 +145,13 @@ export const signOut = async ({ email, password, user }) => {
 export const updatePw = async ({ email, password, newpassword, user }) => {
     try {
         const response = fetch(`${process.env.API_URL}/user/updatepw`, {
-            method: 'PUT',
+            method: "PUT",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ email, password, newpassword }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -168,8 +168,8 @@ export const updatePw = async ({ email, password, newpassword, user }) => {
 export const resetPw = async ({ email, password, code }) => {
     try {
         const response = fetch(`${process.env.API_URL}/user/resetpw`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password, code })
         });
 
@@ -188,9 +188,9 @@ export const resetPw = async ({ email, password, code }) => {
 export const updateProfile = async ({ email, password, name, nickname, age = null, job = null, hobby = null, user }) => {
     try {
         const response = fetch(`${process.env.API_URL}/user/updateprofile`, {
-            method: 'PUT',
+            method: "PUT",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({
@@ -202,7 +202,7 @@ export const updateProfile = async ({ email, password, name, nickname, age = nul
                 job,
                 hobby
             }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -220,12 +220,12 @@ export const updateProfile = async ({ email, password, name, nickname, age = nul
 export const mypageName = async ({ nickname, user }) => {
     try {
         const response = fetch(`${process.env.API_URL}/user/mypage/${nickname}`, {
-            method: 'GET',
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -242,8 +242,8 @@ export const mypageName = async ({ nickname, user }) => {
 export const checkEmail = async (email) => {
     try {
         const response = fetch(`${process.env.API_URL}/user/checkemail`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email })
         });
 
@@ -261,8 +261,8 @@ export const checkEmail = async (email) => {
 export const checkCode = async ({ email, code }) => {
     try {
         const response = fetch(`${process.env.API_URL}/user/checkcode`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, code })
         });
 
@@ -280,8 +280,8 @@ export const checkCode = async ({ email, code }) => {
 export const checkNickname = async (nickname) => {
     try {
         const response = fetch(`${process.env.API_URL}/user/checknickname/${nickname}`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
         });
 
         const result = await response.json();
@@ -298,12 +298,12 @@ export const checkNickname = async (nickname) => {
 export const reset = async ({ nickname, user }) => {
     try {
         const response = fetch(`${process.env.API_URL}/user/reset/${nickname}`, {
-            method: 'GET',
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
