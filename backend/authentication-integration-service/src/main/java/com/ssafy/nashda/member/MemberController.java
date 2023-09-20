@@ -90,7 +90,9 @@ public class MemberController {
     }
 
     public Member findMemberByToken(String token) {
-        String email = tokenProvider.getUserEmail(token);
+        String parsedToken = token.substring("Bearer ".length()).trim();
+
+        String email = tokenProvider.getUserEmail(parsedToken);
         Member member = memberService.findByEmail(email);
 
         return member;
