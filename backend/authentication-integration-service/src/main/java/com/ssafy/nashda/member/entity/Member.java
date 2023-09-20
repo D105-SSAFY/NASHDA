@@ -37,7 +37,7 @@ public class Member extends TimeEntity {
 
     @Column(name = "job_index")
     private int jobIdx;
-    
+
     private int status=1;
 
     @ColumnDefault("0")
