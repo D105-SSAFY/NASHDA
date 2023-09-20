@@ -38,8 +38,7 @@ public class Member extends TimeEntity {
     @Column(name = "job_index")
     private int jobIdx;
 
-    @ColumnDefault("1")
-    private int status;
+    private int status=1;
 
     @ColumnDefault("0")
     private int progress;
@@ -55,7 +54,7 @@ public class Member extends TimeEntity {
     @Column(name = "conversation_count")
     @ColumnDefault("0")
     private int conversationCount;
-    
+
     @Builder
     public Member(String email, String name, String nickname, String password, int age, int hobbyIdx, int jobIdx) {
         this.email = email;

@@ -29,10 +29,10 @@ public class TokenController {
                 String accessToken = tokenService.createAccessToken(refreshToken);
                 return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, accessToken));
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(4001, "accesstoken발급 실패: " + e.getMessage()));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(400, "refreshtoken이 만료되었습니다."));
             }
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(4000, "올바른 토큰이 아닙니다."));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(500, "서버오류"));
         }
     }
 }

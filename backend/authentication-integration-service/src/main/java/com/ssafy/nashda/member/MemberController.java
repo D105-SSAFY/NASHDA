@@ -37,11 +37,12 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity<? extends BaseResponseBody> signIn(
             @RequestBody MemberSignUpReqDto signUpReqDto) throws IOException {
-        Long num = memberService.signUp(signUpReqDto);
-        if (num == -1) {
+        memberService.signUp(signUpReqDto);
+        /*if (num == -1) {
             return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(400, "회원가입 실패"));
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(201, "회원가입 성공"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(200, "회원가입 성공"));*/
+        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(200, "회원가입 성공"));
     }
     @GetMapping("/mypage/{nickname}")
     public ResponseEntity<? extends BaseResponseBody> memberInfo(

@@ -9,12 +9,9 @@ import java.io.IOException;
 import java.util.Optional;
 
 public interface MemberService {
-    Long signUp(MemberSignUpReqDto signUpReqDto) throws IOException;
-
+    void signUp(MemberSignUpReqDto signUpReqDto) throws IOException;
     Member findByEmail(String email);
-
     Optional<Member> findByNickname(String nickname);
-
     MemberInfoResDto singIn(MemberSignInReqDto signinInfo) throws IOException, InterruptedException;
-
+    void unRegist(MemberSignInReqDto signInReqDto) throws IOException;
 }
