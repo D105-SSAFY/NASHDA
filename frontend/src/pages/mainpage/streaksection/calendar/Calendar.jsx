@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Measure from "react-measure";
 
 // Const weekNames = ["일", "월", "화", "수", "목", "금", "토"];
-const weekNames = [" ", "월", " ", "수", " ", "금", " "];
+const weekNames = ["일", "월", "화", " ", " ", " ", " "];
 const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
 const panelColors = ["#EEE", "rgba(100, 172, 239, 0.6)", "rgba(100, 172, 239, 0.86)", "rgba(100, 172, 239, 1)"];
 const dateFormat = "YYYY-MM-DD";
