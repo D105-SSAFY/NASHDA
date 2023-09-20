@@ -13,12 +13,20 @@ import { GlobalStyle } from "style/GlobalStyle";
 
 // Pages
 // import MainPage from 'pages/mainpage/MainPage';
+<<<<<<< HEAD
 import SigninPage from "pages/userpage/signinpage/SigninPage";
 import SignupPage from "pages/userpage/signuppage/SignupPage";
 import Layout from "components/common/layout/Layout";
 import Intro from "pages/intropage/Intro";
 import MyPage from "pages/userpage/mypage/MyPage";
-import ResetpwPage from "pages/userpage/resetpwpage";
+=======
+import SigninPage from 'pages/userpage/signinpage/SigninPage';
+import SignupPage from 'pages/userpage/signuppage/SignupPage';
+import ResetpwPage from 'pages/userpage/resetpwpage/ResetpwPage';
+import Layout from 'components/common/layout/Layout';
+import Greeting from 'pages/intropage/greeting/Greeting';
+import Intro from 'pages/intropage/Intro';
+>>>>>>> 39c5709 (Feat : 회원가입 페이지 및 비밀번호 찾기 페이지 구현)
 
 export default function App() {
     return (
@@ -34,8 +42,15 @@ export default function App() {
                                 {/* user pages */}
                                 <Route path="/signin" element={<SigninPage />} />
                                 <Route path="/signup" element={<SignupPage />} />
+<<<<<<< HEAD
+<<<<<<< HEAD
                                 <Route path="/mypage" element={<MyPage />} />
+=======
                                 <Route path="/resetpw" element={<ResetpwPage />} />
+>>>>>>> 39c5709 (Feat : 회원가입 페이지 및 비밀번호 찾기 페이지 구현)
+=======
+                                <Route path="/resetpw" element={<ResetpwPage />} />
+>>>>>>> 39c5709713575e0e8f5ab802ab0481614199bf8b
                             </Route>
                             {/* main page */}
                         </Routes>
