@@ -1,7 +1,8 @@
 package com.ssafy.nashda.question.service;
 
-import com.ssafy.nashda.notice.dto.NoticeDetailResDto;
-import com.ssafy.nashda.notice.entity.Notice;
+import com.ssafy.nashda.common.error.code.ErrorCode;
+import com.ssafy.nashda.common.error.exception.BadRequestException;
+import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.question.dto.QuestionReqDto;
 import com.ssafy.nashda.question.dto.QuestionResDto;
 import com.ssafy.nashda.question.dto.ReplyResDto;
@@ -11,7 +12,6 @@ import com.ssafy.nashda.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.AsyncWebRequestInterceptor;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -25,22 +25,22 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional
-    public Long createQuestion(QuestionReqDto questionReqDto) {
-        return questionRepository.save(questionReqDto.toEntity()).getIndex();
+    public void createQuestion(Member member, QuestionReqDto questionReqDto) {
+        questionRepository.save(questionReqDto.toEntity(member));
     }
 
     // 멤버를 받아서 해당 멤버가 작성한 질문 사항만 보여줘야 함.
     @Override
     @Transactional
-    public List<Question> getQuestions() {
-        return questionRepository.findAll();
+    public List<Question> getQuestions(Member member) {
+        return questionRepository.findQuestionsByMember(member);
     }
 
     @Override
     @Transactional
     public QuestionResDto getQuestion(Long index) {
         Question question = questionRepository.findById(index).orElseThrow(() -> {
-            return new IllegalArgumentException("존재하지 않는 게시물입니다.");
+            return new BadRequestException(ErrorCode.NOT_EXISTS_QUESTION_ID);
         });
 
         Reply reply = question.getReply();
@@ -54,26 +54,33 @@ public class QuestionServiceImpl implements QuestionService {
 
 
     @Transactional
-    public void updateQuestion(Long index, QuestionReqDto questionReqDto) {
-        Question question = questionRepository.findById(index).orElseThrow(() -> {return new IllegalArgumentException("존재하지 않는 게시물 입니다.");});
+    public void updateQuestion(Member member, Long index, QuestionReqDto questionReqDto) {
+        Question question = questionRepository.findById(index).orElseThrow(() -> {return new BadRequestException(ErrorCode.NOT_EXISTS_QUESTION_ID);});
 
-        if (questionReqDto != null) {
-            String title = questionReqDto.getTitle();
-            String content = questionReqDto.getContent();
+        if (member.getMemberNum().equals(question.getMember().getMemberNum())) {
+            if (questionReqDto != null) {
+                String title = questionReqDto.getTitle();
+                String content = questionReqDto.getContent();
 
-            if (title != null) {
-                question.setTitle(title);
-            }
+                if (title != null) {
+                    question.setTitle(title);
+                }
 
-            if (content != null) {
-                question.setContent(content);
+                if (content != null) {
+                    question.setContent(content);
+                }
             }
         }
+        throw new BadRequestException(ErrorCode.NOT_EQUAL_USER);
     }
 
     @Transactional
-    public void deleteQuestion(Long index) {
-        Question question = questionRepository.findById(index).orElseThrow(()-> {return new IllegalArgumentException("존재하지 않는 게시물입니다.");});
-        questionRepository.deleteById(index);
+    public void deleteQuestion(Member member, Long index) {
+        Question question = questionRepository.findById(index).orElseThrow(()-> {return new BadRequestException(ErrorCode.NOT_EXISTS_QUESTION_ID);});
+
+        if (member.getMemberNum().equals(question.getMember().getMemberNum())) {
+            questionRepository.deleteById(index);
+        }
+        throw new BadRequestException(ErrorCode.NOT_EQUAL_USER);
     }
 }

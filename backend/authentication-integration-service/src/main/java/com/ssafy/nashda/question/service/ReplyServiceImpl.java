@@ -1,9 +1,9 @@
 package com.ssafy.nashda.question.service;
 
-import com.ssafy.nashda.notice.entity.Notice;
-import com.ssafy.nashda.question.dto.QuestionReqDto;
+import com.ssafy.nashda.common.error.code.ErrorCode;
+import com.ssafy.nashda.common.error.exception.BadRequestException;
+import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.question.dto.ReplyReqDto;
-import com.ssafy.nashda.question.dto.ReplyResDto;
 import com.ssafy.nashda.question.entity.Question;
 import com.ssafy.nashda.question.entity.Reply;
 import com.ssafy.nashda.question.repository.QuestionRepository;
@@ -24,52 +24,65 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     @Transactional
-    public Long createReply(Long boardIndex, ReplyReqDto replyReqDto) {
+    public void createReply(Member member, Long boardIndex, ReplyReqDto replyReqDto) {
         Question question = questionRepository.findById(boardIndex).orElseThrow(() -> {
-            return new IllegalArgumentException("존재하지 않는 답변입니다.");
+            return new BadRequestException(ErrorCode.NOT_EXISTS_QUESTION_ID);
         });
 
-        Reply reply = Reply.builder()
-                .title(replyReqDto.getTitle())
-                .content(replyReqDto.getContent())
-                .question(question)
-                .build();
+        if (member.getStatus() == 0) {
+            Reply reply = Reply.builder()
+                    .title(replyReqDto.getTitle())
+                    .content(replyReqDto.getContent())
+                    .question(question)
+                    .build();
 
-        // 질문에 답변 연결
-        question.setReply(reply);
-
-        Reply savedReply = replyRepository.save(reply);
-
-        return savedReply.getQuestion().getIndex();
-    }
-
-    @Transactional
-    public void updateReply(Long index, ReplyReqDto replyReqDto) {
-        Reply reply = replyRepository.findById(index).orElseThrow(() -> {
-            return new IllegalArgumentException("존재하지 않는 답변입니다.");
-        });
-
-        if (replyReqDto != null) {
-            String title = replyReqDto.getTitle();
-            String content = replyReqDto.getContent();
-
-            if (title != null) {
-                reply.setTitle(title);
-            }
-
-            if (content != null) {
-                reply.setContent(content);
-            }
+            // 질문에 답변 연결
+            question.setReply(reply);
+            replyRepository.save(reply);
         }
 
+        throw new BadRequestException(ErrorCode.NOT_VALID_AUTHORIZATION);
+
     }
 
     @Transactional
-    public void deleteReply(Long index) {
+    public void updateReply(Member member, Long index, ReplyReqDto replyReqDto) {
         Reply reply = replyRepository.findById(index).orElseThrow(() -> {
-            return new IllegalArgumentException("존재하지 않는 게시물입니다.");
+            return new BadRequestException(ErrorCode.NOT_EXISTS_REPLY_ID);
         });
 
-        replyRepository.deleteById(index);
+        if (member.getStatus() == 0) {
+            if (replyReqDto != null) {
+                String title = replyReqDto.getTitle();
+                String content = replyReqDto.getContent();
+
+                if (title != null) {
+                    reply.setTitle(title);
+                } else {
+                    throw new BadRequestException(ErrorCode.NOT_EXISTS_TITLE);
+                }
+
+                if (content != null) {
+                    reply.setContent(content);
+                } else {
+                    throw new BadRequestException(ErrorCode.NOT_EXISTS_CONTENT);
+                }
+
+            }
+        }
+        throw new BadRequestException(ErrorCode.NOT_VALID_AUTHORIZATION);
+    }
+
+    @Transactional
+    public void deleteReply(Member member, Long index) {
+        replyRepository.findById(index).orElseThrow(() -> {
+            return new BadRequestException(ErrorCode.NOT_EXISTS_REPLY_ID);
+        });
+
+        if (member.getStatus() == 0) {
+            replyRepository.deleteById(index);
+            return;
+        }
+        throw new BadRequestException(ErrorCode.NOT_VALID_AUTHORIZATION);
     }
 }

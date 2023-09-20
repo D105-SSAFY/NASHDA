@@ -1,5 +1,7 @@
 package com.ssafy.nashda.notice.service;
 
+import com.ssafy.nashda.common.error.code.ErrorCode;
+import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.notice.dto.NoticeDetailResDto;
 import com.ssafy.nashda.notice.dto.NoticeReqDto;
@@ -22,8 +24,12 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     @Transactional
-    public Long createNotice(Member member, NoticeReqDto noticeReqDto) {
-        return noticeRepository.save(noticeReqDto.toEntity(member)).getIndex();
+    public void createNotice(Member member, NoticeReqDto noticeReqDto) {
+
+        if (member.getStatus() == 0) {
+            noticeRepository.save(noticeReqDto.toEntity(member));
+        }
+        throw new BadRequestException(ErrorCode.NOT_VALID_AUTHORIZATION);
     }
 
     @Override
@@ -35,7 +41,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public NoticeDetailResDto getNotice(Long index) {
-        Notice notice = noticeRepository.findById(index).orElseThrow(() -> {return new IllegalArgumentException("존재하지 않는 게시물입니다.");});
+        Notice notice = noticeRepository.findById(index).orElseThrow(() -> {return new BadRequestException(ErrorCode.NOT_EXISTS_NOTICE_ID);});
         Long view = notice.getView();
         noticeRepository.updateView(view + 1, index);
         Notice newNotice = noticeRepository.getReferenceById(index);
@@ -43,28 +49,42 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Transactional
-    public void updateNotice(Long index, NoticeReqDto noticeReqDto) {
-        Notice notice = noticeRepository.findById(index).orElseThrow(() -> {return new IllegalArgumentException("존재하지 않는 게시물입니다.");});
-        if (noticeReqDto != null) {
-            String title = noticeReqDto.getTitle();
-            String content = noticeReqDto.getContent();
+    public void updateNotice(Member member, Long index, NoticeReqDto noticeReqDto) {
+        Notice notice = noticeRepository.findById(index).orElseThrow(() -> {return new BadRequestException(ErrorCode.NOT_EXISTS_NOTICE_ID);});
 
-            if (title != null) {
-                notice.setTitle(title);
+        if (member.getStatus() == 0) {
+            if (noticeReqDto != null) {
+                String title = noticeReqDto.getTitle();
+                String content = noticeReqDto.getContent();
+
+                if (title != null) {
+                    notice.setTitle(title);
+                } else {
+                    throw new BadRequestException(ErrorCode.NOT_EXISTS_TITLE);
+                }
+
+
+                if (content != null) {
+                    notice.setContent(content);
+                } else {
+                    throw new BadRequestException(ErrorCode.NOT_EXISTS_CONTENT);
+                }
             }
-
-            if (content != null) {
-                notice.setContent(content);
-            }
-
         }
+
+        throw new BadRequestException(ErrorCode.NOT_VALID_AUTHORIZATION);
     }
 
     @Transactional
-    public void deleteNotice(Long index) {
-        Notice notice = noticeRepository.findById(index).orElseThrow(() -> {return new IllegalArgumentException("존재하지 않는 게시물입니다.");});
+    public void deleteNotice(Member member, Long index) {
+        noticeRepository.findById(index).orElseThrow(() -> {return new BadRequestException(ErrorCode.NOT_EXISTS_NOTICE_ID);});
 
-        noticeRepository.deleteById(index);
+        if (member.getStatus() == 0) {
+            noticeRepository.deleteById(index);
+            return;
+        }
+
+        throw new BadRequestException(ErrorCode.NOT_VALID_AUTHORIZATION);
     }
 
 }
