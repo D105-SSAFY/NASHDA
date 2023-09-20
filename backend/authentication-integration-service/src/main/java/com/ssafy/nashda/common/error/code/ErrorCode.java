@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorCode {
+    NOT_KOREAN(HttpStatus.BAD_REQUEST, 6000, "한글이 아님"),
+    SAVE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5000, "발음 통계 저장 오류"),
     TEST(HttpStatus.INTERNAL_SERVER_ERROR, 001, "exception test"),
     NOT_EXISTS_DATA(HttpStatus.BAD_REQUEST, 4000, "존재하지 않는 데이터입니다."),
     USER_EXIST(HttpStatus.BAD_REQUEST, 4000, "회원이 존재합니다."),

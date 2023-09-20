@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class TestResponseDto {
-    String status;
-    String message;
+public class InternalPronNumResponseDto extends InternalResponseDto{
+    long data;
 }
