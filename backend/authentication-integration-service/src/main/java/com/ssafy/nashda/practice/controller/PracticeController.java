@@ -4,6 +4,7 @@ import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
 import com.ssafy.nashda.practice.dto.PronSTTResponseDto;
+import com.ssafy.nashda.practice.dto.TestResponseDto;
 import com.ssafy.nashda.practice.entity.PronComplexSet;
 import com.ssafy.nashda.practice.entity.PronPhaseSet;
 import com.ssafy.nashda.practice.entity.PronSimpleSet;
@@ -11,10 +12,14 @@ import com.ssafy.nashda.practice.entity.PronWordSet;
 import com.ssafy.nashda.practice.service.PracticePronService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * 연습 문제 전송 컨트롤러
@@ -33,13 +38,26 @@ public class PracticeController {
     @GetMapping("/pron/test")
     public ResponseEntity<? extends BaseResponseBody> test() throws Exception {
 
+        WebClient client = WebClient.builder()
+                .baseUrl("http://localhost:8082")
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
 
+        ResponseEntity<TestResponseDto> block = client.get()
+                .uri("/practice/pron/test")
+                .retrieve()
+                .toEntity(TestResponseDto.class)
+                .block();
+
+
+        log.info("응답 : {}", block);
+        TestResponseDto body = block.getBody();
 //        PronWordSet pronWordSet = practicePronService.savePronWordSet();// Sequence Num 불러오기
 //        practicePronService.savePronPhaseSet();
 //        practicePronService.savePronSimpleSet();
-        practicePronService.savePronComplexSet();
+//        practicePronService.savePronComplexSet();
 
-        return new ResponseEntity<>(new BaseResponseBody(200, "문제 만들기 테스트 성공"), HttpStatus.OK);
+        return new ResponseEntity<>(new BaseResponseBody(200, "소통 테스트 성공", body), HttpStatus.OK);
     }
 
     // 문제 개수 확인
