@@ -41,7 +41,7 @@ public class MemberController {
         if (num == -1) {
             return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(400, "회원가입 실패"));
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(201, "회원가입 성공"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(200, "회원가입 성공"));
     }
     @GetMapping("/mypage/{nickname}")
     public ResponseEntity<? extends BaseResponseBody> memberInfo(
