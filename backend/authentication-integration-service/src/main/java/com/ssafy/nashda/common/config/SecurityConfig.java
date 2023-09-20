@@ -42,7 +42,8 @@ public class SecurityConfig {
                                 .disable()
                 )
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .antMatchers("/user/signin", "/user/signup").permitAll()
+//                        .antMatchers("/user/signin", "/user/signup").permitAll()
+                                .antMatchers("/user/signin","/user/signup", "/user/checkemail", "/user/checknickname").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new TokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)

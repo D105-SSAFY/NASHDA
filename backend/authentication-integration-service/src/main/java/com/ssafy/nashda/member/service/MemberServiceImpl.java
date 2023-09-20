@@ -59,13 +59,19 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public MemberInfoResDto singIn(MemberSignInReqDto signinInfo) throws IOException, InterruptedException {
-        Member member = memberRepository.findByEmail(signinInfo.getEmail()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
-        if (passwordEncoder.matches(signinInfo.getPassword(), member.getPassword())) {
-            return new MemberInfoResDto(member);
+        Optional<Member> member = memberRepository.findByEmail(signinInfo.getEmail());
+
+        if (member.isEmpty()) {
+            throw new BadRequestException(ErrorCode.USER_NOT_EXIST);
+        }
+
+        if (passwordEncoder.matches(signinInfo.getPassword(), member.get().getPassword())) {
+            return new MemberInfoResDto(member.get());
         } else {
             throw new BadRequestException(ErrorCode.USER_NOT_MATCH);
         }
     }
+
     @Override
     public void unRegist(MemberSignInReqDto signInReqDto) throws IOException {
         Member member = memberRepository.findByEmail(signInReqDto.getEmail()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
@@ -73,6 +79,26 @@ public class MemberServiceImpl implements MemberService {
             memberRepository.delete(member);
         } else {
             throw new BadRequestException(ErrorCode.USER_NOT_MATCH);
+        }
+    }
+
+    @Override
+    public boolean checkEmail(String email) throws IOException {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if (member.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean checkNickname(String nickname) throws IOException {
+        Optional<Member> member = memberRepository.findByNickname(nickname);
+        if (member.isEmpty()) {
+            return true;
+        } else {
+            return false;
         }
     }
 

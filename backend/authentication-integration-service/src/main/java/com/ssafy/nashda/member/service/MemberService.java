@@ -14,4 +14,6 @@ public interface MemberService {
     Optional<Member> findByNickname(String nickname);
     MemberInfoResDto singIn(MemberSignInReqDto signinInfo) throws IOException, InterruptedException;
     void unRegist(MemberSignInReqDto signInReqDto) throws IOException;
+    boolean checkEmail(String email) throws IOException;
+    boolean checkNickname(String nickname) throws IOException;
 }
