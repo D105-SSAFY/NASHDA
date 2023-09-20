@@ -40,9 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/user/signup", "/api/user/login").permitAll()
-                .antMatchers("/api/user/refresh").permitAll()
-                .antMatchers("/api/user/mypage/**").authenticated()
+                .antMatchers("/user/signup", "/user/login").permitAll()
+                .antMatchers("/user/refresh").permitAll()
+                .antMatchers("/user/mypage/**").authenticated()
                 .and()
                 .addFilterBefore(new TokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
