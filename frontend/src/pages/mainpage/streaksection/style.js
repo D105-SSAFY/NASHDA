@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 
 export const Header = styled.header`
     padding-bottom: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 
     border-bottom: 1px solid rgba(0, 0, 0, 0.6);
 
