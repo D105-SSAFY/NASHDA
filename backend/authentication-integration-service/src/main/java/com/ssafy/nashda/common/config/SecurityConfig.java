@@ -56,18 +56,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .cors() 
+        http.httpBasic().disable()
+                .cors()
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("api/user/signin", "api/users/signup").permitAll()
+                .antMatchers("/api/user/signin", "/api/users/signup").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new TokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .formLogin().disable()
                 .logout()
-                .logoutSuccessUrl("/signin")
                 .permitAll();
     }
 
@@ -87,10 +86,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*")); // 모든 출처 허용
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // 모든 HTTP 메서드 허용
-        configuration.setAllowedHeaders(Arrays.asList("*")); // 모든 헤더 허용
-        configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("*")); // 모든 출처 허용
+        configuration.setAllowedOriginPatterns(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // 모든 HTTP 메서드 허용
+        configuration.setAllowedOriginPatterns(Arrays.asList("*")); // 모든 헤더 허용
+        configuration.setAllowedOriginPatterns(Arrays.asList("x-auth-token"));
         configuration.setAllowCredentials(true); // 허용된 도메인에 쿠키를 전송하도록 허용
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
