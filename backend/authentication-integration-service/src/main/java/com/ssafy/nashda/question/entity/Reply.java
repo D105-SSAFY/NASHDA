@@ -9,11 +9,13 @@ import javax.persistence.*;
 
 @Getter
 @Setter
+@Table(name = "reply")
 @Entity // 객체와 테이블 매핑
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reply extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, name = "reply_index")
     private Long index;
 
     @JsonIgnore
