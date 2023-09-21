@@ -35,6 +35,9 @@ dependencies {
     //spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
+    //chatGPT
+    implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'

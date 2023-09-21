@@ -75,7 +75,6 @@ spring:
       # format_sql: true
 
 
-
 jwt:
   issuer: thisiseunjin@nashda.com
   secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
@@ -87,3 +86,6 @@ logging:
     #   type:
     #     descriptor:
     #       sql: debug
+
+chatgpt:
+  api-key: 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
