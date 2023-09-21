@@ -122,5 +122,11 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    @Override
+    public void resetPassword(Map<String, Object> map) throws IOException {
+        Member member = memberRepository.findByEmail(map.get("email").toString()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
+        member.setPassword(passwordEncoder.encode(map.get("newpassword").toString()));
+    }
+
 
 }

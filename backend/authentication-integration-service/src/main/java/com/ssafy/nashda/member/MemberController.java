@@ -29,6 +29,7 @@ public class MemberController {
     private final MemberService memberService;
     private final TokenProvider tokenProvider;
     private final TokenService tokenService;
+    private final MailSenderService mailSenderService;
 
     @PostMapping("/signup")
     public ResponseEntity<? extends BaseResponseBody> signUp(
@@ -94,7 +95,6 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "프로필 수정 성공"));
     }
 
-    @PutMapping("/updatepassword")
     public ResponseEntity<? extends BaseResponseBody> updatePassword(@RequestHeader("Authorization") String token, @RequestBody Map<String, Object> maps) throws IOException {
         Member member = findMemberByToken(token);
         maps.put("email", member.getEmail());
@@ -109,7 +109,30 @@ public class MemberController {
         return memberService.findByEmail(email);
     }
 
+    @PutMapping("/resetpw")
+    public ResponseEntity<? extends BaseResponseBody> resetPassword(@RequestBody Map<String, Object> map) throws IOException {
+        if (map.get("email") == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(400, "이메일 입력 필수"));
+        if (map.get("newpassword") == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(400, "비밀번호 입력 필수"));
+        if (map.get("code") == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(400, "인증코드 입력 필수"));
 
+        String email = map.get("email").toString();
+        String code = map.get("code").toString();
+        String newPassword = map.get("newpassword").toString();
+        log.info("email : {}", email);
+        log.info("code : {}", code);
+        log.info("newPassword : {}", newPassword);
+
+        boolean result = mailSenderService.checkCode(email, code);
+
+        if (result) {
+            memberService.resetPassword(map);
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "비밀번호 변경 성공"));
+        } else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(400, "비밀번호 변경 실패"));
+    }
 
 
 
