@@ -12,11 +12,12 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@Table(name="question")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Question extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
+    @Column(updatable = false, name = "question_index")
     private Long index;
 
     @OneToOne(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)

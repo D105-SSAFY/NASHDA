@@ -10,11 +10,12 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity // 객체와 테이블 매핑
+@Table
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Notice extends TimeEntity {
     @Id // PK 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT 설정
-    @Column(updatable = false)
+    @Column(updatable = false, name = "notice_index")
     private Long index;
 
     @JsonIgnore
