@@ -5,9 +5,6 @@ import * as s from "./style";
 import SummarySection from "./summarysection/SummarySection";
 import StreakSection from "./streaksection/StreakSection";
 
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import AccessibilityIcon from "@mui/icons-material/Accessibility";
-import SurroundSoundIcon from "@mui/icons-material/SurroundSound";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import SpeedIcon from "@mui/icons-material/Speed";
@@ -25,39 +22,6 @@ export default function MainPage() {
                     <h2>시험</h2>
                 </s.SectionHeader>
                 <s.SectionList>
-                    <li>
-                        <Link to="/">
-                            <s.Article color="#E0BBE4">
-                                <MenuBookIcon />
-                                <s.ArticleHeader>
-                                    <h3>단어</h3>
-                                    <p>발음을 확인하기 위한 간단한 단어 테스트입니다.</p>
-                                </s.ArticleHeader>
-                            </s.Article>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/">
-                            <s.Article color="#957DAD">
-                                <AccessibilityIcon />
-                                <s.ArticleHeader>
-                                    <h3>인지</h3>
-                                    <p>스스로의 인지 능력을가늠할 수 있는 테스트입니다.</p>
-                                </s.ArticleHeader>
-                            </s.Article>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/">
-                            <s.Article color="#D291BC">
-                                <SurroundSoundIcon />
-                                <s.ArticleHeader>
-                                    <h3>발음</h3>
-                                    <p>차례대로 주어지는 문장을 읽는발음 정확도 테스트입니다.</p>
-                                </s.ArticleHeader>
-                            </s.Article>
-                        </Link>
-                    </li>
                     <li>
                         <Link to="/">
                             <s.Article color="#B1B8E8">
