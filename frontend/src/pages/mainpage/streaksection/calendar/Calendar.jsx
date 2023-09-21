@@ -15,7 +15,7 @@ export default function Calendar({ props }) {
     const panelMargin = 2;
     const [state, setState] = useState({
         columns: 53,
-        maxWidth: 53,
+        maxWidth: 53
     });
 
     const getPanelPosition = (row, col) => {
@@ -23,7 +23,7 @@ export default function Calendar({ props }) {
 
         return {
             x: weekLabelWidth + bounds * row,
-            y: monthLabelHeight + bounds * col,
+            y: monthLabelHeight + bounds * col
         };
     };
 
@@ -43,7 +43,7 @@ export default function Calendar({ props }) {
                 if (date <= endDate) {
                     result[i][j] = {
                         value: history[date.format(dateFormat)] || 0,
-                        month: date.month(),
+                        month: date.month()
                     };
                 } else {
                     result[i][j] = null;
@@ -63,7 +63,7 @@ export default function Calendar({ props }) {
 
         setState({
             ...state,
-            columns: Math.min(visibleWeeks, state.maxWidth),
+            columns: Math.min(visibleWeeks, state.maxWidth)
         });
     };
 
@@ -104,7 +104,7 @@ export default function Calendar({ props }) {
                 style={{
                     fontSize: 12,
                     alignmentBaseline: "central",
-                    fill: i === 0 ? "#E8828D" : i === 6 ? "#828CE8" : "#aaa",
+                    fill: i === 0 ? "#E8828D" : i === 6 ? "#828CE8" : "#aaa"
                 }}
                 x={textBasePos.x - panelSize / 2 - 2}
                 y={textBasePos.y + panelSize / 2}
@@ -139,14 +139,14 @@ export default function Calendar({ props }) {
                         fontSize: 12,
                         alignmentBaseline: "central",
                         fill: "#888",
-                        marginRight: "3px",
+                        marginRight: "3px"
                     }}
                     x={textBasePos.x + panelSize / 2}
                     y={textBasePos.y - panelSize / 2 - 2}
                     textAnchor={"middle"}
                 >
                     {monthNames[c.month]}
-                </text>,
+                </text>
             );
         }
 
@@ -160,7 +160,7 @@ export default function Calendar({ props }) {
                     <svg
                         style={{
                             fontFamily: "Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif",
-                            width: "100%",
+                            width: "100%"
                         }}
                         height="119"
                     >
