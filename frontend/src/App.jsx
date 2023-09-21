@@ -19,6 +19,7 @@ import ResetpwPage from "pages/userpage/resetpwpage/ResetpwPage";
 import Layout from "components/common/layout/Layout";
 import Intro from "pages/intropage/Intro";
 import MyPage from "pages/userpage/mypage/MyPage";
+import SentenceTestPage from "pages/testpage/sentencepage/SentenceTestPage";
 
 export default function App() {
     return (
@@ -36,6 +37,7 @@ export default function App() {
                                 <Route path="/signup" element={<SignupPage />} />
                                 <Route path="/mypage" element={<MyPage />} />
                                 <Route path="/resetpw" element={<ResetpwPage />} />
+                                <Route path="/sentencetest" element={<SentenceTestPage />} />
                             </Route>
                             {/* main page */}
                         </Routes>

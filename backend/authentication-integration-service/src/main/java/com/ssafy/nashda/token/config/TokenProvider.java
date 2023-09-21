@@ -1,5 +1,7 @@
 package com.ssafy.nashda.token.config;
 
+import com.ssafy.nashda.common.error.code.ErrorCode;
+import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.member.entity.Member;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -58,8 +60,8 @@ public class TokenProvider {
                     .parseClaimsJws(token); // 토큰 파싱 및 서명 검증
             return true;
         } catch (Exception e) {
-            log.error("토큰 검증 실패", e); // 로그 출력
-            return false;
+            throw new BadRequestException(ErrorCode.TOKEN_DENIED);
+//            return false;
         }
     }
 

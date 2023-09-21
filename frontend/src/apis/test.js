@@ -1,6 +1,6 @@
 export const wordList = async ({ email, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/test/word`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/test/word`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -18,15 +18,15 @@ export const wordList = async ({ email, user }) => {
     }
 };
 
-export const wordSubmit = async ({ idx, sound, user }) => {
+export const wordSubmit = async ({ index, sound, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/test/word/user`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/test/word/user`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'mulitpart/form-data',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ idx, sound }),
+            body: JSON.stringify({ index, sound }),
             credentials: 'include'
         });
 
@@ -38,15 +38,15 @@ export const wordSubmit = async ({ idx, sound, user }) => {
     }
 };
 
-export const wordResult = async ({ idx, score, pron, user }) => {
+export const wordResult = async ({ index, score, pron, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/test/word/result`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/test/word/result`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ idx, score, pron }),
+            body: JSON.stringify({ index, score, pron }),
             credentials: 'include'
         });
 
@@ -60,7 +60,7 @@ export const wordResult = async ({ idx, score, pron, user }) => {
 
 export const sentenceList = async ({ email, order, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/test/sentence`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/test/sentence`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -78,15 +78,15 @@ export const sentenceList = async ({ email, order, user }) => {
     }
 };
 
-export const sentenceSubmit = async ({ idx, order, sound, user }) => {
+export const sentenceSubmit = async ({ index, order, sound, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/test/sentence/user`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/test/sentence/user`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'mulitpart/form-data',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ idx, order, sound }),
+            body: JSON.stringify({ index, order, sound }),
             credentials: 'include'
         });
 
@@ -98,15 +98,15 @@ export const sentenceSubmit = async ({ idx, order, sound, user }) => {
     }
 };
 
-export const sentenceResult = async ({ idx, score, user }) => {
+export const sentenceResult = async ({ index, score, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/test/sentence/result`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/test/sentence/result`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ idx, score }),
+            body: JSON.stringify({ index, score }),
             credentials: 'include'
         });
 
@@ -120,7 +120,7 @@ export const sentenceResult = async ({ idx, score, user }) => {
 
 export const weekList = async ({ email, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/test/week`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/test/week`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -138,15 +138,15 @@ export const weekList = async ({ email, user }) => {
     }
 };
 
-export const weekSubmit = async ({ idx, order, sound, user }) => {
+export const weekSubmit = async ({ index, order, sound, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/test/week/user`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/test/week/user`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ idx, order, sound }),
+            body: JSON.stringify({ index, order, sound }),
             credentials: 'include'
         });
 
@@ -158,15 +158,15 @@ export const weekSubmit = async ({ idx, order, sound, user }) => {
     }
 };
 
-export const weekResult = async ({ idx, idxImg, score, user }) => {
+export const weekResult = async ({ index, idxImg, score, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/test/week/result`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/test/week/result`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ idx, idxImg, score }),
+            body: JSON.stringify({ index, idxImg, score }),
             credentials: 'include'
         });
 

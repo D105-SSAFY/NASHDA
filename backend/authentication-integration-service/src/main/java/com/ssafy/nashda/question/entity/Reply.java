@@ -22,7 +22,7 @@ public class Reply extends TimeEntity {
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "question_index")
+    @JoinColumn(name = "reply_index")
     private Question question;
 
     @Column(nullable = false)

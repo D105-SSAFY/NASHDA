@@ -1,10 +1,21 @@
 import React from "react";
-import * as q from "./style";
+import * as s from "./style";
+import Question from "components/mypage/qna/question/Question";
+import Answer from "components/mypage/qna/answer/Answer";
 
 export default function Qna() {
     return (
         <>
-            <q.test>이 것은 QnA 컴포넌트입니다.</q.test>
+            <s.QuestionBackground />
+            <s.QnaSection>
+                <Question />
+                <Answer />
+                <Question />
+                <Answer />
+                <Question />
+                <Answer />
+            </s.QnaSection>
+            <s.QnaGradBox />
         </>
     );
 }

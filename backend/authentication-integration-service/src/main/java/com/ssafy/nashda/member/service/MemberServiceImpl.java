@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service("MemberService")
@@ -59,20 +61,63 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public MemberInfoResDto singIn(MemberSignInReqDto signinInfo) throws IOException, InterruptedException {
-        Member member = memberRepository.findByEmail(signinInfo.getEmail()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
-        if (passwordEncoder.matches(signinInfo.getPassword(), member.getPassword())) {
-            return new MemberInfoResDto(member);
+        Optional<Member> member = memberRepository.findByEmail(signinInfo.getEmail());
+
+        if (member.isEmpty()) {
+            throw new BadRequestException(ErrorCode.USER_NOT_EXIST);
+        }
+
+        if (passwordEncoder.matches(signinInfo.getPassword(), member.get().getPassword())) {
+            return new MemberInfoResDto(member.get());
         } else {
             throw new BadRequestException(ErrorCode.USER_NOT_MATCH);
         }
     }
+
     @Override
-    public void unRegist(MemberSignInReqDto signInReqDto) throws IOException {
-        Member member = memberRepository.findByEmail(signInReqDto.getEmail()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
-        if (passwordEncoder.matches(signInReqDto.getPassword(), member.getPassword())) {
+    public void unRegist(Map<String, Object> memberInfo) throws IOException {
+/*
+        Object emailObj = memberInfo.get("email");
+        Object passwordObj = memberInfo.get("password");
+
+        if (emailObj == null || passwordObj == null) {
+            throw new BadRequestException(ErrorCode.INVALID_INPUT);
+        }
+
+        String email = emailObj.toString();
+        String password = passwordObj.toString();
+*/
+
+        //먼저 map값이 null인지 확인
+        if (memberInfo.get("email") == null || memberInfo.get("password") == null)
+            throw new BadRequestException(ErrorCode.INVALID_INPUT);
+
+        Member member = memberRepository.findByEmail(memberInfo.get("email").toString()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
+
+        if (passwordEncoder.matches(memberInfo.get("password").toString(), member.getPassword())) {
             memberRepository.delete(member);
         } else {
             throw new BadRequestException(ErrorCode.USER_NOT_MATCH);
+        }
+    }
+
+    @Override
+    public boolean checkEmail(String email) throws IOException {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if (member.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean checkNickname(String nickname) throws IOException {
+        Optional<Member> member = memberRepository.findByNickname(nickname);
+        if (member.isEmpty()) {
+            return true;
+        } else {
+            return false;
         }
     }
 

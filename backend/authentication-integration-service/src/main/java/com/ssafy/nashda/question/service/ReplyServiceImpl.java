@@ -84,7 +84,7 @@ public class ReplyServiceImpl implements ReplyService {
 
         if (member.getStatus() == 0) {
             log.info("0");
-            replyRepository.deleteById(index);
+            replyRepository.deleteByQuestionIndex(index);
             log.info("1");
             return;
         }
