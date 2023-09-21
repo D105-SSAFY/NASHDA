@@ -16,6 +16,7 @@ public enum ErrorCode {
     TOKEN_DENIED(HttpStatus.BAD_REQUEST, 4004, "토큰이 만료되었습니다."),
     INVALID_INPUT(HttpStatus.BAD_REQUEST, 4005, "올바르지 않은 입력값 입니다."),
     FAIL_SENDEMAIL(HttpStatus.BAD_REQUEST, 400, "이메일 전송에 실패하였습니다."),
+    TOKEN_NOT_FOUND(HttpStatus.BAD_REQUEST, 400, "토큰이 존재하지 않습니다."),
 
 
 

@@ -59,9 +59,11 @@ public class TokenProvider {
                     .setSigningKey(secretKey.getBytes()) // 토큰의 서명을 검증하는 키 설정
                     .parseClaimsJws(token); // 토큰 파싱 및 서명 검증
             return true;
-        } catch (Exception e) {
+        } //토큰이 비었을 경우 비었다고 exceptio 발생
+        catch (IllegalArgumentException e){
+            throw new BadRequestException(ErrorCode.TOKEN_NOT_FOUND);
+        }catch (Exception e){
             throw new BadRequestException(ErrorCode.TOKEN_DENIED);
-//            return false;
         }
     }
 
