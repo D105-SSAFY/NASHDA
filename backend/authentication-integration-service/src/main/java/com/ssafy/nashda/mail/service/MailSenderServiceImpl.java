@@ -55,6 +55,6 @@ public class MailSenderServiceImpl implements MailSenderService {
                     email);
             throw new BadRequestException(ErrorCode.FAIL_SENDEMAIL);
         }
-    }
+    }   
 
 }
