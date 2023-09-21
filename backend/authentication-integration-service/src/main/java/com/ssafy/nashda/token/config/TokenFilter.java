@@ -14,11 +14,9 @@ import java.io.IOException;
 
 public class TokenFilter extends OncePerRequestFilter {
     private final TokenProvider tokenProvider;
-    private final RedisUtil redisUtil;
 
-    public TokenFilter(TokenProvider tokenProvider, RedisUtil redisUtil) {
+    public TokenFilter(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
-        this.redisUtil = redisUtil;
     }
 
     private final static String HEADER_AUTHORIZATION = "Authorization";
@@ -29,36 +27,23 @@ public class TokenFilter extends OncePerRequestFilter {
 
         String authorizationHeader = request.getHeader(HEADER_AUTHORIZATION);
 
-        // Remove prefix from the retrieved value
         String token = getAccessToken(authorizationHeader);
 
         if (token != null && StringUtils.hasText(token)) {
-            // Token exists
             if (tokenProvider.validToken(token)) {
-
-                if(redisUtil.hasAccessToken(token)) {
-                    Authentication authentication = tokenProvider.getAuthentication(token);
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                } else {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "The token is not found in Redis");
-                    return;
-                }
+                Authentication authentication = tokenProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
-                SecurityContextHolder.clearContext();  // Clear SecurityContext if the token is invalid
+                SecurityContextHolder.clearContext();
             }
         }
 
         filterChain.doFilter(request, response);
     }
 
-
-
-
     private String getAccessToken(String authorizationHeader) {
         if (authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) return authorizationHeader.substring(TOKEN_PREFIX.length());
         return null;
     }
-
-
 
 }

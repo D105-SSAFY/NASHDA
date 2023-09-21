@@ -4,13 +4,13 @@
  * */
 export const refresh = async (user) => {
     try {
-        const response = await fetch(`${process.env.API_URL}/user/refresh`, {
-            method: 'POST',
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/user/refresh`, {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.refreshToken}`
             },
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -25,12 +25,12 @@ export const refresh = async (user) => {
  * 로그인 ( String email | String password )
  * > { accessToken | refreshToken | progress }
  */
-export const login = async ({ email, password }) => {
+export const signin = async ({ email, password }) => {
     try {
-        const response = await fetch(`${process.env.API_URL}/user/login`, {
-            method: 'POST',
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/user/signin`, {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({ email, password })
         });
@@ -48,10 +48,10 @@ export const login = async ({ email, password }) => {
  */
 export const sendCode = async (email) => {
     try {
-        const response = fetch(`${process.env.API_URL}/user/sendcode`, {
-            method: 'POST',
+        const response = fetch(`${process.env.REACT_APP_API_URL}/user/sendcode`, {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({ email })
         });
@@ -68,11 +68,11 @@ export const sendCode = async (email) => {
  * 회원가입 ( String email | String password | String name | String nickname
  * ? Int age ? String job ? String hobby )
  * */
-export const signUp = async ({ email, password, name, nickname, age = null, job = null, hobby = null }) => {
+export const signup = async ({ email, password, name, nickname, age = null, job = null, hobby = null }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/user/signup`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+        const response = fetch(`${process.env.REACT_APP_API_URL}/user/signup`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 email,
                 password,
@@ -82,7 +82,7 @@ export const signUp = async ({ email, password, name, nickname, age = null, job 
                 job,
                 hobby
             }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -96,16 +96,16 @@ export const signUp = async ({ email, password, name, nickname, age = null, job 
 /**
  * 로그아웃 ( String email | user )
  * */
-export const logOut = async ({ email, user }) => {
+export const signout = async ({ email, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/user/logout`, {
-            method: 'POST',
+        const response = fetch(`${process.env.REACT_APP_API_URL}/user/signout`, {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ email }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -119,39 +119,39 @@ export const logOut = async ({ email, user }) => {
 /**
  * 회원탈퇴 ( String email | String password | user )
  * */
-export const signOut = async ({ email, password, user }) => {
-    try {
-        const response = fetch(`${process.env.API_URL}/user/signout`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${user.accessToken}`
-            },
-            body: JSON.stringify({ email, password }),
-            credentials: 'include'
-        });
+// export const signOut = async ({ email, password, user }) => {
+//     try {
+//         const response = fetch(`${process.env.REACT_APP_API_URL}/user/signout`, {
+//             method: "PUT",
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 Authorization: `Bearer ${user.accessToken}`
+//             },
+//             body: JSON.stringify({ email, password }),
+//             credentials: "include"
+//         });
 
-        const result = await response.json();
+//         const result = await response.json();
 
-        return result;
-    } catch (error) {
-        console.log(error);
-    }
-};
+//         return result;
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };
 
 /**
  * 비밀번호 변경 ( String email | String password | String newpassword | user)
  * */
 export const updatePw = async ({ email, password, newpassword, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/user/updatepw`, {
-            method: 'PUT',
+        const response = fetch(`${process.env.REACT_APP_API_URL}/user/updatepw`, {
+            method: "PUT",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ email, password, newpassword }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -167,9 +167,9 @@ export const updatePw = async ({ email, password, newpassword, user }) => {
  * */
 export const resetPw = async ({ email, password, code }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/user/resetpw`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+        const response = fetch(`${process.env.REACT_APP_API_URL}/user/resetpw`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password, code })
         });
 
@@ -187,10 +187,10 @@ export const resetPw = async ({ email, password, code }) => {
  * */
 export const updateProfile = async ({ email, password, name, nickname, age = null, job = null, hobby = null, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/user/updateprofile`, {
-            method: 'PUT',
+        const response = fetch(`${process.env.REACT_APP_API_URL}/user/updateprofile`, {
+            method: "PUT",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({
@@ -202,7 +202,7 @@ export const updateProfile = async ({ email, password, name, nickname, age = nul
                 job,
                 hobby
             }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -219,13 +219,13 @@ export const updateProfile = async ({ email, password, name, nickname, age = nul
  * */
 export const mypageName = async ({ nickname, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/user/mypage/${nickname}`, {
-            method: 'GET',
+        const response = fetch(`${process.env.REACT_APP_API_URL}/user/mypage/${nickname}`, {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -241,9 +241,9 @@ export const mypageName = async ({ nickname, user }) => {
  * */
 export const checkEmail = async (email) => {
     try {
-        const response = fetch(`${process.env.API_URL}/user/checkemail`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+        const response = fetch(`${process.env.REACT_APP_API_URL}/user/checkemail`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email })
         });
 
@@ -260,9 +260,9 @@ export const checkEmail = async (email) => {
  * */
 export const checkCode = async ({ email, code }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/user/checkcode`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+        const response = fetch(`${process.env.REACT_APP_API_URL}/user/checkcode`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, code })
         });
 
@@ -279,9 +279,9 @@ export const checkCode = async ({ email, code }) => {
  * */
 export const checkNickname = async (nickname) => {
     try {
-        const response = fetch(`${process.env.API_URL}/user/checknickname/${nickname}`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
+        const response = fetch(`${process.env.REACT_APP_API_URL}/user/checknickname/${nickname}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
         });
 
         const result = await response.json();
@@ -297,13 +297,13 @@ export const checkNickname = async (nickname) => {
  * */
 export const reset = async ({ nickname, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/user/reset/${nickname}`, {
-            method: 'GET',
+        const response = fetch(`${process.env.REACT_APP_API_URL}/user/reset/${nickname}`, {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();

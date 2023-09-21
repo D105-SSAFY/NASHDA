@@ -1,6 +1,6 @@
 export const strick = async ({ email, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/statistics/strick`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/strick`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -20,7 +20,7 @@ export const strick = async ({ email, user }) => {
 
 export const strickDetail = async ({ email, date, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/statistics/strick/detail`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/strick/detail`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ export const strickDetail = async ({ email, date, user }) => {
 
 export const achievement = async ({ email, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/statistics/achievement`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/achievement`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ export const achievement = async ({ email, user }) => {
 
 export const gameBlankWeek = async ({ email, week, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/statistics/game/blank/${week}`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/game/blank/${week}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ export const gameBlankWeek = async ({ email, week, user }) => {
 
 export const gameSpeedWeek = async ({ email, week, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/statistics/game/speed/${week}`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/game/speed/${week}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ export const gameSpeedWeek = async ({ email, week, user }) => {
 
 export const practiceWord = async ({ email, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/statistics/practice/word`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/practice/word`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ export const practiceWord = async ({ email, user }) => {
 
 export const practiceSimul = async ({ email, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/statistics/practice/simul`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/practice/simul`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -140,7 +140,7 @@ export const practiceSimul = async ({ email, user }) => {
 
 export const practiceSimulBackground = async ({ email, background, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/statistics/practice/simul/${background}`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/practice/simul/${background}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

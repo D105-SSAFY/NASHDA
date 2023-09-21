@@ -1,7 +1,7 @@
 import styled from "styled-components";
 export const StyledDiv = styled.div`
     position: relative;
-    width: 35%;
+    width: 100%;
     margin: 10px;
 `;
 export const StyledLabel = styled.label`
@@ -24,6 +24,7 @@ export const StyledInput = styled.input`
     background-color: ${(props) => (props.readOnly ? "#eee" : "")};
     height: 40px;
     text-indent: 1.2em;
+    padding-right: ${(props) => (props.check ? "40px" : "")};
     size: 30;
     &:focus {
         outline: 1px solid blue;
@@ -39,5 +40,5 @@ export const StyledButton = styled.button`
     color: #8f47f5;
     display: ${(props) => (props.check ? "" : "none")};
     right: 10px;
-    top: 10px;
+    top: 12px;
 `;

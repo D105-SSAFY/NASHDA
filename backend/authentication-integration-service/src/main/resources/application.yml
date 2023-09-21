@@ -9,12 +9,12 @@ server:
 
 spring:
   redis:
-    host: localhost
+    host: j9d105.p.ssafy.io
     port: 6379
-  session :
-    timeout : 600
+  session:
+    timeout: 600
     store-type: redis
-    redis :
+    redis:
       namespace: spring:session
       flush-mode: on-save
   data:

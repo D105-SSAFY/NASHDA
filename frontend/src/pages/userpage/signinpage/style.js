@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+
 export const StyledMain = styled.main`
     display: flex;
     flex-direction: column;
@@ -8,15 +10,14 @@ export const StyledMainSection = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 800px;
+    width: 910px;
 `;
 export const StyledVid = styled.video`
-    width: ${(props) => props.width};
-    height: ${(props) => props.height};
+    width: 100%;
 `;
 
 export const StyledSiginBtn = styled.button`
-    margin-left: 220px;
+    margin-left: auto;
     margin-top: 20px;
 `;
 export const StyledImg = styled.img`
@@ -24,35 +25,33 @@ export const StyledImg = styled.img`
 `;
 
 export const StyledSigninTitle = styled.h3`
-    font-size: 30px;
+    font-size: 35px;
     font-weight: bold;
-    margin-top: -100px;
+    margin-top: -110px;
     margin-bottom: 35px;
 `;
 export const StyledForm = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: 30%;
     margin-top: 20px;
 `;
-export const StyledAnchorSection = styled.section`
+export const StyledLinkSection = styled.section`
     display: flex;
     flex-direction: column;
-    width: 35%;
-    /* border : black solid 1px; */
+    width: 30%;
     margin-top: 20px;
 `;
-export const StyledAnchor = styled.a`
-    display: inline;
-    font-size: ${(props) => props.size};
+export const StyledLink = styled(Link)`
+    font-size: 16px;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 13px;
+    width: max-content;
 `;
 export const StyledFooter = styled.footer`
     display: flex;
     flex-direction: column;
-    width: 800px;
-    height: 5%;
-    /* border : black solid 1px; */
+    width: 910px;
+    height: 30px;
 `;

@@ -2,35 +2,33 @@ package com.ssafy.nashda.member.entity;
 
 import com.ssafy.nashda.common.entity.TimeEntity;
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.ColumnDefault;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
+
 
 import javax.persistence.*;
 
 @Getter
 @Entity
 @NoArgsConstructor
-@Table
+@Table(name = "members")
 public class Member extends TimeEntity {
     @Id //Primary Key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //autoincreasement 설정
-
     @Column(name = "member_number")
     private Long memberNum;
 
     @NotNull
     private String email;
-
-
     @NotNull
     private String name;
     @NotNull
     private String nickname;
     @NotNull
     private String password;
-
 
     private int age;
 
@@ -40,8 +38,7 @@ public class Member extends TimeEntity {
     @Column(name = "job_index")
     private int jobIdx;
 
-    @ColumnDefault("1")
-    private int status;
+    private int status=1;
 
     @ColumnDefault("0")
     private int progress;
@@ -57,7 +54,6 @@ public class Member extends TimeEntity {
     @Column(name = "conversation_count")
     @ColumnDefault("0")
     private int conversationCount;
-
 
     @Builder
     public Member(String email, String name, String nickname, String password, int age, int hobbyIdx, int jobIdx) {

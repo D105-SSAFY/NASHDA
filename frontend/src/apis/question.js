@@ -1,13 +1,13 @@
 export const questionWrite = async ({ email, title, content, writer, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/question`, {
-            method: 'POST',
+        const response = fetch(`${process.env.REACT_APP_API_URL}/question`, {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ email, title, content, writer }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -20,13 +20,13 @@ export const questionWrite = async ({ email, title, content, writer, user }) => 
 
 export const questionList = async ({ user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/question`, {
-            method: 'GET',
+        const response = fetch(`${process.env.REACT_APP_API_URL}/question`, {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -37,16 +37,16 @@ export const questionList = async ({ user }) => {
     }
 };
 
-export const questionEdit = async ({ idx, email, title, content, user }) => {
+export const questionEdit = async ({ index, email, title, content, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/question/${idx}`, {
-            method: 'PUT',
+        const response = fetch(`${process.env.REACT_APP_API_URL}/question/${index}`, {
+            method: "PUT",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ email, title, content }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -57,15 +57,15 @@ export const questionEdit = async ({ idx, email, title, content, user }) => {
     }
 };
 
-export const questionGet = async ({ idx, user }) => {
+export const questionGet = async ({ index, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/question/${idx}`, {
-            method: 'GET',
+        const response = fetch(`${process.env.REACT_APP_API_URL}/question/${index}`, {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -76,15 +76,15 @@ export const questionGet = async ({ idx, user }) => {
     }
 };
 
-export const questionDelete = async ({ idx, user }) => {
+export const questionDelete = async ({ index, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/question/${idx}`, {
-            method: 'DELETE',
+        const response = fetch(`${process.env.REACT_APP_API_URL}/question/${index}`, {
+            method: "DELETE",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -95,36 +95,16 @@ export const questionDelete = async ({ idx, user }) => {
     }
 };
 
-export const replyWrite = async ({ idx, email, content, user }) => {
+export const replyWrite = async ({ index, email, content, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/question/reply/${idx}`, {
-            method: 'POST',
+        const response = fetch(`${process.env.REACT_APP_API_URL}/question/reply/${index}`, {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${user.accessToken}`
-            },
-            body: JSON.stringify({ email, content }),
-            credentials: 'include'
-        });
-
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-export const replyEdit = async ({ idx, email, content, user }) => {
-    try {
-        const response = fetch(`${process.env.API_URL}/question/reply/${idx}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ email, content }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -135,16 +115,36 @@ export const replyEdit = async ({ idx, email, content, user }) => {
     }
 };
 
-export const replyDelete = async ({ idx, email, user }) => {
+export const replyEdit = async ({ index, email, content, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/question/reply/${idx}`, {
-            method: 'DELETE',
+        const response = fetch(`${process.env.REACT_APP_API_URL}/question/reply/${index}`, {
+            method: "PUT",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.accessToken}`
+            },
+            body: JSON.stringify({ email, content }),
+            credentials: "include"
+        });
+
+        const result = await response.json();
+
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const replyDelete = async ({ index, email, user }) => {
+    try {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/question/reply/${index}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ email }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();

@@ -5,14 +5,8 @@ import com.ssafy.nashda.token.dto.resonse.TokenResDto;
 
 public interface TokenService {
 
-    //refreshToken생성
     public TokenResDto createRefreshToken(Member member);
-
-    //accessToken생성
     public String createAccessToken(String refreshToken);
-
-    //refresh토큰으로 accesstoken조회
-    public boolean findByRefreshToken(String refreshToken);
-
+    public boolean tokenMathchEmail(String token, String email);
 
 }

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 @Getter
 
 public class RedisProperties {
-
     private int port;
     private String host;
 
