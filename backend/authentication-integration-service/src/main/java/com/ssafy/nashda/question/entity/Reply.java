@@ -1,6 +1,8 @@
 package com.ssafy.nashda.question.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.nashda.common.entity.TimeEntity;
+import com.ssafy.nashda.member.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,10 +14,15 @@ import javax.persistence.*;
 public class Reply extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
     private Long index;
 
-    @OneToOne(mappedBy = "reply", cascade = CascadeType.PERSIST)
+    @JsonIgnore
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "member_number", nullable = false)
+    private Member member;
+
+    @OneToOne
+    @JoinColumn(name = "question_index")
     private Question question;
 
     @Column(nullable = false)
@@ -25,9 +32,10 @@ public class Reply extends TimeEntity {
     private String content;
 
     @Builder
-    public Reply(String title, String content, Question question) {
+    public Reply(String title, String content, Question question, Member member) {
         this.title = title;
         this.content = content;
         this.question = question;
+        this.member = member;
     }
 }
