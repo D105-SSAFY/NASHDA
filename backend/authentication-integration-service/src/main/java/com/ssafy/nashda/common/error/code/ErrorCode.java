@@ -12,7 +12,8 @@ public enum ErrorCode {
     USER_NOT_MATCH(HttpStatus.BAD_REQUEST, 4002, "아이디 혹은 비밀번호를 확인하세요."),
     INVALID_USER(HttpStatus.BAD_REQUEST,4003,"올바르지 않은 사용자의 접근입니다."),
     TOKEN_DENIED(HttpStatus.BAD_REQUEST, 4004, "토큰이 만료되었습니다."),
-    INVALID_INPUT(HttpStatus.BAD_REQUEST, 4005, "올바르지 않은 입력값 입니다.");
+    INVALID_INPUT(HttpStatus.BAD_REQUEST, 4005, "올바르지 않은 입력값 입니다."),
+    FAIL_SENDEMAIL(HttpStatus.BAD_REQUEST, 400, "이메일 전송에 실패하였습니다.");
 
 
     private HttpStatus httpStatus;
