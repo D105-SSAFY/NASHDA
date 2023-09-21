@@ -29,7 +29,7 @@ public class TokenFilter extends OncePerRequestFilter {
 
         String token = getAccessToken(authorizationHeader);
 
-        if (token != null && StringUtils.hasText(token)) {
+        if (StringUtils.hasText(token)) {
             if (tokenProvider.validToken(token)) {
                 Authentication authentication = tokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);

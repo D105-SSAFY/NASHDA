@@ -8,6 +8,19 @@ server:
       force: true
 
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: nashdaD105@gmail.com
+    password: ckrjouepglanjbcx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
   redis:
     host: j9d105.p.ssafy.io
     port: 6379
@@ -26,6 +39,10 @@ spring:
       max-file-size: 300MB
       max-request-size: 300MB
   datasource:
+    url: jdbc:h2:tcp://localhost/~/nashda
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
 
     #        MySQL ??
             url: jdbc:mysql://j9d105.p.ssafy.io:3306/D105?serverTimezone=UTC&characterEncoding=UTF-8
@@ -50,18 +67,17 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create #create update none
-    # show-sql: true
+      ddl-auto: create
     properties:
       hibernate:
-      #        show_sql: true
+      # show_sql: true
       # format_sql: true
+
+
 
 jwt:
   issuer: thisiseunjin@nashda.com
   secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
-
-
 
 logging:
   level:
