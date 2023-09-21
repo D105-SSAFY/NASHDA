@@ -29,6 +29,10 @@ public class ReplyServiceImpl implements ReplyService {
             return new BadRequestException(ErrorCode.NOT_EXISTS_QUESTION_ID);
         });
 
+        if (question.getReply() != null) {
+            throw new BadRequestException(ErrorCode.EXIST_REPLY);
+        }
+
         if (member.getStatus() == 0) {
             Reply reply = Reply.builder()
                     .title(replyReqDto.getTitle())
@@ -49,7 +53,11 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Transactional
     public void updateReply(Member member, Long index, ReplyReqDto replyReqDto) {
-        Reply reply = replyRepository.findById(index).orElseThrow(() -> {
+        Question question = questionRepository.findById(index).orElseThrow(() -> {
+            return new BadRequestException(ErrorCode.NOT_EXISTS_QUESTION_ID);
+        });
+
+        Reply reply = replyRepository.findByQuestion(question).orElseThrow(() -> {
             return new BadRequestException(ErrorCode.NOT_EXISTS_REPLY_ID);
         });
 
@@ -78,14 +86,16 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Transactional
     public void deleteReply(Member member, Long index) {
-        replyRepository.findById(index).orElseThrow(() -> {
+        Question question = questionRepository.findById(index).orElseThrow(() -> {
+            return new BadRequestException(ErrorCode.NOT_EXISTS_QUESTION_ID);
+        });
+
+        Reply reply = replyRepository.findByQuestion(question).orElseThrow(() -> {
             return new BadRequestException(ErrorCode.NOT_EXISTS_REPLY_ID);
         });
 
         if (member.getStatus() == 0) {
-            log.info("0");
-            replyRepository.deleteByQuestionIndex(index);
-            log.info("1");
+            replyRepository.delete(reply);
             return;
         }
         throw new BadRequestException(ErrorCode.NOT_VALID_AUTHORIZATION);

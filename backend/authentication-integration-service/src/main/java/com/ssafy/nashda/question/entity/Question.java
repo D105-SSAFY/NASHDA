@@ -19,8 +19,7 @@ public class Question extends TimeEntity {
     @Column(updatable = false)
     private Long index;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name= "reply_index")
+    @OneToOne(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Reply reply;
 
     @Column(nullable = false)

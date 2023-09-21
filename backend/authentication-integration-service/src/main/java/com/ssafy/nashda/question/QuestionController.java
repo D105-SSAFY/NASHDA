@@ -37,7 +37,8 @@ public class QuestionController {
     }
 
     @GetMapping
-    public ResponseEntity<? extends BaseResponseBody> getQuestions(Member member) {
+    public ResponseEntity<? extends BaseResponseBody> getQuestions(@RequestHeader("Authorization") String accessToken) {
+        Member member = memberController.findMemberByToken(accessToken);
         List<QuestionResDto> questions = questionService.getQuestions(member)
                 .stream()
                 .map(question -> {

@@ -13,6 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reply extends TimeEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long index;
 
     @JsonIgnore
@@ -21,8 +22,7 @@ public class Reply extends TimeEntity {
     private Member member;
 
     @OneToOne
-    @MapsId
-    @JoinColumn(name = "reply_index")
+    @JoinColumn(name = "question_index")
     private Question question;
 
     @Column(nullable = false)

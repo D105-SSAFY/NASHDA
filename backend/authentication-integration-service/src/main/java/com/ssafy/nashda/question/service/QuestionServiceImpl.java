@@ -32,7 +32,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public List<Question> getQuestions(Member member) {
-        return questionRepository.findQuestionsByMember(member.getMemberNum());
+        return questionRepository.findByMember(member);
     }
 
     @Override
