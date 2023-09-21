@@ -9,7 +9,7 @@ const values = {
     "2023-09-18": 4,
     "2023-09-19": 4,
 };
-const until = "2023-09-20";
+const until = "2023-09-21";
 
 export default function StreakSection() {
     return (
