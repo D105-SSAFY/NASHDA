@@ -68,7 +68,6 @@ export default function SigninPage() {
         }
 
         const result = await login({ email: inputs.email, password: inputs.password });
-        console.log(result.data.accessToken);
         if (result) {
             dispatch(
                 loginUser({
@@ -86,7 +85,7 @@ export default function SigninPage() {
             <s.StyledMainSection>
                 <s.StyledVid src={video1} alt="그림" autoPlay muted loop></s.StyledVid>
                 <s.StyledSigninTitle>오늘 잘 부탁드릴게요.</s.StyledSigninTitle>
-                <s.StyledForm>
+                <s.StyledForm onSubmit={(e) => e.preventDefault()}>
                     <SigninInput
                         data={{
                             text: "이메일",

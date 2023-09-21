@@ -23,8 +23,8 @@ export const StyledInput = styled.input`
     font-size: 15px;
     background-color: ${(props) => (props.readOnly ? "#eee" : "")};
     height: 40px;
-    text-indent: 1.2em;
-    padding-right: ${(props) => (props.check ? "40px" : "")};
+    padding: 0 20px;
+    padding-right: ${(props) => (props.check ? "35px" : "")};
     size: 30;
     &:focus {
         outline: 1px solid blue;
