@@ -1,5 +1,7 @@
 package com.ssafy.nashda.token.config;
 
+import com.ssafy.nashda.common.error.code.ErrorCode;
+import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.token.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -45,7 +47,10 @@ public class TokenFilter extends OncePerRequestFilter {
         if(tokenProvider.validToken(token)) {
             Authentication authentication = tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+        }else{
+            throw new BadRequestException(ErrorCode.TOKEN_DENIED);
         }
+        
 
         filterChain.doFilter(request, response);
     }
