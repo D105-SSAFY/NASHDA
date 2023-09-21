@@ -25,17 +25,26 @@ public class TokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        //요청 헤더의 Authorization 값이 있는지 확인
         String authorizationHeader = request.getHeader(HEADER_AUTHORIZATION);
-
+        
+        //가져온 값에서 접두사 제거
         String token = getAccessToken(authorizationHeader);
 
-        if (StringUtils.hasText(token)) {
-            if (tokenProvider.validToken(token)) {
-                Authentication authentication = tokenProvider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else {
-                SecurityContextHolder.clearContext();
-            }
+//        if (StringUtils.hasText(token)) {
+//            if (tokenProvider.validToken(token)) {
+//                Authentication authentication = tokenProvider.getAuthentication(token);
+//                SecurityContextHolder.getContext().setAuthentication(authentication);
+//            } else {
+//                SecurityContextHolder.clearContext();
+//            }
+//        }
+//
+//        filterChain.doFilter(request, response);
+        // 가져온 토큰이 유효한지 확인하고, 유효한 때는 인증 정보를 설정
+        if(tokenProvider.validToken(token)) {
+            Authentication authentication = tokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         filterChain.doFilter(request, response);
