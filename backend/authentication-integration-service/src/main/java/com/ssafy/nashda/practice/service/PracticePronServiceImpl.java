@@ -16,18 +16,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.ArrayList;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class PracticePronServiceImpl implements PracticePronService {
     private final TextProcessService textProcessService;
+    private static final String DOCKER_ADDRESS = "http://172.17.0.5:";
+    private static final String LOCAL_ADDRESS = "http://localhost:";
 
     @Override
     public PronResponseDto getPronWordSets(int index) throws Exception {
         WebClient client = WebClient.builder()
-                .baseUrl("http://localhost:8082")
+                .baseUrl(DOCKER_ADDRESS + "8082")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
@@ -60,7 +60,7 @@ public class PracticePronServiceImpl implements PracticePronService {
 //                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         // 문제 서버에 요청
         WebClient client = WebClient.builder()
-                .baseUrl("http://localhost:8082")
+                .baseUrl(DOCKER_ADDRESS + "8082")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
@@ -91,7 +91,7 @@ public class PracticePronServiceImpl implements PracticePronService {
 //        PronSimpleSet pronSimpleSet = pronSimpleSetRepository.findByNum(index)
 //                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         WebClient client = WebClient.builder()
-                .baseUrl("http://localhost:8082")
+                .baseUrl(DOCKER_ADDRESS + "8082")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
@@ -116,11 +116,10 @@ public class PracticePronServiceImpl implements PracticePronService {
     }
 
 
-
     @Override
     public PronResponseDto getPronComplexSets(int index) throws Exception {
         WebClient client = WebClient.builder()
-                .baseUrl("http://localhost:8082")
+                .baseUrl(DOCKER_ADDRESS + "8082")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
@@ -150,7 +149,7 @@ public class PracticePronServiceImpl implements PracticePronService {
     public long getPronSetNum(String seqName) throws Exception {
         // 문제 서버에 요청
         WebClient client = WebClient.builder()
-                .baseUrl("http://localhost:8082")
+                .baseUrl(DOCKER_ADDRESS + "8082")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
@@ -165,7 +164,7 @@ public class PracticePronServiceImpl implements PracticePronService {
     }
 
     @Override
-    public String getSTT(MultipartFile multipartFile, long index, String type) throws Exception{
+    public String getSTT(MultipartFile multipartFile, long index, String type) throws Exception {
 
         // STT 부분
         // MultipartFile to  File
@@ -177,7 +176,7 @@ public class PracticePronServiceImpl implements PracticePronService {
 
         // 1. 해당 문제를 받아온다.
         WebClient client = WebClient.builder()
-                .baseUrl("http://localhost:8082")
+                .baseUrl(DOCKER_ADDRESS + "8082")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
@@ -204,38 +203,38 @@ public class PracticePronServiceImpl implements PracticePronService {
         String origin = pronResponse.getOrigin(); // 원문
 
         // 2. STT와 발음을 비교 하여 틀린 부분을 찾는다.
-            // 1. STT의 발음 길이가 원문의 길이보다 긴 경우
-                // 만약 앞에 헛소리해서 긴 경우 -> 다시 요청하기
+        // 1. STT의 발음 길이가 원문의 길이보다 긴 경우
+        // 만약 앞에 헛소리해서 긴 경우 -> 다시 요청하기
 
-            // 2. STT의 발음 길이가 원문의 길이보다 짧은 경우
-                // 만약 앞에 소리가 짤렸다면? -> 다시 요청하기
+        // 2. STT의 발음 길이가 원문의 길이보다 짧은 경우
+        // 만약 앞에 소리가 짤렸다면? -> 다시 요청하기
 
-            // 3. 길이가 같은 경우
-            for(int i = 0; i < convertOrigin.length(); ++i){
-                // 초성 비교
-                String onsetResult = textProcessService.getOnset(sttResult.charAt(i));
-                String onsetOrigin = textProcessService.getOnset(convertOrigin.charAt(i));
-                if(!onsetOrigin.equals(onsetResult)) { // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
-                    String onset = textProcessService.getOnset(origin.charAt(i));
-                    log.info("초성 오류 !!! : {}", onset);
-                }
-
-                // 중성 비교
-                String nucleusResult = textProcessService.getNucleus(sttResult.charAt(i));
-                String nucleusOrigin = textProcessService.getNucleus(convertOrigin.charAt(i));
-                if(!nucleusOrigin.equals(nucleusResult)) { // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
-                    String nucleus = textProcessService.getNucleus(origin.charAt(i));
-                    log.info("중성 오류 !!! : {}", nucleus);
-                }
-
-                // 종성 비교
-                String codaResult = textProcessService.getCoda(sttResult.charAt(i));
-                String codaOrigin = textProcessService.getCoda(convertOrigin.charAt(i));
-                if(!codaOrigin.equals(codaResult)){ // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
-                    String coda = textProcessService.getCoda(origin.charAt(i));
-                    log.info("종성 오류 !!! : {}", coda);
-                }
+        // 3. 길이가 같은 경우
+        for (int i = 0; i < convertOrigin.length(); ++i) {
+            // 초성 비교
+            String onsetResult = textProcessService.getOnset(sttResult.charAt(i));
+            String onsetOrigin = textProcessService.getOnset(convertOrigin.charAt(i));
+            if (!onsetOrigin.equals(onsetResult)) { // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
+                String onset = textProcessService.getOnset(origin.charAt(i));
+                log.info("초성 오류 !!! : {}", onset);
             }
+
+            // 중성 비교
+            String nucleusResult = textProcessService.getNucleus(sttResult.charAt(i));
+            String nucleusOrigin = textProcessService.getNucleus(convertOrigin.charAt(i));
+            if (!nucleusOrigin.equals(nucleusResult)) { // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
+                String nucleus = textProcessService.getNucleus(origin.charAt(i));
+                log.info("중성 오류 !!! : {}", nucleus);
+            }
+
+            // 종성 비교
+            String codaResult = textProcessService.getCoda(sttResult.charAt(i));
+            String codaOrigin = textProcessService.getCoda(convertOrigin.charAt(i));
+            if (!codaOrigin.equals(codaResult)) { // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
+                String coda = textProcessService.getCoda(origin.charAt(i));
+                log.info("종성 오류 !!! : {}", coda);
+            }
+        }
 
         return sttResult;
     }
