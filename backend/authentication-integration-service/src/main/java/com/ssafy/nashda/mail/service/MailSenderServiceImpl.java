@@ -2,17 +2,13 @@ package com.ssafy.nashda.mail.service;
 
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
-import com.ssafy.nashda.mail.service.MailSenderService;
 import com.ssafy.nashda.token.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.security.SecureRandom;
 
 @Slf4j
@@ -43,7 +39,7 @@ public class MailSenderServiceImpl implements MailSenderService {
         String code = makeRandomCode();
         message.setTo(email);
         message.setSubject("내쉬다 인증코드 입니다.");
-        message.setText("인증코드 : " +code);
+        message.setText("인증코드 : " + code);
 
         //인증코드를 redis에 저장
         redisUtil.saveEmailKey(email, code);
@@ -55,6 +51,15 @@ public class MailSenderServiceImpl implements MailSenderService {
                     email);
             throw new BadRequestException(ErrorCode.FAIL_SENDEMAIL);
         }
-    }   
+    }
+
+    @Override
+    public boolean checkCode(String email, String code) {
+        //email을 key로 가지는 redis에 저장된 코드를 입력
+        String redisCode = redisUtil.getCode(email);
+        if (redisCode == null)
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
+        return redisCode.equals(code);
+    }
 
 }
