@@ -18,15 +18,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
-
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class MemberController {
 
     private final MemberService memberService;
@@ -34,44 +34,23 @@ public class MemberController {
     private final TokenProvider tokenProvider;
     private final TokenService tokenService;
 
-
-    //    @ApiOperation(value = "회원가입")
     @PostMapping("/signup")
-    public ResponseEntity<? extends BaseResponseBody> signIn(
+    public ResponseEntity<? extends BaseResponseBody> signUp(
             @RequestBody MemberSignUpReqDto signUpReqDto) throws IOException {
-//        Member member = memberController.findMemberByToken(accessToken);
-
-        Long num = memberService.signUp(signUpReqDto);
-
-        if (num == -1) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(400, "회원가입 실패"));
-        }
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(201, "회원가입 성공"));
+        memberService.signUp(signUpReqDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(200, "회원가입 성공"));
     }
 
-    //    @ApiOperation(value = "닉네임을 사용해 member정보 조회")
-    @GetMapping("/mypage/{nickname}")
+    @GetMapping("/mypage")
     public ResponseEntity<? extends BaseResponseBody> memberInfo(
-            @PathVariable String nickname, HttpServletRequest request) throws IOException {
+            @RequestHeader("Authorization") String token) throws IOException {
 
-
-
-
+        String nickname = findMemberByToken(token).getNickname();
         Optional<Member> member = memberService.findByNickname(nickname);
 
         if (member.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new BaseResponseBody<>(404, "회원 정보가 없습니다."));
         } else {
-            //회원 정보가 존재 하기는 하다. 그럼 이제 token검증 시간!
-            String token = request.getHeader("Authorization").substring("Bearer ".length()).trim();
-            if(!tokenService.tokenMathchEmail(token, member.get().getEmail())){
-                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(4000, "너랑 맞지 않눈 회원인뒝~~~"));
-            }
-            if(!tokenService.accessTokenInRedis(token)){
-                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(4001, "redis에 없움~~~"));
-            }
-
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "회원 정보 조회 성공", new MemberInfoResDto(member.get())));
         }
     }
@@ -87,8 +66,8 @@ public class MemberController {
         Member member = memberService.findByEmail(memberInfo.getEmail());
 
         TokenResDto tokens = tokenService.createRefreshToken(member);
-;
-        if(member==null){
+        ;
+        if (member == null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(401, "로그인 실패"));
         }
 
@@ -96,6 +75,38 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(201, "로그인 성공", tokens));
     }
 
+    @PutMapping("/unregist")
+    public ResponseEntity<? extends BaseResponseBody> unRegist(@RequestHeader("Authorization") String token,
+                                                               @RequestBody Map<String, Object> maps) throws IOException {
+        System.out.println(token);
+        Member member = findMemberByToken(token); //일단 토큰으로 멤버 찾음
 
+        maps.put("email", member.getEmail());
+
+        memberService.unRegist(maps);
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "회원 탈퇴 성공"));
+
+    }
+
+    @PostMapping("/checkemail")
+    public ResponseEntity<? extends BaseResponseBody> checkEmail(@RequestBody Map<String, Object> maps) throws IOException {
+        if (memberService.checkEmail(maps.get("email").toString()))
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "유효한 이메일"));
+        else return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(400, "이메일 중복"));
+    }
+
+    @PostMapping("/checknickname")
+    public ResponseEntity<? extends BaseResponseBody> checkNickName(@RequestBody Map<String, Object> maps) throws IOException {
+        if (memberService.checkNickname(maps.get("nickname").toString()))
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "유효한 닉네임"));
+        else return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(400, "닉네임 중복"));
+    }
+
+
+    public Member findMemberByToken(String token) {
+        String parsedToken = token.substring("Bearer ".length()).trim();
+        String email = tokenProvider.getUserEmail(parsedToken);
+        return memberService.findByEmail(email);
+    }
 
 }

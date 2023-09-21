@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+export const MyPageMain = styled.main``;
+
 export const Wrapper = styled.div`
     display: flex;
     align-items: center;
@@ -30,10 +32,9 @@ export const NavList = styled.ul`
     gap: 2rem;
 
     width: fit-content;
-    margin: 0.8rem;
 `;
 
 export const NavLink = styled(Link)`
     font-size: 1.4rem;
-    font-weight: ${(props) => (props.highlight ? "700" : "400")};
+    font-weight: ${(props) => (props.$highlight ? "700" : "400")};
 `;

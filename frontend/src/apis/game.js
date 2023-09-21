@@ -1,6 +1,6 @@
 export const game = async ({ type, index, sound, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/game`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/game`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -20,7 +20,7 @@ export const game = async ({ type, index, sound, user }) => {
 
 export const speed = async (user) => {
     try {
-        const response = fetch(`${process.env.API_URL}/game/speed`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/game/speed`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ export const speed = async (user) => {
 
 export const speedOne = async ({ index, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/game/speed/1/${index}`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/game/speed/1/${index}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export const speedOne = async ({ index, user }) => {
 
 export const speedTwo = async ({ index, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/game/speed/2/${index}`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/game/speed/2/${index}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ export const speedTwo = async ({ index, user }) => {
 
 export const speedResult = async ({ total, score, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/game/speed/result`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/game/speed/result`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ export const speedResult = async ({ total, score, user }) => {
 
 export const blank = async ({ level, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/game/blank`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/game/blank`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ export const blank = async ({ level, user }) => {
 
 export const blankResult = async ({ total, score, level, user }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/game/blank/result`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/game/blank/result`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
