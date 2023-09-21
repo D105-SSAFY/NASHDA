@@ -4,6 +4,7 @@ import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
 import com.ssafy.nashda.practice.dto.PronSTTResponseDto;
+import com.ssafy.nashda.practice.dto.InternalPronNumResponseDto;
 import com.ssafy.nashda.practice.entity.PronComplexSet;
 import com.ssafy.nashda.practice.entity.PronPhaseSet;
 import com.ssafy.nashda.practice.entity.PronSimpleSet;
@@ -11,10 +12,13 @@ import com.ssafy.nashda.practice.entity.PronWordSet;
 import com.ssafy.nashda.practice.service.PracticePronService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * 연습 문제 전송 컨트롤러
@@ -33,13 +37,21 @@ public class PracticeController {
     @GetMapping("/pron/test")
     public ResponseEntity<? extends BaseResponseBody> test() throws Exception {
 
+        WebClient client = WebClient.builder()
+                .baseUrl("http://localhost:8082")
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
 
-//        PronWordSet pronWordSet = practicePronService.savePronWordSet();// Sequence Num 불러오기
-//        practicePronService.savePronPhaseSet();
-//        practicePronService.savePronSimpleSet();
-        practicePronService.savePronComplexSet();
+        ResponseEntity<InternalPronNumResponseDto> block = client.get()
+                .uri("/practice/pron/test")
+                .retrieve()
+                .toEntity(InternalPronNumResponseDto.class)
+                .block();
 
-        return new ResponseEntity<>(new BaseResponseBody(200, "문제 만들기 테스트 성공"), HttpStatus.OK);
+        log.info("응답 : {}", block);
+        InternalPronNumResponseDto body = block.getBody();
+
+        return new ResponseEntity<>(new BaseResponseBody(200, "소통 테스트 성공", body), HttpStatus.OK);
     }
 
     // 문제 개수 확인
@@ -55,9 +67,9 @@ public class PracticeController {
     // 해당 문제 불러오기
     @GetMapping("/pron/word/{index}")
     public ResponseEntity<? extends BaseResponseBody> getPronWord(@PathVariable("index") int index) throws Exception {
-        PronWordSet pronWordSet = practicePronService.getPronWordSets(index);
+        PronResponseDto pronWordSet = practicePronService.getPronWordSets(index);
 
-        return new ResponseEntity<>(new BaseResponseBody(200, "단어 문제 불러오기 성공", new PronResponseDto(pronWordSet)),
+        return new ResponseEntity<>(new BaseResponseBody(200, "단어 문제 불러오기 성공", pronWordSet),
                 HttpStatus.OK);
     }
 
@@ -74,9 +86,9 @@ public class PracticeController {
     // 해당 문제 불러오기
     @GetMapping("/pron/phase/{index}")
     public ResponseEntity<? extends BaseResponseBody> getPronPhase(@PathVariable("index") int index) throws Exception {
-        PronPhaseSet pronPhaseSet = practicePronService.getPronPhaseSets(index);
+        PronResponseDto pronPhaseSet = practicePronService.getPronPhaseSets(index);
 
-        return new ResponseEntity<>(new BaseResponseBody(200, "구 문제 불러오기 성공", new PronResponseDto(pronPhaseSet)),
+        return new ResponseEntity<>(new BaseResponseBody(200, "구 문제 불러오기 성공", pronPhaseSet),
                 HttpStatus.OK);
     }
 
@@ -93,9 +105,9 @@ public class PracticeController {
     // 해당 문제 불러오기
     @GetMapping("/pron/simple/{index}")
     public ResponseEntity<? extends BaseResponseBody> getPronSimple(@PathVariable("index") int index) throws Exception {
-        PronSimpleSet pronSimpleSet = practicePronService.getPronSimpleSets(index);
+        PronResponseDto pronSimpleSet = practicePronService.getPronSimpleSets(index);
 
-        return new ResponseEntity<>(new BaseResponseBody(200, "단순절 문제 불러오기 성공", new PronResponseDto(pronSimpleSet)),
+        return new ResponseEntity<>(new BaseResponseBody(200, "단순절 문제 불러오기 성공", pronSimpleSet),
                 HttpStatus.OK);
     }
 
@@ -112,15 +124,15 @@ public class PracticeController {
     // 해당 문제 불러오기
     @GetMapping("/pron/complex/{index}")
     public ResponseEntity<? extends BaseResponseBody> getPronComplex(@PathVariable("index") int index) throws Exception {
-        PronComplexSet pronComplexSet = practicePronService.getPronComplexSets(index);
+        PronResponseDto pronComplexSet = practicePronService.getPronComplexSets(index);
 
-        return new ResponseEntity<>(new BaseResponseBody(200, "복합절 문제 불러오기 성공", new PronResponseDto(pronComplexSet)),
+        return new ResponseEntity<>(new BaseResponseBody(200, "복합절 문제 불러오기 성공", pronComplexSet),
                 HttpStatus.OK);
     }
 
-    @PostMapping("/pron/result")
-    public ResponseEntity<? extends BaseResponseBody> getPronunciation(@RequestPart(value="file", required = false) MultipartFile sound,
-                                                                       @RequestBody PracticePronRequestDto practicePronRequestDto) throws Exception {
+    @PostMapping(value = "/pron/result", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<? extends BaseResponseBody> getPronunciation(@RequestPart(value="sound", required = false) MultipartFile sound,
+                                                                       @RequestPart(value = "requestDto") PracticePronRequestDto practicePronRequestDto) throws Exception {
 
         String stt = practicePronService.getSTT(sound, practicePronRequestDto.getIndex(), practicePronRequestDto.getType());
 
