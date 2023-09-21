@@ -33,24 +33,23 @@ public class TokenFilter extends OncePerRequestFilter {
         //가져온 값에서 접두사 제거
         String token = getAccessToken(authorizationHeader);
 
-//        if (StringUtils.hasText(token)) {
-//            if (tokenProvider.validToken(token)) {
-//                Authentication authentication = tokenProvider.getAuthentication(token);
-//                SecurityContextHolder.getContext().setAuthentication(authentication);
-//            } else {
-//                SecurityContextHolder.clearContext();
-//            }
-//        }
+        if (StringUtils.hasText(token)) {
+            if (tokenProvider.validToken(token)) {
+                Authentication authentication = tokenProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else {
+                SecurityContextHolder.clearContext();
+            }
+        }
 //
 //        filterChain.doFilter(request, response);
         // 가져온 토큰이 유효한지 확인하고, 유효한 때는 인증 정보를 설정
-        if(tokenProvider.validToken(token)) {
-            Authentication authentication = tokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }else{
-            throw new BadRequestException(ErrorCode.TOKEN_DENIED);
-        }
-        
+//        if(tokenProvider.validToken(token)) {
+//            Authentication authentication = tokenProvider.getAuthentication(token);
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//        }else{
+//            throw new BadRequestException(ErrorCode.TOKEN_DENIED);
+//        }
 
         filterChain.doFilter(request, response);
     }
