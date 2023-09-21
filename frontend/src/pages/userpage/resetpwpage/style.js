@@ -9,12 +9,11 @@ export const StyledMainSection = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 800px;
+    width: 910px;
     /* border : black solid 1px; */
 `;
 export const StyledVid = styled.video`
     width: 100%;
-    height: 450px;
 `;
 
 export const StyledResetpwBtn = styled.button`
@@ -27,22 +26,22 @@ export const StyledImg = styled.img`
 `;
 
 export const StyledResetpwTitle = styled.h3`
-    font-size: 30px;
+    font-size: 35px;
     font-weight: bold;
-    margin-top: -100px;
+    margin-top: -110px;
     margin-bottom: 35px;
 `;
 export const StyledForm = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: 30%;
     margin-top: 20px;
 `;
 export const StyledAnchorSection = styled.section`
     display: flex;
     flex-direction: column;
-    width: 35%;
+    width: 30%;
     height: 10%;
     /* border : black solid 1px; */
     margin-top: 20px;
@@ -56,13 +55,12 @@ export const StyledAnchor = styled.a`
 export const StyledFooter = styled.footer`
     display: flex;
     flex-direction: column;
-    width: 800px;
     height: 90px;
     /* border : black solid 1px; */
 `;
 
 export const StyledLine = styled.hr`
     color: lightgray;
-    width: 33%;
+    width: 90%;
     margin: 30px 0;
 `;

@@ -2,9 +2,84 @@
 import * as s from "./style";
 import video1 from "assets/image/nashda_move.mov";
 import SignupInput from "components/input/FormInputCol";
-import { checkEmail, sendCode, checkCode, signUp } from "apis/user";
+// Import { checkEmail, sendCode, checkCode, signUp } from "apis/user";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+
+export const checkCode = async ({ email, code }) => {
+    try {
+        const response = fetch(`${process.env.API_URL}/user/checkcode`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, code })
+        });
+
+        const result = await response.json();
+
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const signUp = async ({ email, password, name, nickname, age = null, job = null, hobby = null }) => {
+    try {
+        const response = fetch(`${process.env.API_URL}/user/signup`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email,
+                password,
+                name,
+                nickname,
+                age,
+                job,
+                hobby
+            }),
+            credentials: "include"
+        });
+
+        const result = await response.json();
+
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const checkEmail = async (email) => {
+    try {
+        const response = fetch("https://j9d105.p.ssafy.io/api/user/checkemail", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
+        });
+
+        const result = await response.json();
+        console.log(result);
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const sendCode = async (email) => {
+    try {
+        const response = fetch(`${process.env.API_URL}/user/sendcode`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email })
+        });
+
+        const result = await response.json();
+
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 export default function SignupPage() {
     const [inputs, setInputs] = useState({
@@ -16,9 +91,9 @@ export default function SignupPage() {
         nickname: ""
     });
     const navigate = useNavigate();
-    const pattern =
-        // eslint-disable-next-line no-useless-escape
-        /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    // Const pattern =
+    //     // eslint-disable-next-line no-useless-escape
+    //     /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const handleChange = async (e) => {
         setInputs({
             ...inputs,
@@ -34,10 +109,10 @@ export default function SignupPage() {
             return;
         }
 
-        if (!pattern.test(inputs.email)) {
-            alert("이메일 형식이 올바르지 않습니다!");
-            return;
-        }
+        // If (!pattern.test(inputs.email)) {
+        //     alert("이메일 형식이 올바르지 않습니다!");
+        //     return;
+        // }
 
         const checkEmailResult = await checkEmail(inputs.email);
         console.log(checkEmailResult);

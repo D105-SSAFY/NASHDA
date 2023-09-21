@@ -1,6 +1,5 @@
 package com.ssafy.nashda.practice.repository;
 
-import com.ssafy.nashda.practice.entity.PronPhaseSet;
 import com.ssafy.nashda.practice.entity.PronSimpleSet;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
