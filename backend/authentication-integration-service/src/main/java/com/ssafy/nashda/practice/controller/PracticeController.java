@@ -130,9 +130,9 @@ public class PracticeController {
                 HttpStatus.OK);
     }
 
-    @PostMapping("/pron/result")
-    public ResponseEntity<? extends BaseResponseBody> getPronunciation(@RequestPart(value="file", required = false) MultipartFile sound,
-                                                                       @RequestBody PracticePronRequestDto practicePronRequestDto) throws Exception {
+    @PostMapping(value = "/pron/result", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<? extends BaseResponseBody> getPronunciation(@RequestPart(value="sound", required = false) MultipartFile sound,
+                                                                       @RequestPart(value = "requestDto") PracticePronRequestDto practicePronRequestDto) throws Exception {
 
         String stt = practicePronService.getSTT(sound, practicePronRequestDto.getIndex(), practicePronRequestDto.getType());
 
