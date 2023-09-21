@@ -39,23 +39,23 @@ spring:
       max-file-size: 300MB
       max-request-size: 300MB
   datasource:
-    url: jdbc:h2:tcp://localhost/~/nashda
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-
-    #        MySQL ??
-            url: jdbc:mysql://j9d105.p.ssafy.io:3306/D105?serverTimezone=UTC&characterEncoding=UTF-8
-            username: nash
-            password: d105nashda
-            driver-class-name: com.mysql.cj.jdbc.Driver
-
-
-    #   H2 ??
-#    url:  jdbc:h2:tcp://localhost/~/nashda
+#    url: jdbc:h2:tcp://localhost/~/nashda
 #    username: sa
 #    password:
 #    driver-class-name: org.h2.Driver
+      
+      #        MySQL ??
+      url: jdbc:mysql://j9d105.p.ssafy.io:3306/D105?serverTimezone=UTC&characterEncoding=UTF-8
+      username: nash
+      password: d105nashda
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+    #   H2 ??
+  #    url:  jdbc:h2:tcp://localhost/~/nashda
+  #    username: sa
+  #    password:
+  #    driver-class-name: org.h2.Driver
 
   #    hikari:
   #      maximum-pool-size:1
