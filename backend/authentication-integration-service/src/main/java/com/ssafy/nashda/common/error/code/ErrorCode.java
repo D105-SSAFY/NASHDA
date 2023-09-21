@@ -18,6 +18,7 @@ public enum ErrorCode {
     FAIL_SENDEMAIL(HttpStatus.BAD_REQUEST, 400, "이메일 전송에 실패하였습니다."),
 
 
+
     // 인증, 인가
     NOT_VALID_TOKEN(HttpStatus.UNAUTHORIZED, 401, "해당 토큰은 유효한 토큰이 아닙니다."),
     NOT_EXISTS_AUTHORIZATION(HttpStatus.UNAUTHORIZED, 401, "Authorization Header가 빈 값입니다."),
