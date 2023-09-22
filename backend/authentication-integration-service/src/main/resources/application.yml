@@ -30,9 +30,6 @@ spring:
     redis:
       namespace: spring:session
       flush-mode: on-save
-  data:
-    mongodb:
-      uri: mongodb://nash:d105nashda@j9d105.p.ssafy.io:27017/nashda?authSource=admin&authMechanism=SCRAM-SHA-1
 
   servlet:
     multipart:
@@ -44,19 +41,11 @@ spring:
 #    password:
 #    driver-class-name: org.h2.Driver
       
-      #        MySQL ??
+      #MySQL
       url: jdbc:mysql://j9d105.p.ssafy.io:3306/D105?serverTimezone=UTC&characterEncoding=UTF-8
       username: nash
       password: d105nashda
       driver-class-name: com.mysql.cj.jdbc.Driver
-
-
-    #   H2 ??
-  #    url:  jdbc:h2:tcp://localhost/~/nashda
-  #    username: sa
-  #    password:
-  #    driver-class-name: org.h2.Driver
-
 
   #    hikari:
   #      maximum-pool-size:1
@@ -71,7 +60,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-      # show_sql: true
+       show_sql: true
       # format_sql: true
 
 
@@ -87,5 +76,20 @@ logging:
     #     descriptor:
     #       sql: debug
 
+
 chatgpt:
   api-key: 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
+
+
+cloud:
+  aws:
+    s3:
+      bucket: nashda
+    credentials:
+      access-key: AKIAZCTY5UQEI3PX5TF5
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false

@@ -3,7 +3,7 @@ import * as s from "./style";
 
 // Import { questionGet } from "apis/question";
 
-export default function Question({ index }) {
+export default function Question() {
     // Const [question, setQuestion] = useState({});
 
     // setQuestion();
@@ -13,7 +13,6 @@ export default function Question({ index }) {
             "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aliquam vero sed dolores quis, molestiae libero sequi quibusdam mollitia rem, sit officia ullam eaque nemo, explicabo atque autem reprehenderit veniam facere! uis, molestiae libero sequi quibusdam mollitia rem, sit officia ullam eaque nemo, explicabo atque autem reprehenderit veniam facere!",
         regDate: "2021-10-10"
     };
-    console.log(index);
     return (
         <>
             <s.QuestionBox>

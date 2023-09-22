@@ -5,6 +5,10 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorCode {
+    // S3
+    FAIL_DELETE_FILE(HttpStatus.INTERNAL_SERVER_ERROR, 7000, "S3에 업로드 된 파일을 지울 때 오류가 발생하였습니다."),
+
+
     NOT_KOREAN(HttpStatus.BAD_REQUEST, 6000, "한글이 아님"),
     SAVE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5000, "발음 통계 저장 오류"),
     TEST(HttpStatus.INTERNAL_SERVER_ERROR, 001, "exception test"),
@@ -16,6 +20,7 @@ public enum ErrorCode {
     TOKEN_DENIED(HttpStatus.BAD_REQUEST, 4004, "토큰이 만료되었습니다."),
     INVALID_INPUT(HttpStatus.BAD_REQUEST, 4005, "올바르지 않은 입력값 입니다."),
     FAIL_SENDEMAIL(HttpStatus.BAD_REQUEST, 400, "이메일 전송에 실패하였습니다."),
+    TOKEN_NOT_FOUND(HttpStatus.BAD_REQUEST, 400, "토큰이 존재하지 않습니다."),
 
 
 

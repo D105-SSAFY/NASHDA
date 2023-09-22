@@ -2,9 +2,7 @@ package com.ssafy.nashda.notice;
 
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
-import com.ssafy.nashda.common.error.code.ErrorCode;
-import com.ssafy.nashda.common.error.exception.BadRequestException;
-import com.ssafy.nashda.member.MemberController;
+import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.notice.dto.NoticeAllResDto;
 import com.ssafy.nashda.notice.dto.NoticeReqDto;

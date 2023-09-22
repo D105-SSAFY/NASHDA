@@ -1,9 +1,8 @@
 package com.ssafy.nashda.question;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
-import com.ssafy.nashda.member.MemberController;
+import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.notice.dto.NoticeReqDto;
 import com.ssafy.nashda.question.dto.QuestionReqDto;
 import com.ssafy.nashda.question.dto.QuestionResDto;
 import com.ssafy.nashda.question.dto.ReplyResDto;
@@ -11,7 +10,6 @@ import com.ssafy.nashda.question.entity.Reply;
 import com.ssafy.nashda.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
