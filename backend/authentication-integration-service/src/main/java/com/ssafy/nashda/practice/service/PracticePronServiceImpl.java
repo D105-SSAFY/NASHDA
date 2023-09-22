@@ -170,8 +170,8 @@ public class PracticePronServiceImpl implements PracticePronService {
         // STT 부분
         // MultipartFile to  File
 
-//        String uploadUrl = s3Uploader.uploadFiles(sound, "sound");
-//        log.info(uploadUrl);
+       String uploadUrl = s3Uploader.uploadFiles(sound, "sound");
+       log.info(uploadUrl);
         
         // FAST API 와 소통하기
 
