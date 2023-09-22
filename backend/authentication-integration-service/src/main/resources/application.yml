@@ -30,9 +30,6 @@ spring:
     redis:
       namespace: spring:session
       flush-mode: on-save
-  data:
-    mongodb:
-      uri: mongodb://nash:d105nashda@j9d105.p.ssafy.io:27017/nashda?authSource=admin&authMechanism=SCRAM-SHA-1
 
   servlet:
     multipart:
