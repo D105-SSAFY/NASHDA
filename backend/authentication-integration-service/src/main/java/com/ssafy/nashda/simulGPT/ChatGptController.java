@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatGptController {
     private final ChatService chatService;
 
-    @PostMapping
-    public String test(@RequestBody String question) {
-        return chatService.getChatResponse(question);
-    }
+//    @PostMapping
+//    public String test(@RequestBody String question) {
+//        return chatService.getChatResponse(question);
+//    }
 }

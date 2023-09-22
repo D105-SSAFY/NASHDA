@@ -1,7 +1,7 @@
 package com.ssafy.nashda.simulGPT.config;
 
 import feign.RequestInterceptor;
-import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 
 public class ChatGptHeaderConfig {
@@ -11,9 +11,8 @@ public class ChatGptHeaderConfig {
     @Bean
     public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {
-            requestTemplate.header("Authorization", openAIAPIKey);
-            requestTemplate.header("Content-")
-        }
-
+            requestTemplate.header("Authorization", "Bearer " + openAIAPIKey);
+            requestTemplate.header("Content-Type", "application/json");
+        };
     }
 }

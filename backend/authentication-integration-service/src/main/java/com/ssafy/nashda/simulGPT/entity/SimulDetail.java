@@ -29,6 +29,9 @@ public class SimulDetail extends TimeEntity {
     @Column(columnDefinition = "TEXT")
     private String gpt_speech;
 
+    @Column(columnDefinition = "TEXT")
+    private String feedback;
+
     @Builder
     public SimulDetail(String my_speech) {
         this.my_speech = my_speech;
