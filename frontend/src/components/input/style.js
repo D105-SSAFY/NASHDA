@@ -31,7 +31,24 @@ export const StyledInput = styled.input`
         outline: ${(props) => (props.readOnly ? "none" : "")};
     }
 `;
-
+export const StyledSelect = styled.select`
+    width: 100%;
+    border-radius: 8px;
+    border: solid 1.8px black;
+    font-size: 15px;
+    background-color: ${(props) => (props.readOnly ? "#eee" : "")};
+    height: 40px;
+    text-align: center;
+    padding-right: ${(props) => (props.check ? "35px" : "")};
+    size: 30;
+    &:focus {
+        outline: 1px solid blue;
+        outline: ${(props) => (props.readOnly ? "none" : "")};
+    }
+`;
+export const StyledOption = styled.option`
+    border: solid 3px black;
+`;
 export const StyledButton = styled.button`
     position: absolute;
     height: auto;

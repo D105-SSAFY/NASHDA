@@ -2,8 +2,9 @@
 import * as s from "./style";
 import video1 from "assets/image/nashda_move.mov";
 import SignupInput from "components/input/FormInputCol";
+import SignupSelect from "components/input/FormSelectCol";
 // Import { checkEmail, sendCode, checkCode, signUp } from "apis/user";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
 
 // 임시 fetch들
@@ -23,9 +24,9 @@ export const checkCode = async ({ email, code }) => {
     }
 };
 
-export const signUp = async ({ email, password, name, nickname, age = null, job = null, hobby = null }) => {
+export const signUp = async ({ email, password, name, nickname, age = null, jobIdx, hobbyIdx }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/user/signup`, {
+        const response = await fetch("https://j9d105.p.ssafy.io/api/user/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -34,8 +35,8 @@ export const signUp = async ({ email, password, name, nickname, age = null, job 
                 name,
                 nickname,
                 age,
-                job,
-                hobby
+                jobIdx,
+                hobbyIdx
             }),
             credentials: "include"
         });
@@ -97,6 +98,21 @@ export const sendCode = async (email) => {
     }
 };
 
+export const domain = async () => {
+    try {
+        const response = await fetch("https://j9d105.p.ssafy.io/api/user/domain", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
 // 임시 패치들
 
 export default function SignupPage() {
@@ -106,63 +122,38 @@ export default function SignupPage() {
         password: "",
         checkedPassword: "",
         name: "",
-        nickname: ""
+        nickname: "",
+        hobby: "",
+        job: ""
     });
     const [overlapEmail, setOverlapEmail] = useState(false);
     const [overlapNickname, setOverlapNickname] = useState(false);
+    const [overlapPassword2, setOverlapPassword2] = useState(false);
+    const timeoutIdRef = useRef(null);
     const checkEmailText = ["중복된 이메일 입니다!", "사용할 수 없는 이메일 입니다!", "사용할 수 있는 이메일 입니다!"];
     const checkNicknameText = ["중복된 닉네임 입니다!", "사용할 수 없는 닉네임 입니다!", "사용할 수 있는 닉네임 입니다!"];
-    // UseEffect(() => {
-    //     const overlap = async () => {
-    //         if (!inputs.email) {
-    //             setOverlapEmail(false);
-    //             return;
-    //         }
-
-    //         if (!pattern.test(inputs.email)) {
-    //             setOverlapEmail(1);
-    //             return;
-    //         }
-
-    //         const result = await checkEmail(inputs.email);
-
-    //         if (result.status === 200) {
-    //             setOverlapEmail(2);
-    //         } else {
-    //             setOverlapEmail(0);
-    //         }
-    //     };
-
-    //     overlap();
-
-    //     console.log(overlapEmail);
-    // }, [inputs.email]);
-
-    // useEffect(() => {
-    //     const overlap = async () => {
-    //         if (!inputs.nickname) {
-    //             setOverlapNickname(false);
-    //             return;
-    //         }
-
-    //         const result = await checkNickname(inputs.nickname);
-
-    //         if (result.status === 200) {
-    //             setOverlapNickname(2);
-    //         } else {
-    //             setOverlapNickname(0);
-    //         }
-    //     };
-
-    //     overlap();
-
-    //     console.log(overlapNickname);
-    // }, [inputs.nickname]);
-
+    const checkPassword2Text = [
+        "사용할 수 없는 비밀번호 입니다!",
+        "사용 가능한 비밀번호 입니다!",
+        "비밀번호가 일치하지 않습니다!",
+        "비밀번호가 일치합니다!"
+    ];
+    const [domainList, setDomainList] = useState([]);
     const navigate = useNavigate();
-    const pattern =
+
+    const emailPattern =
         // eslint-disable-next-line no-useless-escape
         /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*()\-_=+[\]{};:'",.<>/?\\|~`])[a-zA-Z\d!@#$%^&*()\-_=+[\]{};:'",.<>/?\\|~`]{8,16}$/;
+
+    useEffect(() => {
+        async function fetchData() {
+            const result = await domain();
+            setDomainList(result.data);
+        }
+
+        fetchData();
+    }, []);
 
     const handleChange = async (e) => {
         if (e.target.name === "email") {
@@ -171,18 +162,22 @@ export default function SignupPage() {
                 return;
             }
 
-            if (!pattern.test(e.target.value)) {
+            if (!emailPattern.test(e.target.value)) {
                 setOverlapEmail(1);
                 return;
             }
 
-            const result = await checkEmail(e.target.value);
+            if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
 
-            if (result.status === 200) {
-                setOverlapEmail(2);
-            } else {
-                setOverlapEmail(0);
-            }
+            timeoutIdRef.current = setTimeout(async () => {
+                const result = await checkEmail(e.target.value);
+
+                if (result.status === 200) {
+                    setOverlapEmail(2);
+                } else {
+                    setOverlapEmail(0);
+                }
+            }, 400);
         }
 
         if (e.target.name === "nickname") {
@@ -191,13 +186,17 @@ export default function SignupPage() {
                 return;
             }
 
-            const result = await checkNickname(e.target.value);
+            if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
 
-            if (result.status === 200) {
-                setOverlapNickname(2);
-            } else {
-                setOverlapNickname(0);
-            }
+            timeoutIdRef.current = setTimeout(async () => {
+                const result = await checkNickname(e.target.value);
+
+                if (result.status === 200) {
+                    setOverlapNickname(2);
+                } else {
+                    setOverlapNickname(0);
+                }
+            }, 400);
         }
 
         setInputs({
@@ -205,6 +204,49 @@ export default function SignupPage() {
             [e.target.name]: e.target.value
         });
         console.log(inputs);
+
+        if (e.target.name === "password") {
+            if (!e.target.value) {
+                setOverlapPassword2(false);
+                return;
+            }
+
+            if (e.target.value.includes(" ") || !passwordPattern.test(e.target.value)) {
+                setOverlapPassword2(0);
+                return;
+            }
+
+            if (e.target.value === inputs.checkedPassword) {
+                setOverlapPassword2(3);
+            } else if (inputs.checkedPassword === "") {
+                setOverlapPassword2(1);
+            } else {
+                setOverlapPassword2(2);
+            }
+        }
+
+        if (e.target.name === "checkedPassword") {
+            if (inputs.password === "") {
+                setOverlapPassword2(false);
+                return;
+            }
+
+            if (!passwordPattern.test(inputs.password)) {
+                setOverlapPassword2(0);
+                return;
+            }
+
+            if (!e.target.value) {
+                setOverlapPassword2(1);
+                return;
+            }
+
+            if (e.target.value === inputs.password) {
+                setOverlapPassword2(3);
+            } else {
+                setOverlapPassword2(2);
+            }
+        }
     };
 
     const handleClick = async (e) => {
@@ -254,14 +296,16 @@ export default function SignupPage() {
             return;
         }
 
-        const checkCodeResult = await checkCode(inputs.email, inputs.code);
-        if (!checkCodeResult) {
-            alert("인증코드가 일치하지 않습니다!");
-            return;
-        }
-
-        const result = await signUp(inputs.email, inputs.password, inputs.name, inputs.nickname);
-        if (result) {
+        const result = await signUp({
+            email: inputs.email,
+            password: inputs.password,
+            name: inputs.name,
+            nickname: inputs.nickname,
+            jobIdx: Number(inputs.job),
+            hobbyIdx: Number(inputs.hobby)
+        });
+        console.log(result);
+        if (result.status === 200) {
             alert("회원가입 성공!");
             navigate("/signin");
         } else {
@@ -324,6 +368,7 @@ export default function SignupPage() {
                             value: inputs.checkedPassword
                         }}
                     />
+                    <s.StyledText>{checkPassword2Text[overlapPassword2]}</s.StyledText>
                     <s.StyledLine></s.StyledLine>
                     <SignupInput
                         data={{
@@ -345,6 +390,29 @@ export default function SignupPage() {
                         }}
                     />
                     <s.StyledText>{checkNicknameText[overlapNickname]}</s.StyledText>
+                    <s.StyledLine></s.StyledLine>
+                    <SignupSelect
+                        data={{
+                            text: "취미",
+                            id: "hobby",
+                            name: "hobby",
+                            type: "text",
+                            list: domainList,
+                            onChangeFunc: handleChange,
+                            value: inputs.hobby
+                        }}
+                    />
+                    <SignupSelect
+                        data={{
+                            text: "직업",
+                            id: "job",
+                            name: "job",
+                            type: "text",
+                            list: domainList,
+                            onChangeFunc: handleChange,
+                            value: inputs.job
+                        }}
+                    />
                     <s.StyledSignupBtn onClick={handleCheck}>회원가입 완료</s.StyledSignupBtn>
                 </s.StyledForm>
                 <s.StyledFooter></s.StyledFooter>
