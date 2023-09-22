@@ -35,6 +35,12 @@ dependencies {
     //spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
+    // spring Cloud
+    implementation platform("org.springframework.cloud:spring-cloud-dependencies:2021.0.5")
+
+    // feign client
+    implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
+
     //chatGPT
     implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
 
