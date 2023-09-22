@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 
 export const Header = styled.header`
     width: 100%;
-    border-bottom: 1px solid #222222;
-
-    user-select: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 `;
 
 export const Wrapper = styled.div`
@@ -34,7 +32,7 @@ export const Title = styled(Link)`
     & > h1 {
         font-size: 2.2rem;
         font-weight: 700;
-        line-height: 26px;
+        line-height: 2.6rem;
     }
 `;
 
@@ -57,4 +55,5 @@ export const NavListItem = styled.li`
 
 export const NavLink = styled(Link)`
     font-size: 1.4rem;
+    font-weight: 500;
 `;

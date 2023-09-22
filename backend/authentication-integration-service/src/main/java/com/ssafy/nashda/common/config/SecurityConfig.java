@@ -35,15 +35,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors
-                        .configurationSource(corsConfigurationSource()))
                 // CSRF 토큰을 활성화, CSRF 토큰의 생성, 저장, 검증 등은 Spring Security가 자동으로 처리
                 .csrf(csrf -> csrf
                                 .disable()
                 )
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-//                        .antMatchers("/user/signin", "/user/signup").permitAll()
-                                .antMatchers("/user/signin","/user/signup", "/user/checkemail", "/user/checknickname").permitAll()
+                                .antMatchers("/user/signin","/user/signup", "/user/checkemail", "/user/checknickname", "/user/sendcode","/user/checkcode","/user/resetpw").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new TokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)

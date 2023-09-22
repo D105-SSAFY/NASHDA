@@ -1,12 +1,40 @@
+/* eslint-disable no-alert */
 import * as s from "./style";
 import video1 from "assets/image/nashda_move.mov";
 import image2 from "assets/image/signinbtn.png";
 import SigninInput from "components/input/FormInputCol";
-import { signin } from "apis/user";
+// Import { login } from "apis/user";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "redux/slice/userSlice";
 import { useNavigate } from "react-router";
+
+// 임시 사용
+export const login = async ({ email, password }) => {
+    try {
+        const response = await fetch("https://j9d105.p.ssafy.io/api/user/signin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const result = await response.json();
+        if (result.errorCode === 4001) {
+            return;
+        }
+
+        if (result.errorCode === 4002) {
+            return;
+        }
+
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
+//
 
 export default function SigninPage() {
     const dispatch = useDispatch();
@@ -32,28 +60,25 @@ export default function SigninPage() {
         e.preventDefault();
 
         if (!inputs.email) {
-            // eslint-disable-next-line no-alert
             alert("이메일을 입력해주세요!");
             return;
         }
 
         if (!inputs.password) {
-            // eslint-disable-next-line no-alert
             alert("비밀번호를 입력해주세요!");
             return;
         }
 
-        const result = await signin(inputs.email, inputs.password);
-
+        const result = await login({ email: inputs.email, password: inputs.password });
+        console.log(result.data.accessToken);
         if (result) {
             dispatch(
                 loginUser({
-                    accessToken: result.accessToken
+                    accessToken: result.data.accessToken
                 })
             );
             navigate("/");
         } else {
-            // eslint-disable-next-line no-alert
             alert("로그인에 실패했습니다!");
         }
     };
@@ -84,8 +109,8 @@ export default function SigninPage() {
                             value: inputs.password
                         }}
                     />
-                    <s.StyledSiginBtn>
-                        <s.StyledImg src={image2} alt="로그인" onClick={handleCheck} />
+                    <s.StyledSiginBtn onClick={handleCheck}>
+                        <s.StyledImg src={image2} alt="로그인" />
                     </s.StyledSiginBtn>
                 </s.StyledForm>
 

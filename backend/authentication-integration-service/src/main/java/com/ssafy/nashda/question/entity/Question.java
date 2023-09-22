@@ -1,4 +1,5 @@
 package com.ssafy.nashda.question.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.nashda.member.entity.Member;
 
 import com.ssafy.nashda.common.entity.TimeEntity;
@@ -11,20 +12,15 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@Table(name="question")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Question extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
+    @Column(updatable = false, name = "question_index")
     private Long index;
 
-    //    @JsonIgnore
-//    @ManyToOne(fetch=FetchType.LAZY)
-//    @JoinColumn(name = "member_number", nullable = false)
-//    private Member member;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "reply_index")
+    @OneToOne(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Reply reply;
 
     @Column(nullable = false)
@@ -33,10 +29,22 @@ public class Question extends TimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+    @JsonIgnore
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "member_number", nullable = false)
+    private Member member;
+
+    public void setReply(Reply reply) {
+        this.reply = reply;
+        if (reply != null) {
+            reply.setQuestion(this);
+        }
+    }
+
     @Builder
-    public Question (String title, String content, Reply reply) {
+    public Question (String title, String content, Member member) {
         this.title = title;
         this.content = content;
-        this.reply = reply;
+        this.member = member;
     }
 }

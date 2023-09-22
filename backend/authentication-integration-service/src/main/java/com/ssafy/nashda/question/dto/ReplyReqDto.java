@@ -1,5 +1,6 @@
 package com.ssafy.nashda.question.dto;
 
+import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.question.entity.Reply;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,8 +18,9 @@ public class ReplyReqDto {
         this.content = reply.getContent();
     }
 
-    public Reply toEntity() {
+    public Reply toEntity(Member member) {
         return Reply.builder()
+                .member(member)
                 .title(title)
                 .content(content)
                 .build();

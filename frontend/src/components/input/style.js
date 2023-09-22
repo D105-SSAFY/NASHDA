@@ -1,7 +1,7 @@
 import styled from "styled-components";
 export const StyledDiv = styled.div`
     position: relative;
-    width: 35%;
+    width: 100%;
     margin: 10px;
 `;
 export const StyledLabel = styled.label`

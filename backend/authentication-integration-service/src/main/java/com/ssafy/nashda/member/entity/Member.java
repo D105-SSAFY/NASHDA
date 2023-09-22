@@ -2,6 +2,7 @@ package com.ssafy.nashda.member.entity;
 
 import com.ssafy.nashda.common.entity.TimeEntity;
 import com.sun.istack.NotNull;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import lombok.Builder;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
+@Setter
 @NoArgsConstructor
 @Table(name = "members")
 public class Member extends TimeEntity {

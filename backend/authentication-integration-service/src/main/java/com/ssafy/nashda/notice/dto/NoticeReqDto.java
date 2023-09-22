@@ -1,5 +1,6 @@
 package com.ssafy.nashda.notice.dto;
 
+import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.notice.entity.Notice;
 
 import lombok.Builder;
@@ -18,18 +19,12 @@ public class NoticeReqDto {
         this.content = notice.getContent();
     }
 
-//    public Notice toEntity(Member member) {
-//        return Notice.builder()
-//                .member(member)
-//                .title(title)
-//                .content(content)
-//                .build();
-//    }
-
-    public Notice toEntity() {
+    public Notice toEntity(Member member) {
         return Notice.builder()
+                .member(member)
                 .title(title)
                 .content(content)
                 .build();
     }
+
 }
