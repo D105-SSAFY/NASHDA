@@ -3,6 +3,7 @@ package com.ssafy.nashda.practice.service;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
+import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.practice.dto.InternalPronNumResponseDto;
 import com.ssafy.nashda.practice.dto.InternalPronResponse;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
@@ -21,13 +22,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Slf4j
 public class PracticePronServiceImpl implements PracticePronService {
     private final TextProcessService textProcessService;
-    private static final String DOCKER_ADDRESS = "http://172.17.0.5:";
-    private static final String LOCAL_ADDRESS = "http://localhost:";
-
+    private final S3Uploader s3Uploader;
+   private static final String URL = "http://172.17.0.5:8082";
+    // private static final String URL = "http://localhost:8082";
     @Override
     public PronResponseDto getPronWordSets(int index) throws Exception {
         WebClient client = WebClient.builder()
-                .baseUrl(DOCKER_ADDRESS + "8082")
+                .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
@@ -60,7 +61,7 @@ public class PracticePronServiceImpl implements PracticePronService {
 //                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         // 문제 서버에 요청
         WebClient client = WebClient.builder()
-                .baseUrl(DOCKER_ADDRESS + "8082")
+                .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
@@ -91,7 +92,7 @@ public class PracticePronServiceImpl implements PracticePronService {
 //        PronSimpleSet pronSimpleSet = pronSimpleSetRepository.findByNum(index)
 //                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         WebClient client = WebClient.builder()
-                .baseUrl(DOCKER_ADDRESS + "8082")
+                .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
@@ -119,7 +120,7 @@ public class PracticePronServiceImpl implements PracticePronService {
     @Override
     public PronResponseDto getPronComplexSets(int index) throws Exception {
         WebClient client = WebClient.builder()
-                .baseUrl(DOCKER_ADDRESS + "8082")
+                .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
@@ -149,7 +150,7 @@ public class PracticePronServiceImpl implements PracticePronService {
     public long getPronSetNum(String seqName) throws Exception {
         // 문제 서버에 요청
         WebClient client = WebClient.builder()
-                .baseUrl(DOCKER_ADDRESS + "8082")
+                .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
@@ -164,10 +165,14 @@ public class PracticePronServiceImpl implements PracticePronService {
     }
 
     @Override
-    public String getSTT(MultipartFile multipartFile, long index, String type) throws Exception {
+    public String getSTT(MultipartFile sound, long index, String type) throws Exception {
 
         // STT 부분
         // MultipartFile to  File
+
+//       String uploadUrl = s3Uploader.uploadFiles(sound, "sound");
+//       log.info(uploadUrl);
+        
         // FAST API 와 소통하기
 
 
@@ -176,7 +181,7 @@ public class PracticePronServiceImpl implements PracticePronService {
 
         // 1. 해당 문제를 받아온다.
         WebClient client = WebClient.builder()
-                .baseUrl(DOCKER_ADDRESS + "8082")
+                .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 

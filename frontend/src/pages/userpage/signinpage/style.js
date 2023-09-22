@@ -14,6 +14,7 @@ export const StyledMainSection = styled.section`
 `;
 export const StyledVid = styled.video`
     width: 100%;
+    height: 510px;
 `;
 
 export const StyledSiginBtn = styled.button`

@@ -28,5 +28,6 @@ public class PronPhaseSet {
     private long num;
     private String originSentence;
     private String pronunciation;
-    private String domain;
+    private String hobby;
+    private String job;
 }

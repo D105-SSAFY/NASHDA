@@ -5,10 +5,6 @@ import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
 import com.ssafy.nashda.practice.dto.PronSTTResponseDto;
 import com.ssafy.nashda.practice.dto.InternalPronNumResponseDto;
-import com.ssafy.nashda.practice.entity.PronComplexSet;
-import com.ssafy.nashda.practice.entity.PronPhaseSet;
-import com.ssafy.nashda.practice.entity.PronSimpleSet;
-import com.ssafy.nashda.practice.entity.PronWordSet;
 import com.ssafy.nashda.practice.service.PracticePronService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +54,7 @@ public class PracticeController {
     @GetMapping("/pron/word")
     public ResponseEntity<? extends BaseResponseBody> getPronWordNum() throws Exception {
 
-        long pronSetNum = practicePronService.getPronSetNum(PronWordSet.SEQUENCE_NAME); // Sequence Num 불러오기
+        long pronSetNum = practicePronService.getPronSetNum("pronunciation_word_sequence"); // Sequence Num 불러오기
 
         return new ResponseEntity<>(new BaseResponseBody(200, "단어 문제 개수 불러오기 성공", pronSetNum),
                 HttpStatus.OK);
@@ -77,7 +73,7 @@ public class PracticeController {
     @GetMapping("/pron/phase")
     public ResponseEntity<? extends BaseResponseBody> getPronPhaseNum() throws Exception {
 
-        long pronSetNum = practicePronService.getPronSetNum(PronPhaseSet.SEQUENCE_NAME); // Sequence Num 불러오기
+        long pronSetNum = practicePronService.getPronSetNum("pronunciation_phase_sequence"); // Sequence Num 불러오기
 
         return new ResponseEntity<>(new BaseResponseBody(200, "구 문제 개수 불러오기 성공", pronSetNum),
                 HttpStatus.OK);
@@ -96,7 +92,7 @@ public class PracticeController {
     @GetMapping("/pron/simple")
     public ResponseEntity<? extends BaseResponseBody> getPronSimpleNum() throws Exception {
 
-        long pronSetNum = practicePronService.getPronSetNum(PronSimpleSet.SEQUENCE_NAME); // Sequence Num 불러오기
+        long pronSetNum = practicePronService.getPronSetNum("pronunciation_simple_sequence"); // Sequence Num 불러오기
 
         return new ResponseEntity<>(new BaseResponseBody(200, "단순절 문제 개수 불러오기 성공", pronSetNum),
                 HttpStatus.OK);
@@ -115,7 +111,7 @@ public class PracticeController {
     @GetMapping("/pron/complex")
     public ResponseEntity<? extends BaseResponseBody> getPronComplexNum() throws Exception {
 
-        long pronSetNum = practicePronService.getPronSetNum(PronComplexSet.SEQUENCE_NAME); // Sequence Num 불러오기
+        long pronSetNum = practicePronService.getPronSetNum("pronunciation_complex_sequence"); // Sequence Num 불러오기
 
         return new ResponseEntity<>(new BaseResponseBody(200, "복합절 문제 개수 불러오기 성공", pronSetNum),
                 HttpStatus.OK);

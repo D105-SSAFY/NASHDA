@@ -30,9 +30,6 @@ spring:
     redis:
       namespace: spring:session
       flush-mode: on-save
-  data:
-    mongodb:
-      uri: mongodb://nash:d105nashda@j9d105.p.ssafy.io:27017/nashda?authSource=admin&authMechanism=SCRAM-SHA-1
 
   servlet:
     multipart:
@@ -63,7 +60,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-      # show_sql: true
+       show_sql: true
       # format_sql: true
 
 
@@ -79,3 +76,19 @@ logging:
     #   type:
     #     descriptor:
     #       sql: debug
+
+
+
+
+cloud:
+  aws:
+    s3:
+      bucket: nashda
+    credentials:
+      access-key: AKIAZCTY5UQEI3PX5TF5
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false

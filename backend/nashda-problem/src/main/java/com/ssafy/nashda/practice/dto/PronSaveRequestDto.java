@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PronResponseDto {
-    private String index;
-    private String origin;
-    private String convert;
-
+public class PronSaveRequestDto {
+    private String originSentence;
+    private String pronunciation;
+    private String job;
+    private String hobby;
 
 }

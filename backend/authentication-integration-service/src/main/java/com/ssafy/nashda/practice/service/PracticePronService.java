@@ -1,10 +1,6 @@
 package com.ssafy.nashda.practice.service;
 
 import com.ssafy.nashda.practice.dto.PronResponseDto;
-import com.ssafy.nashda.practice.entity.PronComplexSet;
-import com.ssafy.nashda.practice.entity.PronPhaseSet;
-import com.ssafy.nashda.practice.entity.PronSimpleSet;
-import com.ssafy.nashda.practice.entity.PronWordSet;
 import org.springframework.web.multipart.MultipartFile;
 
 /**

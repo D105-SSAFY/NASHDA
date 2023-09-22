@@ -1,4 +1,4 @@
-package com.ssafy.nashda.member;
+package com.ssafy.nashda.member.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.member.dto.Reponse.MemberInfoResDto;
@@ -30,6 +30,7 @@ public class MemberController {
     private final TokenProvider tokenProvider;
     private final TokenService tokenService;
     private final MailSenderService mailSenderService;
+
 
     @PostMapping("/signup")
     public ResponseEntity<? extends BaseResponseBody> signUp(

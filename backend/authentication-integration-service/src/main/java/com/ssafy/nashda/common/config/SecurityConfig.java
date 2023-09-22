@@ -40,7 +40,9 @@ public class SecurityConfig {
                                 .disable()
                 )
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                                .antMatchers("/user/signin","/user/signup", "/user/checkemail", "/user/checknickname", "/user/sendcode","/user/checkcode","/user/resetpw").permitAll()
+                                .antMatchers("/user/signin","/user/signup", "/user/checkemail"
+                                        , "/user/checknickname", "/user/sendcode","/user/checkcode"
+                                        ,"/user/resetpw", "/user/domain").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new TokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)

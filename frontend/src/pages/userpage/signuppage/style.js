@@ -13,6 +13,7 @@ export const StyledMainSection = styled.section`
 `;
 export const StyledVid = styled.video`
     width: 100%;
+    height: 510px;
 `;
 
 export const StyledSignupBtn = styled.button`
@@ -37,6 +38,11 @@ export const StyledForm = styled.form`
     width: 30%;
     margin-top: 20px;
 `;
+
+export const StyledText = styled.p`
+    font-size: 20px;
+`;
+
 export const StyledAnchorSection = styled.section`
     display: flex;
     flex-direction: column;
