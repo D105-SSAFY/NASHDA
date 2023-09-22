@@ -1,10 +1,7 @@
 package com.ssafy.nashda.practice.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
-import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
-import com.ssafy.nashda.practice.dto.PronResponseDto;
-import com.ssafy.nashda.practice.dto.PronSTTResponseDto;
-import com.ssafy.nashda.practice.dto.PronSaveRequestDto;
+import com.ssafy.nashda.practice.dto.*;
 import com.ssafy.nashda.practice.entity.PronComplexSet;
 import com.ssafy.nashda.practice.entity.PronPhaseSet;
 import com.ssafy.nashda.practice.entity.PronSimpleSet;
@@ -16,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * 연습 문제 전송 컨트롤러
@@ -34,11 +33,6 @@ public class PracticeController {
     @GetMapping("/pron/test")
     public ResponseEntity<? extends BaseResponseBody> test() throws Exception {
 
-
-//        PronWordSet pronWordSet = practicePronService.savePronWordSet();// Sequence Num 불러오기
-//        practicePronService.savePronPhaseSet();
-//        practicePronService.savePronSimpleSet();
-//        practicePronService.savePronComplexSet();
         log.info("OKOK");
         return new ResponseEntity<>(new BaseResponseBody(200, "소통 테스트 성공22222"), HttpStatus.OK);
     }
@@ -128,6 +122,24 @@ public class PracticeController {
                 new PronResponseDto(pronComplexSet)),
                 HttpStatus.OK);
     }
+
+    @GetMapping("/pron/word/random")
+    public ResponseEntity<? extends BaseResponseBody> getPronWordRandom() throws Exception {
+        List<PronWordSet> testWordSet = practicePronService.findTestWordSet();
+
+        return new ResponseEntity<>(new BaseResponseBody(200, "단어 테스트용 문제 10개 조회 성공",
+                new TestPronResponseDto(testWordSet)),
+                HttpStatus.OK);
+    }
+    @GetMapping("/pron/simple/random")
+    public ResponseEntity<? extends BaseResponseBody> getPronComplexRandom() throws Exception {
+        List<PronSimpleSet> testSimpleSet = practicePronService.findTestSimpleSet();
+
+        return new ResponseEntity<>(new BaseResponseBody(200, "문장 테스트용 문제 5개 조회 성공",
+                new TestPronResponseDto(testSimpleSet)),
+                HttpStatus.OK);
+    }
+
 
 //    @PostMapping("/pron/result")
 //    public ResponseEntity<? extends BaseResponseBody> getPronunciation(@RequestPart(value="file", required = false) MultipartFile sound,
