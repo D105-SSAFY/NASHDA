@@ -2,145 +2,248 @@ package com.ssafy.nashda.practice.service;
 
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
-import com.ssafy.nashda.practice.entity.PronComplexSet;
-import com.ssafy.nashda.practice.entity.PronPhaseSet;
-import com.ssafy.nashda.practice.entity.PronSimpleSet;
-import com.ssafy.nashda.practice.entity.PronWordSet;
-import com.ssafy.nashda.practice.repository.PronComplexSetRepository;
-import com.ssafy.nashda.practice.repository.PronPhaseSetRepository;
-import com.ssafy.nashda.practice.repository.PronSimpleSetRepository;
-import com.ssafy.nashda.practice.repository.PronWordSetRepository;
+import com.ssafy.nashda.common.error.response.ErrorResponse;
+import com.ssafy.nashda.common.s3.S3Uploader;
+import com.ssafy.nashda.practice.dto.InternalPronNumResponseDto;
+import com.ssafy.nashda.practice.dto.InternalPronResponse;
+import com.ssafy.nashda.practice.dto.PronResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class PracticePronServiceImpl implements PracticePronService {
-
-    private final PronWordSetRepository pronWordSetRepository;
-    private final PronPhaseSetRepository pronPhaseSetRepository;
-    private final PronSimpleSetRepository pronSimpleSetRepository;
-    private final PronComplexSetRepository pronComplexSetRepository;
-    private final SequenceGeneratorService sequenceGeneratorService;
-
+    private final TextProcessService textProcessService;
+    private final S3Uploader s3Uploader;
+   private static final String URL = "http://172.17.0.5:8082";
+    // private static final String URL = "http://localhost:8082";
     @Override
-    public PronWordSet getPronWordSets(int index) {
-        PronWordSet pronWordSet = pronWordSetRepository.findByNum(index)
-                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
-
-        return pronWordSet;
-    }
-
-    @Override
-    public PronWordSet savePronWordSet() throws Exception {
-        PronWordSet pronWordSet = PronWordSet.builder()
-                .num(sequenceGeneratorService.generateSequence(PronWordSet.SEQUENCE_NAME))
-                .originSentence("밟다")
-                .pronunciation("밥따")
-                .domain("일상")
+    public PronResponseDto getPronWordSets(int index) throws Exception {
+        WebClient client = WebClient.builder()
+                .baseUrl(URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        PronWordSet save = pronWordSetRepository.save(pronWordSet);
-        return save;
+        ResponseEntity<InternalPronResponse> response = client.get()
+                .uri("/practice/pron/word/" + index)
+                .retrieve()
+                .onStatus(
+                        HttpStatus.BAD_REQUEST::equals,
+                        clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
+                            log.info("s : {}", s.getErrorCode());
+                            // 에러 코드 별로 예외 처리 가능
+                            if (s.getErrorCode() == 4000) {
+                                return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
+                            }
+
+                            return new BadRequestException(ErrorCode.TEST);
+                        })
+                )
+                .toEntity(InternalPronResponse.class)
+                .block();
+
+//        log.info("response : {}", response.getBody().getData());
+        return response.getBody().getData();
     }
 
-    @Override
-    public PronPhaseSet getPronPhaseSets(int index) throws Exception {
-        PronPhaseSet pronPhaseSet = pronPhaseSetRepository.findByNum(index)
-                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
-
-        return pronPhaseSet;
-    }
 
     @Override
-    public PronPhaseSet savePronPhaseSet() throws Exception {
-        PronPhaseSet pronPhaseSet = PronPhaseSet.builder()
-                .num(sequenceGeneratorService.generateSequence(PronPhaseSet.SEQUENCE_NAME))
-                .originSentence("꽃을")
-                .pronunciation("꼬츨")
-                .domain("일상")
+    public PronResponseDto getPronPhaseSets(int index) throws Exception {
+//        PronPhaseSet pronPhaseSet = pronPhaseSetRepository.findByNum(index)
+//                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        // 문제 서버에 요청
+        WebClient client = WebClient.builder()
+                .baseUrl(URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        PronPhaseSet saved = pronPhaseSetRepository.save(pronPhaseSet);
-        return saved;
+        ResponseEntity<InternalPronResponse> response = client.get()
+                .uri("/practice/pron/phase/" + index)
+                .retrieve()
+                .onStatus(
+                        HttpStatus.BAD_REQUEST::equals,
+                        clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
+                            log.info("s : {}", s.getErrorCode());
+                            // 에러 코드 별로 예외 처리 가능
+                            if (s.getErrorCode() == 4000) {
+                                return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
+                            }
+
+                            return new BadRequestException(ErrorCode.TEST);
+                        })
+                )
+                .toEntity(InternalPronResponse.class)
+                .block();
+
+        return response.getBody().getData();
     }
 
-    @Override
-    public PronSimpleSet getPronSimpleSets(int index) throws Exception {
-        PronSimpleSet pronSimpleSet = pronSimpleSetRepository.findByNum(index)
-                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
-
-        return pronSimpleSet;
-    }
 
     @Override
-    public PronSimpleSet savePronSimpleSet() throws Exception {
-        PronSimpleSet pronSimpleSet = PronSimpleSet.builder()
-                .num(sequenceGeneratorService.generateSequence(PronSimpleSet.SEQUENCE_NAME))
-                .originSentence("꽃을 밟다")
-                .pronunciation("꼬츨 밥따")
-                .domain("일상")
+    public PronResponseDto getPronSimpleSets(int index) throws Exception {
+//        PronSimpleSet pronSimpleSet = pronSimpleSetRepository.findByNum(index)
+//                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        WebClient client = WebClient.builder()
+                .baseUrl(URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        PronSimpleSet save = pronSimpleSetRepository.save(pronSimpleSet);
+        ResponseEntity<InternalPronResponse> response = client.get()
+                .uri("/practice/pron/simple/" + index)
+                .retrieve()
+                .onStatus(
+                        HttpStatus.BAD_REQUEST::equals,
+                        clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
+                            log.info("s : {}", s.getErrorCode());
+                            // 에러 코드 별로 예외 처리 가능
+                            if (s.getErrorCode() == 4000) {
+                                return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
+                            }
 
-        return save;
+                            return new BadRequestException(ErrorCode.TEST);
+                        })
+                )
+                .toEntity(InternalPronResponse.class)
+                .block();
+        return response.getBody().getData();
     }
 
-    @Override
-    public PronComplexSet getPronComplexSets(int index) throws Exception {
-        PronComplexSet pronComplexSet = pronComplexSetRepository.findByNum(index)
-                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
-
-        return pronComplexSet;
-    }
 
     @Override
-    public PronComplexSet savePronComplexSet() throws Exception {
-        PronComplexSet pronComplexSet = PronComplexSet.builder()
-                .num(sequenceGeneratorService.generateSequence(PronComplexSet.SEQUENCE_NAME))
-                .originSentence("꽃이 피고 향기가 퍼지는 봄날 나는 공원을 산책하며 행복을 느꼈다")
-                .pronunciation("꼬치 피고 향기가 퍼지는 봄날 나는 공원을 산책하며 행복을 느꼈다")
-                .domain("일상")
+    public PronResponseDto getPronComplexSets(int index) throws Exception {
+        WebClient client = WebClient.builder()
+                .baseUrl(URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
-        PronComplexSet save = pronComplexSetRepository.save(pronComplexSet);
 
-        return save;
+        ResponseEntity<InternalPronResponse> response = client.get()
+                .uri("/practice/pron/complex/" + index)
+                .retrieve()
+                .onStatus(
+                        HttpStatus.BAD_REQUEST::equals,
+                        clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
+                            log.info("s : {}", s.getErrorCode());
+                            // 에러 코드 별로 예외 처리 가능
+                            if (s.getErrorCode() == 4000) {
+                                return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
+                            }
+
+                            return new BadRequestException(ErrorCode.TEST);
+                        })
+                )
+                .toEntity(InternalPronResponse.class)
+                .block();
+
+        return response.getBody().getData();
     }
+
 
     @Override
     public long getPronSetNum(String seqName) throws Exception {
-        long sequenceNum = sequenceGeneratorService.getSequenceNum(seqName);
+        // 문제 서버에 요청
+        WebClient client = WebClient.builder()
+                .baseUrl(URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
 
-        return sequenceNum;
+        ResponseEntity<InternalPronNumResponseDto> response = client.get()
+                .uri("/practice/pron/nums/" + seqName)
+                .retrieve()
+                .toEntity(InternalPronNumResponseDto.class)
+                .block();
+        log.info("response : {}", response.getBody().getData());
+
+        return response.getBody().getData();
     }
 
     @Override
-    public String getSTT(MultipartFile multipartFile, long index, String type) {
+    public String getSTT(MultipartFile sound, long index, String type) throws Exception {
 
         // STT 부분
-//        MultipartFile to  File
+        // MultipartFile to  File
 
-        String sttResult = "";
+//       String uploadUrl = s3Uploader.uploadFiles(sound, "sound");
+//       log.info(uploadUrl);
+        
+        // FAST API 와 소통하기
+
+
+        String sttResult = "발따"; // 받아온 STT
         // 통계 저장 부분
-//        String originPron;
-//        switch(type){
-//            case "word":
-//                pronWordSetRepository.findByNum(index);
-//                break;
-//            case "phase":
-//                break;
-//            case "simple":
-//                break;
-//            case "complex":
-//                break;
-//        }
+
+        // 1. 해당 문제를 받아온다.
+        WebClient client = WebClient.builder()
+                .baseUrl(URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+
+        ResponseEntity<InternalPronResponse> response = client.get()
+                .uri("/practice/pron/" + type + "/" + index)
+                .retrieve()
+                .onStatus(
+                        HttpStatus.BAD_REQUEST::equals,
+                        clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
+                            log.info("s : {}", s.getErrorCode());
+                            // 에러 코드 별로 예외 처리 가능
+                            if (s.getErrorCode() == 4000) {
+                                return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
+                            }
+
+                            return new BadRequestException(ErrorCode.TEST);
+                        })
+                )
+                .toEntity(InternalPronResponse.class)
+                .block();
+
+        PronResponseDto pronResponse = response.getBody().getData();
+        String convertOrigin = pronResponse.getConvert(); // 원발음
+        String origin = pronResponse.getOrigin(); // 원문
+
+        // 2. STT와 발음을 비교 하여 틀린 부분을 찾는다.
+        // 1. STT의 발음 길이가 원문의 길이보다 긴 경우
+        // 만약 앞에 헛소리해서 긴 경우 -> 다시 요청하기
+
+        // 2. STT의 발음 길이가 원문의 길이보다 짧은 경우
+        // 만약 앞에 소리가 짤렸다면? -> 다시 요청하기
+
+        // 3. 길이가 같은 경우
+        for (int i = 0; i < convertOrigin.length(); ++i) {
+            // 초성 비교
+            String onsetResult = textProcessService.getOnset(sttResult.charAt(i));
+            String onsetOrigin = textProcessService.getOnset(convertOrigin.charAt(i));
+            if (!onsetOrigin.equals(onsetResult)) { // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
+                String onset = textProcessService.getOnset(origin.charAt(i));
+                log.info("초성 오류 !!! : {}", onset);
+            }
+
+            // 중성 비교
+            String nucleusResult = textProcessService.getNucleus(sttResult.charAt(i));
+            String nucleusOrigin = textProcessService.getNucleus(convertOrigin.charAt(i));
+            if (!nucleusOrigin.equals(nucleusResult)) { // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
+                String nucleus = textProcessService.getNucleus(origin.charAt(i));
+                log.info("중성 오류 !!! : {}", nucleus);
+            }
+
+            // 종성 비교
+            String codaResult = textProcessService.getCoda(sttResult.charAt(i));
+            String codaOrigin = textProcessService.getCoda(convertOrigin.charAt(i));
+            if (!codaOrigin.equals(codaResult)) { // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
+                String coda = textProcessService.getCoda(origin.charAt(i));
+                log.info("종성 오류 !!! : {}", coda);
+            }
+        }
 
         return sttResult;
     }
 
 
 }
+

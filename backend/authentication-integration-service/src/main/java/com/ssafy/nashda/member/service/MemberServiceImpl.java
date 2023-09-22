@@ -25,7 +25,6 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final TokenProvider tokenProvider;
 
     @Override
     @Transactional
@@ -62,11 +61,9 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public MemberInfoResDto singIn(MemberSignInReqDto signinInfo) throws IOException, InterruptedException {
         Optional<Member> member = memberRepository.findByEmail(signinInfo.getEmail());
-
         if (member.isEmpty()) {
             throw new BadRequestException(ErrorCode.USER_NOT_EXIST);
         }
-
         if (passwordEncoder.matches(signinInfo.getPassword(), member.get().getPassword())) {
             return new MemberInfoResDto(member.get());
         } else {
@@ -76,49 +73,59 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void unRegist(Map<String, Object> memberInfo) throws IOException {
-/*
-        Object emailObj = memberInfo.get("email");
-        Object passwordObj = memberInfo.get("password");
-
-        if (emailObj == null || passwordObj == null) {
-            throw new BadRequestException(ErrorCode.INVALID_INPUT);
-        }
-
-        String email = emailObj.toString();
-        String password = passwordObj.toString();
-*/
-
-        //먼저 map값이 null인지 확인
         if (memberInfo.get("email") == null || memberInfo.get("password") == null)
             throw new BadRequestException(ErrorCode.INVALID_INPUT);
-
         Member member = memberRepository.findByEmail(memberInfo.get("email").toString()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
-
         if (passwordEncoder.matches(memberInfo.get("password").toString(), member.getPassword())) {
             memberRepository.delete(member);
         } else {
             throw new BadRequestException(ErrorCode.USER_NOT_MATCH);
         }
     }
-
     @Override
     public boolean checkEmail(String email) throws IOException {
         Optional<Member> member = memberRepository.findByEmail(email);
-        if (member.isEmpty()) {
-            return true;
-        } else {
-            return false;
+        return member.isEmpty();
+    }
+    @Override
+    public boolean checkNickname(String nickname) throws IOException {
+        Optional<Member> member = memberRepository.findByNickname(nickname);
+        return member.isEmpty();
+    }
+
+    @Override
+    public void updateProfile(Map<String, Object> profileInfo) throws IOException {
+        Member member = memberRepository.findByEmail(profileInfo.get("email").toString()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
+        if (profileInfo.get("nickname") != null) {
+            member.setNickname(profileInfo.get("nickname").toString());
+        }
+        if (profileInfo.get("age") != null) {
+            member.setAge(Integer.parseInt(profileInfo.get("age").toString()));
+        }
+        if (profileInfo.get("hobbyIdx") != null) {
+            member.setHobbyIdx(Integer.parseInt(profileInfo.get("hobbyIdx").toString()));
+        }
+        if (profileInfo.get("jobIdx") != null) {
+            member.setJobIdx(Integer.parseInt(profileInfo.get("jobIdx").toString()));
         }
     }
 
     @Override
-    public boolean checkNickname(String nickname) throws IOException {
-        Optional<Member> member = memberRepository.findByNickname(nickname);
-        if (member.isEmpty()) {
-            return true;
+    public void updatePassword(Map<String, Object> passwords) throws IOException {
+        if(passwords.get("email")==null||passwords.get("password")==null||passwords.get("newpassword")==null)
+            throw new BadRequestException(ErrorCode.INVALID_INPUT);
+        Member member = memberRepository.findByEmail(passwords.get("email").toString()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
+        if (passwordEncoder.matches(passwords.get("password").toString(), member.getPassword())) {
+            member.setPassword(passwordEncoder.encode(passwords.get("newpassword").toString()));
         } else {
-            return false;
+            throw new BadRequestException(ErrorCode.USER_NOT_MATCH);
         }
+    }
+
+    @Override
+    public void resetPassword(Map<String, Object> map) throws IOException {
+        Member member = memberRepository.findByEmail(map.get("email").toString()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
+        member.setPassword(passwordEncoder.encode(map.get("newpassword").toString()));
     }
 
 

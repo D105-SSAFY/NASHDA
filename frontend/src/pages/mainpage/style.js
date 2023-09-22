@@ -1,28 +1,69 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-export const Header = styled.header``;
-
-export const HeadingOne = styled.h1``;
-
-export const Main = styled.main``;
-
-export const Section = styled.section`
-    display: flex;
-    flex-direction: column;
+export const Main = styled.main`
+    padding-bottom: 120px;
 `;
 
-export const SectionHeader = styled.header``;
+export const Section = styled.section`
+    max-width: 920px;
 
-export const SectionHeadingTwo = styled.h2``;
+    margin: 0 auto;
+    padding: 22px 55px 26px;
+`;
+
+export const SectionHeader = styled.header`
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+
+    & > h2 {
+        font-size: 2.4rem;
+        font-weight: 500;
+        line-height: 2.9rem;
+        color: rgba(0, 0, 0, 0.6);
+    }
+`;
 
 export const SectionList = styled.ul`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 20px;
+
+    padding: 0 8px;
+`;
+
+export const Article = styled.article`
     display: flex;
     gap: 10px;
 
-    color: blue;
+    & > svg {
+        width: 26px;
+        height: 26px;
+
+        margin-top: 8px;
+
+        color: ${(props) => (props.color ? props.color : "#000")};
+    }
 `;
 
-export const SectionListItem = styled.li``;
+export const ArticleHeader = styled.header`
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 
-export const SectionListLink = styled(Link)``;
+    & > h3 {
+        font-size: 1.8rem;
+        font-weight: 500;
+        line-height: 21px;
+    }
+
+    & > p {
+        font-size: 1.4rem;
+        font-weight: 500;
+        line-height: 16px;
+        color: rgba(0, 0, 0, 0.8);
+
+        word-break: keep-all;
+    }
+`;

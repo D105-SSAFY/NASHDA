@@ -17,4 +17,7 @@ public interface MemberService {
     void unRegist(Map<String, Object> memberInfo) throws IOException;
     boolean checkEmail(String email) throws IOException;
     boolean checkNickname(String nickname) throws IOException;
+    void updateProfile(Map<String, Object> profileInfo) throws IOException;
+    void updatePassword(Map<String, Object> passwords) throws IOException;
+    void resetPassword(Map<String, Object> passwords) throws IOException;
 }
