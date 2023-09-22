@@ -45,6 +45,8 @@ export default function SigninPage() {
         password: ""
     });
 
+    // Input에 0.3초 이상 연속 입력이 되지 않을 경우에 console.log('hello') 출력하는 이벤트 핸들러
+
     const handleChange = (e) => {
         setInputs({
             ...inputs,

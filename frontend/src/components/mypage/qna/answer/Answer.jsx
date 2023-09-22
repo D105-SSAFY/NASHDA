@@ -2,14 +2,13 @@ import React from "react";
 import * as s from "./style";
 import LocalPoliceIcon from "@mui/icons-material/LocalPolice";
 
-export default function Answer({ index }) {
+export default function Answer() {
     const answer = {
         title: "테스트 타이틀",
         content:
             "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aliquam vero sed dolores quis, molestiae libero sequi quibusdam mollitia rem, sit officia ullam eaque nemo, explicabo atque autem reprehenderit veniam facere!",
         regDate: "2021-10-10"
     };
-    console.log(index);
 
     return (
         <>
