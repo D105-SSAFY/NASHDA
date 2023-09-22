@@ -34,6 +34,16 @@ export default function MyPage() {
                         <li>
                             <m.NavLink
                                 onClick={() => {
+                                    tabSwitch("통계");
+                                }}
+                                $highlight={tab === "통계"}
+                            >
+                                통계
+                            </m.NavLink>
+                        </li>
+                        <li>
+                            <m.NavLink
+                                onClick={() => {
                                     tabSwitch("질문 현황");
                                 }}
                                 $highlight={tab === "질문 현황"}
@@ -54,7 +64,9 @@ export default function MyPage() {
                     </m.NavList>
                 </m.Wrapper>
             </m.MyPageNav>
-            <m.MyPageMain>{tab === "내 정보" ? <User /> : tab === "질문 현황" ? <Qna /> : <Setting />}</m.MyPageMain>
+            <m.MyPageMain>
+                {tab === "내 정보" ? <User tabSwitch={tabSwitch} /> : tab === "통계" ? <Qna /> : tab === "질문 현황" ? <Qna /> : <Setting />}
+            </m.MyPageMain>
         </>
     );
 }

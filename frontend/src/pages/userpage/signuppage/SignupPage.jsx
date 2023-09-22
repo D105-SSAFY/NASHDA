@@ -169,7 +169,7 @@ export default function SignupPage() {
             return;
         }
 
-        const result = await signup(inputs.email, inputs.password, inputs.name, inputs.nickname);
+        const result = await signUp(inputs.email, inputs.password, inputs.name, inputs.nickname);
         if (result) {
             alert("회원가입 성공!");
             navigate("/signin");
