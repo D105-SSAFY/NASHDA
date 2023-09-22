@@ -23,8 +23,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class PracticePronServiceImpl implements PracticePronService {
     private final TextProcessService textProcessService;
     private final S3Uploader s3Uploader;
-//    private static final String URL = "http://172.17.0.5:8082";
-    private static final String URL = "http://localhost:8082";
+   private static final String URL = "http://172.17.0.5:8082";
+    // private static final String URL = "http://localhost:8082";
     @Override
     public PronResponseDto getPronWordSets(int index) throws Exception {
         WebClient client = WebClient.builder()
