@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -47,6 +49,13 @@ public class PracticePronServiceImpl implements PracticePronService {
 
         PronWordSet save = pronWordSetRepository.save(pronWordSet);
         return save;
+    }
+
+    @Override
+    public List<PronWordSet> findTestWordSet() throws Exception {
+        List<PronWordSet> randomWord = pronWordSetRepository.findRandomWord();
+
+        return randomWord;
     }
 
     @Override
@@ -95,6 +104,12 @@ public class PracticePronServiceImpl implements PracticePronService {
     }
 
     @Override
+    public List<PronSimpleSet> findTestSimpleSet() throws Exception {
+        List<PronSimpleSet> randomSimple = pronSimpleSetRepository.findRandomSimple();
+        return randomSimple;
+    }
+
+    @Override
     public PronComplexSet getPronComplexSets(int index) throws Exception {
         PronComplexSet pronComplexSet = pronComplexSetRepository.findByNum(index)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
@@ -123,6 +138,8 @@ public class PracticePronServiceImpl implements PracticePronService {
 
         return sequenceNum;
     }
+
+
 
 //    @Override
 //    public String getSTT(MultipartFile multipartFile, long index, String type) {
