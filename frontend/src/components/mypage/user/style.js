@@ -54,14 +54,8 @@ export const UserSection = styled.section`
     & > :nth-child(4) {
         top: 360px;
         left: 300px;
-        width: 350px;
-    }
 
-    & > :nth-child(5) {
-        top: 700px;
-        left: 20px;
-        width: 910px;
-        height: ${(props) => (props.more === 2 ? "660px" : "0px")};
+        width: ${(props) => (props.more === 4 ? "630px" : "350px")};
     }
 `;
 
