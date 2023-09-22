@@ -11,6 +11,30 @@ export default function Setting() {
         setMore(n);
     };
 
+    const scores = [
+        { score: 97, week: 15 },
+        { score: 82, week: 14 },
+        { score: 74, week: 13 }
+    ];
+    const total = [12854, 2480, 711];
+    console.log(scores);
+
+    const graphs = () => {
+        const result = [];
+        for (let i = 0; i < 5; i++) {
+            if (i < scores.length) {
+                result.push(
+                    <u.GraphBar index={i} score={scores[i].score}>
+                        <u.GraphScore>{scores[i].score}</u.GraphScore>
+                        <u.GraphWeek>{scores[i].week}주차</u.GraphWeek>
+                    </u.GraphBar>
+                );
+            } else result.push(<u.GraphBall index={i} />);
+        }
+
+        return result;
+    };
+
     return (
         <>
             <u.DeFocusTouch onClick={() => getMore(0)} />
@@ -23,6 +47,17 @@ export default function Setting() {
                     </u.MoreButton>
                 </u.UserCard>
                 <u.UserCard focus={more === 2} defocus={more === 0 || more === 2}>
+                    <u.StatisticsTitle>주간 시험 · 점</u.StatisticsTitle>
+                    <u.Graph>
+                        {graphs()}
+                        <u.BottomLine />
+                    </u.Graph>
+                    <u.GraphInfo>
+                        <u.GraphInfoTitle>지금까지</u.GraphInfoTitle>
+                        <u.GraphInfoContent>단어 {total[0]}</u.GraphInfoContent>
+                        <u.GraphInfoContent>문장 {total[1]}</u.GraphInfoContent>
+                        <u.GraphInfoContent>대화 {total[2]}</u.GraphInfoContent>
+                    </u.GraphInfo>
                     <u.MoreButton onClick={() => getMore(2)}>
                         통계
                         <ArrowCircleRightOutlinedIcon />

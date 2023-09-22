@@ -2,7 +2,7 @@
 import * as s from "./style";
 import video1 from "assets/image/nashda_move.mov";
 import SignupInput from "components/input/FormInputCol";
-import { checkEmail, sendCode, checkCode, signUp } from "apis/user";
+import { checkEmail, sendCode, checkCode, signup } from "apis/user";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -94,7 +94,7 @@ export default function SignupPage() {
             return;
         }
 
-        const result = await signUp(inputs.email, inputs.password, inputs.name, inputs.nickname);
+        const result = await signup(inputs.email, inputs.password, inputs.name, inputs.nickname);
         if (result) {
             alert("회원가입 성공!");
             navigate("/signin");

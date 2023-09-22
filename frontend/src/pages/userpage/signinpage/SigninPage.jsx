@@ -2,7 +2,7 @@ import * as s from "./style";
 import video1 from "assets/image/nashda_move.mov";
 import image2 from "assets/image/signinbtn.png";
 import SigninInput from "components/input/FormInputCol";
-import { login } from "apis/user";
+import { signin } from "apis/user";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "redux/slice/userSlice";
@@ -16,6 +16,8 @@ export default function SigninPage() {
         email: "",
         password: ""
     });
+
+    // Input에 0.3초 이상 연속 입력이 되지 않을 경우에 console.log('hello') 출력하는 이벤트 핸들러
 
     const handleChange = (e) => {
         setInputs({
@@ -41,7 +43,7 @@ export default function SigninPage() {
             return;
         }
 
-        const result = await login(inputs.email, inputs.password);
+        const result = await signin(inputs.email, inputs.password);
 
         if (result) {
             dispatch(

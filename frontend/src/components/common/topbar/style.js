@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 export const Header = styled.header`
     width: 100%;
     border-bottom: 1px solid #222222;
+
+    user-select: none;
 `;
 
 export const Wrapper = styled.div`
