@@ -2,13 +2,17 @@ package com.ssafy.nashda.simulGPT.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
+@Setter
 @NoArgsConstructor
 public class ChatResDto {
+    private String cacheId;
     private String id;
     private String object;
     private Long created;
     private String model;
-    private ChatChoiceDto[] choices;
+    private List<ChatChoiceDto> choices;
     private UsageDto usage;
 }

@@ -1,11 +1,13 @@
 package com.ssafy.nashda.common.service;
 
+import com.ssafy.nashda.simulGPT.dto.MemorizeMessageReqDto;
+import com.ssafy.nashda.simulGPT.dto.MessageReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
+import java.io.*;
 import java.util.UUID;
 
 @Service
@@ -13,24 +15,47 @@ import java.util.UUID;
 public class CacheService {
     private final CacheManager cacheManager;
 
-    public String saveCache(String value) {
+    public String saveCache(MessageReqDto messageReqDto) {
         Cache cache = cacheManager.getCache("MyCache");
         String id = UUID.randomUUID().toString();
-        byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
+
+        byte[] bytes = null;
+
+        // 캐시에 객체 저장
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+             ObjectOutput out = new ObjectOutputStream(bos)) {
+                 out.writeObject(messageReqDto);
+                 bytes = bos.toByteArray();
+             } catch (IOException e) {
+                 e.printStackTrace();
+        }
         if (cache != null) {
             cache.put(id, bytes);
         }
+
         return id;
     }
 
-    public String getCache(String id) {
+    public MemorizeMessageReqDto getCache(String id) {
         Cache cache = cacheManager.getCache("MyCache");
-        String value = null;
         byte[] bytes = cache.get(id, byte[].class);
-        if (bytes != null) {
-            value = new String(bytes, StandardCharsets.UTF_8);
+
+        MemorizeMessageReqDto result = null;
+
+        try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+             ObjectInput in = new ObjectInputStream(bis)) {
+            result = (MemorizeMessageReqDto) in.readObject();
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();;
         }
 
-        return value;
+        return result;
+    }
+
+    public void clearCache(String id) {
+        Cache cache = cacheManager.getCache("MyCache");
+        if (cache != null) {
+            cache.evict(id);
+        }
     }
 }
