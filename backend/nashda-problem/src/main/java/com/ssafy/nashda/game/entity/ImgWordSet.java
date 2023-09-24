@@ -1,10 +1,9 @@
 package com.ssafy.nashda.game.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
@@ -18,13 +17,18 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
+@ToString
 public class ImgWordSet {
+    @Transient
+    public static final String SEQUENCE_NAME = "img_word_set";
+
     @Id
     private String id;
 
-    private String imgURL;
-    private String word;
+    private long num;
+    private String imgURL; // 이미지 경로
+    private String word; // 단어
 
-    @DocumentReference
+    @DBRef
     private ImgWordHint imgWordHint;
 }

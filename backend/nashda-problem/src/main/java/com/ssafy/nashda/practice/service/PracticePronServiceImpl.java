@@ -2,6 +2,7 @@ package com.ssafy.nashda.practice.service;
 
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
+import com.ssafy.nashda.common.sequence.service.SequenceGeneratorService;
 import com.ssafy.nashda.practice.dto.PronSaveRequestDto;
 import com.ssafy.nashda.practice.entity.PronComplexSet;
 import com.ssafy.nashda.practice.entity.PronPhaseSet;
@@ -14,7 +15,6 @@ import com.ssafy.nashda.practice.repository.PronWordSetRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 

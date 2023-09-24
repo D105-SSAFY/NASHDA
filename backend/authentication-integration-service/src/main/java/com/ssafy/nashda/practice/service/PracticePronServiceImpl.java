@@ -9,6 +9,7 @@ import com.ssafy.nashda.practice.dto.InternalPronResponse;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,8 +24,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class PracticePronServiceImpl implements PracticePronService {
     private final TextProcessService textProcessService;
     private final S3Uploader s3Uploader;
-   private static final String URL = "http://172.17.0.5:8082";
-    // private static final String URL = "http://localhost:8082";
+
+
+    @Value("${env.URL}")
+   private String URL;
+    
     @Override
     public PronResponseDto getPronWordSets(int index) throws Exception {
         WebClient client = WebClient.builder()
