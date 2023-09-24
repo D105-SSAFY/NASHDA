@@ -35,7 +35,7 @@ import java.util.Map;
 @Slf4j
 public class TestServiceImpl implements TestService {
 
-    private static final String URL = "http://localhost:8082";
+    private static final String URL = "http://172.17.0.5:8082";
     private final MongoTemplate mongoTemplate;
     private final WordTestResultRepository wordTestResultRepository;
     private final SentenceTestResultRepository sentenceTestResultRepository;
