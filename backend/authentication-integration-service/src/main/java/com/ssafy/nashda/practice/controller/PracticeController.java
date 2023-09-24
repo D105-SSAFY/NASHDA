@@ -4,7 +4,6 @@ import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
 import com.ssafy.nashda.practice.dto.PronSTTResponseDto;
-import com.ssafy.nashda.practice.dto.InternalPronNumResponseDto;
 import com.ssafy.nashda.practice.service.PracticePronService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +19,7 @@ import org.springframework.web.reactive.function.client.WebClient;
  * 연습 문제 전송 컨트롤러
  * 2023-09-19
  * 조경호
- * */
+ */
 
 @Slf4j
 @RestController
@@ -29,26 +28,26 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class PracticeController {
     private final PracticePronService practicePronService;
 
-    
-    @GetMapping("/pron/test")
-    public ResponseEntity<? extends BaseResponseBody> test() throws Exception {
 
-        WebClient client = WebClient.builder()
-                .baseUrl("http://localhost:8082")
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .build();
-
-        ResponseEntity<InternalPronNumResponseDto> block = client.get()
-                .uri("/practice/pron/test")
-                .retrieve()
-                .toEntity(InternalPronNumResponseDto.class)
-                .block();
-
-        log.info("응답 : {}", block);
-        InternalPronNumResponseDto body = block.getBody();
-
-        return new ResponseEntity<>(new BaseResponseBody(200, "소통 테스트 성공", body), HttpStatus.OK);
-    }
+//    @GetMapping("/pron/test")
+//    public ResponseEntity<? extends BaseResponseBody> test() throws Exception {
+//
+//        WebClient client = WebClient.builder()
+//                .baseUrl("http://localhost:8082")
+//                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+//                .build();
+//
+//        ResponseEntity<InternalPronNumResponseDto> block = client.get()
+//                .uri("/practice/pron/test")
+//                .retrieve()
+//                .toEntity(InternalPronNumResponseDto.class)
+//                .block();
+//
+//        log.info("응답 : {}", block);
+//        InternalPronNumResponseDto body = block.getBody();
+//
+//        return new ResponseEntity<>(new BaseResponseBody(200, "소통 테스트 성공", body), HttpStatus.OK);
+//    }
 
     // 문제 개수 확인
     @GetMapping("/pron/word")
@@ -127,7 +126,7 @@ public class PracticeController {
     }
 
     @PostMapping(value = "/pron/result", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<? extends BaseResponseBody> getPronunciation(@RequestPart(value="sound", required = false) MultipartFile sound,
+    public ResponseEntity<? extends BaseResponseBody> getPronunciation(@RequestPart(value = "sound", required = false) MultipartFile sound,
                                                                        @RequestPart(value = "requestDto") PracticePronRequestDto practicePronRequestDto) throws Exception {
 
         String stt = practicePronService.getSTT(sound, practicePronRequestDto.getIndex(), practicePronRequestDto.getType());

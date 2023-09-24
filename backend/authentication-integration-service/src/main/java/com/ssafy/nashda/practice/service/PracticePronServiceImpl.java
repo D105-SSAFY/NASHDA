@@ -1,11 +1,11 @@
 package com.ssafy.nashda.practice.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.nashda.common.dto.InternalResponseDto;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
 import com.ssafy.nashda.common.s3.S3Uploader;
-import com.ssafy.nashda.practice.dto.InternalPronNumResponseDto;
-import com.ssafy.nashda.practice.dto.InternalPronResponse;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +22,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RequiredArgsConstructor
 @Slf4j
 public class PracticePronServiceImpl implements PracticePronService {
+    private final ObjectMapper mapper;
     private final TextProcessService textProcessService;
     private final S3Uploader s3Uploader;
 
 
     @Value("${env.URL}")
    private String URL;
-    
+
     @Override
     public PronResponseDto getPronWordSets(int index) throws Exception {
         WebClient client = WebClient.builder()
@@ -36,7 +37,7 @@ public class PracticePronServiceImpl implements PracticePronService {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        ResponseEntity<InternalPronResponse> response = client.get()
+        ResponseEntity<InternalResponseDto> response = client.get()
                 .uri("/practice/pron/word/" + index)
                 .retrieve()
                 .onStatus(
@@ -51,11 +52,13 @@ public class PracticePronServiceImpl implements PracticePronService {
                             return new BadRequestException(ErrorCode.TEST);
                         })
                 )
-                .toEntity(InternalPronResponse.class)
+                .toEntity(InternalResponseDto.class)
                 .block();
 
-//        log.info("response : {}", response.getBody().getData());
-        return response.getBody().getData();
+        log.info("response : {}, type : {}", response.getBody().getData(), response.getBody().getData().getClass().getName());
+
+
+        return mapper.convertValue(response.getBody().getData(), PronResponseDto.class);
     }
 
 
@@ -69,7 +72,7 @@ public class PracticePronServiceImpl implements PracticePronService {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        ResponseEntity<InternalPronResponse> response = client.get()
+        ResponseEntity<InternalResponseDto> response = client.get()
                 .uri("/practice/pron/phase/" + index)
                 .retrieve()
                 .onStatus(
@@ -84,10 +87,10 @@ public class PracticePronServiceImpl implements PracticePronService {
                             return new BadRequestException(ErrorCode.TEST);
                         })
                 )
-                .toEntity(InternalPronResponse.class)
+                .toEntity(InternalResponseDto.class)
                 .block();
 
-        return response.getBody().getData();
+        return mapper.convertValue(response.getBody().getData(), PronResponseDto.class);
     }
 
 
@@ -100,7 +103,7 @@ public class PracticePronServiceImpl implements PracticePronService {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        ResponseEntity<InternalPronResponse> response = client.get()
+        ResponseEntity<InternalResponseDto> response = client.get()
                 .uri("/practice/pron/simple/" + index)
                 .retrieve()
                 .onStatus(
@@ -115,9 +118,9 @@ public class PracticePronServiceImpl implements PracticePronService {
                             return new BadRequestException(ErrorCode.TEST);
                         })
                 )
-                .toEntity(InternalPronResponse.class)
+                .toEntity(InternalResponseDto.class)
                 .block();
-        return response.getBody().getData();
+        return mapper.convertValue(response.getBody().getData(), PronResponseDto.class);
     }
 
 
@@ -128,7 +131,7 @@ public class PracticePronServiceImpl implements PracticePronService {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        ResponseEntity<InternalPronResponse> response = client.get()
+        ResponseEntity<InternalResponseDto> response = client.get()
                 .uri("/practice/pron/complex/" + index)
                 .retrieve()
                 .onStatus(
@@ -143,10 +146,10 @@ public class PracticePronServiceImpl implements PracticePronService {
                             return new BadRequestException(ErrorCode.TEST);
                         })
                 )
-                .toEntity(InternalPronResponse.class)
+                .toEntity(InternalResponseDto.class)
                 .block();
 
-        return response.getBody().getData();
+        return mapper.convertValue(response.getBody().getData(), PronResponseDto.class);
     }
 
 
@@ -158,14 +161,13 @@ public class PracticePronServiceImpl implements PracticePronService {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        ResponseEntity<InternalPronNumResponseDto> response = client.get()
+        ResponseEntity<InternalResponseDto> response = client.get()
                 .uri("/practice/pron/nums/" + seqName)
                 .retrieve()
-                .toEntity(InternalPronNumResponseDto.class)
+                .toEntity(InternalResponseDto.class)
                 .block();
-        log.info("response : {}", response.getBody().getData());
-
-        return response.getBody().getData();
+        log.info("response : {}, type : {}", response.getBody().getData(), response.getBody().getData().getClass().getName());
+        return (long) (int) response.getBody().getData();
     }
 
     @Override
@@ -189,7 +191,7 @@ public class PracticePronServiceImpl implements PracticePronService {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        ResponseEntity<InternalPronResponse> response = client.get()
+        ResponseEntity<InternalResponseDto> response = client.get()
                 .uri("/practice/pron/" + type + "/" + index)
                 .retrieve()
                 .onStatus(
@@ -204,10 +206,10 @@ public class PracticePronServiceImpl implements PracticePronService {
                             return new BadRequestException(ErrorCode.TEST);
                         })
                 )
-                .toEntity(InternalPronResponse.class)
+                .toEntity(InternalResponseDto.class)
                 .block();
 
-        PronResponseDto pronResponse = response.getBody().getData();
+        PronResponseDto pronResponse = (PronResponseDto) response.getBody().getData();
         String convertOrigin = pronResponse.getConvert(); // 원발음
         String origin = pronResponse.getOrigin(); // 원문
 
