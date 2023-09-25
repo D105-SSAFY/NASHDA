@@ -126,7 +126,6 @@ export default function PronunciationSection({ props: { pronunciation } }) {
         };
 
         getSTT();
-        setOnUpdate(false);
     }, [onUpdate]);
 
     return (

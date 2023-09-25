@@ -22,7 +22,7 @@ export default function VoiceModal({ props: { pronunciation, visible, offModal, 
                 <s.ButtonWrapper>
                     <FilledButton props={{ background: "rgb(174, 126, 242)", color: "#ffffff", callback }}>
                         <MicOffIcon />
-                        <span>녹음 중지</span>
+                        <span>녹음 완료</span>
                     </FilledButton>
                 </s.ButtonWrapper>
             </s.Section>

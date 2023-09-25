@@ -30,7 +30,7 @@ export default function SoundWave({ props: { start } }) {
 
     const tick = useCallback(() => {
         analyser.current.getByteTimeDomainData(dataArray.current);
-        setAudioData(dataArray.current);
+        setAudioData([...dataArray.current]);
         rafId.current = requestAnimationFrame(tick);
     }, [setAudioData]);
 

@@ -11,7 +11,7 @@ export default function AudioVisualiser({ props: { audioData } }) {
         let x = 0;
 
         context.lineWidth = 2;
-        context.strokeStyle = "#000000";
+        context.strokeStyle = "rgb(174, 126, 242)";
         context.clearRect(0, 0, width, height);
         context.beginPath();
         context.moveTo(0, height / 2);
@@ -26,5 +26,5 @@ export default function AudioVisualiser({ props: { audioData } }) {
         context.stroke();
     }, [audioData]);
 
-    return <canvas width="300" height="300" ref={canvasRef} />;
+    return <canvas width="520" height="200" ref={canvasRef} />;
 }

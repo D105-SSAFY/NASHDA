@@ -43,12 +43,12 @@ export const Pron = styled.p`
     font-weight: 500;
     color: rgb(174, 126, 242);
 
-    margin-bottom: 40px;
+    /* margin-bottom: 40px; */
 `;
 
 export const ButtonWrapper = styled.div`
     width: 220px;
-    margin: 40px auto 0;
+    margin: 0 auto 0;
 
     display: flex;
 `;
