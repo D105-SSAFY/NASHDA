@@ -7,6 +7,6 @@ import java.util.List;
 @Getter
 @Setter
 public class MemorizeMessageReqDto {
-    private String cacheId;
+    private String id;
     private List<ChatMessageDto> messages;
 }

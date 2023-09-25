@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Data
 public class MessageReqDto implements Serializable {
-    private String cacheId;
+    private String id;
 
     @NotNull
     @NotEmpty

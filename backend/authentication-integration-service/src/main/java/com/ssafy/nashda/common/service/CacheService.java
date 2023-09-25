@@ -15,7 +15,7 @@ import java.util.UUID;
 public class CacheService {
     private final CacheManager cacheManager;
 
-    public String saveCache(MessageReqDto messageReqDto) {
+    public String saveCache(MemorizeMessageReqDto memorizeMessageReqDto) {
         Cache cache = cacheManager.getCache("MyCache");
         String id = UUID.randomUUID().toString();
 
@@ -24,7 +24,7 @@ public class CacheService {
         // 캐시에 객체 저장
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
              ObjectOutput out = new ObjectOutputStream(bos)) {
-                 out.writeObject(messageReqDto);
+                 out.writeObject(memorizeMessageReqDto);
                  bytes = bos.toByteArray();
              } catch (IOException e) {
                  e.printStackTrace();
