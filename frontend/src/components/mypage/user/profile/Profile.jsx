@@ -1,10 +1,10 @@
 import React from "react";
 import * as p from "./style";
-import { MoreButton } from "components/mypage/user/style";
+import { MoreButton, CloseButton } from "components/mypage/user/style";
 
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 
-export default function Profile({ getMore }) {
+export default function Profile({ more, getMore }) {
     const detailText = (str) => {
         const result = [];
         for (let i = 0; i < str.length; i++) {
@@ -12,6 +12,11 @@ export default function Profile({ getMore }) {
         }
 
         return result;
+    };
+
+    const switchedHandler = () => {
+        if (more === 4) getMore(0);
+        else getMore(4);
     };
 
     return (
@@ -24,6 +29,7 @@ export default function Profile({ getMore }) {
                 <p.DetailTypeText>{detailText("직업")}</p.DetailTypeText>
                 <p.DetailTypeText>{detailText("취미")}</p.DetailTypeText>
             </p.DetailTypeBox>
+            <p.DivideLine />
             <p.DetailContentBox>
                 <p.DetailContentText>he2kape@gmail.com</p.DetailContentText>
                 <p.DetailContentText>안세혁</p.DetailContentText>
@@ -32,10 +38,11 @@ export default function Profile({ getMore }) {
                 <p.DetailContentText>학생</p.DetailContentText>
                 <p.DetailContentText>사진</p.DetailContentText>
             </p.DetailContentBox>
-            <MoreButton onClick={() => getMore(4)}>
-                상세 프로필
+            <MoreButton onClick={() => switchedHandler()}>
+                {more === 4 ? "수정 완료" : "상세 수정"}
                 <ArrowCircleRightOutlinedIcon />
             </MoreButton>
+            <CloseButton onClick={() => getMore(0)} toggle={more !== 4} />
         </>
     );
 }

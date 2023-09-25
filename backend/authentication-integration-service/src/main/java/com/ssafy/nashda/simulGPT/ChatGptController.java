@@ -39,7 +39,11 @@ public class ChatGptController {
 
         // 해당 유저가 처음 보낸 요청인지 재요청인지 Id 확인
         if (ObjectUtils.isEmpty(messageReqDto.getId())) {
-            messages.add(new ChatMessageDto("system", "장소 : 카페 상황 : 손님이 카페에 음료를 사러 왔음 조건1: 상황이 종료 되었을 경우 : 상황 종료와 바리스타의 말 출력 조건2: 상황과 장소에 맞지 않을 경우 {판단: 옳지않음, 이유: (옳지않은 이유), 바리스타 : (바리스타의 대답)} 과 같은 json 포맷으로 출력해줘  조건3: 카페에서는 음료와 디저트만 주문할 수 있음, 주문 범위를 벗어나면 상황에 맞지 않다고 판단 조건4: 너는 바리스타야."));
+            messages.add(new ChatMessageDto("system", "장소 : 카페 상황 : 손님이 카페에 음료를 사러 왔음. " +
+                                                            "조건1: 상황이 종료 되었을 경우 : '상황 종료' && 바리스타의 대답의 형태로 출력 " +
+                                                            "조건2: 상황과 장소에 맞지 않을 경우 '옳지않음',옳지않은 이유,바리스타의 대답 출력, 옳지 않은 이유 뒤에 && 붙여줘. " +
+                                                            "조건3: 카페에서는 음료와 디저트만 주문할 수 있음, 주문 범위를 벗어나면 상황에 맞지 않다고 판단 " +
+                                                            "조건4: 너는 바리스타야."));
             messages.add(new ChatMessageDto("assistant", "어서오세요. nashda카페입니다. 주문 도와드릴까요?"));
         } else {
              memorizeChat = chatGptRepository.findById(messageReqDto.getId())

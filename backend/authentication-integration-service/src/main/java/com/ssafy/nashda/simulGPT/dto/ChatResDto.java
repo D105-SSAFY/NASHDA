@@ -8,7 +8,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class ChatResDto {
-    private String cacheId;
     private String id;
     private String object;
     private Long created;

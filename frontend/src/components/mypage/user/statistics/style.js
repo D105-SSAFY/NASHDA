@@ -94,8 +94,9 @@ export const GraphWeek = styled.div`
 
 export const GraphInfo = styled.div`
     position: absolute;
+    top: 50%;
     right: 0;
-    margin: auto 0;
+    transform: translateY(-50%);
     margin-right: 3rem;
 
     text-align: right;

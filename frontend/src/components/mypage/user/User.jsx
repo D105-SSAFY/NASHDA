@@ -7,21 +7,18 @@ import Archievement from "components/mypage/user/archievement/Archievement";
 import Profile from "components/mypage/user/profile/Profile";
 
 import NicknameDetail from "components/mypage/user/nickname/nicknameDetail/NicknameDetail";
+import ArchievementDetail from "./archievement/archievementDetail/ArchievementDetail";
 
 export default function Setting({ tabSwitch }) {
     const [more, setMore] = React.useState(0);
 
-    const getMore = (n) => {
-        setMore(n);
-    };
-
     return (
         <>
-            <u.DeFocusTouch onClick={() => getMore(0)} />
+            <u.DeFocusTouch onClick={() => setMore(0)} />
             <u.UserSection more={more}>
                 {/* 유저 별명 카드 */}
                 <u.UserCard focus={more === 1} defocus={more === 0 || more === 1}>
-                    <Nickname getMore={getMore} />
+                    <Nickname getMore={setMore} />
                 </u.UserCard>
                 {/* 유저 통계 카드 */}
                 <u.UserCard focus={more === 2} defocus={more === 0 || more === 1 || more === 2 || more === 3}>
@@ -29,16 +26,19 @@ export default function Setting({ tabSwitch }) {
                         <Statistics tabSwitch={tabSwitch} />
                     </u.modeChange>
                     <u.modeChange toggle={more === 1}>
-                        <NicknameDetail getMore={getMore} />
+                        <NicknameDetail getMore={setMore} />
+                    </u.modeChange>
+                    <u.modeChange toggle={more === 3}>
+                        <ArchievementDetail getMore={setMore} />
                     </u.modeChange>
                 </u.UserCard>
                 {/* 유저 달성 카드 */}
                 <u.UserCard focus={more === 3} defocus={more === 0 || more === 3}>
-                    <Archievement getMore={getMore} />
+                    <Archievement getMore={setMore} />
                 </u.UserCard>
                 {/* 유저 상세 카드 */}
                 <u.UserCard focus={more === 4} defocus={more === 0 || more === 4}>
-                    <Profile getMore={getMore} />
+                    <Profile getMore={setMore} more={more} />
                 </u.UserCard>
             </u.UserSection>
         </>

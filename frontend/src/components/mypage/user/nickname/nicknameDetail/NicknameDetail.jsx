@@ -17,7 +17,7 @@ export default function NicknameDetail({ getMore }) {
             </n.ChangeBox>
             <CloseButton onClick={() => getMore(0)} />
             <MoreButton>
-                변경
+                변경 완료
                 <ArrowCircleRightOutlinedIcon />
             </MoreButton>
         </>
