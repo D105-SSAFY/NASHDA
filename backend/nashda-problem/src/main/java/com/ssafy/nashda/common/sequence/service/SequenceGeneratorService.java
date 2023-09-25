@@ -1,4 +1,4 @@
-package com.ssafy.nashda.practice.service;
+package com.ssafy.nashda.common.sequence.service;
 
 public interface SequenceGeneratorService {
 

@@ -1,6 +1,6 @@
-package com.ssafy.nashda.practice.service;
+package com.ssafy.nashda.common.sequence.service;
 
-import com.ssafy.nashda.practice.entity.DatabaseSequence;
+import com.ssafy.nashda.common.sequence.entity.DatabaseSequence;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.MongoOperations;

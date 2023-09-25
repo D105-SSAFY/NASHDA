@@ -1,4 +1,4 @@
-package com.ssafy.nashda.practice.entity;
+package com.ssafy.nashda.common.sequence.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
