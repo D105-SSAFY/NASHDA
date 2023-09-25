@@ -4,9 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
+import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.test.dto.request.InternalTestReqDto;
+import com.ssafy.nashda.test.dto.request.SentenceTestSpeakReqDto;
 import com.ssafy.nashda.test.dto.request.WordTestResultReqDto;
+import com.ssafy.nashda.test.dto.request.WordTestSpeakReqDto;
 import com.ssafy.nashda.test.dto.response.TestStartWordResDto;
 import com.ssafy.nashda.test.entity.SentenceTestResult;
 import com.ssafy.nashda.test.entity.WordTestResult;
@@ -27,6 +30,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +39,9 @@ import java.util.Map;
 @Slf4j
 public class TestServiceImpl implements TestService {
 
+    private final S3Uploader s3Uploader;
     private static final String URL = "http://172.17.0.5:8082";
+    //    private static final String URL = "http://localhost:8082";
     private final MongoTemplate mongoTemplate;
     private final WordTestResultRepository wordTestResultRepository;
     private final SentenceTestResultRepository sentenceTestResultRepository;
@@ -76,7 +82,7 @@ public class TestServiceImpl implements TestService {
 
 
         Week week = weekService.getCurrentWeekIdx().orElseThrow();
-        int tryCount = wordTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(),week.getWeekIdx()).size();
+        int tryCount = wordTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
 
 
         WordTestResult testResult = WordTestResult.builder()
@@ -141,7 +147,7 @@ public class TestServiceImpl implements TestService {
 
 
         Week week = weekService.getCurrentWeekIdx().orElseThrow();
-        int tryCount = sentenceTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(),week.getWeekIdx()).size();
+        int tryCount = sentenceTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
 
         SentenceTestResult testResult = SentenceTestResult.builder()
                 .memberNumber(member.getMemberNum())
@@ -170,8 +176,41 @@ public class TestServiceImpl implements TestService {
         Update update = new Update();
         update.set("score", score);
 
+        /*
+            이연지는 보아라
+            list에 하나를 추가하고싶으면
+            update.push("field 명", "추가할 값");
+         */
+
         mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
     }
 
+    @Override
+    public String sttWordTest(WordTestSpeakReqDto reqDto) {
+
+        //받아온 soundfile을 stt로 변환
+
+        //변환된 text를 반환
+
+        return null;
+    }
+
+    @Override
+    public String sttSentenceTest(SentenceTestSpeakReqDto reqDto) throws IOException {
+
+        //s3에 sound파일을 업로드 한다.
+        String url = s3Uploader.uploadFiles(reqDto.getSound(), "sentence_test");
+
+        //받아온 soundfile을 stt로 변환
+        String stt = "im stt";
+
+        //url을 mongodb에 저장
+        Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
+        Update update = new Update().set("user_pronunciation." + reqDto.getOrder(), url);
+        mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
+
+
+        return stt;
+    }
 
 }

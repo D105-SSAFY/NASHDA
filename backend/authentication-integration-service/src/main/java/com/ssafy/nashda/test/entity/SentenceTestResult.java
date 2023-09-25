@@ -32,7 +32,7 @@ public class SentenceTestResult {
     private List<String> pronunciation;
 
     @Field("user_pronunciation")
-    private List<String> userPron;
+    private List<String> userPron;  //사용자 음성 파일 url 저장
 
     @Builder
     public SentenceTestResult(long memberNumber, long week, List<String> question, List<String> pronunciation) {
