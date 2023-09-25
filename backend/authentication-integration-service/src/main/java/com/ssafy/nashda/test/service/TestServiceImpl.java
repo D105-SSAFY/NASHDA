@@ -11,9 +11,7 @@ import com.ssafy.nashda.test.dto.request.MixTestSpeekReqDto;
 import com.ssafy.nashda.test.dto.request.SentenceTestSpeakReqDto;
 import com.ssafy.nashda.test.dto.request.WordTestResultReqDto;
 import com.ssafy.nashda.test.dto.response.*;
-import com.ssafy.nashda.test.entity.MixTestResult;
-import com.ssafy.nashda.test.entity.SentenceTestResult;
-import com.ssafy.nashda.test.entity.WordTestResult;
+import com.ssafy.nashda.test.entity.*;
 import com.ssafy.nashda.test.repository.MixTestResultRepository;
 import com.ssafy.nashda.test.repository.SentenceTestResultRepository;
 import com.ssafy.nashda.test.repository.WordTestResultRepository;
@@ -35,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -204,13 +203,10 @@ public class TestServiceImpl implements TestService {
     @Override
     public String sttSentenceTest(SentenceTestSpeakReqDto reqDto) throws IOException {
 
-        //s3에 sound파일을 업로드 한다.
         String url = s3Uploader.uploadFiles(reqDto.getSound(), "sentence_test");
 
-        //받아온 soundfile을 stt로 변환
         String stt = "im stt";
 
-        //url을 mongodb에 저장
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
         Update update = new Update().set("user_pronunciation." + reqDto.getOrder(), url);
         mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
@@ -221,9 +217,6 @@ public class TestServiceImpl implements TestService {
     @Override
     public MixTestStartResDto mixTestStart(Member member) {
 
-
-
-        //blank 먼저 받아온다.
         WebClient client = WebClient.builder()
                 .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -246,9 +239,9 @@ public class TestServiceImpl implements TestService {
                 })
                 .block();
 
-        List<InternalBlankTestResDto> blankList = (List<InternalBlankTestResDto>) blankRes.get("data");
+        List<BlankTest> blankList = (List<BlankTest>) blankRes.get("data");
 
-        //speed게임1을 받아온다.
+
         Map<String, Object> speed1 = client.get()
                 .uri("/test/speed1/random")
                 .retrieve()
@@ -266,9 +259,8 @@ public class TestServiceImpl implements TestService {
                 })
                 .block();
 
-        List<InternalSpeedTest1ResDto> speed1List = (List<InternalSpeedTest1ResDto>) speed1.get("data");
+        List<SpeedTest1> speed1List = (List<SpeedTest1>) speed1.get("data");
 
-        //speed 게임2를 받아온다.
         Map<String, Object> speed2 = client.get()
                 .uri("/test/speed2/random")
                 .retrieve()
@@ -286,7 +278,7 @@ public class TestServiceImpl implements TestService {
                 })
                 .block();
 
-        List<InternalSpeedTest2ResDto> speed2List = (List<InternalSpeedTest2ResDto>) speed2.get("data");
+        List<SpeedTest2> speed2List = (List<SpeedTest2>) speed2.get("data");
         Week week = weekService.getCurrentWeekIdx().orElseThrow();
         int tryCount = mixTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
 
@@ -306,7 +298,7 @@ public class TestServiceImpl implements TestService {
                 .index(index)
                 .try_count(tryCount)
                 .blank(blankList)
-                .seepd1(speed1List)
+                .speed1(speed1List)
                 .speed2(speed2List)
                 .build();
 
@@ -323,10 +315,27 @@ public class TestServiceImpl implements TestService {
 
         //url을 mongodb에 저장
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
-        Update update = new Update().set("blank_test." + reqDto.getOrder()+".user_answer", stt);
-        mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
+        if (type.equals("blank")) {
+            Update update = new Update().set("blank_test." + reqDto.getOrder() + ".user_answer", stt);
+            mongoTemplate.updateFirst(query, update, MixTestResult.class);
+            update = new Update().set("blank_test." + reqDto.getOrder() + ".sound_url", url);
+            mongoTemplate.updateFirst(query, update, MixTestResult.class);
+        } else {
+            Update update = new Update().set("speed_test1." + reqDto.getOrder() + ".user_answer", stt);
+            mongoTemplate.updateFirst(query, update, MixTestResult.class);
+            update = new Update().set("speed_test1." + reqDto.getOrder() + ".sound_url", url);
+            mongoTemplate.updateFirst(query, update, MixTestResult.class);
+        }
+
 
         return stt;
+    }
+
+    @Override
+    public void saveWeekTestSpeed2(String index, String url, int order) {
+        Query query = new Query(Criteria.where("_id").is(index));
+        Update update = new Update().set("speed_test2." + order + ".user_answer", url);
+        mongoTemplate.updateFirst(query, update, MixTestResult.class);
     }
 
     @Override

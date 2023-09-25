@@ -1,5 +1,6 @@
 package com.ssafy.nashda.test.controller;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
@@ -99,7 +100,7 @@ public class TestController {
     }
 
     @GetMapping("/week")
-    public ResponseEntity<? extends BaseResponseBody> mixTestStart(@RequestHeader("Authorization") String token) throws Exception {
+    public ResponseEntity<? extends BaseResponseBody> weekTestStart(@RequestHeader("Authorization") String token) throws Exception {
 
         Member member = memberController.findMemberByToken(token);
         MixTestStartResDto mixTestStartResDto = testService.mixTestStart(member);
@@ -110,7 +111,7 @@ public class TestController {
     }
 
     @PostMapping(value = "/week/blank/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<? extends BaseResponseBody> mixTestUserSpeak(
+    public ResponseEntity<? extends BaseResponseBody> weekTestBlankUser(
             @RequestParam("index") String index, @RequestParam("sound") MultipartFile sound, @RequestParam("order")int order
            ) throws Exception {
 
@@ -121,9 +122,34 @@ public class TestController {
                 .build();
         String stt = testService.sttMixTest(reqDto,"blank");
 
-        return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 변환 성공(문장)", stt),
+        return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 저장 성공(blank)", stt),
                 HttpStatus.OK);
     }
+    @PostMapping(value = "/week/speed1/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<? extends BaseResponseBody> weekTestSpeed1User(
+            @RequestParam("index") String index, @RequestParam("sound") MultipartFile sound, @RequestParam("order")int order
+    ) throws Exception {
+
+        MixTestSpeekReqDto reqDto = MixTestSpeekReqDto.builder()
+                .index(index)
+                .order(order)
+                .sound(sound)
+                .build();
+        String stt = testService.sttMixTest(reqDto,"speed1");
+
+        return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 저장 성공(speed)", stt),
+                HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/week/speed2/user")
+    public ResponseEntity<? extends BaseResponseBody> weekTestSpeed2User(@RequestBody Map<String, Object> map){
+
+        testService.saveWeekTestSpeed2((String) map.get("index"), (String) map.get("url"), (Integer) map.get("order"));
+
+        return new ResponseEntity<>(new BaseResponseBody(200, "사용자 선택 저장 성공(speed2)"),
+                HttpStatus.OK);
+    }
+
 
     @PostMapping("/week/result")
     public ResponseEntity<? extends BaseResponseBody> weekTestResult(@RequestBody Map<String, Object> map) throws Exception {

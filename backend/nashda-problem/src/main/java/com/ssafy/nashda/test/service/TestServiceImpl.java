@@ -28,7 +28,6 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public List<ImgWordSet> getSpeed1Sets() throws Exception {
-
         List<ImgWordSet> sets = imgWordSetRepository.getRandom();
         return sets;
     }
@@ -40,7 +39,7 @@ public class TestServiceImpl implements TestService {
 
         Set<Integer> randomNumSet = new HashSet<>();
         while (randomNumSet.size() < 3) {
-            long random = (long) (Math.random() * num);
+            long random = (long) (Math.random() * num)+1;
             randomNumSet.add((int) random);
         }
         return new ArrayList<>(randomNumSet);

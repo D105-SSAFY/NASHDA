@@ -20,7 +20,6 @@ public interface TestService {
     String sttSentenceTest(SentenceTestSpeakReqDto reqDto) throws IOException;
     MixTestStartResDto mixTestStart(Member member);
     String sttMixTest(MixTestSpeekReqDto reqDto, String type) throws IOException;
-//    String sttWeekTestBlank(MixTestSpeekReqDto reqDto) throws IOException;
-
+    void saveWeekTestSpeed2(String index, String url, int order);
     void saveWeekTestScore(String index, int score);
 }

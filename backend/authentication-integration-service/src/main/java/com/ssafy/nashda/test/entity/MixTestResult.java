@@ -1,10 +1,5 @@
 package com.ssafy.nashda.test.entity;
-
-import com.ssafy.nashda.test.dto.response.InternalBlankTestResDto;
-import com.ssafy.nashda.test.dto.response.InternalSpeedTest1ResDto;
-import com.ssafy.nashda.test.dto.response.InternalSpeedTest2ResDto;
 import lombok.*;
-import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -41,19 +36,16 @@ public class MixTestResult {
     private int tryCount;
 
     @Field("blank_test")
-    private List<InternalBlankTestResDto> blankTest;
-
-    //blank에서는 user가 선택하는건 빈칸에 어떤 단어가 들어가야하는지이다.
-
+    private List<BlankTest> blankTest;
 
     @Field("speed_test1")
-    private List<InternalSpeedTest1ResDto> speedTest1;
+    private List<SpeedTest1> speedTest1;
 
     @Field("speed_test2")
-    private List<InternalSpeedTest2ResDto> speedTest2;
+    private List<SpeedTest2> speedTest2;
 
     @Builder
-    public MixTestResult(long memberNumber, long week, int tryCount, List<InternalBlankTestResDto> blankTest, List<InternalSpeedTest1ResDto> speedTest1, List<InternalSpeedTest2ResDto> speedTest2) {
+    public MixTestResult(long memberNumber, long week, int tryCount, List<BlankTest> blankTest, List<SpeedTest1> speedTest1, List<SpeedTest2> speedTest2) {
         this.memberNumber = memberNumber;
         this.week = week;
         this.tryCount = tryCount;
