@@ -1,18 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "redux/slice/userSlice";
 
 import * as t from "./style";
 
 import AirIcon from "@mui/icons-material/Air";
 
 export default function Topbar() {
-    const user = useSelector((state) => state.user);
+    // Dispath 초기화
     const dispatch = useDispatch();
 
-    console.log(user, dispatch);
+    // 유저 정보 가져오기
+    const user = useSelector((state) => state.user);
 
+    // Topbar 로그인 상태
     const [isLogin, setIsLogin] = useState(false);
 
+    // 유저 정보가 바뀔 때마다 Topbar:isLogin 상태 변경
+    useEffect(() => {
+        if (user.accessToken) {
+            setIsLogin(true);
+        } else {
+            setIsLogin(false);
+        }
+    }, [user]);
+
+    // 로그아웃
+    const signout = () => {
+        dispatch(clearUser());
+    };
+
+    // !!!!
+    // 테스트용 로그인 토글 메소드 (추후 삭제)
     const loginToggle = () => {
         setIsLogin(!isLogin);
     };
@@ -37,7 +56,9 @@ export default function Topbar() {
                             <t.NavLink to="/settings">설정</t.NavLink>
                         </t.NavListItem>
                         <t.NavListItem visible={isLogin}>
-                            <t.NavLink to="/signout">로그아웃</t.NavLink>
+                            <t.NavLink to="/" onClick={signout}>
+                                로그아웃
+                            </t.NavLink>
                         </t.NavListItem>
                         <t.NavListItem visible={!isLogin}>
                             <t.NavLink to="/signin">로그인</t.NavLink>
