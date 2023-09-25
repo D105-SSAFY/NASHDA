@@ -13,7 +13,7 @@ export default function FormInputCol({ data: { text, type, id, name, onChangeFun
                 ref={ref}
                 placeholder={(placeholder ??= "")}
                 value={value}
-                readOnly={(readOnly ??= false)}
+                readOnly={readOnly === 3 || readOnly === 4 || readOnly === 5}
                 check={check === 2}
             ></f.StyledInput>
             <f.StyledButton onClick={onClickFunc} check={check === 2}>
