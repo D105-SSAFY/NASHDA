@@ -7,17 +7,21 @@ import com.ssafy.nashda.common.error.response.ErrorResponse;
 import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.test.dto.request.InternalTestReqDto;
+import com.ssafy.nashda.test.dto.request.MixTestSpeekReqDto;
 import com.ssafy.nashda.test.dto.request.SentenceTestSpeakReqDto;
 import com.ssafy.nashda.test.dto.request.WordTestResultReqDto;
-import com.ssafy.nashda.test.dto.response.TestStartWordResDto;
+import com.ssafy.nashda.test.dto.response.*;
+import com.ssafy.nashda.test.entity.MixTestResult;
 import com.ssafy.nashda.test.entity.SentenceTestResult;
 import com.ssafy.nashda.test.entity.WordTestResult;
+import com.ssafy.nashda.test.repository.MixTestResultRepository;
 import com.ssafy.nashda.test.repository.SentenceTestResultRepository;
 import com.ssafy.nashda.test.repository.WordTestResultRepository;
 import com.ssafy.nashda.week.entity.Week;
 import com.ssafy.nashda.week.service.WeekService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -40,17 +44,19 @@ import java.util.Map;
 public class TestServiceImpl implements TestService {
 
     private final S3Uploader s3Uploader;
-    private static final String URL = "http://172.17.0.5:8082";
-    //    private static final String URL = "http://localhost:8082";
+
+    @Value("${env.URL}")
+    private String URL;
     private final MongoTemplate mongoTemplate;
     private final WordTestResultRepository wordTestResultRepository;
     private final SentenceTestResultRepository sentenceTestResultRepository;
+    private final MixTestResultRepository mixTestResultRepository;
     private final WeekService weekService;
     private final ObjectMapper objectMapper;
 
     //단어 문제를 불러오고, mongo에 저장
     @Override
-    public TestStartWordResDto wordTestStart(Member member) {
+    public WordTestStartResDto wordTestStart(Member member) {
 
         WebClient client = WebClient.builder()
                 .baseUrl(URL)
@@ -81,7 +87,7 @@ public class TestServiceImpl implements TestService {
         List<String> convert = internalWordTestReqDto.getConvert();
 
 
-        Week week = weekService.getCurrentWeekIdx().orElseThrow();
+        Week week = weekService.getCurrentWeekIdx().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         int tryCount = wordTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
 
 
@@ -93,7 +99,7 @@ public class TestServiceImpl implements TestService {
                 .build();
         String index = wordTestResultRepository.save(testResult).getId();
 
-        TestStartWordResDto resDto = TestStartWordResDto.builder()
+        WordTestStartResDto resDto = WordTestStartResDto.builder()
                 .try_count(tryCount)
                 .index(index)
                 .problem(problem)
@@ -116,7 +122,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public TestStartWordResDto sentenceTestStart(Member member) {
+    public WordTestStartResDto sentenceTestStart(Member member) {
         WebClient client = WebClient.builder()
                 .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -157,7 +163,7 @@ public class TestServiceImpl implements TestService {
                 .build();
         String index = sentenceTestResultRepository.save(testResult).getId();
 
-        TestStartWordResDto resDto = TestStartWordResDto.builder()
+        WordTestStartResDto resDto = WordTestStartResDto.builder()
                 .try_count(tryCount)
                 .index(index)
                 .problem(problem)
@@ -210,6 +216,125 @@ public class TestServiceImpl implements TestService {
         mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
 
         return stt;
+    }
+
+    @Override
+    public MixTestStartResDto mixTestStart(Member member) {
+
+
+
+        //blank 먼저 받아온다.
+        WebClient client = WebClient.builder()
+                .baseUrl(URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+
+        Map<String, Object> blankRes = client.get()
+                .uri("/game/blank")
+                .retrieve()
+                .onStatus(
+                        HttpStatus.BAD_REQUEST::equals,
+                        clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
+                            log.info("s : {}", s.getErrorCode());
+                            if (s.getErrorCode() == 4000) {
+                                return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
+                            }
+                            return new BadRequestException(ErrorCode.TEST);
+                        })
+                )
+                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
+                })
+                .block();
+
+        List<InternalBlankTestResDto> blankList = (List<InternalBlankTestResDto>) blankRes.get("data");
+
+        //speed게임1을 받아온다.
+        Map<String, Object> speed1 = client.get()
+                .uri("/test/speed1/random")
+                .retrieve()
+                .onStatus(
+                        HttpStatus.BAD_REQUEST::equals,
+                        clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
+                            log.info("s : {}", s.getErrorCode());
+                            if (s.getErrorCode() == 4000) {
+                                return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
+                            }
+                            return new BadRequestException(ErrorCode.TEST);
+                        })
+                )
+                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
+                })
+                .block();
+
+        List<InternalSpeedTest1ResDto> speed1List = (List<InternalSpeedTest1ResDto>) speed1.get("data");
+
+        //speed 게임2를 받아온다.
+        Map<String, Object> speed2 = client.get()
+                .uri("/test/speed2/random")
+                .retrieve()
+                .onStatus(
+                        HttpStatus.BAD_REQUEST::equals,
+                        clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
+                            log.info("s : {}", s.getErrorCode());
+                            if (s.getErrorCode() == 4000) {
+                                return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
+                            }
+                            return new BadRequestException(ErrorCode.TEST);
+                        })
+                )
+                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
+                })
+                .block();
+
+        List<InternalSpeedTest2ResDto> speed2List = (List<InternalSpeedTest2ResDto>) speed2.get("data");
+        Week week = weekService.getCurrentWeekIdx().orElseThrow();
+        int tryCount = mixTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
+
+
+        MixTestResult mixTestResult = MixTestResult.builder()
+                .memberNumber(member.getMemberNum())
+                .week(week.getWeekIdx())
+                .tryCount(tryCount)
+                .blankTest(blankList)
+                .speedTest1(speed1List)
+                .speedTest2(speed2List)
+                .build();
+
+        String index = mongoTemplate.save(mixTestResult).getId();
+
+        MixTestStartResDto mixTestStartResDto = MixTestStartResDto.builder()
+                .index(index)
+                .try_count(tryCount)
+                .blank(blankList)
+                .seepd1(speed1List)
+                .speed2(speed2List)
+                .build();
+
+        return mixTestStartResDto;
+    }
+
+    @Override
+    public String sttMixTest(MixTestSpeekReqDto reqDto, String type) throws IOException {
+        //s3에 sound파일을 업로드 한다.
+        String url = s3Uploader.uploadFiles(reqDto.getSound(), "week_test");
+
+        //받아온 soundfile을 stt로 변환
+        String stt = "im stt";
+
+        //url을 mongodb에 저장
+        Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
+        Update update = new Update().set("blank_test." + reqDto.getOrder()+".user_answer", stt);
+        mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
+
+        return stt;
+    }
+
+    @Override
+    public void saveWeekTestScore(String index, int score) {
+        Query query = new Query(Criteria.where("_id").is(index));
+        Update update = new Update();
+        update.set("score", score);
+        mongoTemplate.updateFirst(query, update, MixTestResult.class);
     }
 
 }

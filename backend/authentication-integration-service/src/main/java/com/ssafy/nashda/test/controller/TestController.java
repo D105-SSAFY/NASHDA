@@ -1,12 +1,13 @@
 package com.ssafy.nashda.test.controller;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
+import com.ssafy.nashda.test.dto.request.MixTestSpeekReqDto;
 import com.ssafy.nashda.test.dto.request.SentenceTestSpeakReqDto;
 import com.ssafy.nashda.test.dto.request.WordTestResultReqDto;
-import com.ssafy.nashda.test.dto.response.TestStartWordResDto;
+import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
+import com.ssafy.nashda.test.dto.response.WordTestStartResDto;
 import com.ssafy.nashda.test.service.TestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ public class TestController {
     public ResponseEntity<? extends BaseResponseBody> wordTestStart(@RequestHeader("Authorization") String token) throws Exception {
 
         Member member = memberController.findMemberByToken(token);
-        TestStartWordResDto wordTestStartResDto = testService.wordTestStart(member);
+        WordTestStartResDto wordTestStartResDto = testService.wordTestStart(member);
 
         /*  return new ResponseEntity<>(new BaseResponseBody(200, "단어 시험 시작"), wordTestStartResDto), HttpStatus.OK);*/
         return new ResponseEntity<>(new BaseResponseBody(200, "단어 시험 불러오기 성공", wordTestStartResDto),
@@ -52,7 +53,7 @@ public class TestController {
     public ResponseEntity<? extends BaseResponseBody> sentenceTestStart(@RequestHeader("Authorization") String token) throws Exception {
 
         Member member = memberController.findMemberByToken(token);
-        TestStartWordResDto wordTestStartResDto = testService.sentenceTestStart(member);
+        WordTestStartResDto wordTestStartResDto = testService.sentenceTestStart(member);
 
         /*  return new ResponseEntity<>(new BaseResponseBody(200, "단어 시험 시작"), wordTestStartResDto), HttpStatus.OK);*/
         return new ResponseEntity<>(new BaseResponseBody(200, "문장 시험 불러오기 성공", wordTestStartResDto),
@@ -94,6 +95,43 @@ public class TestController {
         String stt = testService.sttSentenceTest(reqDto);
 
         return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 변환 성공(문장)", stt),
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/week")
+    public ResponseEntity<? extends BaseResponseBody> mixTestStart(@RequestHeader("Authorization") String token) throws Exception {
+
+        Member member = memberController.findMemberByToken(token);
+        MixTestStartResDto mixTestStartResDto = testService.mixTestStart(member);
+
+
+        return new ResponseEntity<>(new BaseResponseBody(200, "문장 시험 불러오기 성공", mixTestStartResDto),
+                HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/week/blank/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<? extends BaseResponseBody> mixTestUserSpeak(
+            @RequestParam("index") String index, @RequestParam("sound") MultipartFile sound, @RequestParam("order")int order
+           ) throws Exception {
+
+        MixTestSpeekReqDto reqDto = MixTestSpeekReqDto.builder()
+                .index(index)
+                .order(order)
+                .sound(sound)
+                .build();
+        String stt = testService.sttMixTest(reqDto,"blank");
+
+        return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 변환 성공(문장)", stt),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/week/result")
+    public ResponseEntity<? extends BaseResponseBody> weekTestResult(@RequestBody Map<String, Object> map) throws Exception {
+
+        testService.saveWeekTestScore((String) map.get("index"), (Integer) map.get("score"));
+
+        /*  return new ResponseEntity<>(new BaseResponseBody(200, "단어 시험 시작"), wordTestStartResDto), HttpStatus.OK);*/
+        return new ResponseEntity<>(new BaseResponseBody(200, "문장 시험 결과 저장 성공"),
                 HttpStatus.OK);
     }
 }
