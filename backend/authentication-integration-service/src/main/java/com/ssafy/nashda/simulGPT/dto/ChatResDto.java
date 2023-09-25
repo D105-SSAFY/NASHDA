@@ -14,4 +14,5 @@ public class ChatResDto {
     private String model;
     private List<ChatChoiceDto> choices;
     private UsageDto usage;
+    private Boolean correct;
 }
