@@ -97,8 +97,8 @@ export default function App() {
                                 <Route path="/main" element={<MainPage />} />
                                 <Route path="/sentencetest" element={<SentenceTestPage />} />
 
-                                <Route path="/1" element={<ConversationPage />} />
-                                <Route path="/2" element={<ProblemPage />} />
+                                <Route path="/1" element={<ProblemPage />} />
+                                <Route path="/2" element={<ConversationPage />} />
                                 <Route path="/3" element={<StretchingPage />} />
                             </Route>
                             {/* main page */}
