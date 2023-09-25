@@ -16,4 +16,7 @@ public interface ImgWordSetRepository extends MongoRepository<ImgWordSet, String
             "{'$sample':{size:3}}"})
     public List<ImgWordSet> findRandom(long index);
 
+    @Aggregation(pipeline = {
+            "{'$sample':{size:3}}"})
+    List<ImgWordSet> getRandom();
 }

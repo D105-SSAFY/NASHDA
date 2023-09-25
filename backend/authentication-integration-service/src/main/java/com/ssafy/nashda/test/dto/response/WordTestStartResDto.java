@@ -11,12 +11,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class TestStartWordResDto {
-
+public class WordTestStartResDto {
     private int try_count;
     private String index;   //mongodb의 index
     private List<String> problem;
     private List<String> convert;
-//    private int total_data_count;
-
 }

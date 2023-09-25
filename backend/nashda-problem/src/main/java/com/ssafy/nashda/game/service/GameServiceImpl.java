@@ -61,6 +61,7 @@ public class GameServiceImpl implements GameService {
         ImgWordSet imgWordSet = imgWordSetRepository.findByNum(index)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
 
+
         List<ImgWordSet> list = imgWordSetRepository.findRandom(index);
 
         List<ImgWordSet> imgWordSetList = new ArrayList<>();
