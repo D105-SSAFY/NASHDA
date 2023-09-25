@@ -31,6 +31,9 @@ public class WordTestResult {
     private List<String> question;
     private List<String> pronunciation;
 
+    @Field("sound_url")
+    private List<String> soundURL;
+
     @Field("user_pronunciation")
     private List<String> userPron;
 
