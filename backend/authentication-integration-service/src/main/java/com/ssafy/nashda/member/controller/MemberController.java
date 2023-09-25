@@ -51,6 +51,13 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/valid")
+    public ResponseEntity<? extends BaseResponseBody> vaidTokenCheck(
+            @RequestHeader("Authorization") String token) throws IOException {
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "유효한 토큰"));
+
+    }
+
     @PostMapping("/signin")
     public ResponseEntity<? extends BaseResponseBody> logIn(
             @RequestBody MemberSignInReqDto memberSignInReqDto) throws IOException, InterruptedException {

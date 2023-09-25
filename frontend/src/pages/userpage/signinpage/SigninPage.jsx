@@ -73,7 +73,8 @@ export default function SigninPage() {
         if (result) {
             dispatch(
                 loginUser({
-                    accessToken: result.data.accessToken
+                    accessToken: result.data.accessToken,
+                    refreshToken: result.data.refreshToken
                 })
             );
             navigate("/");

@@ -10,7 +10,7 @@ import java.util.List;
 public interface BlankQuestionSetRepository extends MongoRepository<BlankQuestionSet, String> {
 
     @Aggregation(pipeline = {
-            "{'$sample':{size:5}}"})
-    public List<BlankQuestionSet> findRandom();
+            "{'$sample':{size:4}}"})
+    List<BlankQuestionSet> findRandom();
 
 }

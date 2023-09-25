@@ -26,6 +26,9 @@ public class WordTestResult {
     private long memberNumber;
     private long week;
 
+    @Field("try_count")
+    private int tryCount;
+
     private int score;
 
     private List<String> question;
@@ -42,7 +45,5 @@ public class WordTestResult {
         this.memberNumber = memberNumber;
         this.week = week;
     }
-
-
 
 }
