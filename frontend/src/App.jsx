@@ -17,6 +17,7 @@ import SigninPage from "pages/userpage/signinpage/SigninPage";
 import SignupPage from "pages/userpage/signuppage/SignupPage";
 import ResetpwPage from "pages/userpage/resetpwpage/ResetpwPage";
 import Layout from "components/common/layout/Layout";
+import PrivateRoute from "components/common/layout/PrivateRoute";
 import Intro from "pages/intropage/Intro";
 import MyPage from "pages/userpage/mypage/MyPage";
 import SentenceTestPage from "pages/testpage/sentencepage/SentenceTestPage";
@@ -36,9 +37,13 @@ export default function App() {
                                 {/* user pages */}
                                 <Route path="/signin" element={<SigninPage />} />
                                 <Route path="/signup" element={<SignupPage />} />
-                                <Route path="/mypage" element={<MyPage />} />
                                 <Route path="/resetpw" element={<ResetpwPage />} />
-                                <Route path="/main" element={<MainPage />} />
+                                <Route path="/mypage" element={<PrivateRoute />}>
+                                    <Route index element={<MyPage />} />
+                                </Route>
+                                <Route path="/main" element={<PrivateRoute />}>
+                                    <Route index element={<MainPage />} />
+                                </Route>
                                 <Route path="/sentencetest" element={<SentenceTestPage />} />
                             </Route>
                             {/* main page */}
