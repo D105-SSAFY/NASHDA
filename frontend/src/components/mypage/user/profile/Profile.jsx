@@ -42,7 +42,7 @@ export default function Profile({ more, getMore }) {
                 {more === 4 ? "수정 완료" : "상세 수정"}
                 <ArrowCircleRightOutlinedIcon />
             </MoreButton>
-            <CloseButton onClick={() => getMore(0)} />
+            <CloseButton onClick={() => getMore(0)} toggle={more !== 4} />
         </>
     );
 }

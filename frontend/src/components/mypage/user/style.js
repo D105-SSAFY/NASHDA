@@ -43,6 +43,9 @@ export const UserSection = styled.section`
 
             font-weight: 400;
         }
+
+        overflow-x: hidden;
+        overflow-y: ${(props) => (props.more === 3 ? "auto" : "hidden")};
     }
 
     & > :nth-child(3) {
@@ -109,6 +112,10 @@ export const CloseButton = styled.button`
     opacity: 0.9;
 
     border-radius: 10px;
+
+    visibility: ${(props) => (props.toggle ? "hidden" : "show")};
+    opacity: ${(props) => (props.toggle ? "0" : "1")};
+    transition: ease 0.4s;
 `;
 
 export const modeChange = styled.div`
