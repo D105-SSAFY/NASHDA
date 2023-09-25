@@ -9,7 +9,6 @@ import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.test.dto.request.InternalTestReqDto;
 import com.ssafy.nashda.test.dto.request.SentenceTestSpeakReqDto;
 import com.ssafy.nashda.test.dto.request.WordTestResultReqDto;
-import com.ssafy.nashda.test.dto.request.WordTestSpeakReqDto;
 import com.ssafy.nashda.test.dto.response.TestStartWordResDto;
 import com.ssafy.nashda.test.entity.SentenceTestResult;
 import com.ssafy.nashda.test.entity.WordTestResult;
@@ -28,6 +27,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
@@ -186,13 +186,13 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public String sttWordTest(WordTestSpeakReqDto reqDto) {
+    public String sttWordTest(String index, MultipartFile sound) {
 
         //받아온 soundfile을 stt로 변환
 
         //변환된 text를 반환
 
-        return null;
+        return "null";
     }
 
     @Override
@@ -208,7 +208,6 @@ public class TestServiceImpl implements TestService {
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
         Update update = new Update().set("user_pronunciation." + reqDto.getOrder(), url);
         mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
-
 
         return stt;
     }
