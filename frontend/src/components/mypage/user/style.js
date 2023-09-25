@@ -43,6 +43,9 @@ export const UserSection = styled.section`
 
             font-weight: 400;
         }
+
+        overflow-x: hidden;
+        overflow-y: ${(props) => (props.more === 3 ? "auto" : "hidden")};
     }
 
     & > :nth-child(3) {
@@ -54,14 +57,8 @@ export const UserSection = styled.section`
     & > :nth-child(4) {
         top: 360px;
         left: 300px;
-        width: 350px;
-    }
 
-    & > :nth-child(5) {
-        top: 700px;
-        left: 20px;
-        width: 910px;
-        height: ${(props) => (props.more === 2 ? "660px" : "0px")};
+        width: ${(props) => (props.more === 4 ? "630px" : "350px")};
     }
 `;
 
@@ -115,6 +112,10 @@ export const CloseButton = styled.button`
     opacity: 0.9;
 
     border-radius: 10px;
+
+    visibility: ${(props) => (props.toggle ? "hidden" : "show")};
+    opacity: ${(props) => (props.toggle ? "0" : "1")};
+    transition: ease 0.4s;
 `;
 
 export const modeChange = styled.div`

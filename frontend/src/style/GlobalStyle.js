@@ -50,4 +50,21 @@ export const GlobalStyle = createGlobalStyle`
         color: inherit;
         text-decoration: none;
     }
+
+    *::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background: #ffffffcc; /* 스크롤바 색상 */
+        border-radius: 3px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0); /*스크롤바 뒷 배경 색상*/
+    }
+
+    *::-webkit-scrollbar-button {
+        height: 6px;
+    }
 `;

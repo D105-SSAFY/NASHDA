@@ -30,3 +30,14 @@ export const DetailContentText = styled.p`
     font-weight: 400;
     margin-bottom: 0.5rem;
 `;
+
+export const DivideLine = styled.div`
+    position: absolute;
+    left: 95px;
+    margin: auto 0;
+
+    height: 154px;
+    width: 2px;
+
+    background-color: #000;
+`;

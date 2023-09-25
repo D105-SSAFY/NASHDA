@@ -3,12 +3,10 @@ import styled from "styled-components";
 export const ChangeBox = styled.div`
     width: fit-content;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: left;
-
-    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
     & > :first-child {
         margin-bottom: 1.5rem;
@@ -18,6 +16,8 @@ export const ChangeBox = styled.div`
 export const ChangeText = styled.p`
     font-size: 2rem;
     font-weight: 600;
+
+    white-space: nowrap;
 
     color: #fff;
 
