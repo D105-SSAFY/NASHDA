@@ -8,6 +8,9 @@ server:
       force: true
 
 spring:
+  data:
+    mongodb:
+      uri: mongodb://nash:d105nashda@j9d105.p.ssafy.io:27017/nashda?authSource=admin&authMechanism=SCRAM-SHA-1
   mail:
     host: smtp.gmail.com
     port: 587
@@ -67,7 +70,7 @@ spring:
 
 jwt:
   issuer: thisiseunjin@nashda.com
-  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK2
 
 logging:
   level:

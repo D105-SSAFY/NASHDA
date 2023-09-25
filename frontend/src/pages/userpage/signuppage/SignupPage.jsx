@@ -2,10 +2,12 @@
 import * as s from "./style";
 import video1 from "assets/image/nashda_move.mov";
 import SignupInput from "components/input/FormInputCol";
+import SignupSelect from "components/input/FormSelectCol";
 // Import { checkEmail, sendCode, checkCode, signUp } from "apis/user";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
 
+// 임시 fetch들
 export const checkCode = async ({ email, code }) => {
     try {
         const response = fetch(`${process.env.API_URL}/user/checkcode`, {
@@ -22,9 +24,9 @@ export const checkCode = async ({ email, code }) => {
     }
 };
 
-export const signUp = async ({ email, password, name, nickname, age = null, job = null, hobby = null }) => {
+export const signUp = async ({ email, password, name, nickname, age = null, jobIdx, hobbyIdx }) => {
     try {
-        const response = fetch(`${process.env.API_URL}/user/signup`, {
+        const response = await fetch("https://j9d105.p.ssafy.io/api/user/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -33,8 +35,8 @@ export const signUp = async ({ email, password, name, nickname, age = null, job 
                 name,
                 nickname,
                 age,
-                job,
-                hobby
+                jobIdx,
+                hobbyIdx
             }),
             credentials: "include"
         });
@@ -49,7 +51,7 @@ export const signUp = async ({ email, password, name, nickname, age = null, job 
 
 export const checkEmail = async (email) => {
     try {
-        const response = fetch("https://j9d105.p.ssafy.io/api/user/checkemail", {
+        const response = await fetch("https://j9d105.p.ssafy.io/api/user/checkemail", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email })
@@ -63,9 +65,25 @@ export const checkEmail = async (email) => {
     }
 };
 
+export const checkNickname = async (nickname) => {
+    try {
+        const response = await fetch("https://j9d105.p.ssafy.io/api/user/checknickname", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nickname })
+        });
+
+        const result = await response.json();
+        console.log(result);
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const sendCode = async (email) => {
     try {
-        const response = fetch(`${process.env.API_URL}/user/sendcode`, {
+        const response = await fetch("https://j9d105.p.ssafy.io/api/user/sendcode", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -74,12 +92,28 @@ export const sendCode = async (email) => {
         });
 
         const result = await response.json();
-
         return result;
     } catch (error) {
         console.log(error);
     }
 };
+
+export const domain = async () => {
+    try {
+        const response = await fetch("https://j9d105.p.ssafy.io/api/user/domain", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
+// 임시 패치들
 
 export default function SignupPage() {
     const [inputs, setInputs] = useState({
@@ -88,46 +122,145 @@ export default function SignupPage() {
         password: "",
         checkedPassword: "",
         name: "",
-        nickname: ""
+        nickname: "",
+        hobby: "",
+        job: ""
     });
+    const [overlapEmail, setOverlapEmail] = useState(false);
+    const [overlapNickname, setOverlapNickname] = useState(false);
+    const [overlapPassword2, setOverlapPassword2] = useState(false);
+    const timeoutIdRef = useRef(null);
+    const checkEmailText = ["중복된 이메일 입니다!", "사용할 수 없는 이메일 입니다!", "사용할 수 있는 이메일 입니다!"];
+    const checkNicknameText = ["중복된 닉네임 입니다!", "사용할 수 없는 닉네임 입니다!", "사용할 수 있는 닉네임 입니다!"];
+    const checkPassword2Text = [
+        "사용할 수 없는 비밀번호 입니다!",
+        "사용 가능한 비밀번호 입니다!",
+        "비밀번호가 일치하지 않습니다!",
+        "비밀번호가 일치합니다!"
+    ];
+    const [domainList, setDomainList] = useState([]);
     const navigate = useNavigate();
-    // Const pattern =
-    //     // eslint-disable-next-line no-useless-escape
-    //     /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+    const emailPattern =
+        // eslint-disable-next-line no-useless-escape
+        /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*()\-_=+[\]{};:'",.<>/?\\|~`])[a-zA-Z\d!@#$%^&*()\-_=+[\]{};:'",.<>/?\\|~`]{8,16}$/;
+
+    useEffect(() => {
+        async function fetchData() {
+            const result = await domain();
+            setDomainList(result.data);
+        }
+
+        fetchData();
+    }, []);
+
     const handleChange = async (e) => {
+        if (e.target.name === "email") {
+            if (!e.target.value) {
+                setOverlapEmail(false);
+                return;
+            }
+
+            if (!emailPattern.test(e.target.value)) {
+                setOverlapEmail(1);
+                return;
+            }
+
+            if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
+
+            timeoutIdRef.current = setTimeout(async () => {
+                const result = await checkEmail(e.target.value);
+
+                if (result.status === 200) {
+                    setOverlapEmail(2);
+                } else {
+                    setOverlapEmail(0);
+                }
+            }, 400);
+        }
+
+        if (e.target.name === "nickname") {
+            if (!e.target.value) {
+                setOverlapNickname(false);
+                return;
+            }
+
+            if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
+
+            timeoutIdRef.current = setTimeout(async () => {
+                const result = await checkNickname(e.target.value);
+
+                if (result.status === 200) {
+                    setOverlapNickname(2);
+                } else {
+                    setOverlapNickname(0);
+                }
+            }, 400);
+        }
+
         setInputs({
             ...inputs,
             [e.target.name]: e.target.value
         });
         console.log(inputs);
+
+        if (e.target.name === "password") {
+            if (!e.target.value) {
+                setOverlapPassword2(false);
+                return;
+            }
+
+            if (e.target.value.includes(" ") || !passwordPattern.test(e.target.value)) {
+                setOverlapPassword2(0);
+                return;
+            }
+
+            if (e.target.value === inputs.checkedPassword) {
+                setOverlapPassword2(3);
+            } else if (inputs.checkedPassword === "") {
+                setOverlapPassword2(1);
+            } else {
+                setOverlapPassword2(2);
+            }
+        }
+
+        if (e.target.name === "checkedPassword") {
+            if (inputs.password === "") {
+                setOverlapPassword2(false);
+                return;
+            }
+
+            if (!passwordPattern.test(inputs.password)) {
+                setOverlapPassword2(0);
+                return;
+            }
+
+            if (!e.target.value) {
+                setOverlapPassword2(1);
+                return;
+            }
+
+            if (e.target.value === inputs.password) {
+                setOverlapPassword2(3);
+            } else {
+                setOverlapPassword2(2);
+            }
+        }
     };
 
     const handleClick = async (e) => {
         e.preventDefault();
         if (!inputs.email) {
             alert("이메일을 입력하세요!");
-            return;
         }
 
-        // If (!pattern.test(inputs.email)) {
-        //     alert("이메일 형식이 올바르지 않습니다!");
-        //     return;
-        // }
+        const result = await sendCode(inputs.email);
 
-        const checkEmailResult = await checkEmail(inputs.email);
-        console.log(checkEmailResult);
-        if (checkEmailResult) {
-            const result = await sendCode(inputs.email);
-
-            if (result) {
-                alert("인증번호 전송완료!");
-            } else {
-                alert("인증번호 전송실패!");
-            }
-
-            console.log(result);
+        if (result.status === 200) {
+            alert("인증번호를 전송했어요!");
         } else {
-            alert("중복된 이메일 입니다!");
+            alert("인증번호 전송에 실패했어요!");
         }
     };
 
@@ -163,18 +296,26 @@ export default function SignupPage() {
             return;
         }
 
-        const checkCodeResult = await checkCode(inputs.email, inputs.code);
-        if (!checkCodeResult) {
-            alert("인증코드가 일치하지 않습니다!");
-            return;
-        }
-
-        const result = await signup(inputs.email, inputs.password, inputs.name, inputs.nickname);
-        if (result) {
+        const result = await signUp({
+            email: inputs.email,
+            password: inputs.password,
+            name: inputs.name,
+            nickname: inputs.nickname,
+            jobIdx: Number(inputs.job),
+            hobbyIdx: Number(inputs.hobby)
+        });
+        console.log(result);
+        if (result.status === 200) {
             alert("회원가입 성공!");
             navigate("/signin");
         } else {
             alert("회원가입에 실패했습니다!");
+        }
+    };
+
+    const checkEnter = (e) => {
+        if (e.keyCode === 13) {
+            e.preventDefault();
         }
     };
 
@@ -183,7 +324,7 @@ export default function SignupPage() {
             <s.StyledMainSection>
                 <s.StyledVid src={video1} alt="그림" autoPlay muted loop></s.StyledVid>
                 <s.StyledSignupTitle>숨을 내쉬다.</s.StyledSignupTitle>
-                <s.StyledForm>
+                <s.StyledForm onKeyDown={checkEnter}>
                     <SignupInput
                         data={{
                             text: "이메일",
@@ -192,8 +333,7 @@ export default function SignupPage() {
                             type: "email",
                             onChangeFunc: handleChange,
                             onClickFunc: handleClick,
-                            value: inputs.email,
-                            check: true
+                            check: overlapEmail
                         }}
                     />
                     <SignupInput
@@ -206,6 +346,7 @@ export default function SignupPage() {
                             value: inputs.code
                         }}
                     />
+                    <s.StyledText>{checkEmailText[overlapEmail]}</s.StyledText>
                     <s.StyledLine></s.StyledLine>
                     <SignupInput
                         data={{
@@ -227,6 +368,7 @@ export default function SignupPage() {
                             value: inputs.checkedPassword
                         }}
                     />
+                    <s.StyledText>{checkPassword2Text[overlapPassword2]}</s.StyledText>
                     <s.StyledLine></s.StyledLine>
                     <SignupInput
                         data={{
@@ -244,8 +386,31 @@ export default function SignupPage() {
                             id: "nickname",
                             name: "nickname",
                             type: "text",
+                            onChangeFunc: handleChange
+                        }}
+                    />
+                    <s.StyledText>{checkNicknameText[overlapNickname]}</s.StyledText>
+                    <s.StyledLine></s.StyledLine>
+                    <SignupSelect
+                        data={{
+                            text: "취미",
+                            id: "hobby",
+                            name: "hobby",
+                            type: "text",
+                            list: domainList,
                             onChangeFunc: handleChange,
-                            value: inputs.nickname
+                            value: inputs.hobby
+                        }}
+                    />
+                    <SignupSelect
+                        data={{
+                            text: "직업",
+                            id: "job",
+                            name: "job",
+                            type: "text",
+                            list: domainList,
+                            onChangeFunc: handleChange,
+                            value: inputs.job
                         }}
                     />
                     <s.StyledSignupBtn onClick={handleCheck}>회원가입 완료</s.StyledSignupBtn>

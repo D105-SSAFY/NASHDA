@@ -14,9 +14,9 @@ export default function FormInputCol({ data: { text, type, id, name, onChangeFun
                 placeholder={(placeholder ??= "")}
                 value={value}
                 readOnly={(readOnly ??= false)}
-                check={(check ??= false)}
+                check={check === 2}
             ></f.StyledInput>
-            <f.StyledButton onClick={onClickFunc} check={(check ??= false)}>
+            <f.StyledButton onClick={onClickFunc} check={check === 2}>
                 인증
             </f.StyledButton>
         </f.StyledDiv>
