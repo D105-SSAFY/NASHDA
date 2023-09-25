@@ -1,4 +1,4 @@
-package com.ssafy.nashda.game.dto;
+package com.ssafy.nashda.game.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

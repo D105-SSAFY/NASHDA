@@ -1,9 +1,9 @@
 package com.ssafy.nashda.game.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
-import com.ssafy.nashda.game.dto.BlankSetResponseDto;
-import com.ssafy.nashda.game.dto.ImgWordSetListResponseDto;
-import com.ssafy.nashda.game.dto.ImgWordSetResponseDto;
+import com.ssafy.nashda.game.dto.response.BlankSetResponseDto;
+import com.ssafy.nashda.game.dto.response.ImgWordSetListResponseDto;
+import com.ssafy.nashda.game.dto.response.ImgWordSetResponseDto;
 import com.ssafy.nashda.game.service.GameService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
