@@ -5,7 +5,6 @@ import com.ssafy.nashda.common.entity.TimeEntity;
 
 import javax.persistence.*;
 
-import com.ssafy.nashda.statistic.entity.simul.SimulStatic;
 import lombok.*;
 
 @Getter
@@ -22,7 +21,7 @@ public class SimulDetail extends TimeEntity {
     @JsonIgnore
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "simul_index", nullable = false)
-    private SimulStatic simul;
+    private SimulStatistic simul;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String my_speech;
@@ -33,8 +32,8 @@ public class SimulDetail extends TimeEntity {
     private String type;
 
     @Builder
-    public SimulDetail(SimulStatic simulStatic, String my_speech, String gpt_speech, String type) {
-        this.simul = simulStatic;
+    public SimulDetail(SimulStatistic simulStatistic, String my_speech, String gpt_speech, String type) {
+        this.simul = simulStatistic;
         this.my_speech = my_speech;
         this.gpt_speech = gpt_speech;
         this.type = type;

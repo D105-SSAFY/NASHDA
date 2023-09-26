@@ -10,15 +10,13 @@ import com.ssafy.nashda.simulGPT.dto.*;
 import com.ssafy.nashda.simulGPT.entity.MemorizeChat;
 import com.ssafy.nashda.simulGPT.repository.ChatGptRepository;
 import com.ssafy.nashda.simulGPT.service.ChatGptServiceImpl;
-import com.ssafy.nashda.statistic.entity.simul.SimulDetail;
-import com.ssafy.nashda.statistic.entity.simul.SimulStatic;
+import com.ssafy.nashda.statistic.entity.simul.SimulStatistic;
 import com.ssafy.nashda.statistic.repository.simul.SimulDetailRepository;
 import com.ssafy.nashda.statistic.repository.simul.SimulStaticRepository;
 import com.ssafy.nashda.statistic.service.simul.SimulDetailService;
-import com.ssafy.nashda.statistic.service.simul.SimulStaticService;
+import com.ssafy.nashda.statistic.service.simul.SimulStatisticService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
@@ -40,7 +38,7 @@ public class ChatGptController {
     private final ChatGptRepository chatGptRepository;
 
     private final SimulStaticRepository simulStaticRepository;
-    private final SimulStaticService simulStaticService;
+    private final SimulStatisticService simulStatisticService;
 
     private final SimulDetailRepository simulDetailRepository;
     private final SimulDetailService simulDetailService;
@@ -53,11 +51,11 @@ public class ChatGptController {
                                                                   @RequestBody MessageReqDto messageReqDto) {
 
         Member member = memberController.findMemberByToken(accessToken);
-        SimulStatic simulStatic = simulStaticRepository.findByMember(member);
+        SimulStatistic simulStatistic = simulStaticRepository.findByMember(member);
 
-        if (simulStatic == null) {
-            simulStaticService.createSimulStatic(member);
-            simulStatic = simulStaticRepository.findByMember(member);
+        if (simulStatistic == null) {
+            simulStatisticService.createSimulStatic(member);
+            simulStatistic = simulStaticRepository.findByMember(member);
         }
 
         List<ChatMessageDto> messages = new ArrayList<>();
@@ -103,25 +101,25 @@ public class ChatGptController {
         ChatResDto chatResDto = chatGptServiceImpl.getChatCompletion(messages);
 
         String message = chatResDto.getChoices().get(0).getMessage().getContent();
-        simulStaticRepository.updateTotal(simulStatic.getTotal() + 1, simulStatic.getIndex());
+        simulStaticRepository.updateTotal(simulStatistic.getTotal() + 1, simulStatistic.getIndex());
         // 상황에 옳은 답변인지 판단
-        if (message.contains("옳지 않음.") || message.contains("죄송")) {
+        if (message.contains("옳지 않음.") || message.contains("죄송") || message.contains("업무")) {
             String temp[] = message.split("옳지 않음.");
             chatResDto.setCorrect(Boolean.FALSE);
 
             if (temp.length > 1) {
                 chatResDto.getChoices().get(0).getMessage().setContent(temp[1].strip());
-                simulDetailService.createSimulDetail(simulStatic, messageReqDto.getMessage(), temp[1].strip(), background);
+                simulDetailService.createSimulDetail(simulStatistic, messageReqDto.getMessage(), temp[1].strip(), background);
             } else {
                 // gpt 응답이 형태로 올바르게 오지 않을 경우 처리
                 chatResDto.getChoices().get(0).getMessage().setContent(temp[0].strip());
-                simulDetailService.createSimulDetail(simulStatic, messageReqDto.getMessage(), temp[0].strip(), background);
+                simulDetailService.createSimulDetail(simulStatistic, messageReqDto.getMessage(), temp[0].strip(), background);
             }
 
 
         } else {
             chatResDto.setCorrect(Boolean.TRUE);
-            simulStaticRepository.updateCorrect(simulStatic.getCorrect() + 1, simulStatic.getIndex());
+            simulStaticRepository.updateCorrect(simulStatistic.getCorrect() + 1, simulStatistic.getIndex());
         }
 
         if (message.contains("상황 종료")) {
