@@ -1,11 +1,14 @@
 package com.ssafy.nashda.statistic.entity;
 
+import com.ssafy.nashda.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,7 +21,7 @@ public class Achievement {
     @Column(updatable = false, name = "achievement_index")
     private Long index;
 
-    @Column(name ="achievement_name")
+    @Column(name = "achievement_name")
     private String name;
 
     @Column(name = "achievement_condition")
@@ -29,5 +32,12 @@ public class Achievement {
 
     @Column(name = "achievement_decription")
     private String description;
+
+    @Column(name = "achievement_img")
+    private String imgURL;
+
+    @OneToMany(mappedBy = "achievement")
+    private Set<MemberAchievement> memberAchievements = new HashSet<>();
+
 
 }
