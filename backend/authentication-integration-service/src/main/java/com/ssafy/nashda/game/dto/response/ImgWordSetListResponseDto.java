@@ -1,19 +1,18 @@
-package com.ssafy.nashda.game.dto;
+package com.ssafy.nashda.game.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BlankSetResponseDto {
-    private String imgURL;
-    private List<String> word;
-    private List<String[]> hint;
+public class ImgWordSetListResponseDto {
+    private int type;
+    private long index;
+    private List<String> img;
     private String answer;
 
 }
