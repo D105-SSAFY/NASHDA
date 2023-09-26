@@ -1,10 +1,11 @@
-package com.ssafy.nashda.simulGPT.entity;
+package com.ssafy.nashda.statistic.entity.simul;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.nashda.common.entity.TimeEntity;
-import com.ssafy.nashda.member.entity.Member;
 
 import javax.persistence.*;
+
+import com.ssafy.nashda.statistic.entity.simul.SimulStatic;
 import lombok.*;
 
 @Getter
@@ -15,13 +16,13 @@ import lombok.*;
 public class SimulDetail extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, name = "simuldeatil_index")
+    @Column(updatable = false, name = "simul_detail_index")
     private Long index;
 
-//    @JsonIgnore
-//    @ManyToOne(fetch=FetchType.LAZY)
-//    @JoinColumn(name = "simul_index", nullable = false)
-//    private Simul simul;
+    @JsonIgnore
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "simul_index", nullable = false)
+    private SimulStatic simul;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String my_speech;
@@ -29,11 +30,13 @@ public class SimulDetail extends TimeEntity {
     @Column(columnDefinition = "TEXT")
     private String gpt_speech;
 
-    @Column(columnDefinition = "TEXT")
-    private String feedback;
+    private String type;
 
     @Builder
-    public SimulDetail(String my_speech) {
+    public SimulDetail(SimulStatic simulStatic, String my_speech, String gpt_speech, String type) {
+        this.simul = simulStatic;
         this.my_speech = my_speech;
+        this.gpt_speech = gpt_speech;
+        this.type = type;
     }
 }
