@@ -38,6 +38,7 @@ export default function App() {
                                 <Route path="/signin" element={<SigninPage />} />
                                 <Route path="/signup" element={<SignupPage />} />
                                 <Route path="/resetpw" element={<ResetpwPage />} />
+                                {/* private pages */}
                                 <Route path="/mypage" element={<PrivateRoute />}>
                                     <Route index element={<MyPage />} />
                                 </Route>
