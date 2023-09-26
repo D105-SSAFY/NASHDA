@@ -7,13 +7,11 @@ import com.ssafy.nashda.practice.dto.PronSTTResponseDto;
 import com.ssafy.nashda.practice.service.PracticePronService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * 연습 문제 전송 컨트롤러
@@ -125,11 +123,11 @@ public class PracticeController {
                 HttpStatus.OK);
     }
 
-    @PostMapping(value = "/pron/result", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<? extends BaseResponseBody> getPronunciation(@RequestPart(value = "sound", required = false) MultipartFile sound,
-                                                                       @RequestPart(value = "requestDto") PracticePronRequestDto practicePronRequestDto) throws Exception {
+    @PostMapping(value = "/pron/result")
+    public ResponseEntity<? extends BaseResponseBody> getPronunciation(@ModelAttribute PracticePronRequestDto practicePronRequestDto)
+            throws Exception {
 
-        String stt = practicePronService.getSTT(sound, practicePronRequestDto.getIndex(), practicePronRequestDto.getType());
+        String stt = practicePronService.getSTT(practicePronRequestDto);
 
         return new ResponseEntity<>(new BaseResponseBody(200, "발음 연습 결과 전송 완료",
                 new PronSTTResponseDto(stt)),

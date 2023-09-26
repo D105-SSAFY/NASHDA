@@ -6,6 +6,7 @@ import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
 import com.ssafy.nashda.common.s3.S3Uploader;
+import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
 import com.ssafy.nashda.stt.service.STTService;
 import lombok.RequiredArgsConstructor;
@@ -172,11 +173,11 @@ public class PracticePronServiceImpl implements PracticePronService {
     }
 
     @Override
-    public String getSTT(MultipartFile sound, long index, String type) throws Exception {
+    public String getSTT(PracticePronRequestDto practicePronRequestDto) throws Exception {
 
         // STT 부분
         // FAST API 와 소통하기
-        String sttResult = sttService.getPronunciation(sound); // 받아온 STT
+        String sttResult = sttService.getPronunciation(practicePronRequestDto.getSound()); // 받아온 STT
 
         // 통계 저장 부분
 
@@ -187,7 +188,7 @@ public class PracticePronServiceImpl implements PracticePronService {
                 .build();
 
         ResponseEntity<InternalResponseDto> response = client.get()
-                .uri("/practice/pron/" + type + "/" + index)
+                .uri("/practice/pron/" + practicePronRequestDto.getType() + "/" + practicePronRequestDto.getIndex())
                 .retrieve()
                 .onStatus(
                         HttpStatus.BAD_REQUEST::equals,
@@ -204,7 +205,7 @@ public class PracticePronServiceImpl implements PracticePronService {
                 .toEntity(InternalResponseDto.class)
                 .block();
 
-        PronResponseDto pronResponse = (PronResponseDto) response.getBody().getData();
+        PronResponseDto pronResponse =  mapper.convertValue(response.getBody().getData(), PronResponseDto.class);
         String convertOrigin = pronResponse.getConvert(); // 원발음
         String origin = pronResponse.getOrigin(); // 원문
 
