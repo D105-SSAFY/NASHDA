@@ -1,26 +1,26 @@
-import { valid, refresh } from "apis/user";
+import { refresh } from "apis/user";
 import { updateRefresh } from "redux/slice/userSlice";
 
-export default function tokenValidation(user, setIsValid, dispatch) {
-    valid(user)
-        .then(() => {
-            setIsValid(true);
-        })
-        .catch(() => {
-            if (user.refreshToken) {
-                refresh(user)
-                    .then((res) => {
-                        setIsValid(true);
+export default function tokenValidation(call, values, dispatch) {
+    return call(values).catch(() => {
+        if (values.user.refreshToken) {
+            return refresh(values.user)
+                .then((res) => {
+                    dispatch(
+                        updateRefresh({
+                            accessToken: res.accessToken
+                        })
+                    );
 
-                        dispatch(
-                            updateRefresh({
-                                accessToken: res.accessToken
-                            })
-                        );
-                    })
-                    .catch(() => {
-                        setIsValid(false);
+                    return call(values).then((res) => {
+                        return res;
                     });
-            } else setIsValid(false);
-        });
+                })
+                .catch(() => {
+                    throw new Error("토큰이 만료되었습니다. 다시 로그인해주세요.");
+                });
+        }
+
+        throw new Error("토큰이 없습니다. 다시 로그인해주세요.");
+    });
 }

@@ -2,13 +2,13 @@
  * 유효 AccesToken 획득 ( user )
  * > accessToken
  * */
-export const valid = async (user) => {
+export const valid = async (values) => {
     try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/user/valid`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${user.accessToken}`
+                Authorization: `Bearer ${values.user.accessToken}`
             },
             credentials: "include"
         });
