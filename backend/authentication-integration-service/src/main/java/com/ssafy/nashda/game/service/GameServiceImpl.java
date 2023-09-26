@@ -6,10 +6,19 @@ import com.ssafy.nashda.common.dto.InternalResponseDto;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
-import com.ssafy.nashda.game.dto.request.SpeedSTTReqDto;
+import com.ssafy.nashda.game.dto.request.BlankResultReqDto;
+import com.ssafy.nashda.game.dto.request.GameSTTReqDto;
+import com.ssafy.nashda.game.dto.request.SpeedResultReqDto;
 import com.ssafy.nashda.game.dto.response.BlankSetResponseDto;
+import com.ssafy.nashda.game.dto.response.GmaeSTTResDto;
 import com.ssafy.nashda.game.dto.response.ImgWordSetListResponseDto;
 import com.ssafy.nashda.game.dto.response.ImgWordSetResponseDto;
+import com.ssafy.nashda.member.entity.Member;
+import com.ssafy.nashda.member.repository.MemberRepository;
+import com.ssafy.nashda.statistic.entity.game.GameStatistic;
+import com.ssafy.nashda.statistic.repository.game.GameStatisticRepository;
+import com.ssafy.nashda.week.entity.Week;
+import com.ssafy.nashda.week.service.WeekService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,18 +27,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import javax.mail.Multipart;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class GameServiceImpl implements GameService{
+public class GameServiceImpl implements GameService {
     private final ObjectMapper mapper;
+    private final GameStatisticRepository gameStatisticRepository;
+    private final MemberRepository memberRepository;
+    private final WeekService weekService;
 
     @Value("${env.PROBLEM_URL}")
     private String URL;
@@ -126,7 +139,7 @@ public class GameServiceImpl implements GameService{
         log.info("response : {}, type : {}", response.getBody().getData(), response.getBody().getData().getClass().getName());
         List<BlankSetResponseDto> blankSetResponseDtoList = new ArrayList<>();
 
-        for(LinkedHashMap linkedHashMap : (List<LinkedHashMap>) response.getBody().getData()){
+        for (LinkedHashMap linkedHashMap : (List<LinkedHashMap>) response.getBody().getData()) {
             blankSetResponseDtoList.add(mapper.convertValue(linkedHashMap, BlankSetResponseDto.class));
         }
 
@@ -152,8 +165,76 @@ public class GameServiceImpl implements GameService{
     }
 
     @Override
-    public boolean checkSpeedAnswer(SpeedSTTReqDto reqDto, Multipart sound) {
-        //문제 번호에 있는 답과 사용자의 발음이 동일한지 확인
-        return false;
+    public GmaeSTTResDto convertSTT(GameSTTReqDto request) throws Exception {
+
+        int type = request.getType();   //0 : speed1, 1:speed2, 2:blank
+        int index = request.getIndex();  //문제 번호
+        String answer = request.getAnswer();
+        GmaeSTTResDto gmaeSTTResDto;
+        MultipartFile file = request.getSound();
+
+        String stt = "싸과";  //사용자의 음성 파일을 STT
+        if (stt.equals(answer)) {
+            gmaeSTTResDto = new GmaeSTTResDto(true, stt);
+        } else {
+            gmaeSTTResDto = new GmaeSTTResDto(false, stt);
+        }
+
+        return gmaeSTTResDto;
+    }
+
+    @Override
+    public void saveSpeedResult(SpeedResultReqDto request, Member member) throws Exception {
+        GameStatistic gameStatistic = null;
+
+        Optional<GameStatistic> optionalGameStatistic = gameStatisticRepository.findByMember(member);
+        if (optionalGameStatistic.isEmpty()) {
+            gameStatistic = saveGameStatistic(member);
+        } else {
+            gameStatistic = optionalGameStatistic.get();
+        }
+
+        gameStatistic.setSpeedScore(gameStatistic.getSpeedScore() + request.getScore());
+        gameStatistic.setSpeedTotal(gameStatistic.getSpeedTotal() + request.getTotal());
+        gameStatistic.setSpeedSet(gameStatistic.getSpeedSet() + 1);
+
+        //member의 word_count증가
+        member.setWordCount(member.getWordCount() + request.getTotal());
+        memberRepository.save(member);
+
+        gameStatisticRepository.save(gameStatistic);
+    }
+
+    @Override
+    public void saveBlankResult(BlankResultReqDto request, Member member) throws Exception {
+        GameStatistic gameStatistic = null;
+
+
+        Optional<GameStatistic> optionalGameStatistic = gameStatisticRepository.findByMember(member);
+        if (optionalGameStatistic.isEmpty()) {
+            gameStatistic = saveGameStatistic(member);
+        } else {
+            gameStatistic = optionalGameStatistic.get();
+        }
+
+        gameStatistic.setBlankScore(gameStatistic.getBlankScore() + request.getScore());
+        gameStatistic.setBlankSet(gameStatistic.getBlankSet() + 1);
+
+        //level 2일떄만 progress update
+        member.setSentenceCount(member.getSentenceCount() + request.getTotal());
+        if(request.getLevel()>1){
+            member.setProgress(member.getProgress() + request.getScore());
+        }
+        memberRepository.save(member);
+
+        gameStatisticRepository.save(gameStatistic);
+    }
+
+    public GameStatistic saveGameStatistic(Member member) throws Exception {
+        Week week = weekService.getCurrentWeekIdx().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        GameStatistic gameStatistic = new GameStatistic(member, week);
+
+        gameStatisticRepository.save(gameStatistic);
+        return gameStatistic;
     }
 }

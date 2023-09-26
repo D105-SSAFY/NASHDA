@@ -217,9 +217,9 @@ export const updateProfile = async ({ email, password, name, nickname, age = nul
  * 회원정보 조회 ( String nickname | user )
  * > { nickname | name | email | age | job | hobby | progress | start_week | now_week }
  * */
-export const mypageName = async ({ nickname, user }) => {
+export const mypage = async (user) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/user/mypage/${nickname}`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/user/mypage`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

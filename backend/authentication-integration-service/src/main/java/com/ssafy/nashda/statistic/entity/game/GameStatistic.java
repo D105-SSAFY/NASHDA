@@ -1,25 +1,22 @@
-package com.ssafy.nashda.game.entity;
+package com.ssafy.nashda.statistic.entity.game;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.week.entity.Week;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
 @Entity // 객체와 테이블 매핑
-@Table(name = "game_static")
+@Table(name = "game_statistic")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GameStatistic{
 
     @Id // PK 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT 설정
-    @Column(updatable = false, name = "game_static_index")
+    @Column(updatable = false, name = "game_statistic_index")
     private Long index;
 
     @JsonIgnore
@@ -46,5 +43,11 @@ public class GameStatistic{
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "week_index", nullable = false)
     private Week week;
+
+    @Builder
+    public GameStatistic(Member member, Week week){
+        this.member = member;
+        this.week = week;
+    }
 
 }
