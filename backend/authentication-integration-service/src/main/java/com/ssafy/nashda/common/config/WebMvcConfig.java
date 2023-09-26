@@ -16,7 +16,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:3000")
                 // GET, POST, PUT, PATCH, DELETE, OPTIONS 메서드를 허용한다.
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-                .allowedHeaders("Authorization", "Content-Type","*")
+                .allowedHeaders("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin")
                 .allowCredentials(true)
                 .maxAge(MAX_AGE_SECS);
     }
