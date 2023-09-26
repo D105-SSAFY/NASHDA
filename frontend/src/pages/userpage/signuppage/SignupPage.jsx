@@ -2,7 +2,7 @@
 import * as s from "./style";
 import video1 from "assets/image/nashda_move.mov";
 import SignupInput from "components/input/FormInputCol";
-import SignupSelect from "components/input/FormSelectCol";
+import FormSelectCol from "components/input/FormSelectCol";
 // Import { checkEmail, sendCode, checkCode, signUp } from "apis/user";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
@@ -157,6 +157,7 @@ export default function SignupPage() {
         /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*()\-_=+[\]{};:'",.<>/?\\|~`])[a-zA-Z\d!@#$%^&*()\-_=+[\]{};:'",.<>/?\\|~`]{8,16}$/;
     const nicknamePattern = /^[\u3131-\u318E\uAC00-\uD7A3a-zA-Z\d]{2,6}$/;
+
     useEffect(() => {
         async function fetchData() {
             const result = await domain();
@@ -164,6 +165,7 @@ export default function SignupPage() {
         }
 
         fetchData();
+        console.log(domainList.jobList);
     }, []);
 
     const handleChange = async (e) => {
@@ -365,6 +367,22 @@ export default function SignupPage() {
         }
     };
 
+    const jobAndHobbyCheck = (target, idx) => {
+        if (target === "직업") {
+            setInputs2({
+                ...inputs2,
+                job: idx
+            });
+        } else {
+            setInputs2({
+                ...inputs2,
+                hobby: idx
+            });
+        }
+
+        console.log(inputs2);
+    };
+
     return (
         <s.StyledMain>
             <s.StyledMainSection>
@@ -440,28 +458,10 @@ export default function SignupPage() {
                     />
                     <s.StyledText colorNickname={overlapNickname}>{checkNicknameText[overlapNickname]}</s.StyledText>
                     <s.StyledLine></s.StyledLine>
-                    <SignupSelect
-                        data={{
-                            text: "취미",
-                            id: "hobby",
-                            name: "hobby",
-                            type: "text",
-                            list: domainList,
-                            onChangeFunc: handleChange2,
-                            value: inputs2.hobby
-                        }}
-                    />
-                    <SignupSelect
-                        data={{
-                            text: "직업",
-                            id: "job",
-                            name: "job",
-                            type: "text",
-                            list: domainList,
-                            onChangeFunc: handleChange2,
-                            value: inputs2.job
-                        }}
-                    />
+
+                    <FormSelectCol data={{ list: domainList.jobList, callback: jobAndHobbyCheck, target: "직업" }} />
+                    <FormSelectCol data={{ list: domainList.hobbyList, callback: jobAndHobbyCheck, target: "취미" }} />
+
                     <s.StyledSignupBtn disabled={overlapEmail !== 5 || overlapNickname !== 2 || overlapPassword2 !== 3} onClick={handleCheck}>
                         회원가입 완료
                     </s.StyledSignupBtn>
