@@ -15,4 +15,5 @@ public class ChatResDto {
     private List<ChatChoiceDto> choices;
     private UsageDto usage;
     private Boolean correct;
+    private Boolean finish;
 }

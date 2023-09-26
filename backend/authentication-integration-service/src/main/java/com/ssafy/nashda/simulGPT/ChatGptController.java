@@ -4,13 +4,11 @@ package com.ssafy.nashda.simulGPT;
 import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
-import com.ssafy.nashda.common.service.CacheService;
 import com.ssafy.nashda.simulGPT.dto.*;
 import com.ssafy.nashda.simulGPT.entity.MemorizeChat;
 import com.ssafy.nashda.simulGPT.repository.ChatGptRepository;
 import com.ssafy.nashda.simulGPT.service.ChatGptService;
 import com.ssafy.nashda.simulGPT.service.ChatGptServiceImpl;
-import feign.Param;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -43,7 +41,7 @@ public class ChatGptController {
         if (ObjectUtils.isEmpty(messageReqDto.getId())) {
             if (background.equals("cafe")) {
                 messages.add(new ChatMessageDto("system", "장소 : 카페 상황 : 손님이 카페에 음료를 사러 왔음. " +
-                        "조건1: 상황이 종료 되었을 경우 : '상황 종료' && 바리스타의 대답의 형태로 출력 " +
+                        "조건1: 카페에서 음료를 구매하고 손님이 음료를 받으면 상황 종료, 종료 되었을 경우 : '상황 종료' && 바리스타의 대답의 형태로 출력 " +
                         "조건2: 상황과 장소에 맞지 않을 경우 '옳지않음',옳지않은 이유,바리스타의 대답 출력" +
                         "조건3: 카페에서는 음료와 디저트만 주문할 수 있음, 주문 범위를 벗어나면 상황에 맞지 않다고 판단 " +
                         "조건4: 너는 바리스타야."));
@@ -51,7 +49,7 @@ public class ChatGptController {
 
             } else if (background.equals("police")) {
                 messages.add(new ChatMessageDto("system", "장소 : 경찰서 상황 : 내가 분실물을 찾으러 경찰서에 왔음. " +
-                        "조건1: 상황이 종료 되었을 경우 : '상황 종료' && 경찰관의 대답의 형태로 출력 " +
+                        "조건1: 내가 분실물을 수령하면 상황 종료, 종료되었을 경우 : '상황 종료' && 경찰관의 대답의 형태로 출력 " +
                         "조건2: 상황과 장소에 맞지 않을 경우 '옳지않음', 옳지 않은 이유, 경찰관의 대답 출력" +
                         "조건3: 분실물을 찾으러 온 것 외의 길찾기, 범인신고 등의 업무는 상황에 맞지 않다고 판단함." +
                         "조건4: 너는 경찰관이야."));
@@ -59,7 +57,7 @@ public class ChatGptController {
 
             } else {
                 messages.add(new ChatMessageDto("system", "장소 : 영화관 상황 : 나는 영화 예매와 팝콘 및 음료와 같은 먹거리를 구매하러 영화관에 왔어." +
-                        "조건1: 상황이 종료 되었을 경우 : '상황 종료' && 영화관 직원의 대답의 형태로 출력" +
+                        "조건1: 영화 예매 및 먹거리를 구매 대화까지 나누면 상황 종료, 종료되었을 경우 : '상황 종료' && 영화관 직원의 대답의 형태로 출력" +
                         "조건2: 상황과 장소에 맞지 않을 경우 '옳지않음',옳지않은 이유,영화관 직원의 대답 출력" +
                         "조건3: 영화 예매와 팝콘 및 음료와 같은 스낵류 구매를 제외한 것은 상황에 맞지 않다고 판단함." +
                         "조건4: 영화 예매를 먼저한 후 팝콘 및 음료와 같은 스낵류를 구매할 수 있음." +
@@ -88,6 +86,16 @@ public class ChatGptController {
             chatResDto.setCorrect(Boolean.TRUE);
         }
 
+        if (message.contains("상황 종료")) {
+            String temp[] = message.split("상황 종료");
+            chatResDto.setFinish(Boolean.TRUE);
+            chatResDto.getChoices().get(0).getMessage().setContent(temp[0].strip());
+
+
+        } else {
+            chatResDto.setFinish(Boolean.FALSE);
+        }
+
         messages.add(new ChatMessageDto(chatResDto.getChoices().get(0).getMessage().getRole(), chatResDto.getChoices().get(0).getMessage().getContent()));
         memorizeChat.setMessages(messages);
 
@@ -98,5 +106,4 @@ public class ChatGptController {
 
     }
 
-    // 대화 종료시 마지막 대화 캐시 Id 삭제
 }
