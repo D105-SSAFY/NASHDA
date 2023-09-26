@@ -8,8 +8,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "redux/slice/userSlice";
 import { useNavigate } from "react-router";
-
-import { signin } from "apis/user";
+import eetch from "apis/eetch";
 
 // 임시 사용
 // export const login = async ({ email, password }) => {
@@ -69,7 +68,7 @@ export default function SigninPage() {
             return;
         }
 
-        const result = await signin({ email: inputs.email, password: inputs.password });
+        const result = await eetch.signin({ email: inputs.email, password: inputs.password });
         if (result) {
             dispatch(
                 loginUser({

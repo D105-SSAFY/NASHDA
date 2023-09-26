@@ -13,14 +13,32 @@ export default function Statistics({ tabSwitch }) {
         { score: null, week: null }
     ]);
 
-    setTimeout(() => {
-        setScores([
-            { score: 97, week: 15 },
-            { score: 82, week: 14 },
-            { score: 74, week: 13 }
-        ]);
-    }, 100);
-    const total = [12854, 2480, 711];
+    const [totals, setTotals] = React.useState([0, 0, 0]);
+
+    const total = React.useRef(totals);
+
+    React.useEffect(() => {
+        // 테스트용 타임 아웃
+        setTimeout(() => {
+            setScores([
+                { score: 97, week: 15 },
+                { score: 82, week: 14 },
+                { score: 74, week: 13 }
+            ]);
+        }, 100);
+
+        const interval = setInterval(() => {
+            if (total.current[0] < 1000) {
+                total.current[0] += 1;
+                total.current[1] += 1;
+                total.current[2] += 1;
+                console.log(total.current);
+                setTotals(total.current);
+            }
+        }, 10);
+
+        console.log(interval);
+    }, []);
 
     const graphs = () => {
         const result = [];
@@ -47,9 +65,9 @@ export default function Statistics({ tabSwitch }) {
             </s.Graph>
             <s.GraphInfo>
                 <s.GraphInfoTitle>지금까지</s.GraphInfoTitle>
-                <s.GraphInfoContent>단어 {total[0]}</s.GraphInfoContent>
-                <s.GraphInfoContent>문장 {total[1]}</s.GraphInfoContent>
-                <s.GraphInfoContent>대화 {total[2]}</s.GraphInfoContent>
+                <s.GraphInfoContent>단어 {totals[0]}</s.GraphInfoContent>
+                <s.GraphInfoContent>문장 {totals[1]}</s.GraphInfoContent>
+                <s.GraphInfoContent>대화 {totals[2]}</s.GraphInfoContent>
             </s.GraphInfo>
             <MoreButton onClick={() => tabSwitch("통계")}>
                 통계
