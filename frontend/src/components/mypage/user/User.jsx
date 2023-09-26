@@ -1,6 +1,5 @@
 import React from "react";
 import * as u from "./style";
-import { useSelector } from "react-redux";
 
 import Nickname from "components/mypage/user/nickname/Nickname";
 import Statistics from "components/mypage/user/statistics/Statistics";
@@ -10,12 +9,10 @@ import Profile from "components/mypage/user/profile/Profile";
 import NicknameDetail from "components/mypage/user/nickname/nicknameDetail/NicknameDetail";
 import ArchievementDetail from "./archievement/archievementDetail/ArchievementDetail";
 
-import { mypage } from "apis/user";
+// Import { mypage } from "apis/user";
 
 export default function Setting({ tabSwitch }) {
     const [more, setMore] = React.useState(0);
-
-    const user = useSelector((state) => state.user);
 
     return (
         <>

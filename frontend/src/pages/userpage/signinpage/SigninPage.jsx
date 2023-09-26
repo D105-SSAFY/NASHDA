@@ -9,31 +9,33 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "redux/slice/userSlice";
 import { useNavigate } from "react-router";
 
+import { signin } from "apis/user";
+
 // 임시 사용
-export const login = async ({ email, password }) => {
-    try {
-        const response = await fetch("https://j9d105.p.ssafy.io/api/user/signin", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ email, password })
-        });
+// export const login = async ({ email, password }) => {
+//     try {
+//         const response = await fetch("https://j9d105.p.ssafy.io/api/user/signin", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json"
+//             },
+//             body: JSON.stringify({ email, password })
+//         });
 
-        const result = await response.json();
-        if (result.errorCode === 4001) {
-            return;
-        }
+//         const result = await response.json();
+//         if (result.errorCode === 4001) {
+//             return;
+//         }
 
-        if (result.errorCode === 4002) {
-            return;
-        }
+//         if (result.errorCode === 4002) {
+//             return;
+//         }
 
-        return result;
-    } catch (error) {
-        console.log(error);
-    }
-};
+//         return result;
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };
 //
 
 export default function SigninPage() {
@@ -69,7 +71,7 @@ export default function SigninPage() {
             return;
         }
 
-        const result = await login({ email: inputs.email, password: inputs.password });
+        const result = await signin({ email: inputs.email, password: inputs.password });
         if (result) {
             dispatch(
                 loginUser({
