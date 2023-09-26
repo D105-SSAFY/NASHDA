@@ -6,10 +6,10 @@ import com.ssafy.nashda.common.dto.InternalResponseDto;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
-import com.ssafy.nashda.game.dto.BlankSetResponseDto;
-import com.ssafy.nashda.game.dto.ImgWordSetListResponseDto;
-import com.ssafy.nashda.game.dto.ImgWordSetResponseDto;
-import com.ssafy.nashda.practice.dto.PronResponseDto;
+import com.ssafy.nashda.game.dto.request.SpeedSTTReqDto;
+import com.ssafy.nashda.game.dto.response.BlankSetResponseDto;
+import com.ssafy.nashda.game.dto.response.ImgWordSetListResponseDto;
+import com.ssafy.nashda.game.dto.response.ImgWordSetResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.lang.reflect.Array;
+import javax.mail.Multipart;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -149,5 +149,11 @@ public class GameServiceImpl implements GameService{
         log.info("response : {}, type : {}", response.getBody().getData(), response.getBody().getData().getClass().getName());
 
         return (long) (int) response.getBody().getData();
+    }
+
+    @Override
+    public boolean checkSpeedAnswer(SpeedSTTReqDto reqDto, Multipart sound) {
+        //문제 번호에 있는 답과 사용자의 발음이 동일한지 확인
+        return false;
     }
 }
