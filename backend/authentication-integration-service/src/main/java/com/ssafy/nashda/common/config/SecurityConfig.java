@@ -36,15 +36,16 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 // CSRF 토큰을 활성화, CSRF 토큰의 생성, 저장, 검증 등은 Spring Security가 자동으로 처리
-//                .cors(cors -> cors.disable()
-//                )
+                .cors(cors -> cors
+                        .configurationSource(corsConfigurationSource())
+                )
                 .csrf(csrf -> csrf
-                                .disable()
+                        .disable()
                 )
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                                .antMatchers("/user/signin","/user/signup", "/user/checkemail"
-                                        , "/user/checknickname", "/user/sendcode","/user/checkcode"
-                                        ,"/user/resetpw", "/user/domain").permitAll()
+                        .antMatchers("/user/signin", "/user/signup", "/user/checkemail"
+                                , "/user/checknickname", "/user/sendcode", "/user/checkcode"
+                                , "/user/resetpw", "/user/domain").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new TokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
@@ -57,12 +58,26 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /*
+        @Bean
+        CorsConfigurationSource corsConfigurationSource() {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOrigins(Arrays.asList("*")); // 모든 출처 허용
+            configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // 모든 HTTP 메서드 허용
+            configuration.setAllowedHeaders(Arrays.asList("*")); // 모든 헤더 허용
+            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            source.registerCorsConfiguration("/**", configuration);
+            return source;
+        }
+    */
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*")); // 모든 출처 허용
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // 모든 HTTP 메서드 허용
-        configuration.setAllowedHeaders(Arrays.asList("*")); // 모든 헤더 허용
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // http:localhost:3000 출처 허용
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // 지정된 HTTP 메서드 허용
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin")); // 지정된 헤더 허용
+        configuration.setAllowCredentials(true); // credentials 허용
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
