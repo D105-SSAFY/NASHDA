@@ -7,6 +7,7 @@ import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
 import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
+import com.ssafy.nashda.stt.service.STTService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,9 +26,9 @@ public class PracticePronServiceImpl implements PracticePronService {
     private final ObjectMapper mapper;
     private final TextProcessService textProcessService;
     private final S3Uploader s3Uploader;
+    private final STTService sttService;
 
-
-    @Value("${env.URL}")
+    @Value("${env.PROBLEM_URL}")
    private String URL;
 
     @Override
@@ -174,15 +175,9 @@ public class PracticePronServiceImpl implements PracticePronService {
     public String getSTT(MultipartFile sound, long index, String type) throws Exception {
 
         // STT 부분
-        // MultipartFile to  File
-
-//       String uploadUrl = s3Uploader.uploadFiles(sound, "sound");
-//       log.info(uploadUrl);
-        
         // FAST API 와 소통하기
+        String sttResult = sttService.getPronunciation(sound); // 받아온 STT
 
-
-        String sttResult = "발따"; // 받아온 STT
         // 통계 저장 부분
 
         // 1. 해당 문제를 받아온다.

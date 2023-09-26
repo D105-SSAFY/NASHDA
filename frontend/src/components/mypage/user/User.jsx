@@ -9,6 +9,8 @@ import Profile from "components/mypage/user/profile/Profile";
 import NicknameDetail from "components/mypage/user/nickname/nicknameDetail/NicknameDetail";
 import ArchievementDetail from "./archievement/archievementDetail/ArchievementDetail";
 
+// Import { mypage } from "apis/user";
+
 export default function Setting({ tabSwitch }) {
     const [more, setMore] = React.useState(0);
 

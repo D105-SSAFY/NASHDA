@@ -44,7 +44,7 @@ public class TestServiceImpl implements TestService {
 
     private final S3Uploader s3Uploader;
 
-    @Value("${env.URL}")
+    @Value("${env.PROBLEM_URL}")
     private String URL;
     private final MongoTemplate mongoTemplate;
     private final WordTestResultRepository wordTestResultRepository;

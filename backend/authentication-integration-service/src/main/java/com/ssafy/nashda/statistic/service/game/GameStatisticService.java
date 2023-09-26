@@ -1,4 +1,6 @@
 package com.ssafy.nashda.statistic.service.game;
 
-public class GameService {
+public interface GameStatisticService {
+
+
 }

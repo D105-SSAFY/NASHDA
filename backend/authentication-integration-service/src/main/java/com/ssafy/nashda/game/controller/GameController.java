@@ -1,19 +1,23 @@
 package com.ssafy.nashda.game.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
-import com.ssafy.nashda.game.dto.BlankSetResponseDto;
-import com.ssafy.nashda.game.dto.ImgWordSetListResponseDto;
-import com.ssafy.nashda.game.dto.ImgWordSetResponseDto;
+import com.ssafy.nashda.game.dto.request.BlankResultReqDto;
+import com.ssafy.nashda.game.dto.request.GameSTTReqDto;
+import com.ssafy.nashda.game.dto.request.SpeedResultReqDto;
+import com.ssafy.nashda.game.dto.response.BlankSetResponseDto;
+import com.ssafy.nashda.game.dto.response.GmaeSTTResDto;
+import com.ssafy.nashda.game.dto.response.ImgWordSetListResponseDto;
+import com.ssafy.nashda.game.dto.response.ImgWordSetResponseDto;
 import com.ssafy.nashda.game.service.GameService;
+import com.ssafy.nashda.member.controller.MemberController;
+import com.ssafy.nashda.member.entity.Member;
+import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,7 +26,7 @@ import java.util.List;
 @Slf4j
 public class GameController {
     private final GameService gameService;
-
+    private final MemberController memberController;
     @GetMapping("/speed")
     public ResponseEntity<? extends BaseResponseBody> getSpeedNum() throws Exception {
         long speedSetNum = gameService.getSpeedSetNum();
@@ -48,5 +52,24 @@ public class GameController {
         return ResponseEntity.ok(new BaseResponseBody(200, "문제 불러오기 성공", blankSetList));
     }
 
+    @PostMapping("/")
+    public ResponseEntity<?extends BaseResponseBody> getSTT(@ModelAttribute GameSTTReqDto gameSTTReqDto ) throws Exception {
+//       return ResponseEntity.ok(new BaseResponseBody(200, "채점 결과", gameService.convertSTT(gameSTTReqDto, sound)));
+        return ResponseEntity.ok(new BaseResponseBody(200, "채점 결과", gameService.convertSTT(gameSTTReqDto)));
 
+    }
+
+    @PostMapping("/speed/result")
+    public ResponseEntity<? extends BaseResponseBody> saveSpeedResult(@RequestHeader("Authorization") String token, @RequestBody SpeedResultReqDto request) throws Exception {
+        Member member = memberController.findMemberByToken(token);
+        gameService.saveSpeedResult(request, member);
+        return ResponseEntity.ok(new BaseResponseBody(200, "스피드 게임 결과 저장 성공"));
+    }
+
+    @PostMapping("/blank/result")
+    public ResponseEntity<? extends BaseResponseBody> saveBlankResult(@RequestHeader("Authorization") String token, @RequestBody BlankResultReqDto request) throws Exception {
+        Member member = memberController.findMemberByToken(token);
+        gameService.saveBlankResult(request, member);
+        return ResponseEntity.ok(new BaseResponseBody(200, "빈칸 게임 결과 저장 성공"));
+    }
 }

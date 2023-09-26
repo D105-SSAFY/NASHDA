@@ -2,6 +2,29 @@
  * 유효 AccesToken 획득 ( user )
  * > accessToken
  * */
+export const valid = async (user) => {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/user/valid`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.accessToken}`
+            },
+            credentials: "include"
+        });
+
+        const result = await response.json();
+
+        return result;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+/**
+ * 유효 AccesToken 획득 ( user )
+ * > accessToken
+ * */
 export const refresh = async (user) => {
     try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/user/refresh`, {
@@ -17,7 +40,7 @@ export const refresh = async (user) => {
 
         return result;
     } catch (error) {
-        console.log(error);
+        throw new Error(error);
     }
 };
 
@@ -119,25 +142,25 @@ export const signout = async ({ email, user }) => {
 /**
  * 회원탈퇴 ( String email | String password | user )
  * */
-// export const signOut = async ({ email, password, user }) => {
-//     try {
-//         const response = fetch(`${process.env.REACT_APP_API_URL}/user/signout`, {
-//             method: "PUT",
-//             headers: {
-//                 "Content-Type": "application/json",
-//                 Authorization: `Bearer ${user.accessToken}`
-//             },
-//             body: JSON.stringify({ email, password }),
-//             credentials: "include"
-//         });
+export const unregist = async ({ email, password, user }) => {
+    try {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/user/unregist`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.accessToken}`
+            },
+            body: JSON.stringify({ email, password }),
+            credentials: "include"
+        });
 
-//         const result = await response.json();
+        const result = await response.json();
 
-//         return result;
-//     } catch (error) {
-//         console.log(error);
-//     }
-// };
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 /**
  * 비밀번호 변경 ( String email | String password | String newpassword | user)
@@ -217,9 +240,9 @@ export const updateProfile = async ({ email, password, name, nickname, age = nul
  * 회원정보 조회 ( String nickname | user )
  * > { nickname | name | email | age | job | hobby | progress | start_week | now_week }
  * */
-export const mypageName = async ({ nickname, user }) => {
+export const mypage = async (user) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/user/mypage/${nickname}`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/user/mypage`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
