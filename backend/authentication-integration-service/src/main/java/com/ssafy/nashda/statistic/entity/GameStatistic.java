@@ -1,4 +1,4 @@
-package com.ssafy.nashda.statistic.entity.game;
+package com.ssafy.nashda.statistic.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.nashda.member.entity.Member;
