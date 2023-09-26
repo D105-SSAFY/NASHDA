@@ -1,13 +1,13 @@
 export const game = async ({ type, index, sound, user }) => {
     try {
         const response = fetch(`${process.env.REACT_APP_API_URL}/game`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Content-Type': 'multipart/form-data',
+                "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ type, index, sound }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -21,12 +21,12 @@ export const game = async ({ type, index, sound, user }) => {
 export const speed = async (user) => {
     try {
         const response = fetch(`${process.env.REACT_APP_API_URL}/game/speed`, {
-            method: 'GET',
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -40,12 +40,12 @@ export const speed = async (user) => {
 export const speedOne = async ({ index, user }) => {
     try {
         const response = fetch(`${process.env.REACT_APP_API_URL}/game/speed/1/${index}`, {
-            method: 'GET',
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -59,12 +59,12 @@ export const speedOne = async ({ index, user }) => {
 export const speedTwo = async ({ index, user }) => {
     try {
         const response = fetch(`${process.env.REACT_APP_API_URL}/game/speed/2/${index}`, {
-            method: 'GET',
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -78,13 +78,13 @@ export const speedTwo = async ({ index, user }) => {
 export const speedResult = async ({ total, score, user }) => {
     try {
         const response = fetch(`${process.env.REACT_APP_API_URL}/game/speed/result`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ total, score }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -98,13 +98,13 @@ export const speedResult = async ({ total, score, user }) => {
 export const blank = async ({ level, user }) => {
     try {
         const response = fetch(`${process.env.REACT_APP_API_URL}/game/blank`, {
-            method: 'GET',
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ level }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -118,13 +118,13 @@ export const blank = async ({ level, user }) => {
 export const blankResult = async ({ total, score, level, user }) => {
     try {
         const response = fetch(`${process.env.REACT_APP_API_URL}/game/blank/result`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ total, score, level }),
-            credentials: 'include'
+            credentials: "include"
         });
 
         const result = await response.json();

@@ -67,7 +67,6 @@ spring:
       # format_sql: true
 
 
-
 jwt:
   issuer: thisiseunjin@nashda.com
   secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK2
@@ -81,6 +80,8 @@ logging:
     #       sql: debug
 
 
+chatgpt:
+  api-key: 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
 
 
 cloud:
@@ -98,5 +99,5 @@ cloud:
 
 
 env:
-  URL: http://172.17.0.5:8082
-#   URL: http://localhost:8082
+#  URL: http://172.17.0.5:8082
+   URL: http://localhost:8082

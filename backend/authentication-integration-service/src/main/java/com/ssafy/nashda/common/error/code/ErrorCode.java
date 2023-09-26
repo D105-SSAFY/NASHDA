@@ -41,7 +41,10 @@ public enum ErrorCode {
 
     // 답변
     NOT_EXISTS_REPLY_ID(HttpStatus.BAD_REQUEST, 400, "존재하지 않는 답변글입니다."),
-    EXIST_REPLY(HttpStatus.BAD_REQUEST, 400, "이미 답변이 달린 질문입니다.");
+    EXIST_REPLY(HttpStatus.BAD_REQUEST, 400, "이미 답변이 달린 질문입니다."),
+
+    // ChatGPT
+    NOT_EXISTS_MESSAGE(HttpStatus.BAD_REQUEST, 400, "message는 필수 입력 항목입니다.");
 
     private HttpStatus httpStatus;
     private int errorCode;

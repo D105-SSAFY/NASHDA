@@ -10,6 +10,7 @@ import com.ssafy.nashda.game.dto.response.ImgWordSetResponseDto;
 import com.ssafy.nashda.member.entity.Member;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
 import java.util.List;
 
 public interface GameService {
@@ -19,7 +20,6 @@ public interface GameService {
     ImgWordSetListResponseDto getImgWordSetList(long index) throws Exception;
 
     List<BlankSetResponseDto> getBlankSetList() throws Exception;
-
     long getSpeedSetNum();
 
     GmaeSTTResDto convertSTT(GameSTTReqDto request) throws Exception;
