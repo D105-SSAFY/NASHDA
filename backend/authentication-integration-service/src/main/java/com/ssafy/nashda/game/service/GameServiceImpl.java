@@ -31,7 +31,7 @@ import java.util.List;
 public class GameServiceImpl implements GameService{
     private final ObjectMapper mapper;
 
-    @Value("${env.URL}")
+    @Value("${env.PROBLEM_URL}")
     private String URL;
 
     @Override

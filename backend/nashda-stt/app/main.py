@@ -32,7 +32,7 @@ transcribe = pipeline(
 transcribe.model.config.forced_decoder_ids = transcribe.tokenizer.get_decoder_prompt_ids(language="Korean", task="transcribe")
 
 
-@app.post("/file")
+@app.post("/pron")
 async def file(file_upload: UploadFile):
     try:
         data = await file_upload.read()

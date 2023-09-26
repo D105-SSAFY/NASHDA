@@ -8,7 +8,7 @@ public enum ErrorCode {
     // S3
     FAIL_DELETE_FILE(HttpStatus.INTERNAL_SERVER_ERROR, 7000, "S3에 업로드 된 파일을 지울 때 오류가 발생하였습니다."),
 
-
+    NOT_VALID_EXTENSION(HttpStatus.BAD_REQUEST, 6001, "지원하는 파일형식이 아닙니다."),
     NOT_KOREAN(HttpStatus.BAD_REQUEST, 6000, "한글이 아님"),
     SAVE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5000, "발음 통계 저장 오류"),
     TEST(HttpStatus.INTERNAL_SERVER_ERROR, 001, "exception test"),
