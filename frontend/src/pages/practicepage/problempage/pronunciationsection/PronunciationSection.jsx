@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 
 import * as s from "./style";
 
-import VoiceModal from "components/modals/voicemodal/VoiceModal";
-
 import voice from "utils/VoiceFunc";
+
+import VoiceModal from "components/modals/voicemodal/VoiceModal";
 import FilledButton from "components/buttons/filledbutton/FilledButton";
 import BorderButton from "components/buttons/borderbutton/BorderButton";
 
@@ -63,16 +63,12 @@ export default function PronunciationSection({ props: { pronunciation } }) {
 
     const onClickRecordOn = () => {
         showModal();
-        // OnRecAudio();
-
-        console.log(onRecAudio);
+        onRecAudio();
     };
 
     const onClickRecordOff = async () => {
         unshowModal();
-        // OffRecAudio();
-
-        console.log(offRecAudio);
+        offRecAudio();
     };
 
     const send = async () => {
@@ -120,12 +116,12 @@ export default function PronunciationSection({ props: { pronunciation } }) {
                 return;
             }
 
-            console.log(result);
-
-            setAudioText("허아캐주면은안되까여어");
+            setAudioText(result.result);
         };
 
         getSTT();
+
+        setOnUpdate(false);
     }, [onUpdate]);
 
     return (
@@ -145,11 +141,11 @@ export default function PronunciationSection({ props: { pronunciation } }) {
                     </s.SpeakButton>
                 </s.Box>
                 <s.ButtonWrapper>
-                    <FilledButton props={{ background: "rgb(174, 126, 242)", color: "#ffffff", callback: onClickRecordOn }}>
+                    <FilledButton props={{ background: "rgba(68, 71, 90, 0.7)", color: "#ffffff", callback: onClickRecordOn }}>
                         <MicIcon />
                         <span>녹음하기</span>
                     </FilledButton>
-                    <BorderButton props={{ color: "rgb(174, 126, 242)" }}>
+                    <BorderButton props={{ color: "rgba(68, 71, 90, 0.7)" }}>
                         <span>다음</span>
                     </BorderButton>
                 </s.ButtonWrapper>
