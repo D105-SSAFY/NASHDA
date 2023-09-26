@@ -7,15 +7,16 @@ import com.ssafy.nashda.member.dto.Request.MemberSignInReqDto;
 import com.ssafy.nashda.member.dto.Request.MemberSignUpReqDto;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.repository.MemberRepository;
-import com.ssafy.nashda.token.config.TokenProvider;
+import com.ssafy.nashda.statistic.entity.Strick;
+import com.ssafy.nashda.statistic.repository.StrickRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service("MemberService")
@@ -25,6 +26,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final StrickRepository strickRepository;
 
     @Override
     @Transactional
@@ -65,10 +67,20 @@ public class MemberServiceImpl implements MemberService {
             throw new BadRequestException(ErrorCode.USER_NOT_EXIST);
         }
         if (passwordEncoder.matches(signinInfo.getPassword(), member.get().getPassword())) {
+
+            Optional<Strick> optionalStrick = strickRepository.findByMemberAndCreatOn(member.get(), LocalDate.now());
+
+            if(optionalStrick.isEmpty()){
+                Strick strick = Strick.builder()
+                        .member(member.get())
+                        .build();
+                strickRepository.save(strick);
+            }
             return new MemberInfoResDto(member.get());
         } else {
             throw new BadRequestException(ErrorCode.USER_NOT_MATCH);
         }
+
     }
 
     @Override
