@@ -1,18 +1,19 @@
+import eetch from "apis/eetch";
+
 export const noticeSend = async ({ title, content, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/notice`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/notice`;
+        const options = {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ title, content }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
+        return await eetch(url, options);
     } catch (error) {
         console.log(error);
     }
@@ -20,18 +21,17 @@ export const noticeSend = async ({ title, content, user }) => {
 
 export const noticeList = async ({ user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/notice`, {
-            method: 'GET',
+        const url = `${process.env.REACT_APP_API_URL}/notice`;
+        const options = {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
+        return await eetch(url, options);
     } catch (error) {
         console.log(error);
     }
@@ -39,58 +39,55 @@ export const noticeList = async ({ user }) => {
 
 export const noticeEdit = async ({ index, title, content, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/notice/${index}`, {
-            method: 'PUT',
+        const url = `${process.env.REACT_APP_API_URL}/notice/${index}`;
+        const options = {
+            method: "PUT",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ title, content }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const noticeGet = async ({ index, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/notice/${index}`, {
-            method: 'GET',
+        const url = `${process.env.REACT_APP_API_URL}/notice/${index}`;
+        const options = {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const noticeDelete = async ({ index, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/notice/${index}`, {
-            method: 'DELETE',
+        const url = `${process.env.REACT_APP_API_URL}/notice/${index}`;
+        const options = {
+            method: "DELETE",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };

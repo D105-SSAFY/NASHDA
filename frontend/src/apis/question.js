@@ -1,6 +1,9 @@
+import eetch from "apis/eetch";
+
 export const questionWrite = async ({ email, title, content, writer, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/question`, {
+        const url = `${process.env.REACT_APP_API_URL}/question`;
+        const options = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -8,11 +11,9 @@ export const questionWrite = async ({ email, title, content, writer, user }) => 
             },
             body: JSON.stringify({ email, title, content, writer }),
             credentials: "include"
-        });
+        };
 
-        const result = await response.json();
-
-        return result;
+        return await eetch(url, options);
     } catch (error) {
         console.log(error);
     }
@@ -20,26 +21,26 @@ export const questionWrite = async ({ email, title, content, writer, user }) => 
 
 export const questionList = async ({ user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/question`, {
+        const url = `${process.env.REACT_APP_API_URL}/question`;
+        const options = {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             credentials: "include"
-        });
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const questionEdit = async ({ index, email, title, content, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/question/${index}`, {
+        const url = `${process.env.REACT_APP_API_URL}/question/${index}`;
+        const options = {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -47,57 +48,54 @@ export const questionEdit = async ({ index, email, title, content, user }) => {
             },
             body: JSON.stringify({ email, title, content }),
             credentials: "include"
-        });
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const questionGet = async ({ index, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/question/${index}`, {
+        const url = `${process.env.REACT_APP_API_URL}/question/${index}`;
+        const options = {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             credentials: "include"
-        });
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const questionDelete = async ({ index, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/question/${index}`, {
+        const url = `${process.env.REACT_APP_API_URL}/question/${index}`;
+        const options = {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             credentials: "include"
-        });
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const replyWrite = async ({ index, email, content, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/question/reply/${index}`, {
+        const url = `${process.env.REACT_APP_API_URL}/question/reply/${index}`;
+        const options = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -105,19 +103,18 @@ export const replyWrite = async ({ index, email, content, user }) => {
             },
             body: JSON.stringify({ email, content }),
             credentials: "include"
-        });
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const replyEdit = async ({ index, email, content, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/question/reply/${index}`, {
+        const url = `${process.env.REACT_APP_API_URL}/question/reply/${index}`;
+        const options = {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -125,19 +122,18 @@ export const replyEdit = async ({ index, email, content, user }) => {
             },
             body: JSON.stringify({ email, content }),
             credentials: "include"
-        });
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const replyDelete = async ({ index, email, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/question/reply/${index}`, {
+        const url = `${process.env.REACT_APP_API_URL}/question/reply/${index}`;
+        const options = {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -145,12 +141,10 @@ export const replyDelete = async ({ index, email, user }) => {
             },
             body: JSON.stringify({ email }),
             credentials: "include"
-        });
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
