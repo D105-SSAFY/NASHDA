@@ -54,8 +54,6 @@ export default function SigninPage() {
             ...inputs,
             [e.target.name]: e.target.value
         });
-
-        console.log(inputs);
     };
 
     const handleCheck = async (e) => {

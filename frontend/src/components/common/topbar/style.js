@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 export const Header = styled.header`
     width: 100%;
+    height: 72px;
+
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 `;
 
