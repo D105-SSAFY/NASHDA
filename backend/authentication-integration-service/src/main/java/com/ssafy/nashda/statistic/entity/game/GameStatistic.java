@@ -4,10 +4,7 @@ package com.ssafy.nashda.statistic.entity.game;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.week.entity.Week;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,7 +13,7 @@ import javax.persistence.*;
 @Entity // 객체와 테이블 매핑
 @Table(name = "game_static")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GameStatistic{
+public class GameStatistic {
 
     @Id // PK 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT 설정
@@ -24,7 +21,7 @@ public class GameStatistic{
     private Long index;
 
     @JsonIgnore
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_number", nullable = false)
     private Member member;
 
@@ -44,8 +41,13 @@ public class GameStatistic{
     private int speedSet;
 
     @JsonIgnore
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "week_index", nullable = false)
     private Week week;
 
+    @Builder
+    public GameStatistic(Member member, Week week) {
+        this.member = member;
+        this.week = week;
+    }
 }
