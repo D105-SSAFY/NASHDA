@@ -44,7 +44,7 @@ public class GameServiceImpl implements GameService {
     private final MemberRepository memberRepository;
     private final WeekService weekService;
 
-    @Value("${env.URL}")
+    @Value("${env.PROBLEM_URL}")
     private String URL;
 
     @Override
