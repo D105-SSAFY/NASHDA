@@ -4,7 +4,9 @@ export default function FormInputCol({ data: { text, type, id, name, onChangeFun
     // eslint-disable-next-line no-return-assign
     return (
         <f.StyledDiv>
-            <f.StyledLabel htmlFor={id}>{text}</f.StyledLabel>
+            <f.StyledLabel htmlFor={id} isFill={Boolean(value)}>
+                {text}
+            </f.StyledLabel>
             <f.StyledInput
                 type={type}
                 id={id}
@@ -13,10 +15,11 @@ export default function FormInputCol({ data: { text, type, id, name, onChangeFun
                 ref={ref}
                 placeholder={(placeholder ??= "")}
                 value={value}
-                readOnly={readOnly === 3 || readOnly === 4 || readOnly === 5}
-                check={check === 2}
+                isFill={Boolean(value)}
+                readOnly={readOnly === 5}
+                check={check === 2 || check === 3 || check === 4}
             ></f.StyledInput>
-            <f.StyledButton onClick={onClickFunc} check={check === 2}>
+            <f.StyledButton onClick={onClickFunc} check={check === 2 || check === 3 || check === 4}>
                 인증
             </f.StyledButton>
         </f.StyledDiv>

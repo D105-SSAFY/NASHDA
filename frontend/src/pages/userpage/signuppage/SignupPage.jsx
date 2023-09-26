@@ -130,10 +130,9 @@ export default function SignupPage() {
         job: ""
     });
 
-    const [overlapEmail, setOverlapEmail] = useState(false);
-    const [submitedEmail, setSubmitedEmail] = useState(false);
-    const [overlapNickname, setOverlapNickname] = useState(false);
-    const [overlapPassword2, setOverlapPassword2] = useState(false);
+    const [overlapEmail, setOverlapEmail] = useState(null);
+    const [overlapNickname, setOverlapNickname] = useState(null);
+    const [overlapPassword2, setOverlapPassword2] = useState(null);
     const timeoutIdRef = useRef(null);
     const checkEmailText = [
         "중복된 이메일 입니다!",
@@ -157,7 +156,7 @@ export default function SignupPage() {
         // eslint-disable-next-line no-useless-escape
         /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*()\-_=+[\]{};:'",.<>/?\\|~`])[a-zA-Z\d!@#$%^&*()\-_=+[\]{};:'",.<>/?\\|~`]{8,16}$/;
-
+    const nicknamePattern = /^[\u3131-\u318E\uAC00-\uD7A3a-zA-Z\d]{2,6}$/;
     useEffect(() => {
         async function fetchData() {
             const result = await domain();
@@ -168,9 +167,17 @@ export default function SignupPage() {
     }, []);
 
     const handleChange = async (e) => {
+        setInputs({
+            ...inputs,
+            [e.target.name]: e.target.value
+        });
+        console.log(inputs);
+
         if (e.target.name === "email") {
+            if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
+
             if (!e.target.value) {
-                setOverlapEmail(false);
+                setOverlapEmail(null);
                 return;
             }
 
@@ -178,8 +185,6 @@ export default function SignupPage() {
                 setOverlapEmail(1);
                 return;
             }
-
-            if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
 
             timeoutIdRef.current = setTimeout(async () => {
                 const result = await checkEmail(e.target.value);
@@ -193,13 +198,13 @@ export default function SignupPage() {
         }
 
         if (e.target.name === "code") {
+            if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
+
             if (!e.target.value) {
                 setOverlapEmail(3);
                 console.log("여기");
                 return;
             }
-
-            if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
 
             timeoutIdRef.current = setTimeout(async () => {
                 const result = await checkCode({ email: inputs.email, code: e.target.value });
@@ -213,12 +218,18 @@ export default function SignupPage() {
         }
 
         if (e.target.name === "nickname") {
+            if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
+
             if (!e.target.value) {
-                setOverlapNickname(false);
+                setOverlapNickname(null);
                 return;
             }
 
-            if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
+            if (e.target.value.includes(" ") || !nicknamePattern.test(e.target.value)) {
+                console.log("여기여기");
+                setOverlapNickname(1);
+                return;
+            }
 
             timeoutIdRef.current = setTimeout(async () => {
                 const result = await checkNickname(e.target.value);
@@ -230,12 +241,6 @@ export default function SignupPage() {
                 }
             }, 400);
         }
-
-        setInputs({
-            ...inputs,
-            [e.target.name]: e.target.value
-        });
-        console.log(inputs);
     };
 
     const handleChange2 = async (e) => {
@@ -247,7 +252,7 @@ export default function SignupPage() {
 
         if (e.target.name === "password") {
             if (!e.target.value) {
-                setOverlapPassword2(false);
+                setOverlapPassword2(null);
                 return;
             }
 
@@ -267,7 +272,7 @@ export default function SignupPage() {
 
         if (e.target.name === "checkedPassword") {
             if (inputs2.password === "") {
-                setOverlapPassword2(false);
+                setOverlapPassword2(null);
                 return;
             }
 
@@ -299,7 +304,6 @@ export default function SignupPage() {
 
         if (result.status === 200) {
             alert("인증번호를 전송했어요!");
-            setSubmitedEmail(inputs.email);
             setOverlapEmail(3);
         } else {
             alert("인증번호 전송에 실패했어요!");
@@ -338,14 +342,8 @@ export default function SignupPage() {
             return;
         }
 
-        if (overlapEmail !== 2) {
-            console.log(overlapEmail);
-            console.log("이메일 확인!");
-            return;
-        }
-
         const result = await signUp({
-            email: submitedEmail,
+            email: inputs.email,
             password: inputs2.password,
             name: inputs.name,
             nickname: inputs.nickname,
@@ -381,7 +379,9 @@ export default function SignupPage() {
                             type: "email",
                             onChangeFunc: handleChange,
                             onClickFunc: handleClick,
-                            check: overlapEmail
+                            check: overlapEmail,
+                            readOnly: overlapEmail,
+                            value: inputs.email
                         }}
                     />
                     <SignupInput
@@ -390,10 +390,11 @@ export default function SignupPage() {
                             id: "code",
                             name: "code",
                             type: "text",
-                            onChangeFunc: handleChange
+                            onChangeFunc: handleChange,
+                            value: inputs.code
                         }}
                     />
-                    <s.StyledText>{checkEmailText[overlapEmail]}</s.StyledText>
+                    <s.StyledText colorEmail={overlapEmail}>{checkEmailText[overlapEmail]}</s.StyledText>
                     <s.StyledLine></s.StyledLine>
                     <SignupInput
                         data={{
@@ -415,7 +416,7 @@ export default function SignupPage() {
                             value: inputs2.checkedPassword
                         }}
                     />
-                    <s.StyledText>{checkPassword2Text[overlapPassword2]}</s.StyledText>
+                    <s.StyledText colorPassword={overlapPassword2}>{checkPassword2Text[overlapPassword2]}</s.StyledText>
                     <s.StyledLine></s.StyledLine>
                     <SignupInput
                         data={{
@@ -433,10 +434,11 @@ export default function SignupPage() {
                             id: "nickname",
                             name: "nickname",
                             type: "text",
-                            onChangeFunc: handleChange
+                            onChangeFunc: handleChange,
+                            value: inputs.nickname
                         }}
                     />
-                    <s.StyledText>{checkNicknameText[overlapNickname]}</s.StyledText>
+                    <s.StyledText colorNickname={overlapNickname}>{checkNicknameText[overlapNickname]}</s.StyledText>
                     <s.StyledLine></s.StyledLine>
                     <SignupSelect
                         data={{
@@ -460,7 +462,9 @@ export default function SignupPage() {
                             value: inputs2.job
                         }}
                     />
-                    <s.StyledSignupBtn onClick={handleCheck}>회원가입 완료</s.StyledSignupBtn>
+                    <s.StyledSignupBtn disabled={overlapEmail !== 5 || overlapNickname !== 2 || overlapPassword2 !== 3} onClick={handleCheck}>
+                        회원가입 완료
+                    </s.StyledSignupBtn>
                 </s.StyledForm>
                 <s.StyledFooter></s.StyledFooter>
             </s.StyledMainSection>
