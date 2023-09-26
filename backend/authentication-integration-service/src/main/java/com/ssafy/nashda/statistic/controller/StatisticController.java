@@ -6,6 +6,7 @@ import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.statistic.dto.response.AchievementInfoResDto;
 import com.ssafy.nashda.statistic.dto.response.StrickInfoResDto;
 import com.ssafy.nashda.statistic.entity.Achievement;
+import com.ssafy.nashda.statistic.entity.MemberAchievement;
 import com.ssafy.nashda.statistic.entity.Strick;
 import com.ssafy.nashda.statistic.service.AchievementService;
 import com.ssafy.nashda.statistic.service.StrickService;
@@ -46,10 +47,11 @@ public class StatisticController {
     @GetMapping("/achievement")
     public ResponseEntity<? extends BaseResponseBody> getAchievement(@RequestHeader("Authorization") String token) throws Exception {
         Member member = memberController.findMemberByToken(token);
-        List<Achievement> achievements = achievementService.getAchievement(member);
+        List<MemberAchievement> memberAchievements = achievementService.getAchievement(member);
+
         List<AchievementInfoResDto> resDtos = new ArrayList<>();
-        for (Achievement achievement : achievements) {
-            resDtos.add(new AchievementInfoResDto(achievement));
+        for (MemberAchievement memberAchievement : memberAchievements) {
+            resDtos.add(AchievementInfoResDto.fromMemberAchievement(memberAchievement));
         }
         return new ResponseEntity<>(new BaseResponseBody(200, "스트릭 전체 조회 성공", resDtos),
                 HttpStatus.OK);

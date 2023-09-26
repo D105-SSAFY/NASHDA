@@ -1,6 +1,8 @@
 package com.ssafy.nashda.member.entity;
 
 import com.ssafy.nashda.common.entity.TimeEntity;
+import com.ssafy.nashda.statistic.entity.Achievement;
+import com.ssafy.nashda.statistic.entity.MemberAchievement;
 import com.sun.istack.NotNull;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -11,6 +13,8 @@ import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -56,6 +60,10 @@ public class Member extends TimeEntity {
     @Column(name = "conversation_count")
     @ColumnDefault("0")
     private int conversationCount;
+
+    @OneToMany(mappedBy = "member")
+    private Set<MemberAchievement> memberAchievements = new HashSet<>();
+
 
     @Builder
     public Member(String email, String name, String nickname, String password, int age, int hobbyIdx, int jobIdx) {
