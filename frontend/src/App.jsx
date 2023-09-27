@@ -79,6 +79,8 @@ import ConversationPage from "pages/practicepage/conversationpage/ConversationPa
 import ProblemPage from "pages/practicepage/problempage/ProblemPage";
 import StretchingPage from "pages/practicepage/stretchingpage/StretchingPage";
 
+import DramaPlayPage from "pages/gamepage/dramaplaypage/DramaPlayPage";
+
 export default function App() {
     return (
         <Provider store={store}>
@@ -106,6 +108,7 @@ export default function App() {
                                 <Route path="/1" element={<ProblemPage />} />
                                 <Route path="/2" element={<ConversationPage />} />
                                 <Route path="/3" element={<StretchingPage />} />
+                                <Route path="/4" element={<DramaPlayPage />} />
                             </Route>
                             {/* main page */}
                         </Routes>
