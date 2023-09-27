@@ -7,6 +7,7 @@ import com.ssafy.nashda.member.dto.Request.MemberSignUpReqDto;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.mail.service.MailSenderService;
 import com.ssafy.nashda.member.service.MemberService;
+import com.ssafy.nashda.statistic.service.StrickService;
 import com.ssafy.nashda.token.config.TokenProvider;
 import com.ssafy.nashda.token.dto.resonse.TokenResDto;
 import com.ssafy.nashda.token.service.TokenService;
@@ -30,6 +31,7 @@ public class MemberController {
     private final TokenProvider tokenProvider;
     private final TokenService tokenService;
     private final MailSenderService mailSenderService;
+    private final StrickService strickService;
 
 
     @PostMapping("/signup")
