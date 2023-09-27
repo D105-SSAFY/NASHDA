@@ -4,6 +4,7 @@ import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.practice.service.TextProcessService;
+import com.ssafy.nashda.statistic.dto.response.PhonemeInterface;
 import com.ssafy.nashda.statistic.entity.CodaStatistic;
 import com.ssafy.nashda.statistic.entity.NucleusStatistic;
 import com.ssafy.nashda.statistic.entity.OnsetStatistic;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -66,6 +68,12 @@ public class PracticeStatisticServiceImpl implements PracticeStatisticService {
         codaStatistic.update(isAnswer);
 
         return codaStatistic;
+    }
+
+    @Override
+    public List<PhonemeInterface> getStatisticIncorrectPhoneme(Member member) throws Exception {
+        List<PhonemeInterface> byIncorrectDESC = codaStatisticRepository.findByIncorrectDESC(member.getMemberNum());
+        return byIncorrectDESC;
     }
 
     @Override
