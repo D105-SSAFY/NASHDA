@@ -24,7 +24,7 @@ public class Strick {
     @JoinColumn(name = "member_number", nullable = false)
     private Member member;
 
-    @Column(name = "create_on",unique = true)
+    @Column(name = "create_on")
     LocalDate creatOn;
 
     @Column(name = "game_count")

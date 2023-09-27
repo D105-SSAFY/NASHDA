@@ -5,8 +5,9 @@ import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.statistic.dto.response.*;
-import com.ssafy.nashda.statistic.entity.GameStatistic;
+import com.ssafy.nashda.statistic.dto.response.AchievementInfoResDto;
+import com.ssafy.nashda.statistic.dto.response.BlankStatisticResDto;
+import com.ssafy.nashda.statistic.dto.response.StrickInfoResDto;
 import com.ssafy.nashda.statistic.entity.MemberAchievement;
 import com.ssafy.nashda.statistic.entity.Strick;
 import com.ssafy.nashda.statistic.service.AchievementService;
@@ -33,7 +34,7 @@ public class StatisticController {
     private final StrickService strickService;
     private final AchievementService achievementService;
     private final MemberController memberController;
-    private final GameStatisticService gameStatisticService;
+    private final GameStatisticService blankStatisticService;
     private final WeekRepository weekRepository;
     private final WeekService weekService;
     @GetMapping("/strick")
@@ -62,11 +63,10 @@ public class StatisticController {
     }
 
     //게임 통계 최대 5개씩 불러오기, 혹시 몰라서
-    @GetMapping("/game")
+    @PostMapping("/game")
     public ResponseEntity<?extends BaseResponseBody> getGameStatistic(@RequestHeader("Authorization") String token) throws Exception {
         Member member = memberController.findMemberByToken(token);
-        List<GameStatisticResDto> gameStatistics = gameStatisticService.getGameStatistic(member);
-        return new ResponseEntity<>(new BaseResponseBody(200, "게임 통계 조회 성공", gameStatistics),
+        return new ResponseEntity<>(new BaseResponseBody(200, "게임 통계 조회 성공"),
                 HttpStatus.OK);
     }
 
@@ -75,21 +75,12 @@ public class StatisticController {
             weekIdx) throws Exception {
         Member member = memberController.findMemberByToken(token);
         Week week = weekRepository.findByWeekIdx(weekIdx).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
-        BlankStatisticResDto blankStatisticResDto = gameStatisticService.getBlankStatistic(member, week);
-        return new ResponseEntity<>(new BaseResponseBody(200, "빈칸 게임 통계 조회 성공", blankStatisticResDto),
+        BlankStatisticResDto blankStatisticResDto = blankStatisticService.getBlankStatistic(member, week);
+        return new ResponseEntity<>(new BaseResponseBody(200, "블랭크 게임 통계 조회 성공", blankStatisticResDto),
                 HttpStatus.OK);
     }
 
-    @GetMapping("/game/speed/{week}")
-    public ResponseEntity<?extends BaseResponseBody> getSpeedStatistic(@RequestHeader("Authorization") String token, @PathVariable("week") long
-            weekIdx) throws Exception {
-        Member member = memberController.findMemberByToken(token);
-        Week week = weekRepository.findByWeekIdx(weekIdx).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
-//        SpeedStatisticResDto blankStatisticResDto = blankStatisticService.getBlankStatistic(member, week);
-        SpeedStatisticResDto speedStatistic =gameStatisticService.getSpeedStatistic(member, week);
-        return new ResponseEntity<>(new BaseResponseBody(200, "스피드 게임 통계 조회 성공", speedStatistic),
-                HttpStatus.OK);
-    }
+
 
 
 }
