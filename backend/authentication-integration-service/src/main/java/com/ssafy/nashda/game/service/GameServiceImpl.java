@@ -15,6 +15,8 @@ import com.ssafy.nashda.game.dto.response.ImgWordSetListResponseDto;
 import com.ssafy.nashda.game.dto.response.ImgWordSetResponseDto;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.repository.MemberRepository;
+
+import com.ssafy.nashda.stt.service.STTService;
 import com.ssafy.nashda.statistic.entity.GameStatistic;
 import com.ssafy.nashda.statistic.repository.GameStatisticRepository;
 import com.ssafy.nashda.week.entity.Week;
@@ -43,6 +45,7 @@ public class GameServiceImpl implements GameService {
     private final GameStatisticRepository gameStatisticRepository;
     private final MemberRepository memberRepository;
     private final WeekService weekService;
+    private final STTService sttService;
 
     @Value("${env.PROBLEM_URL}")
     private String URL;
@@ -171,9 +174,8 @@ public class GameServiceImpl implements GameService {
         int index = request.getIndex();  //문제 번호
         String answer = request.getAnswer();
         GmaeSTTResDto gmaeSTTResDto;
-        MultipartFile file = request.getSound();
 
-        String stt = "싸과";  //사용자의 음성 파일을 STT
+        String stt = sttService.getPronunciation(request.getSound());  //사용자의 음성 파일을 STT
         if (stt.equals(answer)) {
             gmaeSTTResDto = new GmaeSTTResDto(true, stt);
         } else {
