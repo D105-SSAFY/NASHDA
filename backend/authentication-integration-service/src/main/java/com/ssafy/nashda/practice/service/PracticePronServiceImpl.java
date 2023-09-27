@@ -9,7 +9,7 @@ import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
-import com.ssafy.nashda.statistic.service.practice.PracticeStatisticService;
+import com.ssafy.nashda.statistic.service.PracticeStatisticService;
 import com.ssafy.nashda.stt.service.STTService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Service

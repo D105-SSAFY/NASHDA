@@ -15,9 +15,10 @@ import com.ssafy.nashda.game.dto.response.ImgWordSetListResponseDto;
 import com.ssafy.nashda.game.dto.response.ImgWordSetResponseDto;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.repository.MemberRepository;
-import com.ssafy.nashda.statistic.entity.game.GameStatistic;
-import com.ssafy.nashda.statistic.repository.game.GameStatisticRepository;
+
 import com.ssafy.nashda.stt.service.STTService;
+import com.ssafy.nashda.statistic.entity.GameStatistic;
+import com.ssafy.nashda.statistic.repository.GameStatisticRepository;
 import com.ssafy.nashda.week.entity.Week;
 import com.ssafy.nashda.week.service.WeekService;
 import lombok.RequiredArgsConstructor;
@@ -187,10 +188,10 @@ public class GameServiceImpl implements GameService {
     @Override
     public void saveSpeedResult(SpeedResultReqDto request, Member member) throws Exception {
         GameStatistic gameStatistic = null;
-
-        Optional<GameStatistic> optionalGameStatistic = gameStatisticRepository.findByMember(member);
+        Week week = weekService.getCurrentWeekIdx().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        Optional<GameStatistic> optionalGameStatistic = gameStatisticRepository.findByMemberAndWeek(member, week);
         if (optionalGameStatistic.isEmpty()) {
-            gameStatistic = saveGameStatistic(member);
+            gameStatistic = saveGameStatistic(member, week);
         } else {
             gameStatistic = optionalGameStatistic.get();
         }
@@ -210,10 +211,10 @@ public class GameServiceImpl implements GameService {
     public void saveBlankResult(BlankResultReqDto request, Member member) throws Exception {
         GameStatistic gameStatistic = null;
 
-
-        Optional<GameStatistic> optionalGameStatistic = gameStatisticRepository.findByMember(member);
+        Week week = weekService.getCurrentWeekIdx().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        Optional<GameStatistic> optionalGameStatistic = gameStatisticRepository.findByMemberAndWeek(member, week);
         if (optionalGameStatistic.isEmpty()) {
-            gameStatistic = saveGameStatistic(member);
+            gameStatistic = saveGameStatistic(member, week);
         } else {
             gameStatistic = optionalGameStatistic.get();
         }
@@ -223,7 +224,7 @@ public class GameServiceImpl implements GameService {
 
         //level 2일떄만 progress update
         member.setSentenceCount(member.getSentenceCount() + request.getTotal());
-        if(request.getLevel()>1){
+        if (request.getLevel() > 1) {
             member.setProgress(member.getProgress() + request.getScore());
         }
         memberRepository.save(member);
@@ -231,8 +232,8 @@ public class GameServiceImpl implements GameService {
         gameStatisticRepository.save(gameStatistic);
     }
 
-    public GameStatistic saveGameStatistic(Member member) throws Exception {
-        Week week = weekService.getCurrentWeekIdx().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+    public GameStatistic saveGameStatistic(Member member, Week week) throws Exception {
+
         GameStatistic gameStatistic = new GameStatistic(member, week);
 
         gameStatisticRepository.save(gameStatistic);

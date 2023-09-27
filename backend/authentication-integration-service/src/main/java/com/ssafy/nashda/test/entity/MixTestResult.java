@@ -1,4 +1,5 @@
 package com.ssafy.nashda.test.entity;
+
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -30,7 +31,7 @@ public class MixTestResult {
     private long memberNumber;
 
     private long week;
-    private int score =0;
+    private int score;
 
     @Field("try_count")
     private int tryCount;
@@ -52,6 +53,7 @@ public class MixTestResult {
         this.blankTest = blankTest;
         this.speedTest1 = speedTest1;
         this.speedTest2 = speedTest2;
+        this.score = -1;
     }
 
 }

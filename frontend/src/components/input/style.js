@@ -5,26 +5,29 @@ export const StyledDiv = styled.div`
     margin: 10px;
 `;
 export const StyledLabel = styled.label`
+    width: fit-content;
     text-align: center;
     position: absolute;
     background-color: white;
-    color: black;
-    font-size: 10px;
+    color: ${(props) => (props.isFill ? "black" : "grey")};
+    font-size: ${(props) => (props.isFill ? "15px" : "20px")};
     font-weight: bold;
-    left: 1.2em;
-    top: -0.7em;
-    padding: 0 0.5em;
+    top: ${(props) => (props.isFill ? "-9px" : "27%")};
+    left: ${(props) => (props.isFill ? "15px" : "17px")};
+    transition: all 0.15s;
+    z-index: 200;
+    padding: 3px 5px;
 `;
 
 export const StyledInput = styled.input`
     width: 100%;
-    border-radius: 8px;
+    border-radius: 10px;
     border: solid 1.8px black;
-    font-size: 15px;
+    font-size: 20px;
     background-color: ${(props) => (props.readOnly ? "#eee" : "")};
-    height: 40px;
+    height: 55px;
     padding: 0 20px;
-    padding-right: ${(props) => (props.check ? "35px" : "")};
+    padding-right: ${(props) => (props.check ? "50px" : "")};
     size: 30;
     &:focus {
         outline: 1px solid blue;
@@ -45,17 +48,119 @@ export const StyledSelect = styled.select`
         outline: 1px solid blue;
         outline: ${(props) => (props.readOnly ? "none" : "")};
     }
+    & > option {
+        /* option 요소에 적용할 스타일 지정 */
+        /* 예: */
+        border-radius: 10px;
+    }
 `;
 export const StyledOption = styled.option`
-    border: solid 3px black;
+    border: solid 15px black;
 `;
 export const StyledButton = styled.button`
     position: absolute;
     height: auto;
-    font-size: 12px;
+    font-size: 20px;
     font-weight: bold;
     color: #8f47f5;
     display: ${(props) => (props.check ? "" : "none")};
-    right: 10px;
-    top: 12px;
+    right: 15px;
+    top: 30%;
+`;
+
+export const Wrapper = styled.div`
+    width: 100%;
+    position: relative;
+    margin: 10px;
+`;
+
+export const Button = styled.button`
+    width: 100%;
+    height: 55px;
+    text-align: center;
+    padding: 0 12px;
+    position: relative;
+    background-color: white;
+    font-size: 20px;
+    border: 2px solid;
+    border-radius: 6px;
+    color: black;
+
+    &::before {
+        content: "";
+        display: block;
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        right: 15px;
+        top: 20px;
+        transition: all 0.2s;
+        transform: ${(props) => (props.clicked ? "translate(5px, -1px) rotate(225deg);" : "translate(0, -1px) rotate(225deg)")};
+        border-top: 2px solid;
+    }
+
+    &::after {
+        content: "";
+        display: block;
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        right: 15px;
+        top: 20px;
+        transition: all 0.2s;
+        transform: ${(props) => (props.clicked ? "translate(-4px, -1px) rotate(135deg);" : "translate(0, -1px) rotate(135deg)")};
+        border-top: 2px solid;
+    }
+`;
+
+export const List = styled.ul`
+    width: 100%;
+    max-height: 200px;
+    overflow-y: scroll;
+    position: absolute;
+    top: 57px;
+    padding: 4px 0;
+    z-index: 1000;
+    box-shadow: 0 0 5px 1px gray;
+    border-radius: 6px;
+    background-color: white;
+    display: ${(props) => (props.clicked ? "block" : "none")};
+
+    &::-webkit-scrollbar {
+        width: 8px;
+        background-color: white;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: gray;
+        border-radius: 10px;
+        background-clip: padding-box;
+    }
+
+    &::-webkit-scrollbar-button {
+        width: 0;
+        height: 0;
+    }
+`;
+
+export const ListItem = styled.li`
+    width: 100%;
+`;
+
+export const ListButton = styled.button`
+    width: 100%;
+    border: 0;
+    padding: 5px 16px;
+    text-align: left;
+    font-size: 20px;
+    background-color: white;
+
+    &:hover {
+        background-color: lightskyblue;
+        color: white;
+    }
 `;

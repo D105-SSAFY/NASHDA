@@ -35,13 +35,13 @@ export const StyledForm = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 30%;
+    width: 35%;
     margin-top: 20px;
 `;
 export const StyledLinkSection = styled.section`
     display: flex;
     flex-direction: column;
-    width: 30%;
+    width: 35%;
     margin-top: 20px;
 `;
 export const StyledLink = styled(Link)`
