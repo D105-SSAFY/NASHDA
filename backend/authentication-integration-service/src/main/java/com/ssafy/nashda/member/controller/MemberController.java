@@ -99,10 +99,11 @@ public class MemberController {
     public ResponseEntity<? extends BaseResponseBody> updateProfile(@RequestHeader("Authorization") String token, @RequestBody Map<String, Object> maps) throws IOException {
         Member member = findMemberByToken(token);
         maps.put("email", member.getEmail());
-        memberService.updateProfile(maps);
-        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "프로필 수정 성공"));
+        MemberInfoResDto memberInfoResDto = memberService.updateProfile(maps);
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "프로필 수정 성공", memberInfoResDto));
     }
 
+    @PutMapping("/updatepassword")
     public ResponseEntity<? extends BaseResponseBody> updatePassword(@RequestHeader("Authorization") String token, @RequestBody Map<String, Object> maps) throws IOException {
         Member member = findMemberByToken(token);
         maps.put("email", member.getEmail());
@@ -142,6 +143,13 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(400, "비밀번호 변경 실패"));
     }
 
+
+    @GetMapping("/checkprogress")
+    public ResponseEntity<? extends BaseResponseBody> checkProgress(@RequestHeader("Authorization") String token) throws IOException {
+        Member member = findMemberByToken(token);
+        boolean result = memberService.checkProgress(member.getEmail());
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "진행상황 조회 성공", result));
+    }
 
 
 }
