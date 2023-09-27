@@ -68,6 +68,12 @@ export const StyledButton = styled.button`
     top: 30%;
 `;
 
+export const StyledImg = styled.img`
+    position: absolute;
+    right: 5px;
+    top: 10%;
+`;
+
 export const Wrapper = styled.div`
     width: 100%;
     position: relative;

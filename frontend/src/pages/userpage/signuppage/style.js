@@ -45,6 +45,7 @@ export const StyledForm = styled.form`
 
 export const StyledText = styled.p`
     width: 100%;
+    height: 16px;
     text-align: left;
     margin: 5px 0 0 5px;
     font-size: 16px;
@@ -73,5 +74,5 @@ export const StyledFooter = styled.footer`
 export const StyledLine = styled.hr`
     color: lightgray;
     width: 90%;
-    margin: 30px 0;
+    margin: 14px 0 30px 0;
 `;
