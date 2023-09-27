@@ -1,83 +1,82 @@
+import eetch from "apis/eetch";
+
 export const game = async ({ type, index, sound, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/game`, {
+        const url = `${process.env.REACT_APP_API_URL}/game`;
+        const options = {
             method: "POST",
             headers: {
-                "Content-Type": "multipart/form-data",
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ type, index, sound }),
             credentials: "include"
-        });
+        };
 
-        const result = await response.json();
-
-        return result;
+        return await eetch(url, options);
     } catch (error) {
         console.log(error);
     }
 };
 
-export const speed = async (user) => {
+export const speed = async ({ user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/game/speed`, {
+        const url = `${process.env.REACT_APP_API_URL}/game/speed`;
+        const options = {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             credentials: "include"
-        });
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const speedOne = async ({ index, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/game/speed/1/${index}`, {
+        const url = `${process.env.REACT_APP_API_URL}/game/speed/1/${index}`;
+        const options = {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             credentials: "include"
-        });
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const speedTwo = async ({ index, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/game/speed/2/${index}`, {
+        const url = `${process.env.REACT_APP_API_URL}/game/speed/2/${index}`;
+        const options = {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             credentials: "include"
-        });
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const speedResult = async ({ total, score, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/game/speed/result`, {
+        const url = `${process.env.REACT_APP_API_URL}/game/speed/result`;
+        const options = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -85,39 +84,38 @@ export const speedResult = async ({ total, score, user }) => {
             },
             body: JSON.stringify({ total, score }),
             credentials: "include"
-        });
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const blank = async ({ level, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/game/blank`, {
-            method: "GET",
+        const url = `${process.env.REACT_APP_API_URL}/game/blank`;
+        const options = {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ level }),
             credentials: "include"
-        });
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const blankResult = async ({ total, score, level, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/game/blank/result`, {
+        const url = `${process.env.REACT_APP_API_URL}/game/blank/result`;
+
+        const options = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -125,12 +123,10 @@ export const blankResult = async ({ total, score, level, user }) => {
             },
             body: JSON.stringify({ total, score, level }),
             credentials: "include"
-        });
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
