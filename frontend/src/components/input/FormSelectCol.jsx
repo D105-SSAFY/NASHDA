@@ -1,34 +1,66 @@
-import * as f from "./style";
+import { useEffect, useState } from "react";
+import * as S from "./style";
 
-export default function FormSelectCol({ data: { text, type, id, name, onChangeFunc, onClickFunc, placeholder, value, readOnly, ref, check, list } }) {
-    // List?.hobbyList가 정의되었는지 확인 후, 안전하게 접근합니다.
-    const { jobList = [], hobbyList = [] } = list;
+export default function FormSelectCol({ data: { list, target, callback } }) {
+    const [clicked, setClicked] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
+    // 드랍 다운 버튼 클릭
+    const onClickButton = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
 
-    // eslint-disable-next-line no-return-assign
+        setClicked(!clicked);
+    };
+
+    // 드랍 박스 이외의 영역을 눌렀을 때
+    window.addEventListener("click", () => {
+        setClicked(false);
+    });
+
+    // 드랍 박스 리스트 버튼 클릭
+    const onClickListButton = (e, idx, text) => {
+        e.preventDefault();
+        setSelectedItem(text);
+        setClicked(false); // 드롭다운 닫기
+        callback(target, idx);
+    };
+
+    // 타겟 값 변경 시
+    useEffect(() => {
+        setClicked(false);
+    }, [target]);
+
     return (
-        <f.StyledDiv>
-            <f.StyledLabel htmlFor={id}>{text}</f.StyledLabel>
-            <f.StyledSelect
-                type={type}
-                id={id}
-                name={name}
-                onChange={onChangeFunc}
-                ref={ref}
-                placeholder={(placeholder ??= "")}
-                value={value}
-                readOnly={(readOnly ??= false)}
-                check={check === 2}
+        <S.Wrapper>
+            <S.StyledLabel isFill={Boolean(selectedItem)}>{target}</S.StyledLabel>
+            <S.Button clicked={clicked} onClick={onClickButton}>
+                <span>{selectedItem}</span>
+            </S.Button>
+            <S.List
+                clicked={clicked}
+                onClick={(e) => {
+                    e.stopPropagation();
+                }}
             >
-                <f.StyledOption value={null}>없음</f.StyledOption>
-                {(text === "직업" ? jobList : hobbyList).map((item) => (
-                    <f.StyledOption key={item.jobIdx || item.hobbyIdx} value={item.jobIdx || item.hobbyIdx}>
-                        {item.job || item.hobby}
-                    </f.StyledOption>
-                ))}
-            </f.StyledSelect>
-            <f.StyledButton onClick={onClickFunc} check={check === 2}>
-                인증
-            </f.StyledButton>
-        </f.StyledDiv>
+                <S.ListItem key="none">
+                    <S.ListButton onClick={(e) => onClickListButton(e, 0, "없음")}>
+                        <span>없음</span>
+                    </S.ListButton>
+                </S.ListItem>
+
+                {list &&
+                    list.map((item) => {
+                        const key = target === "취미" ? item.hobbyIdx : item.jobIdx;
+                        const displayText = target === "취미" ? item.hobby : item.job;
+                        return (
+                            <S.ListItem key={key}>
+                                <S.ListButton onClick={(e) => onClickListButton(e, key, displayText)}>
+                                    <span>{displayText}</span>
+                                </S.ListButton>
+                            </S.ListItem>
+                        );
+                    })}
+            </S.List>
+        </S.Wrapper>
     );
 }
