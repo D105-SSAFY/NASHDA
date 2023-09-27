@@ -104,12 +104,14 @@ export default function VoiceSection({ props: { moveToEnd, updateConvs } }) {
             </s.SoundWrapper>
             <s.ButtonWrapper>
                 {onRecord ? (
-                    <FilledButton props={{ background: "rgba(68, 71, 90, 0.7)", color: "#ffffff", callback: onClickRecordOff }}>
+                    <FilledButton
+                        props={{ background: "rgba(68, 71, 90, 0.7)", color: "#ffffff", hovercolor: "#44475A", callback: onClickRecordOff }}
+                    >
                         <MicOffIcon />
                         <span>녹음 종료</span>
                     </FilledButton>
                 ) : (
-                    <FilledButton props={{ background: "rgba(68, 71, 90, 0.7)", color: "#ffffff", callback: onClickRecordOn }}>
+                    <FilledButton props={{ background: "rgba(68, 71, 90, 0.7)", color: "#ffffff", hovercolor: "#44475A", callback: onClickRecordOn }}>
                         <MicIcon />
                         <span>녹음하기</span>
                     </FilledButton>
