@@ -15,8 +15,6 @@ export default function Statistics({ tabSwitch }) {
 
     const [totals, setTotals] = React.useState([0, 0, 0]);
 
-    const total = React.useRef(totals);
-
     React.useEffect(() => {
         // 테스트용 타임 아웃
         setTimeout(() => {
@@ -27,17 +25,7 @@ export default function Statistics({ tabSwitch }) {
             ]);
         }, 100);
 
-        const interval = setInterval(() => {
-            if (total.current[0] < 1000) {
-                total.current[0] += 1;
-                total.current[1] += 1;
-                total.current[2] += 1;
-                console.log(total.current);
-                setTotals(total.current);
-            }
-        }, 10);
-
-        console.log(interval);
+        setTotals([100, 100, 100]);
     }, []);
 
     const graphs = () => {

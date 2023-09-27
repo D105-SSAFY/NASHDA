@@ -97,5 +97,6 @@ eetch.checkEmail = (values) => user.checkEmail(values);
 eetch.checkCode = (values) => user.checkCode(values);
 eetch.checkNickname = (values) => user.checkNickname(values);
 eetch.reset = (values) => user.reset(values);
+eetch.domain = (values) => user.domain(values);
 
 export default eetch;

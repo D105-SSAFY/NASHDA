@@ -58,7 +58,11 @@ export const UserSection = styled.section`
         top: 360px;
         left: 300px;
 
-        width: ${(props) => (props.more === 4 ? "630px" : "350px")};
+        width: ${(props) => (props.more === 4 ? "630px" : "260px")};
+
+        background-color: #faf8f2;
+
+        overflow: hidden;
     }
 `;
 

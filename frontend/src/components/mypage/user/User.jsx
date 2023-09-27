@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as u from "./style";
+import { useSelector } from "react-redux";
 
 import Nickname from "components/mypage/user/nickname/Nickname";
 import Statistics from "components/mypage/user/statistics/Statistics";
@@ -9,10 +10,24 @@ import Profile from "components/mypage/user/profile/Profile";
 import NicknameDetail from "components/mypage/user/nickname/nicknameDetail/NicknameDetail";
 import ArchievementDetail from "./archievement/archievementDetail/ArchievementDetail";
 
-// Import { mypage } from "apis/user";
+import eetch from "apis/eetch";
 
 export default function Setting({ tabSwitch }) {
+    // const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
+
     const [more, setMore] = React.useState(0);
+    const [userInfo, setUserInfo] = React.useState({});
+
+    useEffect(() => {
+        eetch.mypage({ user }).then((res) => {
+            setUserInfo(res.data);
+        });
+    }, []);
+
+    useEffect(() => {
+        userInfo.user = user;
+    }, [userInfo]);
 
     return (
         <>
@@ -20,7 +35,7 @@ export default function Setting({ tabSwitch }) {
             <u.UserSection more={more}>
                 {/* 유저 별명 카드 */}
                 <u.UserCard focus={more === 1} defocus={more === 0 || more === 1}>
-                    <Nickname getMore={setMore} />
+                    <Nickname userInfo={userInfo} getMore={setMore} />
                 </u.UserCard>
                 {/* 유저 통계 카드 */}
                 <u.UserCard focus={more === 2} defocus={more === 0 || more === 1 || more === 2 || more === 3}>
@@ -28,7 +43,7 @@ export default function Setting({ tabSwitch }) {
                         <Statistics tabSwitch={tabSwitch} />
                     </u.modeChange>
                     <u.modeChange toggle={more === 1}>
-                        <NicknameDetail getMore={setMore} />
+                        <NicknameDetail userInfo={userInfo} setUserInfo={setUserInfo} user getMore={setMore} />
                     </u.modeChange>
                     <u.modeChange toggle={more === 3}>
                         <ArchievementDetail getMore={setMore} />
@@ -40,7 +55,7 @@ export default function Setting({ tabSwitch }) {
                 </u.UserCard>
                 {/* 유저 상세 카드 */}
                 <u.UserCard focus={more === 4} defocus={more === 0 || more === 4}>
-                    <Profile getMore={setMore} more={more} />
+                    <Profile userInfo={userInfo} getMore={setMore} more={more} />
                 </u.UserCard>
             </u.UserSection>
         </>
