@@ -29,4 +29,9 @@ public class CodaStatistic {
     private int incorrect;
 
     private int total;
+
+    public void update(boolean isAnswer){
+        this.total++;
+        if(!isAnswer) this.incorrect++;
+    }
 }

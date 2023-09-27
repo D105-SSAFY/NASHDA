@@ -3,45 +3,115 @@ package com.ssafy.nashda.statistic.service.practice;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.member.entity.Member;
+import com.ssafy.nashda.practice.service.TextProcessService;
+import com.ssafy.nashda.statistic.entity.practice.CodaStatistic;
+import com.ssafy.nashda.statistic.entity.practice.NucleusStatistic;
 import com.ssafy.nashda.statistic.entity.practice.OnsetStatistic;
+import com.ssafy.nashda.statistic.repository.practice.CodaStatisticRepository;
+import com.ssafy.nashda.statistic.repository.practice.NucleusStatisticRepository;
 import com.ssafy.nashda.statistic.repository.practice.OnsetStatisticRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import javax.transaction.Transactional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PracticeStatisticServiceImpl implements PracticeStatisticService {
     private final OnsetStatisticRepository onsetStatisticRepository;
+    private final NucleusStatisticRepository nucleusStatisticRepository;
+    private final CodaStatisticRepository codaStatisticRepository;
 
     @Override
-    public OnsetStatistic findByMemberAndLetter(Member member, String letter) throws Exception{
-        Optional<OnsetStatistic> optional = onsetStatisticRepository.findByMemberAndLetter(member, letter);
-
-        // 없는 경우
-        if (optional.isEmpty()) {
-            if (12592 <= letter.charAt(0) && letter.charAt(0) <= 12687) {
-                OnsetStatistic initialOnsetStat = OnsetStatistic.builder()
-                        .total(0)
-                        .incorrect(0)
-                        .letter(letter)
-                        .member(member)
-                        .build();
-                return onsetStatisticRepository.saveAndFlush(initialOnsetStat);
-            } else {
-                   throw new BadRequestException(ErrorCode.NOT_KOREAN);
-            }
+    public OnsetStatistic findByMemberAndLetter(Member member, String letter) throws Exception {
+        // 한글이 아닌 경우 예외 발생
+        if (12592 > letter.charAt(0) || letter.charAt(0) > 12687) {
+            throw new BadRequestException(ErrorCode.NOT_KOREAN);
         }
 
-        // 있는 경우
-        return optional.get();
+        return onsetStatisticRepository.findByMemberAndLetter(member, letter)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
     }
 
     @Override
-    public OnsetStatistic updateByMemberAndLetter(Member member, String letter) throws Exception {
-        return null;
+    public OnsetStatistic updateOnsetByMemberAndLetter(Member member, String letter, boolean isAnswer) throws Exception {
+        OnsetStatistic onsetStatistic = onsetStatisticRepository.findByMemberAndLetter(member, letter)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+
+        onsetStatistic.update(isAnswer);
+
+
+        return onsetStatistic;
+    }
+
+    @Override
+    public NucleusStatistic updateNucleusByMemberAndLetter(Member member, String letter, boolean isAnswer) throws Exception {
+        NucleusStatistic nucleusStatistic = nucleusStatisticRepository.findByMemberAndLetter(member, letter)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+
+        nucleusStatistic.update(isAnswer);
+
+
+        return nucleusStatistic;
+    }
+
+    @Override
+    public CodaStatistic updateCodaByMemberAndLetter(Member member, String letter, boolean isAnswer) throws Exception {
+        CodaStatistic codaStatistic = codaStatisticRepository.findByMemberAndLetter(member, letter)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+
+        codaStatistic.update(isAnswer);
+
+        return codaStatistic;
+    }
+
+    @Override
+    public boolean initializePracticeStatistic(Member member) throws Exception {
+        String[] onset = TextProcessService.ONSET;
+        String[] nucleus = TextProcessService.NUCLEUS;
+        String[] coda = TextProcessService.CODA;
+
+        try {
+            // 초성
+            for (String str : onset) {
+                OnsetStatistic onsetStatistic = OnsetStatistic.builder()
+                        .member(member)
+                        .letter(str)
+                        .total(0)
+                        .incorrect(0)
+                        .build();
+                onsetStatisticRepository.save(onsetStatistic);
+            }
+
+            // 중성
+            for (String str : nucleus) {
+                NucleusStatistic nucleusStatistic = NucleusStatistic.builder()
+                        .member(member)
+                        .letter(str)
+                        .total(0)
+                        .incorrect(0)
+                        .build();
+                nucleusStatisticRepository.save(nucleusStatistic);
+            }
+
+            // 종성
+            for (String str : coda) {
+                CodaStatistic codaStatistic = CodaStatistic.builder()
+                        .member(member)
+                        .letter(str)
+                        .total(0)
+                        .incorrect(0)
+                        .build();
+
+                codaStatisticRepository.save(codaStatistic);
+            }
+        } catch (Exception e) {
+            throw new BadRequestException(ErrorCode.SAVE_ERROR);
+        }
+
+        return true;
     }
 }

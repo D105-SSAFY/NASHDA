@@ -1,6 +1,8 @@
 package com.ssafy.nashda.practice.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
+import com.ssafy.nashda.member.controller.MemberController;
+import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
 import com.ssafy.nashda.practice.dto.PronSTTResponseDto;
@@ -25,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/practice")
 public class PracticeController {
     private final PracticePronService practicePronService;
-
+    private final MemberController memberController;
 
 //    @GetMapping("/pron/test")
 //    public ResponseEntity<? extends BaseResponseBody> test() throws Exception {
@@ -124,10 +126,11 @@ public class PracticeController {
     }
 
     @PostMapping(value = "/pron/result")
-    public ResponseEntity<? extends BaseResponseBody> getPronunciation(@ModelAttribute PracticePronRequestDto practicePronRequestDto)
-            throws Exception {
+    public ResponseEntity<? extends BaseResponseBody> getPronunciation(@ModelAttribute PracticePronRequestDto practicePronRequestDto,
+                                                                       @RequestHeader("Authorization") String token) throws Exception {
 
-        String stt = practicePronService.getSTT(practicePronRequestDto);
+        Member member = memberController.findMemberByToken(token);
+        String stt = practicePronService.getSTT(member, practicePronRequestDto);
 
         return new ResponseEntity<>(new BaseResponseBody(200, "발음 연습 결과 전송 완료",
                 new PronSTTResponseDto(stt)),

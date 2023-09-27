@@ -31,4 +31,8 @@ public class NucleusStatistic {
 
     private int total;
 
+    public void update(boolean isAnswer){
+        this.total++;
+        if(!isAnswer) this.incorrect++;
+    }
 }

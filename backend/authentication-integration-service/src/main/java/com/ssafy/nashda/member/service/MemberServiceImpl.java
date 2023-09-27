@@ -7,6 +7,8 @@ import com.ssafy.nashda.member.dto.Request.MemberSignInReqDto;
 import com.ssafy.nashda.member.dto.Request.MemberSignUpReqDto;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.repository.MemberRepository;
+import com.ssafy.nashda.statistic.repository.practice.OnsetStatisticRepository;
+import com.ssafy.nashda.statistic.service.practice.PracticeStatisticService;
 import com.ssafy.nashda.token.config.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +27,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PracticeStatisticService practiceStatisticService;
 
     @Override
     @Transactional
@@ -42,6 +45,14 @@ public class MemberServiceImpl implements MemberService {
                     signUpReqDto.getHobbyIdx(),
                     signUpReqDto.getJobIdx());
             memberRepository.save(member);
+
+            // 발음 통계 전부 저장
+            try {
+                practiceStatisticService.initializePracticeStatistic(member);
+            } catch (Exception e){
+                throw new BadRequestException(ErrorCode.SAVE_ERROR);
+            }
+
         } else {
             throw new BadRequestException(ErrorCode.USER_EXIST);
         }
