@@ -67,9 +67,7 @@ public class MemberServiceImpl implements MemberService {
             throw new BadRequestException(ErrorCode.USER_NOT_EXIST);
         }
         if (passwordEncoder.matches(signinInfo.getPassword(), member.get().getPassword())) {
-
             Optional<Strick> optionalStrick = strickRepository.findByMemberAndCreatOn(member.get(), LocalDate.now());
-
             if (optionalStrick.isEmpty()) {
                 Strick strick = Strick.builder()
                         .member(member.get())
