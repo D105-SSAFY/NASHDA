@@ -11,10 +11,6 @@ import { updateRefresh } from "redux/slice/userSlice";
 const eetch = async (url, options) => {
     const response = await fetch(url, options);
 
-    if (!response.ok) {
-        throw new Error("네트워크 확인");
-    }
-
     return response.json();
 };
 
@@ -97,5 +93,6 @@ eetch.checkEmail = (values) => user.checkEmail(values);
 eetch.checkCode = (values) => user.checkCode(values);
 eetch.checkNickname = (values) => user.checkNickname(values);
 eetch.reset = (values) => user.reset(values);
+eetch.domain = (values) => user.domain(values);
 
 export default eetch;

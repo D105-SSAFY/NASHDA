@@ -2,6 +2,7 @@ import styled from "styled-components";
 import IROnly from "style/IROnly";
 
 export const Section = styled.section`
+    margin-top: 30px;
     padding: 50px 35px;
 
     border: 2px solid #f2f2f2;

@@ -17,8 +17,11 @@ export const StyledVid = styled.video`
 `;
 
 export const StyledSignupBtn = styled.button`
+    padding: 10px;
+    background-color: ivory;
+    border-radius: 6px;
     margin-top: 30px;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: bold;
     cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
 `;
@@ -41,7 +44,11 @@ export const StyledForm = styled.form`
 `;
 
 export const StyledText = styled.p`
-    font-size: 20px;
+    width: 100%;
+    height: 16px;
+    text-align: left;
+    margin: 5px 0 0 5px;
+    font-size: 16px;
     color: ${(props) =>
         props.colorEmail === 2 || props.colorEmail === 5 || props.colorPassword === 1 || props.colorPassword === 3 || props.colorNickname === 2
             ? "blue"
@@ -67,5 +74,5 @@ export const StyledFooter = styled.footer`
 export const StyledLine = styled.hr`
     color: lightgray;
     width: 90%;
-    margin: 30px 0;
+    margin: 14px 0 30px 0;
 `;

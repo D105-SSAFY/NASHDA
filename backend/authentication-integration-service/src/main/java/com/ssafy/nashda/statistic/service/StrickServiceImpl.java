@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
-public class StrickServuceImpl implements StrickService{
+public class StrickServiceImpl implements StrickService{
 
     private final StrickRepository strickRepository;
     @Override

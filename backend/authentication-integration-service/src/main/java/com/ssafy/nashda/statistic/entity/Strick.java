@@ -24,24 +24,20 @@ public class Strick {
     @JoinColumn(name = "member_number", nullable = false)
     private Member member;
 
-    @Column(name = "create_on",unique = true)
+    @Column(name = "create_on")
     LocalDate creatOn;
 
-    @Column(name = "game_count")
-    private int gameCount;
+    @Column(name = "blank_count")
+    private int blankCount;
+    @Column(name = "speed_count")
+    private int speedCount;
     @Column(name = "practice_count")
     private int practiceCount;
-    @Column(name = "simulation_count")
-    private int simulationCount;
+    @Column(name ="conversation_count")
+    private int conversationCount;
     @Column(name = "test_count")
     private int testCount;
 
-    @Column(name = "word_count")
-    private int wordCount;
-    @Column(name = "sentence_count")
-    private int sentenceCount;
-    @Column(name = "conversation_count")
-    private int conversationCount;
     @PrePersist
     public void prePersist() {
         this.creatOn = LocalDate.now();

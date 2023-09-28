@@ -7,6 +7,7 @@ import com.ssafy.nashda.member.dto.Request.MemberSignUpReqDto;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.mail.service.MailSenderService;
 import com.ssafy.nashda.member.service.MemberService;
+import com.ssafy.nashda.statistic.service.StrickService;
 import com.ssafy.nashda.token.config.TokenProvider;
 import com.ssafy.nashda.token.dto.resonse.TokenResDto;
 import com.ssafy.nashda.token.service.TokenService;
@@ -30,6 +31,7 @@ public class MemberController {
     private final TokenProvider tokenProvider;
     private final TokenService tokenService;
     private final MailSenderService mailSenderService;
+    private final StrickService strickService;
 
 
     @PostMapping("/signup")
@@ -99,10 +101,11 @@ public class MemberController {
     public ResponseEntity<? extends BaseResponseBody> updateProfile(@RequestHeader("Authorization") String token, @RequestBody Map<String, Object> maps) throws IOException {
         Member member = findMemberByToken(token);
         maps.put("email", member.getEmail());
-        memberService.updateProfile(maps);
-        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "프로필 수정 성공"));
+        MemberInfoResDto memberInfoResDto = memberService.updateProfile(maps);
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "프로필 수정 성공", memberInfoResDto));
     }
 
+    @PutMapping("/updatepassword")
     public ResponseEntity<? extends BaseResponseBody> updatePassword(@RequestHeader("Authorization") String token, @RequestBody Map<String, Object> maps) throws IOException {
         Member member = findMemberByToken(token);
         maps.put("email", member.getEmail());
@@ -142,6 +145,13 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(400, "비밀번호 변경 실패"));
     }
 
+
+    @GetMapping("/checkprogress")
+    public ResponseEntity<? extends BaseResponseBody> checkProgress(@RequestHeader("Authorization") String token) throws IOException {
+        Member member = findMemberByToken(token);
+        boolean result = memberService.checkProgress(member.getEmail());
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "진행상황 조회 성공", result));
+    }
 
 
 }

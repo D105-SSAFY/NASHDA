@@ -33,6 +33,7 @@ public class STTServiceImpl implements STTService {
         String fileName = sound.getName();
         String extension = StringUtils.getFilenameExtension(sound.getOriginalFilename());
         log.info("EXTENSION : {}", extension);
+
         if(!extension.equals("wav")){
             throw new BadRequestException(ErrorCode.NOT_VALID_EXTENSION);
         }
@@ -65,6 +66,12 @@ public class STTServiceImpl implements STTService {
                 )
                 .toEntity(InternalResponseDto.class)
                 .block();
+
+//        log.info("response : {}, type : {}",response.getBody().getStatus(), response.getBody().getStatus().getClass().getName());
+        String status = response.getBody().getStatus();
+        if("400".equals(status)){
+            throw new BadRequestException(ErrorCode.STT_ERROR);
+        }
 
         String stt = (String) response.getBody().getData();
         return stt;
