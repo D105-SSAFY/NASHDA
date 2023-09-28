@@ -2,6 +2,7 @@ package com.ssafy.nashda.statistic.service.simul;
 
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.statistic.entity.simul.SimulStatistic;
+import com.ssafy.nashda.statistic.entity.simul.SimulType;
 import com.ssafy.nashda.statistic.repository.simul.SimulStaticRepository;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +19,10 @@ public class SimulStatisticServiceImpl implements SimulStatisticService {
 
     @Override
     @Transactional
-    public void createSimulStatic(Member member) {
+    public void createSimulStatic(Member member, SimulType type) {
         simulStatisticRepository.save(SimulStatistic.builder()
                                         .member(member)
+                                        .type(type)
                                         .build());
     }
 

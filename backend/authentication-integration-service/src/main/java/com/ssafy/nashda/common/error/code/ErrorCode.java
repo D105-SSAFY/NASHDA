@@ -44,7 +44,11 @@ public enum ErrorCode {
     EXIST_REPLY(HttpStatus.BAD_REQUEST, 400, "이미 답변이 달린 질문입니다."),
 
     // ChatGPT
-    NOT_EXISTS_MESSAGE(HttpStatus.BAD_REQUEST, 400, "message는 필수 입력 항목입니다.");
+    NOT_EXISTS_MESSAGE(HttpStatus.BAD_REQUEST, 400, "message는 필수 입력 항목입니다."),
+
+    // 통계
+    NOT_EXISTS_SIMUL_STATISTIC(HttpStatus.BAD_REQUEST, 400, "시뮬레이션 실행하지 않았습니다."),
+    NOT_PLAY_SIMUL_TYPE(HttpStatus.BAD_REQUEST, 400, "해당 유형의 시뮬레이션에서 조회할 오답 데이터가 존재하지 않습니다.");
 
     private HttpStatus httpStatus;
     private int errorCode;

@@ -2,6 +2,7 @@ package com.ssafy.nashda.statistic.service.simul;
 
 import com.ssafy.nashda.statistic.entity.simul.SimulDetail;
 import com.ssafy.nashda.statistic.entity.simul.SimulStatistic;
+import com.ssafy.nashda.statistic.entity.simul.SimulType;
 import com.ssafy.nashda.statistic.repository.simul.SimulDetailRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +19,9 @@ public class SimulDetailServiceImpl implements SimulDetailService {
 
     @Override
     @Transactional
-    public Long createSimulDetail(SimulStatistic simulStatistic, String my_speech, String gpt_speech, String type) {
+    public Long createSimulDetail(SimulStatistic simulStatistic, String my_speech, String gpt_speech, SimulType type) {
         return simulDetailRepository.save(SimulDetail.builder()
-                .simulStatic(simulStatistic)
+                .simulStatistic(simulStatistic)
                 .my_speech(my_speech)
                 .gpt_speech(gpt_speech)
                 .type(type)

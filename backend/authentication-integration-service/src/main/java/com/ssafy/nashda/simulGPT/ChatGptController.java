@@ -11,8 +11,10 @@ import com.ssafy.nashda.simulGPT.entity.MemorizeChat;
 import com.ssafy.nashda.simulGPT.repository.ChatGptRepository;
 import com.ssafy.nashda.simulGPT.service.ChatGptServiceImpl;
 import com.ssafy.nashda.statistic.entity.simul.SimulStatistic;
+import com.ssafy.nashda.statistic.entity.simul.SimulType;
 import com.ssafy.nashda.statistic.repository.simul.SimulDetailRepository;
 import com.ssafy.nashda.statistic.repository.simul.SimulStaticRepository;
+import com.ssafy.nashda.statistic.repository.simul.SimulTypeRepository;
 import com.ssafy.nashda.statistic.service.simul.SimulDetailService;
 import com.ssafy.nashda.statistic.service.simul.SimulStatisticService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -43,6 +47,8 @@ public class ChatGptController {
     private final SimulDetailRepository simulDetailRepository;
     private final SimulDetailService simulDetailService;
 
+    private final SimulTypeRepository simulTypeRepository;
+
     @Transactional
     @PostMapping("/{background}")
     public ResponseEntity<? extends BaseResponseBody> saveMessage(@Valid
@@ -51,11 +57,19 @@ public class ChatGptController {
                                                                   @RequestBody MessageReqDto messageReqDto) {
 
         Member member = memberController.findMemberByToken(accessToken);
-        SimulStatistic simulStatistic = simulStaticRepository.findByMember(member);
+        SimulType simulType = simulTypeRepository.findByName(background);
+        SimulStatistic simulStatistic = simulStaticRepository.findByMemberAndSimulType(member, simulType).orElseThrow(() -> {
+            return new BadRequestException(ErrorCode.NOT_EXISTS_SIMUL_STATISTIC);
+        });
+
+        // member entity conversation_count update, strick conversation_count update
+        LocalDate nowDate = LocalDate.now();
 
         if (simulStatistic == null) {
-            simulStatisticService.createSimulStatic(member);
-            simulStatistic = simulStaticRepository.findByMember(member);
+            simulStatisticService.createSimulStatic(member, simulType);
+            simulStatistic = simulStaticRepository.findByMemberAndSimulType(member, simulType).orElseThrow(() -> {
+                return new BadRequestException(ErrorCode.NOT_EXISTS_SIMUL_STATISTIC);
+            });
         }
 
         List<ChatMessageDto> messages = new ArrayList<>();
@@ -70,7 +84,6 @@ public class ChatGptController {
                         "조건3: 카페에서는 음료와 디저트만 주문할 수 있음, 주문 범위를 벗어나면 상황에 맞지 않다고 판단 " +
                         "조건4: 너는 바리스타야."));
                 messages.add(new ChatMessageDto("assistant", "어서오세요. nashda카페입니다. 주문 도와드릴까요?"));
-
             } else if (background.equals("police")) {
                 messages.add(new ChatMessageDto("system", "장소 : 경찰서 상황 : 내가 분실물을 찾으러 경찰서에 왔음. " +
                         "조건1: 내가 분실물을 수령하면 상황 종료, 종료되었을 경우 : '상황 종료' && 경찰관의 대답의 형태로 출력 " +
@@ -109,11 +122,11 @@ public class ChatGptController {
 
             if (temp.length > 1) {
                 chatResDto.getChoices().get(0).getMessage().setContent(temp[1].strip());
-                simulDetailService.createSimulDetail(simulStatistic, messageReqDto.getMessage(), temp[1].strip(), background);
+                simulDetailService.createSimulDetail(simulStatistic, messageReqDto.getMessage(), temp[1].strip(), simulType);
             } else {
                 // gpt 응답이 형태로 올바르게 오지 않을 경우 처리
                 chatResDto.getChoices().get(0).getMessage().setContent(temp[0].strip());
-                simulDetailService.createSimulDetail(simulStatistic, messageReqDto.getMessage(), temp[0].strip(), background);
+                simulDetailService.createSimulDetail(simulStatistic, messageReqDto.getMessage(), temp[0].strip(), simulType);
             }
 
 

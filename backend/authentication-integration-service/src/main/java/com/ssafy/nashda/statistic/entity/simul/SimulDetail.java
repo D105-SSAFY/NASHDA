@@ -29,10 +29,13 @@ public class SimulDetail extends TimeEntity {
     @Column(columnDefinition = "TEXT")
     private String gpt_speech;
 
-    private String type;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_index", nullable = false)
+    private SimulType type;
 
     @Builder
-    public SimulDetail(SimulStatistic simulStatistic, String my_speech, String gpt_speech, String type) {
+    public SimulDetail(SimulStatistic simulStatistic, String my_speech, String gpt_speech, SimulType type) {
         this.simul = simulStatistic;
         this.my_speech = my_speech;
         this.gpt_speech = gpt_speech;
