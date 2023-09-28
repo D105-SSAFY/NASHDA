@@ -7,12 +7,10 @@ import { MoreButton } from "components/mypage/user/style";
 
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 
-export default function Nickname({ getMore }) {
-    const userName = "Consolas";
-
+export default function Nickname({ userInfo, getMore }) {
     return (
         <>
-            <n.ProfileName>@{userName}</n.ProfileName>
+            <n.ProfileName>@{userInfo.nickname}</n.ProfileName>
             <MoreButton onClick={() => getMore(1)}>
                 별명 변경
                 <ArrowCircleRightOutlinedIcon />

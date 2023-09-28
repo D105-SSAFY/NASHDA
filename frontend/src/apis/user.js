@@ -170,7 +170,7 @@ export const resetPw = async ({ email, newpassword, code }) => {
     }
 };
 
-export const updateProfile = async ({ email, password, name, nickname, age = null, job = null, hobby = null, user }) => {
+export const updateProfile = async ({ name, nickname, age = null, job = null, hobby = null, user }) => {
     try {
         const url = `${process.env.REACT_APP_API_URL}/user/updateprofile`;
 
@@ -180,7 +180,7 @@ export const updateProfile = async ({ email, password, name, nickname, age = nul
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ email, password, name, nickname, age, job, hobby }),
+            body: JSON.stringify({ name, nickname, age, job, hobby }),
             credentials: "include"
         };
 
