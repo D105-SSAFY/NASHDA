@@ -1,8 +1,8 @@
-package com.ssafy.nashda.statistic.repository.simul;
+package com.ssafy.nashda.statistic.repository;
 
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.statistic.entity.simul.SimulStatistic;
-import com.ssafy.nashda.statistic.entity.simul.SimulType;
+import com.ssafy.nashda.statistic.entity.SimulStatistic;
+import com.ssafy.nashda.statistic.entity.SimulType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

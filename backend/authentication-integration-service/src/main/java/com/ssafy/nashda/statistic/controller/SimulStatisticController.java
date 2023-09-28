@@ -1,18 +1,18 @@
-package com.ssafy.nashda.statistic.controller.simul;
+package com.ssafy.nashda.statistic.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.statistic.dto.simul.SimulDetailResDto;
-import com.ssafy.nashda.statistic.dto.simul.SimulResDto;
-import com.ssafy.nashda.statistic.entity.simul.SimulDetail;
-import com.ssafy.nashda.statistic.entity.simul.SimulStatistic;
-import com.ssafy.nashda.statistic.entity.simul.SimulType;
-import com.ssafy.nashda.statistic.repository.simul.SimulDetailRepository;
-import com.ssafy.nashda.statistic.repository.simul.SimulStaticRepository;
-import com.ssafy.nashda.statistic.repository.simul.SimulTypeRepository;
+import com.ssafy.nashda.statistic.dto.response.SimulDetailResDto;
+import com.ssafy.nashda.statistic.dto.response.SimulResDto;
+import com.ssafy.nashda.statistic.entity.SimulDetail;
+import com.ssafy.nashda.statistic.entity.SimulStatistic;
+import com.ssafy.nashda.statistic.entity.SimulType;
+import com.ssafy.nashda.statistic.repository.SimulDetailRepository;
+import com.ssafy.nashda.statistic.repository.SimulStaticRepository;
+import com.ssafy.nashda.statistic.repository.SimulTypeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -34,7 +34,7 @@ public class SimulStatisticController {
     private final SimulDetailRepository simulDetailRepository;
     private final SimulTypeRepository simulTypeRepository;
 
-    @PostMapping
+    @GetMapping
     public ResponseEntity<? extends BaseResponseBody> getSimul(@RequestHeader ("Authorization") String accessToken) {
         Member member = memberController.findMemberByToken(accessToken);
         List<SimulType> simulTypeList = simulTypeRepository.findAll();
@@ -44,7 +44,7 @@ public class SimulStatisticController {
         for (SimulType simulType :simulTypeList) {
             Optional<SimulStatistic> optionalSimul = simulStaticRepository.findByMemberAndSimulType(member, simulType);
 
-            if (!optionalSimul.isPresent()) {
+            if (optionalSimul.isEmpty()) {
                 continue;
             }
 
@@ -53,10 +53,14 @@ public class SimulStatisticController {
             result.add(simulResDto);
         }
 
+        if (result.isEmpty()) {
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_SIMUL_STATISTIC);
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody(200, "대화 시뮬레이션 통계 조회 성공", result));
     }
 
-    @PostMapping("/{background}")
+    @GetMapping("/{background}")
     public ResponseEntity<? extends BaseResponseBody> getSimulDetail(@PathVariable String background,
                                                                      @RequestHeader ("Authorization") String accessToken) {
         Member member = memberController.findMemberByToken(accessToken);

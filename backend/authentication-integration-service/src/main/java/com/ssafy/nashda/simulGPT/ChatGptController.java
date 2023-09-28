@@ -6,17 +6,20 @@ import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
+import com.ssafy.nashda.member.repository.MemberRepository;
 import com.ssafy.nashda.simulGPT.dto.*;
 import com.ssafy.nashda.simulGPT.entity.MemorizeChat;
 import com.ssafy.nashda.simulGPT.repository.ChatGptRepository;
 import com.ssafy.nashda.simulGPT.service.ChatGptServiceImpl;
-import com.ssafy.nashda.statistic.entity.simul.SimulStatistic;
-import com.ssafy.nashda.statistic.entity.simul.SimulType;
-import com.ssafy.nashda.statistic.repository.simul.SimulDetailRepository;
-import com.ssafy.nashda.statistic.repository.simul.SimulStaticRepository;
-import com.ssafy.nashda.statistic.repository.simul.SimulTypeRepository;
-import com.ssafy.nashda.statistic.service.simul.SimulDetailService;
-import com.ssafy.nashda.statistic.service.simul.SimulStatisticService;
+import com.ssafy.nashda.statistic.entity.SimulStatistic;
+import com.ssafy.nashda.statistic.entity.SimulType;
+import com.ssafy.nashda.statistic.entity.Strick;
+import com.ssafy.nashda.statistic.repository.SimulDetailRepository;
+import com.ssafy.nashda.statistic.repository.SimulStaticRepository;
+import com.ssafy.nashda.statistic.repository.SimulTypeRepository;
+import com.ssafy.nashda.statistic.repository.StrickRepository;
+import com.ssafy.nashda.statistic.service.SimulDetailService;
+import com.ssafy.nashda.statistic.service.SimulStatisticService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,8 +31,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -37,17 +40,17 @@ import java.util.List;
 @RequestMapping("/simul")
 public class ChatGptController {
     private final MemberController memberController;
+    private final MemberRepository memberRepository;
 
     private final ChatGptServiceImpl chatGptServiceImpl;
     private final ChatGptRepository chatGptRepository;
 
     private final SimulStaticRepository simulStaticRepository;
     private final SimulStatisticService simulStatisticService;
-
-    private final SimulDetailRepository simulDetailRepository;
     private final SimulDetailService simulDetailService;
-
     private final SimulTypeRepository simulTypeRepository;
+
+    private final StrickRepository strickRepository;
 
     @Transactional
     @PostMapping("/{background}")
@@ -62,9 +65,6 @@ public class ChatGptController {
             return new BadRequestException(ErrorCode.NOT_EXISTS_SIMUL_STATISTIC);
         });
 
-        // member entity conversation_count update, strick conversation_count update
-        LocalDate nowDate = LocalDate.now();
-
         if (simulStatistic == null) {
             simulStatisticService.createSimulStatic(member, simulType);
             simulStatistic = simulStaticRepository.findByMemberAndSimulType(member, simulType).orElseThrow(() -> {
@@ -77,6 +77,18 @@ public class ChatGptController {
 
         // 해당 유저가 처음 보낸 요청인지 재요청인지 Id 확인
         if (ObjectUtils.isEmpty(messageReqDto.getId())) {
+
+            // 해당 유저의 총 conversationCount +1
+            memberRepository.updateConversationCount(member.getConversationCount() + 1, member.getMemberNum());
+
+            // 해당 유저가 해당 날짜에 로그인 한 기록이 존재하면 Strick conversationCount +1
+            LocalDate date = LocalDate.now();
+            Optional<Strick> strick = strickRepository.findByMemberAndCreatOn(member, date);
+
+            if (strick.isPresent()) {
+                strickRepository.updateConversationCount(strick.get().getConversationCount()+1, strick.get().getIndex());
+            }
+
             if (background.equals("cafe")) {
                 messages.add(new ChatMessageDto("system", "장소 : 카페 상황 : 손님이 카페에 음료를 사러 왔음. " +
                         "조건1: 카페에서 음료를 구매하고 손님이 음료를 받으면 상황 종료, 종료 되었을 경우 : '상황 종료' && 바리스타의 대답의 형태로 출력 " +

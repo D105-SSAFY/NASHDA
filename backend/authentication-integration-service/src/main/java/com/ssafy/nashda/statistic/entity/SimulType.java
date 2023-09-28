@@ -1,4 +1,4 @@
-package com.ssafy.nashda.statistic.entity.simul;
+package com.ssafy.nashda.statistic.entity;
 
 import lombok.*;
 

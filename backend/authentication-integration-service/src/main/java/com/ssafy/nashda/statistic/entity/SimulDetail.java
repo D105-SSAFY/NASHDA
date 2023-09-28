@@ -1,4 +1,4 @@
-package com.ssafy.nashda.statistic.entity.simul;
+package com.ssafy.nashda.statistic.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.nashda.common.entity.TimeEntity;

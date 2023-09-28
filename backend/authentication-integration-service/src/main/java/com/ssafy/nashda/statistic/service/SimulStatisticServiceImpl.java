@@ -1,9 +1,9 @@
-package com.ssafy.nashda.statistic.service.simul;
+package com.ssafy.nashda.statistic.service;
 
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.statistic.entity.simul.SimulStatistic;
-import com.ssafy.nashda.statistic.entity.simul.SimulType;
-import com.ssafy.nashda.statistic.repository.simul.SimulStaticRepository;
+import com.ssafy.nashda.statistic.entity.SimulStatistic;
+import com.ssafy.nashda.statistic.entity.SimulType;
+import com.ssafy.nashda.statistic.repository.SimulStaticRepository;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

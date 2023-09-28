@@ -1,11 +1,10 @@
-package com.ssafy.nashda.statistic.entity.simul;
+package com.ssafy.nashda.statistic.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.nashda.member.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Getter
 @Setter

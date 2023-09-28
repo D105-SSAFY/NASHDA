@@ -1,6 +1,6 @@
-package com.ssafy.nashda.statistic.dto.simul;
+package com.ssafy.nashda.statistic.dto.response;
 
-import com.ssafy.nashda.statistic.entity.simul.SimulDetail;
+import com.ssafy.nashda.statistic.entity.SimulDetail;
 import lombok.*;
 
 @Getter

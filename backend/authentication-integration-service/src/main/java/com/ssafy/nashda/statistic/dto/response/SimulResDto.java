@@ -1,7 +1,7 @@
-package com.ssafy.nashda.statistic.dto.simul;
+package com.ssafy.nashda.statistic.dto.response;
 
-import com.ssafy.nashda.statistic.entity.simul.SimulStatistic;
-import com.ssafy.nashda.statistic.entity.simul.SimulType;
+import com.ssafy.nashda.statistic.entity.SimulStatistic;
+import com.ssafy.nashda.statistic.entity.SimulType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
