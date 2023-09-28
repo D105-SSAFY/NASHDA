@@ -11,10 +11,6 @@ import { updateRefresh } from "redux/slice/userSlice";
 const eetch = async (url, options) => {
     const response = await fetch(url, options);
 
-    if (!response.ok) {
-        throw new Error("네트워크 확인");
-    }
-
     return response.json();
 };
 

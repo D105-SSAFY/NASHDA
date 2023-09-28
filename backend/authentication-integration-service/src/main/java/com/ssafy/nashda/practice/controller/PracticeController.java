@@ -1,19 +1,19 @@
 package com.ssafy.nashda.practice.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
+import com.ssafy.nashda.member.controller.MemberController;
+import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
 import com.ssafy.nashda.practice.dto.PronSTTResponseDto;
 import com.ssafy.nashda.practice.service.PracticePronService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * 연습 문제 전송 컨트롤러
@@ -27,7 +27,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RequestMapping("/practice")
 public class PracticeController {
     private final PracticePronService practicePronService;
-
+    private final MemberController memberController;
 
 //    @GetMapping("/pron/test")
 //    public ResponseEntity<? extends BaseResponseBody> test() throws Exception {
@@ -125,15 +125,18 @@ public class PracticeController {
                 HttpStatus.OK);
     }
 
-    @PostMapping(value = "/pron/result", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<? extends BaseResponseBody> getPronunciation(@RequestPart(value = "sound", required = false) MultipartFile sound,
-                                                                       @RequestPart(value = "requestDto") PracticePronRequestDto practicePronRequestDto) throws Exception {
+    @PostMapping(value = "/pron/result")
+    public ResponseEntity<? extends BaseResponseBody> getPronunciation(@ModelAttribute PracticePronRequestDto practicePronRequestDto,
+                                                                       @RequestHeader("Authorization") String token) throws Exception {
 
-        String stt = practicePronService.getSTT(sound, practicePronRequestDto.getIndex(), practicePronRequestDto.getType());
+        Member member = memberController.findMemberByToken(token);
+        String stt = practicePronService.getSTT(member, practicePronRequestDto);
 
         return new ResponseEntity<>(new BaseResponseBody(200, "발음 연습 결과 전송 완료",
                 new PronSTTResponseDto(stt)),
                 HttpStatus.OK);
     }
 
+
+//    @PostMapping("")
 }

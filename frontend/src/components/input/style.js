@@ -69,3 +69,106 @@ export const StyledButton = styled.button`
     right: 15px;
     top: 30%;
 `;
+
+export const StyledImg = styled.img`
+    position: absolute;
+    right: 5px;
+    top: 10%;
+`;
+
+export const Wrapper = styled.div`
+    width: 100%;
+    position: relative;
+    margin: 10px;
+`;
+
+export const Button = styled.button`
+    width: 100%;
+    height: 55px;
+    text-align: center;
+    padding: 0 12px;
+    position: relative;
+    background-color: white;
+    font-size: 20px;
+    border: 2px solid;
+    border-radius: 6px;
+    color: black;
+
+    &::before {
+        content: "";
+        display: block;
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        right: 15px;
+        top: 20px;
+        transition: all 0.2s;
+        transform: ${(props) => (props.clicked ? "translate(5px, -1px) rotate(225deg);" : "translate(0, -1px) rotate(225deg)")};
+        border-top: 2px solid;
+    }
+
+    &::after {
+        content: "";
+        display: block;
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        right: 15px;
+        top: 20px;
+        transition: all 0.2s;
+        transform: ${(props) => (props.clicked ? "translate(-4px, -1px) rotate(135deg);" : "translate(0, -1px) rotate(135deg)")};
+        border-top: 2px solid;
+    }
+`;
+
+export const List = styled.ul`
+    width: 100%;
+    max-height: 200px;
+    overflow-y: scroll;
+    position: absolute;
+    top: 57px;
+    padding: 4px 0;
+    z-index: 1000;
+    box-shadow: 0 0 5px 1px gray;
+    border-radius: 6px;
+    background-color: white;
+    display: ${(props) => (props.clicked ? "block" : "none")};
+
+    &::-webkit-scrollbar {
+        width: 8px;
+        background-color: white;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: gray;
+        border-radius: 10px;
+        background-clip: padding-box;
+    }
+
+    &::-webkit-scrollbar-button {
+        width: 0;
+        height: 0;
+    }
+`;
+
+export const ListItem = styled.li`
+    width: 100%;
+`;
+
+export const ListButton = styled.button`
+    width: 100%;
+    border: 0;
+    padding: 5px 16px;
+    text-align: left;
+    font-size: 20px;
+    background-color: white;
+
+    &:hover {
+        background-color: lightskyblue;
+        color: white;
+    }
+`;

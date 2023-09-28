@@ -12,21 +12,19 @@ import java.time.LocalDate;
 @Setter
 public class StrickInfoResDto {
     private LocalDate date;
-    private int game_count;
+    private int blank_count;
+    private int speed_count;
     private int practice_count;
-    private int simulation_count;
-    private int word_count;
-    private int sentence_count;
     private int conversation_count;
+    private int test_count;
     @Builder
     public StrickInfoResDto(Strick strick) {
         this.date = strick.getCreatOn();
-        this.game_count = strick.getGameCount();
+        this.blank_count = strick.getBlankCount();
+        this.speed_count = strick.getSpeedCount();
         this.practice_count = strick.getPracticeCount();
-        this.simulation_count = strick.getSimulationCount();
-        this.word_count = strick.getWordCount();
-        this.sentence_count = strick.getSentenceCount();
         this.conversation_count = strick.getConversationCount();
+        this.test_count = strick.getTestCount();
     }
 
 }

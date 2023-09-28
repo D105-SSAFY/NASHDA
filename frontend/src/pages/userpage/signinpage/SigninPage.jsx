@@ -10,33 +10,6 @@ import { loginUser } from "redux/slice/userSlice";
 import { useNavigate } from "react-router";
 import eetch from "apis/eetch";
 
-// 임시 사용
-// export const login = async ({ email, password }) => {
-//     try {
-//         const response = await fetch("https://j9d105.p.ssafy.io/api/user/signin", {
-//             method: "POST",
-//             headers: {
-//                 "Content-Type": "application/json"
-//             },
-//             body: JSON.stringify({ email, password })
-//         });
-
-//         const result = await response.json();
-//         if (result.errorCode === 4001) {
-//             return;
-//         }
-
-//         if (result.errorCode === 4002) {
-//             return;
-//         }
-
-//         return result;
-//     } catch (error) {
-//         console.log(error);
-//     }
-// };
-//
-
 export default function SigninPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();

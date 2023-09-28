@@ -28,10 +28,12 @@ public class Member extends TimeEntity {
     private Long memberNum;
 
     @NotNull
+    @Column(unique = true)
     private String email;
     @NotNull
     private String name;
     @NotNull
+    @Column(unique = true)
     private String nickname;
     @NotNull
     private String password;
@@ -44,7 +46,7 @@ public class Member extends TimeEntity {
     @Column(name = "job_index")
     private int jobIdx;
 
-    private int status=1;
+    private int status;
 
     @ColumnDefault("0")
     private int progress;
@@ -74,6 +76,7 @@ public class Member extends TimeEntity {
         this.age = age;
         this.hobbyIdx = hobbyIdx;
         this.jobIdx = jobIdx;
+        this.status = 1;
     }
 
 

@@ -141,7 +141,7 @@ export default function PronunciationSection({ props: { pronunciation } }) {
                     </s.SpeakButton>
                 </s.Box>
                 <s.ButtonWrapper>
-                    <FilledButton props={{ background: "rgba(68, 71, 90, 0.7)", color: "#ffffff", callback: onClickRecordOn }}>
+                    <FilledButton props={{ background: "rgba(68, 71, 90, 0.7)", color: "#ffffff", hovercolor: "#44475A", callback: onClickRecordOn }}>
                         <MicIcon />
                         <span>녹음하기</span>
                     </FilledButton>
@@ -150,7 +150,7 @@ export default function PronunciationSection({ props: { pronunciation } }) {
                     </BorderButton>
                 </s.ButtonWrapper>
             </s.Section>
-            <VoiceModal props={{ pronunciation, visible: onModal, offModal: unshowModal, callback: onClickRecordOff }} />
+            <VoiceModal props={{ pronunciation, visible: onModal, callback: onClickRecordOff }} />
         </>
     );
 }

@@ -1,5 +1,6 @@
 package com.ssafy.nashda.statistic.dto.response;
 
+import com.ssafy.nashda.statistic.entity.GameStatistic;
 import com.ssafy.nashda.week.entity.Week;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,11 +18,11 @@ public class BlankStatisticResDto {
     private int set;
 
     @Builder
-    public BlankStatisticResDto(Week week, int score, int total, int set) {
-        this.start_date = week.getStartDate();
-        this.end_data = week.getEndDate();
-        this.score = score;
-        this.total = total;
-        this.set = set;
+    public BlankStatisticResDto(GameStatistic gameStatistic) {
+        this.start_date = gameStatistic.getWeek().getStartDate();
+        this.end_data = gameStatistic.getWeek().getEndDate();
+        this.score = gameStatistic.getBlankScore();
+        this.total = gameStatistic.getBlankTotal();
+        this.set = gameStatistic.getBlankSet();
     }
 }

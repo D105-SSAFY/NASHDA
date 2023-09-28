@@ -1,5 +1,7 @@
 package com.ssafy.nashda.practice.service;
 
+import com.ssafy.nashda.member.entity.Member;
+import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,5 +30,5 @@ public interface PracticePronService {
     long getPronSetNum(String seqName) throws Exception;
 
 
-    String getSTT(MultipartFile multipartFile, long index, String type) throws Exception;
+    String getSTT(Member member, PracticePronRequestDto practicePronRequestDto) throws Exception;
 }

@@ -73,7 +73,7 @@ export const sendCode = async ({ email }) => {
     }
 };
 
-export const signup = async ({ email, password, name, nickname, age = null, job = null, hobby = null }) => {
+export const signup = async ({ email, password, name, nickname, age = null, jobIdx = null, hobbyIdx = null }) => {
     try {
         const url = `${process.env.REACT_APP_API_URL}/user/signup`;
 
@@ -82,7 +82,7 @@ export const signup = async ({ email, password, name, nickname, age = null, job 
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ email, password, name, nickname, age, job, hobby }),
+            body: JSON.stringify({ email, password, name, nickname, age, jobIdx, hobbyIdx }),
             credentials: "include"
         };
 
@@ -152,7 +152,7 @@ export const updatePw = async ({ email, password, newpassword, user }) => {
     }
 };
 
-export const resetPw = async ({ email, password, code }) => {
+export const resetPw = async ({ email, newpassword, code }) => {
     try {
         const url = `${process.env.REACT_APP_API_URL}/user/resetpw`;
 
@@ -161,7 +161,7 @@ export const resetPw = async ({ email, password, code }) => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ email, password, code })
+            body: JSON.stringify({ email, newpassword, code })
         };
 
         return await eetch(url, options);
@@ -245,11 +245,12 @@ export const checkCode = async ({ email, code }) => {
 
 export const checkNickname = async ({ nickname }) => {
     try {
-        const url = `${process.env.REACT_APP_API_URL}/user/checknickname/${nickname}`;
+        const url = `${process.env.REACT_APP_API_URL}/user/checknickname`;
 
         const options = {
-            method: "GET",
-            headers: { "Content-Type": "application/json" }
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nickname })
         };
 
         return await eetch(url, options);
@@ -283,8 +284,7 @@ export const domain = async () => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
-            },
-            credentials: "include"
+            }
         };
 
         return await eetch(url, options);
