@@ -13,7 +13,10 @@ import java.util.Optional;
 
 public interface StrickRepository extends JpaRepository<Strick, Long> {
     List<Strick> findByMember(Member member, Pageable pageable);
-    Optional<Strick>findByMemberAndCreatOn(Member member, LocalDate date);
+
+    Optional<Strick> findByMemberAndCreatOn(Member member, LocalDate date);
+
+    boolean existsByMemberAndCreatOn(Member member, LocalDate date);
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Strick s SET s.conversationCount = :count WHERE s.index = :index")

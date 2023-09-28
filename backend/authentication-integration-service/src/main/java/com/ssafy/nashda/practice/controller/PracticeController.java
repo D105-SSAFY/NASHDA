@@ -3,15 +3,18 @@ package com.ssafy.nashda.practice.controller;
 import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
+import com.ssafy.nashda.member.service.MemberService;
 import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
 import com.ssafy.nashda.practice.dto.PronSTTResponseDto;
 import com.ssafy.nashda.practice.service.PracticePronService;
+import com.ssafy.nashda.statistic.service.AchievementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +31,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class PracticeController {
     private final PracticePronService practicePronService;
     private final MemberController memberController;
+    private final MemberService memberService;
+    private final AchievementService achievementService;
+
 
 //    @GetMapping("/pron/test")
 //    public ResponseEntity<? extends BaseResponseBody> test() throws Exception {
@@ -61,9 +67,12 @@ public class PracticeController {
 
     // 해당 문제 불러오기
     @GetMapping("/pron/word/{index}")
-    public ResponseEntity<? extends BaseResponseBody> getPronWord(@PathVariable("index") int index) throws Exception {
+    @Transactional
+    public ResponseEntity<? extends BaseResponseBody> getPronWord(@RequestHeader("Authorization") String token, @PathVariable("index") int index) throws Exception {
         PronResponseDto pronWordSet = practicePronService.getPronWordSets(index);
-
+        Member member = memberController.findMemberByToken(token);
+        practicePronService.updateWordCount(member);
+        log.info("word_count : {}", member.getWordCount() + 1);
         return new ResponseEntity<>(new BaseResponseBody(200, "단어 문제 불러오기 성공", pronWordSet),
                 HttpStatus.OK);
     }
@@ -80,9 +89,10 @@ public class PracticeController {
 
     // 해당 문제 불러오기
     @GetMapping("/pron/phase/{index}")
-    public ResponseEntity<? extends BaseResponseBody> getPronPhase(@PathVariable("index") int index) throws Exception {
+    public ResponseEntity<? extends BaseResponseBody> getPronPhase(@RequestHeader("Authorization") String token, @PathVariable("index") int index) throws Exception {
         PronResponseDto pronPhaseSet = practicePronService.getPronPhaseSets(index);
-
+        Member member = memberController.findMemberByToken(token);
+        practicePronService.updateWordCount(member);
         return new ResponseEntity<>(new BaseResponseBody(200, "구 문제 불러오기 성공", pronPhaseSet),
                 HttpStatus.OK);
     }
@@ -99,9 +109,10 @@ public class PracticeController {
 
     // 해당 문제 불러오기
     @GetMapping("/pron/simple/{index}")
-    public ResponseEntity<? extends BaseResponseBody> getPronSimple(@PathVariable("index") int index) throws Exception {
+    public ResponseEntity<? extends BaseResponseBody> getPronSimple(@RequestHeader("Authorization") String token, @PathVariable("index") int index) throws Exception {
         PronResponseDto pronSimpleSet = practicePronService.getPronSimpleSets(index);
-
+        Member member = memberController.findMemberByToken(token);
+        practicePronService.updateSentenceCount(member);
         return new ResponseEntity<>(new BaseResponseBody(200, "단순절 문제 불러오기 성공", pronSimpleSet),
                 HttpStatus.OK);
     }
@@ -118,9 +129,10 @@ public class PracticeController {
 
     // 해당 문제 불러오기
     @GetMapping("/pron/complex/{index}")
-    public ResponseEntity<? extends BaseResponseBody> getPronComplex(@PathVariable("index") int index) throws Exception {
+    public ResponseEntity<? extends BaseResponseBody> getPronComplex(@RequestHeader("Authorization") String token, @PathVariable("index") int index) throws Exception {
         PronResponseDto pronComplexSet = practicePronService.getPronComplexSets(index);
-
+        Member member = memberController.findMemberByToken(token);
+        practicePronService.updateSentenceCount(member);
         return new ResponseEntity<>(new BaseResponseBody(200, "복합절 문제 불러오기 성공", pronComplexSet),
                 HttpStatus.OK);
     }
@@ -132,11 +144,11 @@ public class PracticeController {
         Member member = memberController.findMemberByToken(token);
         String stt = practicePronService.getSTT(member, practicePronRequestDto);
 
+
         return new ResponseEntity<>(new BaseResponseBody(200, "발음 연습 결과 전송 완료",
                 new PronSTTResponseDto(stt)),
                 HttpStatus.OK);
     }
 
 
-//    @PostMapping("")
 }

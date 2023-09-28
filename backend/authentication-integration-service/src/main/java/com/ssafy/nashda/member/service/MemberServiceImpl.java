@@ -2,21 +2,24 @@ package com.ssafy.nashda.member.service;
 
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
-import com.ssafy.nashda.member.dto.Reponse.MemberInfoResDto;
-import com.ssafy.nashda.member.dto.Request.MemberSignInReqDto;
-import com.ssafy.nashda.member.dto.Request.MemberSignUpReqDto;
+import com.ssafy.nashda.member.dto.response.MemberInfoResDto;
+import com.ssafy.nashda.member.dto.request.MemberSignInReqDto;
+import com.ssafy.nashda.member.dto.request.MemberSignUpReqDto;
+import com.ssafy.nashda.member.dto.response.MemberStatisticResDto;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.repository.MemberRepository;
+import com.ssafy.nashda.statistic.service.GameStatisticService;
 import com.ssafy.nashda.statistic.service.PracticeStatisticService;
-import com.ssafy.nashda.statistic.entity.Strick;
-import com.ssafy.nashda.statistic.repository.StrickRepository;
+import com.ssafy.nashda.statistic.service.StrickService;
+import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
+import com.ssafy.nashda.week.entity.Week;
+import com.ssafy.nashda.week.service.WeekService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,7 +31,10 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final PracticeStatisticService practiceStatisticService;
-    private final StrickRepository strickRepository;
+    private final StrickService strickService;
+    private final WeekService weekService;
+    private final GameStatisticService gameStatisticService;
+    private final WeekTestStatisticService weekTestStatisticService;
 
 
     @Override
@@ -51,7 +57,7 @@ public class MemberServiceImpl implements MemberService {
             // 발음 통계 전부 저장
             try {
                 practiceStatisticService.initializePracticeStatistic(member);
-            } catch (Exception e){
+            } catch (Exception e) {
                 throw new BadRequestException(ErrorCode.SAVE_ERROR);
             }
 
@@ -73,19 +79,26 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public MemberInfoResDto singIn(MemberSignInReqDto signinInfo) throws IOException, InterruptedException {
-        Optional<Member> member = memberRepository.findByEmail(signinInfo.getEmail());
-        if (member.isEmpty()) {
-            throw new BadRequestException(ErrorCode.USER_NOT_EXIST);
-        }
-        if (passwordEncoder.matches(signinInfo.getPassword(), member.get().getPassword())) {
-            Optional<Strick> optionalStrick = strickRepository.findByMemberAndCreatOn(member.get(), LocalDate.now());
-            if (optionalStrick.isEmpty()) {
-                Strick strick = Strick.builder()
-                        .member(member.get())
-                        .build();
-                strickRepository.save(strick);
+        Member member = memberRepository.findByEmail(signinInfo.getEmail()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
+        ;
+        Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        if (passwordEncoder.matches(signinInfo.getPassword(), member.getPassword())) {
+            //strick 생성, 로그인 할때마다
+            if (!strickService.isExistStrick(member)) {
+                strickService.initStrick(member);
             }
-            return new MemberInfoResDto(member.get());
+
+            //gamestatistic 생성, 로그인 할때마다
+            if (!gameStatisticService.isExistGameStatistic(member, week)) {
+                gameStatisticService.initGameStatistic(member, week);
+            }
+
+            //week_test생성
+            if (!weekTestStatisticService.isExistWeekTestResult(member, week)) {
+                weekTestStatisticService.initWeekTestResult(member, week);
+            }
+
+            return new MemberInfoResDto(member);
         } else {
             throw new BadRequestException(ErrorCode.USER_NOT_MATCH);
         }
@@ -98,7 +111,7 @@ public class MemberServiceImpl implements MemberService {
             throw new BadRequestException(ErrorCode.INVALID_INPUT);
         Member member = memberRepository.findByEmail(memberInfo.get("email").toString()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
         if (passwordEncoder.matches(memberInfo.get("password").toString(), member.getPassword())) {
-            memberRepository.delete(member);
+            memberRepository.unRegist(member.getMemberNum());
         } else {
             throw new BadRequestException(ErrorCode.USER_NOT_MATCH);
         }
@@ -157,6 +170,24 @@ public class MemberServiceImpl implements MemberService {
     public boolean checkProgress(String email) throws IOException {
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
         return member.getProgress() > 9;
+    }
+
+    @Override
+    @Transactional
+    public void updateWordCount(Member member, int wordCount) {
+        memberRepository.updateWordCount(wordCount, member.getMemberNum());
+    }
+
+    @Override
+    @Transactional
+    public void updateSentenceCount(Member member, int sentenceCount) {
+        memberRepository.updateSentenceCount(sentenceCount, member.getMemberNum());
+    }
+
+    @Override
+    @Transactional
+    public void updateConversationCount(Member member, int conversationCount) {
+        memberRepository.updateConversationCount(conversationCount, member.getMemberNum());
     }
 
 

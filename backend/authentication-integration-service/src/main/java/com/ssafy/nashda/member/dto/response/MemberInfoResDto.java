@@ -1,9 +1,8 @@
-package com.ssafy.nashda.member.dto.Reponse;
+package com.ssafy.nashda.member.dto.response;
 
 import com.ssafy.nashda.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 

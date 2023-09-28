@@ -31,8 +31,8 @@ public class WeekService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Week> getCurrentWeekIdx() {
-        return weekRepository.findCurrentWeekIdx();
+    public Optional<Week> getCurrentWeek() {
+        return weekRepository.findCurrentWeek();
     }
 
 }

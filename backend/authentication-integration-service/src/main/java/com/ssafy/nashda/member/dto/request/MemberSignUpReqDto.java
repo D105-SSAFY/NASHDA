@@ -1,12 +1,7 @@
-package com.ssafy.nashda.member.dto.Request;
+package com.ssafy.nashda.member.dto.request;
 
 import com.ssafy.nashda.member.entity.Member;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.DynamicUpdate;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Getter
 @Setter

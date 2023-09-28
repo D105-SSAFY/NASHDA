@@ -1,9 +1,9 @@
 package com.ssafy.nashda.member.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
-import com.ssafy.nashda.member.dto.Reponse.MemberInfoResDto;
-import com.ssafy.nashda.member.dto.Request.MemberSignInReqDto;
-import com.ssafy.nashda.member.dto.Request.MemberSignUpReqDto;
+import com.ssafy.nashda.member.dto.response.MemberInfoResDto;
+import com.ssafy.nashda.member.dto.request.MemberSignInReqDto;
+import com.ssafy.nashda.member.dto.request.MemberSignUpReqDto;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.mail.service.MailSenderService;
 import com.ssafy.nashda.member.service.MemberService;
@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -113,7 +114,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "비밀번호 수정 성공"));
     }
 
-
+    @Transactional
     public Member findMemberByToken(String token) {
         String parsedToken = token.substring("Bearer ".length()).trim();
         String email = tokenProvider.getUserEmail(parsedToken);

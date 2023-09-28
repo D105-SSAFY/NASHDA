@@ -1,7 +1,7 @@
 package com.ssafy.nashda.member.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
-import com.ssafy.nashda.member.dto.Reponse.DomainResDto;
+import com.ssafy.nashda.member.dto.response.DomainResDto;
 import com.ssafy.nashda.member.entity.Hobby;
 import com.ssafy.nashda.member.entity.Job;
 import com.ssafy.nashda.member.repository.HobbyRepository;

@@ -1,15 +1,17 @@
 package com.ssafy.nashda.statistic.entity;
 
 import com.ssafy.nashda.member.entity.Member;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "member_achievements")
+@Table(name = "member_achievement")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,6 +19,7 @@ public class MemberAchievement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_achievement_index")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,12 +30,13 @@ public class MemberAchievement {
     @JoinColumn(name = "achievement_index")
     private Achievement achievement;
 
-    @Column(name = "achieved_date")
+    @CreationTimestamp
+    @Column(name = "achieved_date", updatable = false)
     private LocalDateTime achievedDate; // 업적 달성 날짜
 
-    public MemberAchievement(Member member, Achievement achievement, LocalDateTime achievedDate) {
+    @Builder
+    public MemberAchievement(Member member, Achievement achievement) {
         this.member = member;
         this.achievement = achievement;
-        this.achievedDate = achievedDate;
     }
 }

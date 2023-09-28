@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.ser.Serializers;
 import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.test.dto.request.MixTestSpeekReqDto;
-import com.ssafy.nashda.test.dto.request.SentenceTestSpeakReqDto;
-import com.ssafy.nashda.test.dto.request.WordTestResultReqDto;
+import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
+import com.ssafy.nashda.test.dto.request.*;
 import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
 import com.ssafy.nashda.test.dto.response.WordTestStartResDto;
 import com.ssafy.nashda.test.service.TestService;
+import com.ssafy.nashda.week.entity.Week;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,6 +28,7 @@ public class TestController {
 
     private final TestService testService;
     private final MemberController memberController;
+    private final WeekTestStatisticService weekTestStatisticService;
 
     @GetMapping("/word")
     public ResponseEntity<? extends BaseResponseBody> wordTestStart(@RequestHeader("Authorization") String token) throws Exception {
@@ -41,9 +42,10 @@ public class TestController {
     }
 
     @PostMapping("/word/result")
-    public ResponseEntity<? extends BaseResponseBody> testResult(@RequestBody WordTestResultReqDto request) throws Exception {
+    public ResponseEntity<? extends BaseResponseBody> testResult(@RequestHeader("Authorization") String token, @RequestBody WordTestResultReqDto request) throws Exception {
 
-        testService.saveWordTestScore(request);
+        Member member = memberController.findMemberByToken(token);
+        testService.saveWordTestScore(request, member);
 
         /*  return new ResponseEntity<>(new BaseResponseBody(200, "단어 시험 시작"), wordTestStartResDto), HttpStatus.OK);*/
         return new ResponseEntity<>(new BaseResponseBody(200, "단어 시험 결과 저장 성공"),
@@ -62,11 +64,11 @@ public class TestController {
     }
 
     @PostMapping("/sentence/result")
-    public ResponseEntity<? extends BaseResponseBody> sentenceTestResult(@RequestBody Map<String, Object> map) throws Exception {
+    public ResponseEntity<? extends BaseResponseBody> sentenceTestResult(@RequestHeader("Authorization") String token, @RequestBody SentenceTestReqDto reqDto) throws Exception {
 
-        testService.saveSentenceTestScore((String) map.get("index"), (Integer) map.get("score"));
+        Member member = memberController.findMemberByToken(token);
+        testService.saveSentenceTestScore(reqDto, member);
 
-        /*  return new ResponseEntity<>(new BaseResponseBody(200, "단어 시험 시작"), wordTestStartResDto), HttpStatus.OK);*/
         return new ResponseEntity<>(new BaseResponseBody(200, "문장 시험 결과 저장 성공"),
                 HttpStatus.OK);
     }
@@ -85,8 +87,8 @@ public class TestController {
 
     @PostMapping(value = "/sentence/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<? extends BaseResponseBody> sentenceTestUserSpeak(
-            @RequestParam("index") String index, @RequestParam("sound") MultipartFile sound, @RequestParam("order")int order
-/*    @ModelAttribute SentenceTestSpeakReqDto reqDto*/) throws Exception {
+            @RequestParam("index") String index, @RequestParam("sound") MultipartFile sound, @RequestParam("order") int order
+            /*    @ModelAttribute SentenceTestSpeakReqDto reqDto*/) throws Exception {
 
         SentenceTestSpeakReqDto reqDto = SentenceTestSpeakReqDto.builder()
                 .index(index)
@@ -112,22 +114,7 @@ public class TestController {
 
     @PostMapping(value = "/week/blank/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<? extends BaseResponseBody> weekTestBlankUser(
-            @RequestParam("index") String index, @RequestParam("sound") MultipartFile sound, @RequestParam("order")int order
-           ) throws Exception {
-
-        MixTestSpeekReqDto reqDto = MixTestSpeekReqDto.builder()
-                .index(index)
-                .order(order)
-                .sound(sound)
-                .build();
-        String stt = testService.sttMixTest(reqDto,"blank");
-
-        return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 저장 성공(blank)", stt),
-                HttpStatus.OK);
-    }
-    @PostMapping(value = "/week/speed1/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<? extends BaseResponseBody> weekTestSpeed1User(
-            @RequestParam("index") String index, @RequestParam("sound") MultipartFile sound, @RequestParam("order")int order
+            @RequestParam("index") String index, @RequestParam("sound") MultipartFile sound, @RequestParam("order") int order
     ) throws Exception {
 
         MixTestSpeekReqDto reqDto = MixTestSpeekReqDto.builder()
@@ -135,14 +122,30 @@ public class TestController {
                 .order(order)
                 .sound(sound)
                 .build();
-        String stt = testService.sttMixTest(reqDto,"speed1");
+        String stt = testService.sttMixTest(reqDto, "blank");
+
+        return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 저장 성공(blank)", stt),
+                HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/week/speed1/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<? extends BaseResponseBody> weekTestSpeed1User(
+            @RequestParam("index") String index, @RequestParam("sound") MultipartFile sound, @RequestParam("order") int order
+    ) throws Exception {
+
+        MixTestSpeekReqDto reqDto = MixTestSpeekReqDto.builder()
+                .index(index)
+                .order(order)
+                .sound(sound)
+                .build();
+        String stt = testService.sttMixTest(reqDto, "speed1");
 
         return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 저장 성공(speed)", stt),
                 HttpStatus.OK);
     }
 
     @PostMapping(value = "/week/speed2/user")
-    public ResponseEntity<? extends BaseResponseBody> weekTestSpeed2User(@RequestBody Map<String, Object> map){
+    public ResponseEntity<? extends BaseResponseBody> weekTestSpeed2User(@RequestBody Map<String, Object> map) {
 
         testService.saveWeekTestSpeed2((String) map.get("index"), (String) map.get("url"), (Integer) map.get("order"));
 
@@ -152,11 +155,9 @@ public class TestController {
 
 
     @PostMapping("/week/result")
-    public ResponseEntity<? extends BaseResponseBody> weekTestResult(@RequestBody Map<String, Object> map) throws Exception {
-
-        testService.saveWeekTestScore((String) map.get("index"), (Integer) map.get("score"));
-
-        /*  return new ResponseEntity<>(new BaseResponseBody(200, "단어 시험 시작"), wordTestStartResDto), HttpStatus.OK);*/
+    public ResponseEntity<? extends BaseResponseBody> weekTestResult(@RequestHeader("Authorization") String token, @RequestBody WeekTestResultReqDto reqDto) throws Exception {
+        Member member = memberController.findMemberByToken(token);
+        testService.saveWeekTestScore(reqDto, member);
         return new ResponseEntity<>(new BaseResponseBody(200, "문장 시험 결과 저장 성공"),
                 HttpStatus.OK);
     }

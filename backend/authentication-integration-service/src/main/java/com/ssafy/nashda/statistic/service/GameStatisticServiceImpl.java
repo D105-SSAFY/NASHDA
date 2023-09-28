@@ -25,15 +25,12 @@ public class GameStatisticServiceImpl implements GameStatisticService {
     @Override
     public List<GameStatisticResDto> getGameStatistic(Member member) {
         //멤버의 통계 5주치 불러오기
-//        return gameStatisticRepository.findTop5ByMemberOrderByWeekDesc(member);
         return gameStatisticRepository.findTop5ByMemberOrderByWeekDesc(member).stream().map(GameStatisticResDto::new).collect(Collectors.toList());
     }
 
     @Override
     public Optional<GameStatisticResDto> getGameStatisticByWeek(Member member, Week week) {
-        //오늘 주에 해당하는 게임 통계 불러오기
 
-//        return gameStatisticRepository.findByMemberAndWeek(member, week);
         return gameStatisticRepository.findByMemberAndWeek(member, week).map(GameStatisticResDto::new);
     }
 
@@ -47,5 +44,19 @@ public class GameStatisticServiceImpl implements GameStatisticService {
     public SpeedStatisticResDto getSpeedStatistic(Member member, Week week) {
         GameStatistic gameStatistics = gameStatisticRepository.findByMemberAndWeek(member, week).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         return new SpeedStatisticResDto(gameStatistics);
+    }
+
+    @Override
+    public void initGameStatistic(Member member, Week week) {
+        GameStatistic gameStatistic = GameStatistic.builder()
+                .member(member)
+                .week(week)
+                .build();
+        gameStatisticRepository.save(gameStatistic);
+    }
+
+    @Override
+    public boolean isExistGameStatistic(Member member, Week week) {
+        return gameStatisticRepository.existsByMemberAndWeek(member, week);
     }
 }
