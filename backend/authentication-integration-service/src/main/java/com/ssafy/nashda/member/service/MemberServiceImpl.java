@@ -2,6 +2,7 @@ package com.ssafy.nashda.member.service;
 
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
+import com.ssafy.nashda.member.dto.request.MemberResetPasswordReqDto;
 import com.ssafy.nashda.member.dto.response.MemberInfoResDto;
 import com.ssafy.nashda.member.dto.request.MemberSignInReqDto;
 import com.ssafy.nashda.member.dto.request.MemberSignUpReqDto;
@@ -161,9 +162,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void resetPassword(Map<String, Object> map) throws IOException {
-        Member member = memberRepository.findByEmail(map.get("email").toString()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
-        member.setPassword(passwordEncoder.encode(map.get("newpassword").toString()));
+    public void resetPassword(MemberResetPasswordReqDto reqDto) throws IOException {
+        Member member = memberRepository.findByEmail(reqDto.getEmail()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
+        member.setPassword(passwordEncoder.encode(reqDto.getNewpassword()));
     }
 
     @Override

@@ -72,7 +72,6 @@ public class PracticeController {
         PronResponseDto pronWordSet = practicePronService.getPronWordSets(index);
         Member member = memberController.findMemberByToken(token);
         practicePronService.updateWordCount(member);
-        log.info("word_count : {}", member.getWordCount() + 1);
         return new ResponseEntity<>(new BaseResponseBody(200, "단어 문제 불러오기 성공", pronWordSet),
                 HttpStatus.OK);
     }
@@ -80,9 +79,7 @@ public class PracticeController {
     // 문제 개수 확인
     @GetMapping("/pron/phase")
     public ResponseEntity<? extends BaseResponseBody> getPronPhaseNum() throws Exception {
-
         long pronSetNum = practicePronService.getPronSetNum("pronunciation_phase_sequence"); // Sequence Num 불러오기
-
         return new ResponseEntity<>(new BaseResponseBody(200, "구 문제 개수 불러오기 성공", pronSetNum),
                 HttpStatus.OK);
     }
@@ -102,7 +99,6 @@ public class PracticeController {
     public ResponseEntity<? extends BaseResponseBody> getPronSimpleNum() throws Exception {
 
         long pronSetNum = practicePronService.getPronSetNum("pronunciation_simple_sequence"); // Sequence Num 불러오기
-
         return new ResponseEntity<>(new BaseResponseBody(200, "단순절 문제 개수 불러오기 성공", pronSetNum),
                 HttpStatus.OK);
     }
@@ -122,7 +118,6 @@ public class PracticeController {
     public ResponseEntity<? extends BaseResponseBody> getPronComplexNum() throws Exception {
 
         long pronSetNum = practicePronService.getPronSetNum("pronunciation_complex_sequence"); // Sequence Num 불러오기
-
         return new ResponseEntity<>(new BaseResponseBody(200, "복합절 문제 개수 불러오기 성공", pronSetNum),
                 HttpStatus.OK);
     }

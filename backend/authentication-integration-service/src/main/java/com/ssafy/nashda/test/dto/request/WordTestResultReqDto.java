@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WordTestResultReqDto {
-    String index;
-    int score;
-    List<String> pron;
+    private String index;
+    private int score;
+    private List<String> pron;
 }

@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SentenceTestReqDto {
-    String index;
-    int score;
+    private String index;
+    private int score;
 }

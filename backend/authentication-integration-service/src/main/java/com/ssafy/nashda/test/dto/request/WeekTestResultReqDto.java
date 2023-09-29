@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WeekTestResultReqDto {
-    String index;
-    int score;
+    private String index;
+    private int score;
 }

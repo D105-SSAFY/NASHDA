@@ -1,6 +1,7 @@
 package com.ssafy.nashda.member.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
+import com.ssafy.nashda.member.dto.request.MemberResetPasswordReqDto;
 import com.ssafy.nashda.member.dto.response.MemberInfoResDto;
 import com.ssafy.nashda.member.dto.request.MemberSignInReqDto;
 import com.ssafy.nashda.member.dto.request.MemberSignUpReqDto;
@@ -76,7 +77,6 @@ public class MemberController {
     @PutMapping("/unregist")
     public ResponseEntity<? extends BaseResponseBody> unRegist(@RequestHeader("Authorization") String token,
                                                                @RequestBody Map<String, Object> maps) throws IOException {
-        System.out.println(token);
         Member member = findMemberByToken(token); //일단 토큰으로 멤버 찾음
         maps.put("email", member.getEmail());
         memberService.unRegist(maps);
@@ -122,25 +122,19 @@ public class MemberController {
     }
 
     @PutMapping("/resetpw")
-    public ResponseEntity<? extends BaseResponseBody> resetPassword(@RequestBody Map<String, Object> map) throws IOException {
-        if (map.get("email") == null)
+    public ResponseEntity<? extends BaseResponseBody> resetPassword(@RequestBody MemberResetPasswordReqDto reqDto
+    ) throws IOException {
+        if (reqDto.getEmail() == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(400, "이메일 입력 필수"));
-        if (map.get("newpassword") == null)
+        if (reqDto.getNewpassword() == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(400, "비밀번호 입력 필수"));
-        if (map.get("code") == null)
+        if (reqDto.getCode()== null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(400, "인증코드 입력 필수"));
 
-        String email = map.get("email").toString();
-        String code = map.get("code").toString();
-        String newPassword = map.get("newpassword").toString();
-        log.info("email : {}", email);
-        log.info("code : {}", code);
-        log.info("newPassword : {}", newPassword);
-
-        boolean result = mailSenderService.checkCode(email, code);
+        boolean result = mailSenderService.checkCode(reqDto.getEmail(), reqDto.getCode());
 
         if (result) {
-            memberService.resetPassword(map);
+            memberService.resetPassword(reqDto);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "비밀번호 변경 성공"));
         } else
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(400, "비밀번호 변경 실패"));
