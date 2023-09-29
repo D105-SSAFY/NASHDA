@@ -145,5 +145,4 @@ public class PracticeController {
                 HttpStatus.OK);
     }
 
-
 }

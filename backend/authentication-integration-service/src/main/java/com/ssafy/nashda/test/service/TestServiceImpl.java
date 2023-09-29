@@ -6,10 +6,14 @@ import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
 import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.member.entity.Member;
+
 import com.ssafy.nashda.member.service.MemberService;
 import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
+import com.ssafy.nashda.stt.service.STTService;
 import com.ssafy.nashda.test.dto.request.*;
-import com.ssafy.nashda.test.dto.response.*;
+import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
+import com.ssafy.nashda.test.dto.response.WordTestStartResDto;
+
 import com.ssafy.nashda.test.entity.*;
 import com.ssafy.nashda.test.repository.MixTestResultRepository;
 import com.ssafy.nashda.test.repository.SentenceTestResultRepository;
@@ -52,6 +56,7 @@ public class TestServiceImpl implements TestService {
     private final ObjectMapper objectMapper;
     private final WeekTestStatisticService weekTestStatisticService;
     private final MemberService memberService;
+    private final STTService sttService;
 
     //단어 문제를 불러오고, mongo에 저장
     @Override
@@ -172,6 +177,7 @@ public class TestServiceImpl implements TestService {
         return resDto;
     }
 
+
     @Override
     public void saveSentenceTestScore(SentenceTestReqDto reqDto, Member member) {
         //들어오는 값은 index,
@@ -185,21 +191,27 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public String sttWordTest(String index, MultipartFile sound) {
+    public String sttWordTest(WordTestResultSpeakReqDto reqDto) throws Exception {
 
         //받아온 soundfile을 stt로 변환
+        String url = s3Uploader.uploadFiles(reqDto.getSound(), "word_test");
+        String stt = sttService.getPronunciation(reqDto.getSound());
+        
+        //soundfile을 s3에 업로드후 mongodb에 저장
+        Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
+        Update update = new Update().set("user_pronunciation", url);
 
         //변환된 text를 반환
 
-        return "null";
+        return stt;
     }
 
     @Override
-    public String sttSentenceTest(SentenceTestSpeakReqDto reqDto) throws IOException {
+    public String sttSentenceTest(SentenceTestSpeakReqDto reqDto) throws Exception {
 
         String url = s3Uploader.uploadFiles(reqDto.getSound(), "sentence_test");
 
-        String stt = "im stt";
+        String stt = sttService.getPronunciation(reqDto.getSound());
 
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
         Update update = new Update().set("user_pronunciation." + reqDto.getOrder(), url);
@@ -300,12 +312,13 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public String sttMixTest(WeekTestReqDto reqDto, String type) throws IOException {
+    public String sttMixTest(WeekTestReqDto reqDto, String type) throws Exception {
+
         //s3에 sound파일을 업로드 한다.
         String url = s3Uploader.uploadFiles(reqDto.getSound(), "week_test"+type);
 
         //받아온 soundfile을 stt로 변환
-        String stt = "im stt";
+        String stt = sttService.getPronunciation(reqDto.getSound());
 
         //url을 mongodb에 저장
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
@@ -340,7 +353,6 @@ public class TestServiceImpl implements TestService {
         mongoTemplate.updateFirst(query, update, MixTestResult.class);
         Week week = weekService.getCurrentWeek().orElseThrow();
         weekTestStatisticService.updateWeekTestResult(member, week, reqDto);
-        System.out.println("뮁");
     }
 
 }

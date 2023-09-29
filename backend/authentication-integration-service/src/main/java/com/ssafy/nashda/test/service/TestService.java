@@ -13,10 +13,11 @@ public interface TestService {
     void saveWordTestScore(WordTestResultReqDto reqDto, Member member);
     WordTestStartResDto sentenceTestStart(Member member);
     void saveSentenceTestScore(SentenceTestReqDto reqDto, Member member);
-    String sttWordTest(String index, MultipartFile sound);
-    String sttSentenceTest(SentenceTestSpeakReqDto reqDto) throws IOException;
+    String sttWordTest(WordTestResultSpeakReqDto reqDto) throws Exception;
+    String sttSentenceTest(SentenceTestSpeakReqDto reqDto) throws Exception;
     MixTestStartResDto mixTestStart(Member member);
-    String sttMixTest(WeekTestReqDto reqDto, String type) throws IOException;
+    String sttMixTest(WeekTestReqDto reqDto, String type) throws Exception;
     void saveWeekTestSpeed2(WeekTestReqDto reqDtos);
+
     void saveWeekTestScore(WeekTestResultReqDto reqDto, Member member);
 }

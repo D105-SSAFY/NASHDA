@@ -6,13 +6,9 @@ import com.ssafy.nashda.common.dto.InternalResponseDto;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
-import com.ssafy.nashda.game.dto.request.BlankResultReqDto;
-import com.ssafy.nashda.game.dto.request.GameSTTReqDto;
-import com.ssafy.nashda.game.dto.request.SpeedResultReqDto;
-import com.ssafy.nashda.game.dto.response.BlankSetResponseDto;
-import com.ssafy.nashda.game.dto.response.GmaeSTTResDto;
-import com.ssafy.nashda.game.dto.response.ImgWordSetListResponseDto;
-import com.ssafy.nashda.game.dto.response.ImgWordSetResponseDto;
+import com.ssafy.nashda.common.s3.S3Uploader;
+import com.ssafy.nashda.game.dto.request.*;
+import com.ssafy.nashda.game.dto.response.*;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.repository.MemberRepository;
 
@@ -28,8 +24,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
+
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -45,6 +44,7 @@ public class GameServiceImpl implements GameService {
     private final MemberRepository memberRepository;
     private final WeekService weekService;
     private final STTService sttService;
+    private final S3Uploader s3Uploader;
 
     @Value("${env.PROBLEM_URL}")
     private String URL;
@@ -224,5 +224,130 @@ public class GameServiceImpl implements GameService {
 
         gameStatisticRepository.save(gameStatistic);
         return gameStatistic;
+    }
+
+    @Override
+    public ImgWordSetResponseDto saveImgWordSet(ImgWordSetSaveReqDto imgWordSetSaveReqDto) throws Exception {
+        // 이미지 저장
+        String imgUrl = s3Uploader.uploadFiles(imgWordSetSaveReqDto.getImg(), "img-word");
+
+        // 문제 서버에 저장 요청
+        WebClient client = WebClient.builder()
+                .baseUrl(URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+
+        ImgWordHintSaveDto wordHint = ImgWordHintSaveDto.builder()
+                .word(imgWordSetSaveReqDto.getWord())
+                .type(imgWordSetSaveReqDto.getType())
+                .description(imgWordSetSaveReqDto.getDescription())
+                .build();
+
+
+        InternalImgWordSaveReqDto imgWordSaveReqDto = InternalImgWordSaveReqDto.builder()
+                .imgUrl(imgUrl)
+                .imgWordHint(wordHint)
+                .build();
+
+
+        ResponseEntity<InternalResponseDto> response = client.post()
+                .uri("/game/img-word/save")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(imgWordSaveReqDto),InternalImgWordSaveReqDto.class)
+                .retrieve()
+                .onStatus(
+                        HttpStatus.BAD_REQUEST::equals,
+                        clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
+                            log.info("s : {}", s.getErrorCode());
+                            // 에러 코드 별로 예외 처리 가능
+                            if (s.getErrorCode() == 4000) {
+                                return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
+                            }
+
+                            return new BadRequestException(ErrorCode.TEST);
+                        })
+                )
+                .toEntity(InternalResponseDto.class)
+                .block();
+
+        log.info("response : {}, type : {}",response.getBody().getStatus(), response.getBody().getStatus().getClass().getName());
+        String status = response.getBody().getStatus();
+        if("400".equals(status)){
+            throw new BadRequestException(ErrorCode.STT_ERROR);
+        }
+
+        ImgWordSetResponseDto imgWordSetResponseDto = mapper.convertValue(response.getBody().getData(), ImgWordSetResponseDto.class);
+
+
+        return imgWordSetResponseDto;
+
+    }
+
+    @Override
+    public BlankSetResponseDto saveBlankSet( BlankSetSaveReqDto blankSetSaveReqDto) throws Exception {
+        // 이미지 저장
+        String imgUrl = s3Uploader.uploadFiles(blankSetSaveReqDto.getImg(), "img-blank");
+
+        // 문제 서버에 저장 요청
+        WebClient client = WebClient.builder()
+                .baseUrl(URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+
+        ImgWordHintSaveDto word1 = ImgWordHintSaveDto.builder()
+                .word(blankSetSaveReqDto.getWord1())
+                .type(blankSetSaveReqDto.getWord1Type())
+                .description(blankSetSaveReqDto.getWord1Description())
+                .build();
+        ImgWordHintSaveDto word2 = ImgWordHintSaveDto.builder()
+                .word(blankSetSaveReqDto.getWord2())
+                .type(blankSetSaveReqDto.getWord2Type())
+                .description(blankSetSaveReqDto.getWord2Description())
+                .build();
+        ImgWordHintSaveDto word3 = ImgWordHintSaveDto.builder()
+                .word(blankSetSaveReqDto.getWord3())
+                .type(blankSetSaveReqDto.getWord3Type())
+                .description(blankSetSaveReqDto.getWord3Description())
+                .build();
+
+
+        InternalBlankSetSaveReqDto internalBlankSetSaveReqDto = InternalBlankSetSaveReqDto.builder()
+                .imgUrl(imgUrl)
+                .correctAnswer(blankSetSaveReqDto.getCorrectAnswer())
+                .word1(word1)
+                .word2(word2)
+                .word3(word3)
+                .build();
+
+        ResponseEntity<InternalResponseDto> response = client.post()
+                .uri("/game/blank/save")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(internalBlankSetSaveReqDto), InternalBlankSetSaveReqDto.class)
+                .retrieve()
+                .onStatus(
+                        HttpStatus.BAD_REQUEST::equals,
+                        clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
+                            log.info("s : {}", s.getErrorCode());
+                            // 에러 코드 별로 예외 처리 가능
+                            if (s.getErrorCode() == 4000) {
+                                return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
+                            }
+
+                            return new BadRequestException(ErrorCode.TEST);
+                        })
+                )
+                .toEntity(InternalResponseDto.class)
+                .block();
+
+        log.info("response : {}, type : {}",response.getBody().getStatus(), response.getBody().getStatus().getClass().getName());
+        String status = response.getBody().getStatus();
+        if("400".equals(status)){
+            throw new BadRequestException(ErrorCode.STT_ERROR);
+        }
+
+        BlankSetResponseDto blankSetResponseDto = mapper.convertValue(response.getBody().getData(), BlankSetResponseDto.class);
+
+        return blankSetResponseDto;
+
     }
 }

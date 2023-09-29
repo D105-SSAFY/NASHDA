@@ -73,7 +73,7 @@ public class TestController {
 
     @PostMapping(value = "/word/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<? extends BaseResponseBody> wordTestUserSpeak(@ModelAttribute WordTestResultSpeakReqDto reqDto) throws Exception {
-        String stt = testService.sttWordTest(reqDto.getIndex(), reqDto.getSound());
+        String stt = testService.sttWordTest(reqDto);
         return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 변환 성공", stt),
                 HttpStatus.OK);
     }
@@ -101,7 +101,7 @@ public class TestController {
 
     @PostMapping(value = "/week/user",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<? extends BaseResponseBody> weekTestUser(
-            @ModelAttribute WeekTestReqDto reqDto) throws IOException {
+            @ModelAttribute WeekTestReqDto reqDto) throws Exception {
 
         if(reqDto.getOrder()<5){
             String stt = testService.sttMixTest(reqDto, "blank");

@@ -1,13 +1,9 @@
 package com.ssafy.nashda.game.service;
 
-import com.ssafy.nashda.game.dto.request.BlankResultReqDto;
-import com.ssafy.nashda.game.dto.request.GameSTTReqDto;
-import com.ssafy.nashda.game.dto.request.SpeedResultReqDto;
-import com.ssafy.nashda.game.dto.response.BlankSetResponseDto;
-import com.ssafy.nashda.game.dto.response.GmaeSTTResDto;
-import com.ssafy.nashda.game.dto.response.ImgWordSetListResponseDto;
-import com.ssafy.nashda.game.dto.response.ImgWordSetResponseDto;
+import com.ssafy.nashda.game.dto.request.*;
+import com.ssafy.nashda.game.dto.response.*;
 import com.ssafy.nashda.member.entity.Member;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,5 +22,9 @@ public interface GameService {
     void saveSpeedResult(SpeedResultReqDto request, Member member) throws Exception;
 
     void saveBlankResult(BlankResultReqDto request, Member member) throws Exception;
+
+    ImgWordSetResponseDto saveImgWordSet(ImgWordSetSaveReqDto imgWordSetSaveReqDto) throws Exception;
+
+    BlankSetResponseDto saveBlankSet(BlankSetSaveReqDto blankSetSaveReqDto) throws Exception;
 
 }
