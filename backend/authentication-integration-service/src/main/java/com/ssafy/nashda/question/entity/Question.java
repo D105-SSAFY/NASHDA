@@ -3,7 +3,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.nashda.member.entity.Member;
 
 import com.ssafy.nashda.common.entity.TimeEntity;
-import jdk.jfr.Category;
 import lombok.*;
 
 

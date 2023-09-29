@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
-    // 공지사항 상세 조회시 조회수 증가
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Notice c SET c.view = :view WHERE c.index = :index")
     void updateView(Long view, Long index);

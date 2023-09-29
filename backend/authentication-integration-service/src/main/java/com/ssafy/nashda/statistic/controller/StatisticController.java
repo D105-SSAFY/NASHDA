@@ -4,7 +4,6 @@ import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.member.controller.MemberController;
-import com.ssafy.nashda.member.dto.response.MemberStatisticResDto;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.statistic.dto.response.*;
 import com.ssafy.nashda.statistic.entity.MemberAchievement;
@@ -23,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j

@@ -1,7 +1,6 @@
 package com.ssafy.nashda.question.dto;
 
 import com.ssafy.nashda.question.entity.Question;
-import com.ssafy.nashda.question.dto.ReplyResDto;
 import lombok.*;
 
 import java.time.LocalDateTime;

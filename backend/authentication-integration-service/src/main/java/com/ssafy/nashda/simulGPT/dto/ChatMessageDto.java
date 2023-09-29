@@ -1,6 +1,5 @@
 package com.ssafy.nashda.simulGPT.dto;
 
-import com.ssafy.nashda.simulGPT.entity.MemorizeChat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
