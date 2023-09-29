@@ -1,13 +1,8 @@
 package com.ssafy.nashda.game.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
-import com.ssafy.nashda.game.dto.request.BlankResultReqDto;
-import com.ssafy.nashda.game.dto.request.GameSTTReqDto;
-import com.ssafy.nashda.game.dto.request.SpeedResultReqDto;
-import com.ssafy.nashda.game.dto.response.BlankSetResponseDto;
-import com.ssafy.nashda.game.dto.response.GmaeSTTResDto;
-import com.ssafy.nashda.game.dto.response.ImgWordSetListResponseDto;
-import com.ssafy.nashda.game.dto.response.ImgWordSetResponseDto;
+import com.ssafy.nashda.game.dto.request.*;
+import com.ssafy.nashda.game.dto.response.*;
 import com.ssafy.nashda.game.service.GameService;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
@@ -16,6 +11,7 @@ import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.statistic.service.AchievementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -75,4 +71,20 @@ public class GameController {
         gameService.saveBlankResult(request, member);
         return ResponseEntity.ok(new BaseResponseBody(200, "빈칸 게임 결과 저장 성공"));
     }
+
+    @PostMapping("/img-word/save")
+    public ResponseEntity<? extends BaseResponseBody> saveImgWordSet(@ModelAttribute ImgWordSetSaveReqDto imgWordSetSaveReqDto) throws Exception {
+        ImgWordSetResponseDto imgWordSetResponseDto = gameService.saveImgWordSet(imgWordSetSaveReqDto);
+
+        return ResponseEntity.ok(new BaseResponseBody(200, "단어-이미지 문제 저장 성공",imgWordSetResponseDto));
+    }
+
+    @PostMapping(path = "/blank/save")
+    public ResponseEntity<? extends BaseResponseBody> saveBlankSet(@ModelAttribute BlankSetSaveReqDto blankSetSaveReqDto) throws Exception {
+        BlankSetResponseDto blankSetResponseDto = gameService.saveBlankSet(blankSetSaveReqDto);
+
+        return ResponseEntity.ok(new BaseResponseBody(200, "빈칸 게임 문제 저장 성공", blankSetResponseDto));
+    }
+
+
 }
