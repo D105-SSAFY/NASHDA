@@ -1,8 +1,9 @@
 package com.ssafy.nashda.member.service;
 
-import com.ssafy.nashda.member.dto.Reponse.MemberInfoResDto;
-import com.ssafy.nashda.member.dto.Request.MemberSignInReqDto;
-import com.ssafy.nashda.member.dto.Request.MemberSignUpReqDto;
+import com.ssafy.nashda.member.dto.response.MemberInfoResDto;
+import com.ssafy.nashda.member.dto.request.MemberSignInReqDto;
+import com.ssafy.nashda.member.dto.request.MemberSignUpReqDto;
+import com.ssafy.nashda.member.dto.response.MemberStatisticResDto;
 import com.ssafy.nashda.member.entity.Member;
 
 import java.io.IOException;
@@ -31,4 +32,8 @@ public interface MemberService {
     void resetPassword(Map<String, Object> passwords) throws IOException;
 
     boolean checkProgress(String email) throws IOException;
+
+    void updateWordCount(Member member, int wordCount);
+    void updateSentenceCount(Member member, int sentenceCount);
+    void updateConversationCount(Member member, int conversationCount);
 }

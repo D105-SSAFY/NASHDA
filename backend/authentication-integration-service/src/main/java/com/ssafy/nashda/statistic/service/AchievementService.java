@@ -7,5 +7,9 @@ import com.ssafy.nashda.statistic.entity.MemberAchievement;
 import java.util.List;
 
 public interface AchievementService {
-    List<MemberAchievement> getAchievement(Member member);
+    List<MemberAchievement> getMemberAchievement(Member member);
+
+    List<Achievement> getAchievementListByType(String type);
+
+    void updateMemberAchievement(Member member, String type, int count);
 }

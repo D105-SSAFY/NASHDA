@@ -6,10 +6,9 @@ import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
 import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.test.dto.request.InternalTestReqDto;
-import com.ssafy.nashda.test.dto.request.MixTestSpeekReqDto;
-import com.ssafy.nashda.test.dto.request.SentenceTestSpeakReqDto;
-import com.ssafy.nashda.test.dto.request.WordTestResultReqDto;
+import com.ssafy.nashda.member.service.MemberService;
+import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
+import com.ssafy.nashda.test.dto.request.*;
 import com.ssafy.nashda.test.dto.response.*;
 import com.ssafy.nashda.test.entity.*;
 import com.ssafy.nashda.test.repository.MixTestResultRepository;
@@ -33,7 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +50,8 @@ public class TestServiceImpl implements TestService {
     private final MixTestResultRepository mixTestResultRepository;
     private final WeekService weekService;
     private final ObjectMapper objectMapper;
+    private final WeekTestStatisticService weekTestStatisticService;
+    private final MemberService memberService;
 
     //단어 문제를 불러오고, mongo에 저장
     @Override
@@ -86,7 +86,7 @@ public class TestServiceImpl implements TestService {
         List<String> convert = internalWordTestReqDto.getConvert();
 
 
-        Week week = weekService.getCurrentWeekIdx().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         int tryCount = wordTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
 
 
@@ -109,7 +109,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public void saveWordTestScore(WordTestResultReqDto reqDto) {
+    public void saveWordTestScore(WordTestResultReqDto reqDto, Member member) {
 
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
 
@@ -151,7 +151,7 @@ public class TestServiceImpl implements TestService {
         List<String> convert = internalWordTestReqDto.getConvert();
 
 
-        Week week = weekService.getCurrentWeekIdx().orElseThrow();
+        Week week = weekService.getCurrentWeek().orElseThrow();
         int tryCount = sentenceTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
 
         SentenceTestResult testResult = SentenceTestResult.builder()
@@ -173,19 +173,13 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public void saveSentenceTestScore(String index, int score) {
+    public void saveSentenceTestScore(SentenceTestReqDto reqDto, Member member) {
         //들어오는 값은 index,
 
-        Query query = new Query(Criteria.where("_id").is(index));
+        Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
 
         Update update = new Update();
-        update.set("score", score);
-
-        /*
-            이연지는 보아라
-            list에 하나를 추가하고싶으면
-            update.push("field 명", "추가할 값");
-         */
+        update.set("score", reqDto.getScore());
 
         mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
     }
@@ -279,7 +273,7 @@ public class TestServiceImpl implements TestService {
                 .block();
 
         List<SpeedTest2> speed2List = (List<SpeedTest2>) speed2.get("data");
-        Week week = weekService.getCurrentWeekIdx().orElseThrow();
+        Week week = weekService.getCurrentWeek().orElseThrow();
         int tryCount = mixTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
 
 
@@ -339,11 +333,14 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public void saveWeekTestScore(String index, int score) {
-        Query query = new Query(Criteria.where("_id").is(index));
+    public void saveWeekTestScore(WeekTestResultReqDto reqDto, Member member) {
+        Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
         Update update = new Update();
-        update.set("score", score);
+        update.set("score", reqDto.getScore());
         mongoTemplate.updateFirst(query, update, MixTestResult.class);
+        Week week = weekService.getCurrentWeek().orElseThrow();
+        weekTestStatisticService.updateWeekTestResult(member, week,reqDto);
+        System.out.println("뮁");
     }
 
 }

@@ -25,7 +25,7 @@ public class Achievement {
     private String name;
 
     @Column(name = "achievement_condition")
-    private String condition;
+    private int condition;
 
     @Column(name = "achievement_type")
     private String type;
@@ -36,7 +36,7 @@ public class Achievement {
     @Column(name = "achievement_img")
     private String imgURL;
 
-    @OneToMany(mappedBy = "achievement")
+    @OneToMany(mappedBy = "achievement" ,fetch = FetchType.LAZY)
     private Set<MemberAchievement> memberAchievements = new HashSet<>();
 
 

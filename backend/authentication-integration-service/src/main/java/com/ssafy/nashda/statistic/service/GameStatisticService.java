@@ -16,4 +16,6 @@ public interface GameStatisticService {
     Optional<GameStatisticResDto> getGameStatisticByWeek(Member member, Week week);   //오늘 주에 해당하는 게임 통계 불러오기
     BlankStatisticResDto getBlankStatistic(Member member, Week week);   //블랭크 게임 통계 불러오기
     SpeedStatisticResDto getSpeedStatistic(Member member, Week week);   //스피드 게임 통계 불러오기
+    void initGameStatistic(Member member, Week week);   //게임 통계 초기화
+    boolean isExistGameStatistic(Member member, Week week);   //게임 통계가 존재하는지 확인
 }

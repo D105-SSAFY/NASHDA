@@ -11,7 +11,9 @@ import com.ssafy.nashda.game.dto.response.ImgWordSetResponseDto;
 import com.ssafy.nashda.game.service.GameService;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
+import com.ssafy.nashda.member.service.MemberService;
 import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
+import com.ssafy.nashda.statistic.service.AchievementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,7 @@ import java.util.List;
 public class GameController {
     private final GameService gameService;
     private final MemberController memberController;
+
     @GetMapping("/speed")
     public ResponseEntity<? extends BaseResponseBody> getSpeedNum() throws Exception {
         long speedSetNum = gameService.getSpeedSetNum();

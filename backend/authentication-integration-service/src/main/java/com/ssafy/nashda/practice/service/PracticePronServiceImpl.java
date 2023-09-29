@@ -7,8 +7,10 @@ import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
 import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.member.entity.Member;
+import com.ssafy.nashda.member.service.MemberService;
 import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
+import com.ssafy.nashda.statistic.service.AchievementService;
 import com.ssafy.nashda.statistic.service.PracticeStatisticService;
 import com.ssafy.nashda.stt.service.STTService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
@@ -30,9 +33,10 @@ public class PracticePronServiceImpl implements PracticePronService {
     private final S3Uploader s3Uploader;
     private final STTService sttService;
     private final PracticeStatisticService practiceStatisticService;
-
+    private final MemberService memberService;
+    private final AchievementService achievementService;
     @Value("${env.PROBLEM_URL}")
-   private String URL;
+    private String URL;
 
     @Override
     public PronResponseDto getPronWordSets(int index) throws Exception {
@@ -175,6 +179,20 @@ public class PracticePronServiceImpl implements PracticePronService {
     }
 
     @Override
+    @Transactional
+    public void updateWordCount(Member member) throws Exception {
+        memberService.updateWordCount(member, 1);
+        achievementService.updateMemberAchievement(member, "word", member.getWordCount() + 1);
+    }
+
+    @Override
+    @Transactional
+    public void updateSentenceCount(Member member) throws Exception {
+        memberService.updateSentenceCount(member, 1);
+        achievementService.updateMemberAchievement(member, "sentence", member.getSentenceCount() + 1);
+    }
+
+    @Override
     public String getSTT(Member member, PracticePronRequestDto practicePronRequestDto) throws Exception {
 
         // STT 부분
@@ -207,7 +225,7 @@ public class PracticePronServiceImpl implements PracticePronService {
                 .toEntity(InternalResponseDto.class)
                 .block();
 
-        PronResponseDto pronResponse =  mapper.convertValue(response.getBody().getData(), PronResponseDto.class);
+        PronResponseDto pronResponse = mapper.convertValue(response.getBody().getData(), PronResponseDto.class);
         String convertOrigin = pronResponse.getConvert(); // 원발음
 
         String origin = pronResponse.getOrigin(); // 원문
@@ -239,7 +257,7 @@ public class PracticePronServiceImpl implements PracticePronService {
             if (!nucleusOrigin.equals(nucleusResult)) { // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
                 practiceStatisticService.updateNucleusByMemberAndLetter(member, nucleus, false);
                 log.info("중성 오류 !!! : {}", nucleus);
-            } else{ // 맞는 경우
+            } else { // 맞는 경우
                 practiceStatisticService.updateNucleusByMemberAndLetter(member, nucleus, true);
             }
 

@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface WeekRepository extends JpaRepository<Week, Long> {
     Optional<Week> findByWeekIdx(Long weekIdx);
     @Query(value = "select * from week where start_date <= now() and end_date >= now()", nativeQuery = true)
-    Optional<Week> findCurrentWeekIdx();
+    Optional<Week> findCurrentWeek();
 }

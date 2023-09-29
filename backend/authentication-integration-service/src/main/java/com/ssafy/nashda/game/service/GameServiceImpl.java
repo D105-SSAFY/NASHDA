@@ -29,7 +29,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
@@ -188,7 +187,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public void saveSpeedResult(SpeedResultReqDto request, Member member) throws Exception {
         GameStatistic gameStatistic = null;
-        Week week = weekService.getCurrentWeekIdx().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         Optional<GameStatistic> optionalGameStatistic = gameStatisticRepository.findByMemberAndWeek(member, week);
         if (optionalGameStatistic.isEmpty()) {
             gameStatistic = saveGameStatistic(member, week);
@@ -209,17 +208,9 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void saveBlankResult(BlankResultReqDto request, Member member) throws Exception {
-        GameStatistic gameStatistic = null;
 
-        Week week = weekService.getCurrentWeekIdx().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
-        Optional<GameStatistic> optionalGameStatistic = gameStatisticRepository.findByMemberAndWeek(member, week);
-        if (optionalGameStatistic.isEmpty()) {
-            gameStatistic = saveGameStatistic(member, week);
-        } else {
-            gameStatistic = optionalGameStatistic.get();
-        }
-
-        gameStatistic.setBlankScore(gameStatistic.getBlankScore() + request.getScore());
+        Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        GameStatistic gameStatistic = gameStatisticRepository.findByMemberAndWeek(member,week).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         gameStatistic.setBlankSet(gameStatistic.getBlankSet() + 1);
 
         //level 2일떄만 progress update
@@ -227,6 +218,9 @@ public class GameServiceImpl implements GameService {
         if (request.getLevel() > 1) {
             member.setProgress(member.getProgress() + request.getScore());
         }
+
+        //빈칸게임 -> sentence update
+        member.setSentenceCount(member.getSentenceCount() + request.getTotal());
         memberRepository.save(member);
 
         gameStatisticRepository.save(gameStatistic);

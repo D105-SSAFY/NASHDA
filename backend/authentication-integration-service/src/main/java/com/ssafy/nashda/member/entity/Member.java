@@ -63,7 +63,7 @@ public class Member extends TimeEntity {
     @ColumnDefault("0")
     private int conversationCount;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
     private Set<MemberAchievement> memberAchievements = new HashSet<>();
 
 

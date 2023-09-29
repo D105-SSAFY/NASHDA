@@ -18,6 +18,7 @@ import com.ssafy.nashda.statistic.repository.SimulDetailRepository;
 import com.ssafy.nashda.statistic.repository.SimulStaticRepository;
 import com.ssafy.nashda.statistic.repository.SimulTypeRepository;
 import com.ssafy.nashda.statistic.repository.StrickRepository;
+import com.ssafy.nashda.statistic.service.AchievementService;
 import com.ssafy.nashda.statistic.service.SimulDetailService;
 import com.ssafy.nashda.statistic.service.SimulStatisticService;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +53,8 @@ public class ChatGptController {
 
     private final StrickRepository strickRepository;
 
+    private final AchievementService achievementService;
+
     @Transactional
     @PostMapping("/{background}")
     public ResponseEntity<? extends BaseResponseBody> saveMessage(@Valid
@@ -80,7 +83,7 @@ public class ChatGptController {
 
             // 해당 유저의 총 conversationCount +1
             memberRepository.updateConversationCount(member.getConversationCount() + 1, member.getMemberNum());
-
+            achievementService.updateMemberAchievement(member, "conversation", member.getConversationCount()+1);
             // 해당 유저가 해당 날짜에 로그인 한 기록이 존재하면 Strick conversationCount +1
             LocalDate date = LocalDate.now();
             Optional<Strick> strick = strickRepository.findByMemberAndCreatOn(member, date);

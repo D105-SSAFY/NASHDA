@@ -29,6 +29,9 @@ public interface PracticePronService {
     // 어떤 문제 불러올지를 인자로 받아옴
     long getPronSetNum(String seqName) throws Exception;
 
+    void updateWordCount(Member member) throws Exception;
+    void updateSentenceCount(Member member) throws Exception;
+
 
     String getSTT(Member member, PracticePronRequestDto practicePronRequestDto) throws Exception;
 }

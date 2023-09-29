@@ -14,4 +14,5 @@ public interface GameStatisticRepository extends JpaRepository<GameStatistic, Lo
     Optional<GameStatistic> findByMemberAndWeek(Member member, Week week);
     //member의 통계자료 최근 5주치 불러오기
     List<GameStatistic> findTop5ByMemberOrderByWeekDesc(Member member);
+    boolean existsByMemberAndWeek(Member member, Week week);
 }
