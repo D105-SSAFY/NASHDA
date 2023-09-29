@@ -14,7 +14,6 @@ import com.ssafy.nashda.simulGPT.service.ChatGptServiceImpl;
 import com.ssafy.nashda.statistic.entity.SimulStatistic;
 import com.ssafy.nashda.statistic.entity.SimulType;
 import com.ssafy.nashda.statistic.entity.Strick;
-import com.ssafy.nashda.statistic.repository.SimulDetailRepository;
 import com.ssafy.nashda.statistic.repository.SimulStaticRepository;
 import com.ssafy.nashda.statistic.repository.SimulTypeRepository;
 import com.ssafy.nashda.statistic.repository.StrickRepository;
