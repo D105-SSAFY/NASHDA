@@ -9,6 +9,7 @@ import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.service.MemberService;
 import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.statistic.service.AchievementService;
+import com.ssafy.nashda.statistic.service.StrickService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -16,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +28,7 @@ import java.util.List;
 public class GameController {
     private final GameService gameService;
     private final MemberController memberController;
+    private final StrickService strickService;
 
     @GetMapping("/speed")
     public ResponseEntity<? extends BaseResponseBody> getSpeedNum() throws Exception {
@@ -62,14 +66,18 @@ public class GameController {
     public ResponseEntity<? extends BaseResponseBody> saveSpeedResult(@RequestHeader("Authorization") String token, @RequestBody SpeedResultReqDto request) throws Exception {
         Member member = memberController.findMemberByToken(token);
         gameService.saveSpeedResult(request, member);
+        strickService.increaseSpeedCount(member);
         return ResponseEntity.ok(new BaseResponseBody(200, "스피드 게임 결과 저장 성공"));
     }
 
     @PostMapping("/blank/result")
     public ResponseEntity<? extends BaseResponseBody> saveBlankResult(@RequestHeader("Authorization") String token, @RequestBody BlankResultReqDto request) throws Exception {
         Member member = memberController.findMemberByToken(token);
-        gameService.saveBlankResult(request, member);
-        return ResponseEntity.ok(new BaseResponseBody(200, "빈칸 게임 결과 저장 성공"));
+        strickService.increaseBlankCount(member);
+        int progress = gameService.saveBlankResult(request, member);
+        Map<String, Integer> result = new HashMap<>();
+        result.put("progress", progress);
+        return ResponseEntity.ok(new BaseResponseBody(200, "빈칸 게임 결과 저장 성공", result));
     }
 
     @PostMapping("/img-word/save")
