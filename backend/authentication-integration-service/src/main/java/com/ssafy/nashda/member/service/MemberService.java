@@ -1,5 +1,6 @@
 package com.ssafy.nashda.member.service;
 
+import com.ssafy.nashda.member.dto.request.MemberResetPasswordReqDto;
 import com.ssafy.nashda.member.dto.response.MemberInfoResDto;
 import com.ssafy.nashda.member.dto.request.MemberSignInReqDto;
 import com.ssafy.nashda.member.dto.request.MemberSignUpReqDto;
@@ -29,7 +30,7 @@ public interface MemberService {
 
     void updatePassword(Map<String, Object> passwords) throws IOException;
 
-    void resetPassword(Map<String, Object> passwords) throws IOException;
+    void resetPassword(MemberResetPasswordReqDto reqDto) throws IOException;
 
     boolean checkProgress(String email) throws IOException;
 

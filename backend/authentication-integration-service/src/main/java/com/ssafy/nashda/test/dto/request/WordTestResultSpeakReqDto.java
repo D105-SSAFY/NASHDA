@@ -1,17 +1,16 @@
 package com.ssafy.nashda.test.dto.request;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
-@Builder
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MixTestSpeekReqDto {
-    String index;
-    int order;
-    MultipartFile sound;
+public class WordTestResultSpeakReqDto {
+    private String index;
+    private MultipartFile sound;
 }

@@ -199,10 +199,6 @@ public class GameServiceImpl implements GameService {
         gameStatistic.setSpeedTotal(gameStatistic.getSpeedTotal() + request.getTotal());
         gameStatistic.setSpeedSet(gameStatistic.getSpeedSet() + 1);
 
-        //member의 word_count증가
-        member.setWordCount(member.getWordCount() + request.getTotal());
-        memberRepository.save(member);
-
         gameStatisticRepository.save(gameStatistic);
     }
 
@@ -218,10 +214,6 @@ public class GameServiceImpl implements GameService {
         if (request.getLevel() > 1) {
             member.setProgress(member.getProgress() + request.getScore());
         }
-
-        //빈칸게임 -> sentence update
-        member.setSentenceCount(member.getSentenceCount() + request.getTotal());
-        memberRepository.save(member);
 
         gameStatisticRepository.save(gameStatistic);
     }

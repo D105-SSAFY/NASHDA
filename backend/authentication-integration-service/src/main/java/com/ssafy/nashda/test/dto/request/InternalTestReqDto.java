@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InternalTestReqDto {
-    List<String> problem;
-    List<String> convert;
+    private List<String> problem;
+    private List<String> convert;
 }

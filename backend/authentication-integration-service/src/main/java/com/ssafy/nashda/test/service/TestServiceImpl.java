@@ -191,13 +191,19 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public String sttWordTest(String index, MultipartFile sound) {
+    public String sttWordTest(WordTestResultSpeakReqDto reqDto) throws Exception {
 
         //받아온 soundfile을 stt로 변환
+        String url = s3Uploader.uploadFiles(reqDto.getSound(), "word_test");
+        String stt = sttService.getPronunciation(reqDto.getSound());
+        
+        //soundfile을 s3에 업로드후 mongodb에 저장
+        Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
+        Update update = new Update().set("user_pronunciation", url);
 
         //변환된 text를 반환
 
-        return "null";
+        return stt;
     }
 
     @Override
@@ -306,9 +312,10 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public String sttMixTest(MixTestSpeekReqDto reqDto, String type) throws Exception {
+    public String sttMixTest(WeekTestReqDto reqDto, String type) throws Exception {
+
         //s3에 sound파일을 업로드 한다.
-        String url = s3Uploader.uploadFiles(reqDto.getSound(), "week_test");
+        String url = s3Uploader.uploadFiles(reqDto.getSound(), "week_test"+type);
 
         //받아온 soundfile을 stt로 변환
         String stt = sttService.getPronunciation(reqDto.getSound());
@@ -316,14 +323,14 @@ public class TestServiceImpl implements TestService {
         //url을 mongodb에 저장
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
         if (type.equals("blank")) {
-            Update update = new Update().set("blank_test." + reqDto.getOrder() + ".user_answer", stt);
+            Update update = new Update().set("blank_test." + (reqDto.getOrder() - 1) + ".user_answer", stt);
             mongoTemplate.updateFirst(query, update, MixTestResult.class);
-            update = new Update().set("blank_test." + reqDto.getOrder() + ".sound_url", url);
+            update = new Update().set("blank_test." + (reqDto.getOrder() - 1) + ".sound_url", url);
             mongoTemplate.updateFirst(query, update, MixTestResult.class);
         } else {
-            Update update = new Update().set("speed_test1." + reqDto.getOrder() + ".user_answer", stt);
+            Update update = new Update().set("speed_test1." + (reqDto.getOrder() - 5) + ".user_answer", stt);
             mongoTemplate.updateFirst(query, update, MixTestResult.class);
-            update = new Update().set("speed_test1." + reqDto.getOrder() + ".sound_url", url);
+            update = new Update().set("speed_test1." + (reqDto.getOrder() - 5) + ".sound_url", url);
             mongoTemplate.updateFirst(query, update, MixTestResult.class);
         }
 
@@ -332,9 +339,9 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public void saveWeekTestSpeed2(String index, String url, int order) {
-        Query query = new Query(Criteria.where("_id").is(index));
-        Update update = new Update().set("speed_test2." + order + ".user_answer", url);
+    public void saveWeekTestSpeed2(WeekTestReqDto reqDto) {
+        Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
+        Update update = new Update().set("speed_test2." + (reqDto.getOrder() - 8) + ".user_answer", reqDto.getImgUrl());
         mongoTemplate.updateFirst(query, update, MixTestResult.class);
     }
 
@@ -345,8 +352,7 @@ public class TestServiceImpl implements TestService {
         update.set("score", reqDto.getScore());
         mongoTemplate.updateFirst(query, update, MixTestResult.class);
         Week week = weekService.getCurrentWeek().orElseThrow();
-        weekTestStatisticService.updateWeekTestResult(member, week,reqDto);
-        System.out.println("뮁");
+        weekTestStatisticService.updateWeekTestResult(member, week, reqDto);
     }
 
 }
