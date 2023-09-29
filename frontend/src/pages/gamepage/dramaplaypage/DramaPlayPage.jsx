@@ -5,6 +5,7 @@ import * as s from "./style";
 // Import DiffSelectSection from "components/section/diffselectsection/DiffSelectSection";
 
 import ProblemSection from "./problemsection/ProblemSection";
+import PronunciationSection from "./pronunciationsection/PronunciationSection";
 
 const diffList = ["상", "중", "하"];
 const diff = diffList[Math.floor(Math.random() * diffList.length)];
@@ -58,6 +59,7 @@ export default function DramaPlayPage() {
     return (
         <s.Main>
             <ProblemSection props={{ problem, sentence }} />
+            <PronunciationSection props={{ problem, sentence }} />
             {/* {diff ? (
                 <>asdfasd</>
             ) : (

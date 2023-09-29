@@ -11,7 +11,8 @@ export default function ProblemSection({ props: { problem, sentence } }) {
                 <h2>문제 영역</h2>
             </s.Header>
             <img src={problem.img} alt="" />
-            <p>{sentence}</p>
+            <s.Text>올바른 문장</s.Text>
+            <s.Sentence>{sentence}</s.Sentence>
         </s.Section>
     );
 }
