@@ -47,16 +47,48 @@ export const InputBox = styled.div`
     left: 280px;
     margin: auto 0;
 
+    & > div {
+        margin-top: 12px;
+        margin-bottom: 11px;
+    }
+
     & > div > label {
         background-color: #faf8f2;
-        margin-left: 20px;
     }
-    & > div > input,
-    select {
+    & > div > :nth-child(2) {
         display: block;
-        margin: 10px;
         width: 240px;
+        height: 50px;
+
+        border-radius: 10px;
+        border: 1.8px solid black;
 
         background-color: #faf8f2;
+
+        &:focus {
+            outline: 1px solid #000;
+        }
+    }
+
+    & > div > ul {
+        width: 240px;
+    }
+
+    & > div > button > span {
+        position: relative;
+        display: block;
+        width: fit-content;
+        margin-left: 7px;
+        font-weight: 400;
+        font-size: 1.6rem;
+    }
+
+    & > div > ul > li > button > span {
+        position: relative;
+        display: block;
+        width: fit-content;
+        margin-left: 4px;
+        font-weight: 400;
+        font-size: 1.6rem;
     }
 `;
