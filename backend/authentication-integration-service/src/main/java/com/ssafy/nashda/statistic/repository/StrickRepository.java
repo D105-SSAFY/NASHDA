@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,22 +21,27 @@ public interface StrickRepository extends JpaRepository<Strick, Long> {
     boolean existsByMemberAndCreatOn(Member member, LocalDate date);
 
     @Modifying(clearAutomatically = true)
+    @Transactional
     @Query("UPDATE Strick s SET s.conversationCount = :count WHERE s.index = :index")
     void updateConversationCount(int count, Long index);
 
     @Modifying(clearAutomatically = true)
+    @Transactional
     @Query("UPDATE Strick s SET s.blankCount = :count WHERE s.index = :index")
-    void updateBlankCount(int count, Long index);
+    void updateBlankCount(@Param("count") int count, @Param("index") Long index);
 
     @Modifying(clearAutomatically = true)
+    @Transactional
     @Query("UPDATE Strick s SET s.practiceCount = :count WHERE s.index = :index")
-    void updatePracticeCount(int count, Long index);
+    void updatePracticeCount(@Param("count") int count, @Param("index") Long index);
 
     @Modifying(clearAutomatically = true)
+    @Transactional
     @Query("UPDATE Strick s SET s.speedCount = :count WHERE s.index = :index")
-    void updateSpeedCount(int count, Long index);
+    void updateSpeedCount(@Param("count") int count, @Param("index") Long index);
 
     @Modifying(clearAutomatically = true)
+    @Transactional
     @Query("UPDATE Strick s SET s.testCount = :count WHERE s.index = :index")
-    void updateTestCount(int count, Long index);
+    void updateTestCount(@Param("count") int count, @Param("index") Long index);
 }

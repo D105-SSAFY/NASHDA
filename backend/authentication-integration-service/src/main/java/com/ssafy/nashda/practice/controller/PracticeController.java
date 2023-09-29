@@ -9,6 +9,7 @@ import com.ssafy.nashda.practice.dto.PronResponseDto;
 import com.ssafy.nashda.practice.dto.PronSTTResponseDto;
 import com.ssafy.nashda.practice.service.PracticePronService;
 import com.ssafy.nashda.statistic.service.AchievementService;
+import com.ssafy.nashda.statistic.service.StrickService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,7 @@ public class PracticeController {
     private final MemberController memberController;
     private final MemberService memberService;
     private final AchievementService achievementService;
+    private final StrickService strickService;
 
 
 //    @GetMapping("/pron/test")
@@ -138,6 +140,8 @@ public class PracticeController {
 
         Member member = memberController.findMemberByToken(token);
         String stt = practicePronService.getSTT(member, practicePronRequestDto);
+
+        strickService.increasePracticeCount(member);
 
 
         return new ResponseEntity<>(new BaseResponseBody(200, "발음 연습 결과 전송 완료",

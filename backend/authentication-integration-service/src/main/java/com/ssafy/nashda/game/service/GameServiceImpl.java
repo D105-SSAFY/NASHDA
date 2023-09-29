@@ -203,7 +203,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void saveBlankResult(BlankResultReqDto request, Member member) throws Exception {
+    public int saveBlankResult(BlankResultReqDto request, Member member) throws Exception {
 
         Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         GameStatistic gameStatistic = gameStatisticRepository.findByMemberAndWeek(member,week).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
@@ -216,6 +216,7 @@ public class GameServiceImpl implements GameService {
         }
 
         gameStatisticRepository.save(gameStatistic);
+        return member.getProgress()+request.getScore();
     }
 
     public GameStatistic saveGameStatistic(Member member, Week week) throws Exception {
@@ -285,6 +286,8 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public BlankSetResponseDto saveBlankSet( BlankSetSaveReqDto blankSetSaveReqDto) throws Exception {
+
+
         // 이미지 저장
         String imgUrl = s3Uploader.uploadFiles(blankSetSaveReqDto.getImg(), "img-blank");
 

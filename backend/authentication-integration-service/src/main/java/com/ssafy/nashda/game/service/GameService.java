@@ -21,10 +21,12 @@ public interface GameService {
 
     void saveSpeedResult(SpeedResultReqDto request, Member member) throws Exception;
 
-    void saveBlankResult(BlankResultReqDto request, Member member) throws Exception;
+    int saveBlankResult(BlankResultReqDto request, Member member) throws Exception;
 
     ImgWordSetResponseDto saveImgWordSet(ImgWordSetSaveReqDto imgWordSetSaveReqDto) throws Exception;
 
     BlankSetResponseDto saveBlankSet(BlankSetSaveReqDto blankSetSaveReqDto) throws Exception;
+
+
 
 }

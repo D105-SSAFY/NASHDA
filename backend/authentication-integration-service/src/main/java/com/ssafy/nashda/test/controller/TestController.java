@@ -3,6 +3,7 @@ package com.ssafy.nashda.test.controller;
 import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
+import com.ssafy.nashda.statistic.service.StrickService;
 import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
 import com.ssafy.nashda.test.dto.request.*;
 import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
@@ -26,7 +27,7 @@ public class TestController {
 
     private final TestService testService;
     private final MemberController memberController;
-    private final WeekTestStatisticService weekTestStatisticService;
+    private final StrickService strickService;
 
     @GetMapping("/word")
     public ResponseEntity<? extends BaseResponseBody> wordTestStart(@RequestHeader("Authorization") String token) throws Exception {
@@ -34,7 +35,6 @@ public class TestController {
         Member member = memberController.findMemberByToken(token);
         WordTestStartResDto wordTestStartResDto = testService.wordTestStart(member);
 
-        /*  return new ResponseEntity<>(new BaseResponseBody(200, "단어 시험 시작"), wordTestStartResDto), HttpStatus.OK);*/
         return new ResponseEntity<>(new BaseResponseBody(200, "단어 시험 불러오기 성공", wordTestStartResDto),
                 HttpStatus.OK);
     }
@@ -45,7 +45,10 @@ public class TestController {
         Member member = memberController.findMemberByToken(token);
         testService.saveWordTestScore(request, member);
 
-        /*  return new ResponseEntity<>(new BaseResponseBody(200, "단어 시험 시작"), wordTestStartResDto), HttpStatus.OK);*/
+        //stick표시를 위한 작업
+        strickService.increaseTestCount(member);
+
+
         return new ResponseEntity<>(new BaseResponseBody(200, "단어 시험 결과 저장 성공"),
                 HttpStatus.OK);
     }
@@ -56,7 +59,6 @@ public class TestController {
         Member member = memberController.findMemberByToken(token);
         WordTestStartResDto wordTestStartResDto = testService.sentenceTestStart(member);
 
-        /*  return new ResponseEntity<>(new BaseResponseBody(200, "단어 시험 시작"), wordTestStartResDto), HttpStatus.OK);*/
         return new ResponseEntity<>(new BaseResponseBody(200, "문장 시험 불러오기 성공", wordTestStartResDto),
                 HttpStatus.OK);
     }
@@ -67,6 +69,8 @@ public class TestController {
         Member member = memberController.findMemberByToken(token);
         testService.saveSentenceTestScore(reqDto, member);
 
+        //stick표시를 위한 작업
+        strickService.increaseTestCount(member);
         return new ResponseEntity<>(new BaseResponseBody(200, "문장 시험 결과 저장 성공"),
                 HttpStatus.OK);
     }
@@ -123,6 +127,8 @@ public class TestController {
     public ResponseEntity<? extends BaseResponseBody> weekTestResult(@RequestHeader("Authorization") String token, @RequestBody WeekTestResultReqDto reqDto) throws Exception {
         Member member = memberController.findMemberByToken(token);
         testService.saveWeekTestScore(reqDto, member);
+        //stick표시를 위한 작업
+        strickService.increaseTestCount(member);
         return new ResponseEntity<>(new BaseResponseBody(200, "문장 시험 결과 저장 성공"),
                 HttpStatus.OK);
     }
