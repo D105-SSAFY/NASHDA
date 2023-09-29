@@ -38,5 +38,29 @@ public class StrickServiceImpl implements StrickService {
         return strickRepository.existsByMemberAndCreatOn(member, LocalDate.now());
     }
 
+    @Override
+    public void increaseBlankCount(Member member) {
+        Strick strick = strickRepository.findByMemberAndCreatOn(member, LocalDate.now()).orElseThrow(() -> new IllegalArgumentException("해당하는 strick이 없습니다."));
+        strickRepository.updateBlankCount(strick.getBlankCount() + 1, strick.getIndex());
+    }
+
+    @Override
+    public void increasePracticeCount(Member member) {
+        Strick strick = strickRepository.findByMemberAndCreatOn(member, LocalDate.now()).orElseThrow(() -> new IllegalArgumentException("해당하는 strick이 없습니다."));
+        strickRepository.updatePracticeCount(strick.getPracticeCount() + 1, strick.getIndex());
+    }
+
+    @Override
+    public void increaseSpeedCount(Member member) {
+        Strick strick = strickRepository.findByMemberAndCreatOn(member, LocalDate.now()).orElseThrow(() -> new IllegalArgumentException("해당하는 strick이 없습니다."));
+        strickRepository.updateSpeedCount(strick.getSpeedCount() + 1, strick.getIndex());
+    }
+
+    @Override
+    public void increaseTestCount(Member member) {
+        Strick strick = strickRepository.findByMemberAndCreatOn(member, LocalDate.now()).orElseThrow(() -> new IllegalArgumentException("해당하는 strick이 없습니다."));
+        strickRepository.updateTestCount(strick.getTestCount() + 1, strick.getIndex());
+    }
+
 
 }

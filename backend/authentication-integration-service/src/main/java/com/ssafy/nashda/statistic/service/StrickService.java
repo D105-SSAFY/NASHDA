@@ -10,6 +10,9 @@ public interface StrickService {
     List<Strick> getStrick(Member member);
     void initStrick(Member member);
     boolean isExistStrick(Member member);
-
+    void increaseBlankCount(Member member);
+    void increasePracticeCount(Member member);
+    void increaseSpeedCount(Member member);
+    void increaseTestCount(Member member);
 
 }
