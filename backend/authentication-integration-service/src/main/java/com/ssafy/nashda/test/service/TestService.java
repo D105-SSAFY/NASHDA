@@ -15,9 +15,9 @@ public interface TestService {
     WordTestStartResDto sentenceTestStart(Member member);
     void saveSentenceTestScore(SentenceTestReqDto reqDto, Member member);
     String sttWordTest(String index, MultipartFile sound);
-    String sttSentenceTest(SentenceTestSpeakReqDto reqDto) throws IOException;
+    String sttSentenceTest(SentenceTestSpeakReqDto reqDto) throws Exception;
     MixTestStartResDto mixTestStart(Member member);
-    String sttMixTest(MixTestSpeekReqDto reqDto, String type) throws IOException;
+    String sttMixTest(MixTestSpeekReqDto reqDto, String type) throws Exception;
     void saveWeekTestSpeed2(String index, String url, int order);
     void saveWeekTestScore(WeekTestResultReqDto reqDto, Member member);
 }

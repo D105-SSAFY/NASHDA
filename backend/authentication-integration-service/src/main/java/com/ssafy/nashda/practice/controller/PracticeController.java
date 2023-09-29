@@ -150,5 +150,8 @@ public class PracticeController {
                 HttpStatus.OK);
     }
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 }

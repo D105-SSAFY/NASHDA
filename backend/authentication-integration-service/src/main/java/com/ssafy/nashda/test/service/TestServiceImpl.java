@@ -6,10 +6,20 @@ import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
 import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.member.entity.Member;
+<<<<<<< Updated upstream
 import com.ssafy.nashda.member.service.MemberService;
 import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
 import com.ssafy.nashda.test.dto.request.*;
 import com.ssafy.nashda.test.dto.response.*;
+=======
+import com.ssafy.nashda.stt.service.STTService;
+import com.ssafy.nashda.test.dto.request.InternalTestReqDto;
+import com.ssafy.nashda.test.dto.request.MixTestSpeekReqDto;
+import com.ssafy.nashda.test.dto.request.SentenceTestSpeakReqDto;
+import com.ssafy.nashda.test.dto.request.WordTestResultReqDto;
+import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
+import com.ssafy.nashda.test.dto.response.WordTestStartResDto;
+>>>>>>> Stashed changes
 import com.ssafy.nashda.test.entity.*;
 import com.ssafy.nashda.test.repository.MixTestResultRepository;
 import com.ssafy.nashda.test.repository.SentenceTestResultRepository;
@@ -50,8 +60,12 @@ public class TestServiceImpl implements TestService {
     private final MixTestResultRepository mixTestResultRepository;
     private final WeekService weekService;
     private final ObjectMapper objectMapper;
+<<<<<<< Updated upstream
     private final WeekTestStatisticService weekTestStatisticService;
     private final MemberService memberService;
+=======
+    private final STTService sttService;
+>>>>>>> Stashed changes
 
     //단어 문제를 불러오고, mongo에 저장
     @Override
@@ -195,11 +209,11 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public String sttSentenceTest(SentenceTestSpeakReqDto reqDto) throws IOException {
+    public String sttSentenceTest(SentenceTestSpeakReqDto reqDto) throws Exception {
 
         String url = s3Uploader.uploadFiles(reqDto.getSound(), "sentence_test");
 
-        String stt = "im stt";
+        String stt = sttService.getPronunciation(reqDto.getSound());
 
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
         Update update = new Update().set("user_pronunciation." + reqDto.getOrder(), url);
@@ -300,12 +314,12 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public String sttMixTest(MixTestSpeekReqDto reqDto, String type) throws IOException {
+    public String sttMixTest(MixTestSpeekReqDto reqDto, String type) throws Exception {
         //s3에 sound파일을 업로드 한다.
         String url = s3Uploader.uploadFiles(reqDto.getSound(), "week_test");
 
         //받아온 soundfile을 stt로 변환
-        String stt = "im stt";
+        String stt = sttService.getPronunciation(reqDto.getSound());
 
         //url을 mongodb에 저장
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
