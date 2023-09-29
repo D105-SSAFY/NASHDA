@@ -147,7 +147,7 @@ public class TestController {
     @PostMapping(value = "/week/speed2/user")
     public ResponseEntity<? extends BaseResponseBody> weekTestSpeed2User(@RequestBody Map<String, Object> map) {
 
-        testService.saveWeekTestSpeed2((String) map.get("index"), (String) map.get("url"), (Integer) map.get("order"));
+        testService.saveWeekTestSpeed2((String) map.get("index"), (String) map.get("imgUrl"), (Integer) map.get("order"));
 
         return new ResponseEntity<>(new BaseResponseBody(200, "사용자 선택 저장 성공(speed2)"),
                 HttpStatus.OK);
