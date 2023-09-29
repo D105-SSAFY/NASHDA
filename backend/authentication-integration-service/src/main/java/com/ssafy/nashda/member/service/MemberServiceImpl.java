@@ -138,11 +138,11 @@ public class MemberServiceImpl implements MemberService {
         if (profileInfo.get("age") != null) {
             member.setAge(Integer.parseInt(profileInfo.get("age").toString()));
         }
-        if (profileInfo.get("hobbyIdx") != null) {
-            member.setHobbyIdx(Integer.parseInt(profileInfo.get("hobbyIdx").toString()));
+        if (profileInfo.get("hobby") != null) {
+            member.setHobbyIdx(Integer.parseInt(profileInfo.get("hobby").toString()));
         }
-        if (profileInfo.get("jobIdx") != null) {
-            member.setJobIdx(Integer.parseInt(profileInfo.get("jobIdx").toString()));
+        if (profileInfo.get("job") != null) {
+            member.setJobIdx(Integer.parseInt(profileInfo.get("job").toString()));
         }
 
         return new MemberInfoResDto(member);
