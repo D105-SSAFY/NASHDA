@@ -6,7 +6,7 @@ import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOu
 
 import eetch from "apis/eetch";
 
-export default function NicknameDetail({ userInfo, setUserInfo, getMore }) {
+export default function NicknameDetail({ userInfo, setUserInfo, setMore }) {
     const [nickname, setNickname] = useState(userInfo.nickname);
 
     const handleInputChange = (e) => {
@@ -15,7 +15,6 @@ export default function NicknameDetail({ userInfo, setUserInfo, getMore }) {
 
     const handleSubmit = () => {
         userInfo.nickname = nickname;
-        console.log(userInfo);
         eetch.updateProfile(userInfo).then((res) => {
             setUserInfo(res.data);
         });
@@ -31,7 +30,7 @@ export default function NicknameDetail({ userInfo, setUserInfo, getMore }) {
                     <input value={nickname} onChange={handleInputChange} /> 로 변경합니다.
                 </n.ChangeText>
             </n.ChangeBox>
-            <CloseButton onClick={() => getMore(0)} />
+            <CloseButton onClick={() => setMore(0)} />
             <MoreButton onClick={handleSubmit}>
                 변경 완료
                 <ArrowCircleRightOutlinedIcon />

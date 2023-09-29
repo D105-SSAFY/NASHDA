@@ -8,18 +8,27 @@ import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOu
 
 import eetch from "apis/eetch";
 
-export default function Profile({ userInfo, more, getMore }) {
-    const [lists, setLists] = useState({ jobList: [], hobbyList: [] });
-    const [inputs, setInputs] = useState({
-        email: "",
-        password: ""
-    });
+export default function Profile({ userInfo, setUserInfo, more, setMore }) {
+    const [lists, setLists] = useState({});
+    const [inputs, setInputs] = useState([0, 0, 0]);
 
     const handleChange = (e) => {
-        setInputs({
-            ...inputs,
-            [e.target.name]: e.target.value
-        });
+        inputs[0] = e.target.value;
+        setInputs(inputs);
+    };
+
+    const handleSubmit = () => {
+        if (more === 4) {
+            setMore(0);
+
+            userInfo.age = inputs[0];
+            userInfo.job = inputs[1];
+            userInfo.hobby = inputs[2];
+
+            eetch.updateProfile(userInfo).then((res) => {
+                setUserInfo(res.data);
+            });
+        } else setMore(4);
     };
 
     const detailText = (str) => {
@@ -31,15 +40,9 @@ export default function Profile({ userInfo, more, getMore }) {
         return result;
     };
 
-    const switchedHandler = () => {
-        if (more === 4) getMore(0);
-        else getMore(4);
-    };
-
-    const getJob = (code = 0) => {
+    const getJob = (code) => {
         if (!code) return "-";
-        if (lists.jobList.length > 0) {
-            console.log(lists.jobList.length);
+        if (Object.keys(lists).length > 0) {
             return lists.jobList.find((job) => {
                 return job.jobIdx === code;
             }).job;
@@ -50,7 +53,7 @@ export default function Profile({ userInfo, more, getMore }) {
 
     const getHobby = (code) => {
         if (!code) return "-";
-        if (lists.hobbyList.length > 0) {
+        if (Object.keys(lists).length > 0) {
             return lists.hobbyList.find((hobby) => {
                 return hobby.hobbyIdx === code;
             }).hobby;
@@ -59,11 +62,22 @@ export default function Profile({ userInfo, more, getMore }) {
         return "리스트 없음";
     };
 
+    const setJobHobby = (target, idx) => {
+        if (target === "직업") inputs[1] = idx;
+        else inputs[2] = idx;
+
+        setInputs(inputs);
+    };
+
     useEffect(() => {
         eetch.domain().then((res) => {
             setLists({ jobList: res.data.jobList, hobbyList: res.data.hobbyList });
         });
     }, []);
+
+    useEffect(() => {
+        setInputs([userInfo.age, userInfo.job, userInfo.hobby]);
+    }, [userInfo]);
 
     return (
         <>
@@ -88,33 +102,35 @@ export default function Profile({ userInfo, more, getMore }) {
             <p.InputBox>
                 <SigninInput
                     data={{
-                        text: "이메일",
-                        id: "email",
-                        name: "email",
+                        text: "나이",
+                        id: "age",
+                        name: "age",
                         type: "text",
                         onChangeFunc: handleChange,
-                        value: inputs.email
+                        value: inputs[0]
                     }}
                 />
                 <SelectInput
                     data={{
-                        text: "직업",
-                        list: lists
+                        target: "직업",
+                        list: lists.jobList,
+                        callback: setJobHobby
                     }}
                 />
                 <SelectInput
                     data={{
-                        text: "취미",
-                        list: lists
+                        target: "취미",
+                        list: lists.hobbyList,
+                        callback: setJobHobby
                     }}
                 />
             </p.InputBox>
 
-            <MoreButton onClick={() => switchedHandler()}>
+            <MoreButton onClick={() => handleSubmit()}>
                 {more === 4 ? "수정 완료" : "상세 수정"}
                 <ArrowCircleRightOutlinedIcon />
             </MoreButton>
-            <CloseButton onClick={() => getMore(0)} toggle={more !== 4} />
+            <CloseButton onClick={() => setMore(0)} toggle={more !== 4} />
         </>
     );
 }

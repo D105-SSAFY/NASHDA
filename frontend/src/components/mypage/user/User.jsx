@@ -35,7 +35,7 @@ export default function Setting({ tabSwitch }) {
             <u.UserSection more={more}>
                 {/* 유저 별명 카드 */}
                 <u.UserCard focus={more === 1} defocus={more === 0 || more === 1}>
-                    <Nickname userInfo={userInfo} getMore={setMore} />
+                    <Nickname userInfo={userInfo} setMore={setMore} />
                 </u.UserCard>
                 {/* 유저 통계 카드 */}
                 <u.UserCard focus={more === 2} defocus={more === 0 || more === 1 || more === 2 || more === 3}>
@@ -43,19 +43,19 @@ export default function Setting({ tabSwitch }) {
                         <Statistics tabSwitch={tabSwitch} />
                     </u.modeChange>
                     <u.modeChange toggle={more === 1}>
-                        <NicknameDetail userInfo={userInfo} setUserInfo={setUserInfo} user getMore={setMore} />
+                        <NicknameDetail userInfo={userInfo} setUserInfo={setUserInfo} user setMore={setMore} />
                     </u.modeChange>
                     <u.modeChange toggle={more === 3}>
-                        <ArchievementDetail getMore={setMore} />
+                        <ArchievementDetail setMore={setMore} />
                     </u.modeChange>
                 </u.UserCard>
                 {/* 유저 달성 카드 */}
                 <u.UserCard focus={more === 3} defocus={more === 0 || more === 3}>
-                    <Archievement getMore={setMore} />
+                    <Archievement setMore={setMore} />
                 </u.UserCard>
                 {/* 유저 상세 카드 */}
                 <u.UserCard focus={more === 4} defocus={more === 0 || more === 4}>
-                    <Profile userInfo={userInfo} getMore={setMore} more={more} />
+                    <Profile userInfo={userInfo} setUserInfo={setUserInfo} setMore={setMore} more={more} />
                 </u.UserCard>
             </u.UserSection>
         </>
