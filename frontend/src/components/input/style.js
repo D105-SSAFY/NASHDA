@@ -135,8 +135,7 @@ export const List = styled.ul`
     display: ${(props) => (props.clicked ? "block" : "none")};
 
     &::-webkit-scrollbar {
-        width: 8px;
-        background-color: white;
+        width: 12px;
     }
 
     &::-webkit-scrollbar-track {
@@ -146,6 +145,7 @@ export const List = styled.ul`
     &::-webkit-scrollbar-thumb {
         background-color: gray;
         border-radius: 10px;
+        border: 3px solid transparent;
         background-clip: padding-box;
     }
 

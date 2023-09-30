@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import * as S from "./style";
 
-export default function FormSelectCol({ data: { list, target, callback } }) {
+export default function FormSelectCol({ data: { list, target, callback, Idx = 0 } }) {
     const [clicked, setClicked] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     // 드랍 다운 버튼 클릭
@@ -29,6 +29,17 @@ export default function FormSelectCol({ data: { list, target, callback } }) {
     useEffect(() => {
         setClicked(false);
     }, [target]);
+
+    useEffect(() => {
+        if (Idx === 0 || !list) setSelectedItem("없음");
+        else {
+            setSelectedItem(
+                list.find((item) => {
+                    return item[target === "직업" ? "jobIdx" : "hobbyIdx"] === Idx;
+                })[target === "직업" ? "job" : "hobby"]
+            );
+        }
+    }, [Idx]);
 
     return (
         <S.Wrapper>
