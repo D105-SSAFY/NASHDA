@@ -157,8 +157,8 @@ public class TestServiceImpl implements TestService {
 
 
         Week week = weekService.getCurrentWeek().orElseThrow();
-        int tryCount = sentenceTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
-
+//        int tryCount = sentenceTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
+        int tryCount = sentenceTestResultRepository.countByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx());
         SentenceTestResult testResult = SentenceTestResult.builder()
                 .memberNumber(member.getMemberNum())
                 .week(week.getWeekIdx())

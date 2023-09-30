@@ -12,6 +12,7 @@ import com.ssafy.nashda.game.dto.response.*;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.repository.MemberRepository;
 
+import com.ssafy.nashda.member.service.MemberService;
 import com.ssafy.nashda.stt.service.STTService;
 import com.ssafy.nashda.statistic.entity.GameStatistic;
 import com.ssafy.nashda.statistic.repository.GameStatisticRepository;
@@ -41,7 +42,7 @@ import java.util.Optional;
 public class GameServiceImpl implements GameService {
     private final ObjectMapper mapper;
     private final GameStatisticRepository gameStatisticRepository;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
     private final WeekService weekService;
     private final STTService sttService;
     private final S3Uploader s3Uploader;
@@ -212,17 +213,15 @@ public class GameServiceImpl implements GameService {
         //level 2일떄만 progress update
         member.setSentenceCount(member.getSentenceCount() + request.getTotal());
         if (request.getLevel() > 1) {
-            member.setProgress(member.getProgress() + request.getScore());
-        }
+           memberService.plusProgress(member, request.getTotal());
 
-        gameStatisticRepository.save(gameStatistic);
-        return member.getProgress()+request.getScore();
+           return member.getProgress()+request.getTotal();
+        }
+        return member.getProgress();
     }
 
     public GameStatistic saveGameStatistic(Member member, Week week) throws Exception {
-
         GameStatistic gameStatistic = new GameStatistic(member, week);
-
         gameStatisticRepository.save(gameStatistic);
         return gameStatistic;
     }
@@ -342,7 +341,6 @@ public class GameServiceImpl implements GameService {
                 .toEntity(InternalResponseDto.class)
                 .block();
 
-        log.info("response : {}, type : {}",response.getBody().getStatus(), response.getBody().getStatus().getClass().getName());
         String status = response.getBody().getStatus();
         if("400".equals(status)){
             throw new BadRequestException(ErrorCode.STT_ERROR);

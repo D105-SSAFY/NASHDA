@@ -16,6 +16,7 @@ public class AchievementInfoResDto {
     LocalDateTime create_on;
     String type;
     String description;
+    Long achievement_index;
 
     @Builder
     public AchievementInfoResDto(Achievement achievement, LocalDateTime achievedTime) {
@@ -23,6 +24,7 @@ public class AchievementInfoResDto {
         this.type = achievement.getType();
         this.description = achievement.getDescription();
         this.create_on = achievedTime;
+        this.achievement_index = achievement.getIndex();
 
     }
 

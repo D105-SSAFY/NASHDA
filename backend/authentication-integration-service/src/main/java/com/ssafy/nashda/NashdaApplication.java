@@ -7,6 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.util.TimeZone;
+
 @EnableJpaAuditing  //create_on, updata_on 자동 업데이트
 @SpringBootApplication   //spring security 비활성화
 @EnableScheduling   //스케줄링 활성화
@@ -14,6 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class NashdaApplication {
 
     public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
         SpringApplication.run(NashdaApplication.class, args);
     }
 

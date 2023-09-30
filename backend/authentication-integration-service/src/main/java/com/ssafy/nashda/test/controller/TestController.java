@@ -1,6 +1,7 @@
 package com.ssafy.nashda.test.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
+import com.ssafy.nashda.history.service.MemberHistoryService;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.statistic.service.StrickService;
@@ -28,6 +29,7 @@ public class TestController {
     private final TestService testService;
     private final MemberController memberController;
     private final StrickService strickService;
+    private final MemberHistoryService memberHistoryService;
 
     @GetMapping("/word")
     public ResponseEntity<? extends BaseResponseBody> wordTestStart(@RequestHeader("Authorization") String token) throws Exception {
@@ -47,6 +49,10 @@ public class TestController {
 
         //stick표시를 위한 작업
         strickService.increaseTestCount(member);
+
+        //전제 업적 조회를 위한 counting
+        memberHistoryService.increaseTestWordCount(member); //test시험 수 증가
+        memberHistoryService.plusWordCount(member, 10); //test시험 칠때는 단어를 10개를 하니까!
 
 
         return new ResponseEntity<>(new BaseResponseBody(200, "단어 시험 결과 저장 성공"),
@@ -71,6 +77,10 @@ public class TestController {
 
         //stick표시를 위한 작업
         strickService.increaseTestCount(member);
+
+        //history추가 작업
+        memberHistoryService.increaseTestSentenceCount(member); //test시험 수 증가
+        memberHistoryService.plusSentenceCount(member, 5); //test시험 칠때는 문장 5개를 하니까!
         return new ResponseEntity<>(new BaseResponseBody(200, "문장 시험 결과 저장 성공"),
                 HttpStatus.OK);
     }
@@ -129,6 +139,12 @@ public class TestController {
         testService.saveWeekTestScore(reqDto, member);
         //stick표시를 위한 작업
         strickService.increaseTestCount(member);
+
+        //업적을 위한 testing
+        memberHistoryService.increaseTestWeekCount(member); //test시험 수 증가
+        memberHistoryService.plusWordCount(member, 6); //test시험 칠때는 스피트 6개를 하니까!
+        memberHistoryService.plusSentenceCount(member, 4); //test시험 칠때는 스피트 4개를 하니까!
+
         return new ResponseEntity<>(new BaseResponseBody(200, "문장 시험 결과 저장 성공"),
                 HttpStatus.OK);
     }

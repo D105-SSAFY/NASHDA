@@ -178,7 +178,7 @@ public class PracticePronServiceImpl implements PracticePronService {
         return (long) (int) response.getBody().getData();
     }
 
-    @Override
+/*    @Override
     @Transactional
     public void updateWordCount(Member member) throws Exception {
         memberService.updateWordCount(member, 1);
@@ -190,7 +190,7 @@ public class PracticePronServiceImpl implements PracticePronService {
     public void updateSentenceCount(Member member) throws Exception {
         memberService.updateSentenceCount(member, 1);
         achievementService.updateMemberAchievement(member, "sentence", member.getSentenceCount() + 1);
-    }
+    }*/
 
     @Override
     public String getSTT(Member member, PracticePronRequestDto practicePronRequestDto) throws Exception {

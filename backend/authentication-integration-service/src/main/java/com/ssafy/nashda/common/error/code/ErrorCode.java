@@ -51,7 +51,10 @@ public enum ErrorCode {
 
     // 통계
     NOT_EXISTS_SIMUL_STATISTIC(HttpStatus.BAD_REQUEST, 400, "해당 유저는 시뮬레이션을 실행하지 않았습니다."),
-    NOT_PLAY_SIMUL_TYPE(HttpStatus.BAD_REQUEST, 400, "해당 유형의 시뮬레이션에서 조회할 오답 데이터가 존재하지 않습니다.");
+    NOT_PLAY_SIMUL_TYPE(HttpStatus.BAD_REQUEST, 400, "해당 유형의 시뮬레이션에서 조회할 오답 데이터가 존재하지 않습니다."),
+
+    //member history
+    INTTERNAL_HISTORY_CREATE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "회원 히스토리 생성 실패");
 
     private HttpStatus httpStatus;
     private int errorCode;

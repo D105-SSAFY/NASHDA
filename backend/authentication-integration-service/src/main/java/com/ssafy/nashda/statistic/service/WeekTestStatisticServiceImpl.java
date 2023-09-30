@@ -1,6 +1,10 @@
 package com.ssafy.nashda.statistic.service;
 
-import com.ssafy.nashda.member.dto.response.MemberStatisticResDto;
+import com.ssafy.nashda.history.dto.HistoryResDto;
+import com.ssafy.nashda.history.dto.HistoryStaticticResDto;
+import com.ssafy.nashda.history.entity.MemberHistory;
+import com.ssafy.nashda.history.service.MemberHistoryService;
+//import com.ssafy.nashda.member.dto.response.MemberStatisticResDto;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.statistic.dto.response.InternalWeekTestStatisticResDto;
 import com.ssafy.nashda.statistic.dto.response.WeekTestStatisticResDto;
@@ -22,6 +26,7 @@ import java.util.List;
 public class WeekTestStatisticServiceImpl implements WeekTestStatisticService {
 
     private final WeekTestStatisticRepository weekTestRepository;
+    private final MemberHistoryService memberHistoryService;
 
     @Override
     public WeekTestStatisticResDto getWeekTestResultList(Member member) {
@@ -33,9 +38,11 @@ public class WeekTestStatisticServiceImpl implements WeekTestStatisticService {
         for (WeekTestStatistic week : weekTestResultList)
             result.add(new InternalWeekTestStatisticResDto(week));
 
-        MemberStatisticResDto memberInfo = new MemberStatisticResDto(member);
+//        MemberStatisticResDto memberInfo = new MemberStatisticResDto(member);
+        HistoryResDto memberHistory = memberHistoryService.getMemberHistory(member);
+        HistoryStaticticResDto memberInfo = new HistoryStaticticResDto(memberHistory);
 
-        return new WeekTestStatisticResDto(result, memberInfo);
+        return new WeekTestStatisticResDto(result,memberInfo);
     }
 
     @Override

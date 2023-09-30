@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -30,9 +30,14 @@ public class MemberAchievement {
     @JoinColumn(name = "achievement_index")
     private Achievement achievement;
 
-    @CreationTimestamp
+    @CreatedDate
     @Column(name = "achieved_date", updatable = false)
     private LocalDateTime achievedDate; // 업적 달성 날짜
+
+    @PrePersist
+    public void onPrePersist() {
+        this.achievedDate = LocalDateTime.now();
+    }
 
     @Builder
     public MemberAchievement(Member member, Achievement achievement) {

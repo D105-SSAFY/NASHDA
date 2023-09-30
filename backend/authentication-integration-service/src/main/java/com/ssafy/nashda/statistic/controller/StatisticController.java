@@ -36,7 +36,6 @@ public class StatisticController {
     private final GameStatisticService gameStatisticService;
     private final GameStatisticService blankStatisticService;
     private final WeekRepository weekRepository;
-    private final WeekService weekService;
     private final WeekTestStatisticService weekTestResultService;
 
     @GetMapping("/strick")
@@ -60,7 +59,7 @@ public class StatisticController {
         for (MemberAchievement memberAchievement : memberAchievements) {
             resDtos.add(AchievementInfoResDto.fromMemberAchievement(memberAchievement));
         }
-        return new ResponseEntity<>(new BaseResponseBody(200, "스트릭 전체 조회 성공", resDtos),
+        return new ResponseEntity<>(new BaseResponseBody(200, "업적 전체 조회 성공", resDtos),
                 HttpStatus.OK);
     }
 
@@ -76,12 +75,7 @@ public class StatisticController {
     @GetMapping("/test")
     public ResponseEntity<? extends BaseResponseBody> getTestStatistic(@RequestHeader("Authorization") String token) throws Exception {
         Member member = memberController.findMemberByToken(token);
-//        List<Object> result = Collections.singletonList(weekTestResultService.getWeekTestResultList(member));
-//        MemberStatisticResDto memberStatisticResDto = new MemberStatisticResDto(member);
-//        result.add(memberStatisticResDto);
-
         WeekTestStatisticResDto result = weekTestResultService.getWeekTestResultList(member);
-
         return new ResponseEntity<>(new BaseResponseBody(200, "테스트 통계 조회 성공", result),
                 HttpStatus.OK);
     }

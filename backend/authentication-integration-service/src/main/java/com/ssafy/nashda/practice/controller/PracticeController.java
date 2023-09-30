@@ -1,6 +1,7 @@
 package com.ssafy.nashda.practice.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
+import com.ssafy.nashda.history.service.MemberHistoryService;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.service.MemberService;
@@ -32,10 +33,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class PracticeController {
     private final PracticePronService practicePronService;
     private final MemberController memberController;
-    private final MemberService memberService;
-    private final AchievementService achievementService;
-    private final StrickService strickService;
-
+    //    private final StrickService strickService;
+    private final MemberHistoryService memberHistoryService;
 
 //    @GetMapping("/pron/test")
 //    public ResponseEntity<? extends BaseResponseBody> test() throws Exception {
@@ -73,7 +72,9 @@ public class PracticeController {
     public ResponseEntity<? extends BaseResponseBody> getPronWord(@RequestHeader("Authorization") String token, @PathVariable("index") int index) throws Exception {
         PronResponseDto pronWordSet = practicePronService.getPronWordSets(index);
         Member member = memberController.findMemberByToken(token);
-        practicePronService.updateWordCount(member);
+//        practicePronService.updateWordCount(member);
+        memberHistoryService.increaseWordCount(member); //wordcount 증가
+        memberHistoryService.increasePracticeWordCount(member); //practice를 통한 wordcount 증가
         return new ResponseEntity<>(new BaseResponseBody(200, "단어 문제 불러오기 성공", pronWordSet),
                 HttpStatus.OK);
     }
@@ -91,7 +92,9 @@ public class PracticeController {
     public ResponseEntity<? extends BaseResponseBody> getPronPhase(@RequestHeader("Authorization") String token, @PathVariable("index") int index) throws Exception {
         PronResponseDto pronPhaseSet = practicePronService.getPronPhaseSets(index);
         Member member = memberController.findMemberByToken(token);
-        practicePronService.updateWordCount(member);
+//        practicePronService.updateWordCount(member);
+        memberHistoryService.increaseWordCount(member); //wordcount 증가
+        memberHistoryService.increasePracticeWordCount(member); //practice를 통한 wordcount 증가
         return new ResponseEntity<>(new BaseResponseBody(200, "구 문제 불러오기 성공", pronPhaseSet),
                 HttpStatus.OK);
     }
@@ -110,7 +113,9 @@ public class PracticeController {
     public ResponseEntity<? extends BaseResponseBody> getPronSimple(@RequestHeader("Authorization") String token, @PathVariable("index") int index) throws Exception {
         PronResponseDto pronSimpleSet = practicePronService.getPronSimpleSets(index);
         Member member = memberController.findMemberByToken(token);
-        practicePronService.updateSentenceCount(member);
+//        practicePronService.updateSentenceCount(member);
+        memberHistoryService.increaseSentenceCount(member); //문장 count 증가
+        memberHistoryService.increasePracticeSentenceCount(member); //practice를 통한 문장 count 증가
         return new ResponseEntity<>(new BaseResponseBody(200, "단순절 문제 불러오기 성공", pronSimpleSet),
                 HttpStatus.OK);
     }
@@ -129,7 +134,9 @@ public class PracticeController {
     public ResponseEntity<? extends BaseResponseBody> getPronComplex(@RequestHeader("Authorization") String token, @PathVariable("index") int index) throws Exception {
         PronResponseDto pronComplexSet = practicePronService.getPronComplexSets(index);
         Member member = memberController.findMemberByToken(token);
-        practicePronService.updateSentenceCount(member);
+//        practicePronService.updateSentenceCount(member);
+        memberHistoryService.increaseSentenceCount(member); //문장 count 증가
+        memberHistoryService.increasePracticeSentenceCount(member); //practice를 통한 문장 count 증가
         return new ResponseEntity<>(new BaseResponseBody(200, "복합절 문제 불러오기 성공", pronComplexSet),
                 HttpStatus.OK);
     }
@@ -141,9 +148,8 @@ public class PracticeController {
         Member member = memberController.findMemberByToken(token);
         String stt = practicePronService.getSTT(member, practicePronRequestDto);
 
-        strickService.increasePracticeCount(member);
-
-
+        //memberhistory에서 practice count 증가
+        memberHistoryService.increasePracticeCount(member);
         return new ResponseEntity<>(new BaseResponseBody(200, "발음 연습 결과 전송 완료",
                 new PronSTTResponseDto(stt)),
                 HttpStatus.OK);

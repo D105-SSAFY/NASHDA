@@ -8,6 +8,8 @@ server:
       force: true
 
 spring:
+  jackson:
+    time-zone: Asia/Seoul
   data:
     mongodb:
       uri: mongodb://nash:d105nashda@j9d105.p.ssafy.io:27017/nashda?authSource=admin&authMechanism=SCRAM-SHA-1
@@ -100,8 +102,8 @@ cloud:
 
 env:
  PROBLEM_URL: http://172.17.0.5:8082
-  #  PROBLEM_URL: http://localhost:8082
+#    PROBLEM_URL: http://localhost:8082
 
  STT_URL: http://172.17.0.6:8083
-  #  STT_URL: http://localhost:8000
+#    STT_URL: http://localhost:8000
 

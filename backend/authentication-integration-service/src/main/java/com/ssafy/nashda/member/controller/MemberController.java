@@ -1,6 +1,7 @@
 package com.ssafy.nashda.member.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
+import com.ssafy.nashda.history.service.MemberHistoryService;
 import com.ssafy.nashda.member.dto.request.MemberResetPasswordReqDto;
 import com.ssafy.nashda.member.dto.response.MemberInfoResDto;
 import com.ssafy.nashda.member.dto.request.MemberSignInReqDto;
@@ -33,7 +34,6 @@ public class MemberController {
     private final TokenProvider tokenProvider;
     private final TokenService tokenService;
     private final MailSenderService mailSenderService;
-    private final StrickService strickService;
 
 
     @PostMapping("/signup")
@@ -145,7 +145,7 @@ public class MemberController {
     public ResponseEntity<? extends BaseResponseBody> checkProgress(@RequestHeader("Authorization") String token) throws IOException {
         Member member = findMemberByToken(token);
         boolean result = memberService.checkProgress(member.getEmail());
-        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "진행상황 조회 성공", result));
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "blank 3단계 접근 가능 여부 조회 성공", result));
     }
 
 

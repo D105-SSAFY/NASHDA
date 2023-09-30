@@ -14,5 +14,6 @@ public interface StrickService {
     void increasePracticeCount(Member member);
     void increaseSpeedCount(Member member);
     void increaseTestCount(Member member);
+    boolean isExistStrickBefore(Member member);
 
 }

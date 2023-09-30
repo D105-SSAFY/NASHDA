@@ -11,6 +11,7 @@ public interface SentenceTestResultRepository extends MongoRepository<SentenceTe
 
     //사용자의 member_number와 week를 이용해서 사용자의 몇번 했는지 찾아올 것임!
     List<SentenceTestResult> findByMemberNumberAndWeek(long memberNumber, long week);
+    int countByMemberNumberAndWeek(long memberNumber, long week);
     Optional<SentenceTestResult> findById(String id);
 
 }
