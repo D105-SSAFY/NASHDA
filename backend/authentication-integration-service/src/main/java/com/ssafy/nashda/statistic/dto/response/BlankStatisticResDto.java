@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 public class BlankStatisticResDto {
     private LocalDateTime start_date;
-    private LocalDateTime end_data;
+    private LocalDateTime end_date;
     private int score;
     private int total;
     private int set;
@@ -20,7 +20,7 @@ public class BlankStatisticResDto {
     @Builder
     public BlankStatisticResDto(GameStatistic gameStatistic) {
         this.start_date = gameStatistic.getWeek().getStartDate();
-        this.end_data = gameStatistic.getWeek().getEndDate();
+        this.end_date = gameStatistic.getWeek().getEndDate();
         this.score = gameStatistic.getBlankScore();
         this.total = gameStatistic.getBlankTotal();
         this.set = gameStatistic.getBlankSet();
