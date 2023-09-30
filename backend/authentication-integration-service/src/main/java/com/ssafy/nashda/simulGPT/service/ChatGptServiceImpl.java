@@ -51,7 +51,7 @@ public class ChatGptServiceImpl implements ChatGptService {
         formData.add("model", "whisper-1");
 
         ChatSttResDto response = webClient.post()
-                .uri("https://api.openai.com/v1/audio/transcriptions")
+                .uri("https://api.openai.com/v1/audio/transcriptionsgit")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + openAIAPIKey)
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData(formData))
