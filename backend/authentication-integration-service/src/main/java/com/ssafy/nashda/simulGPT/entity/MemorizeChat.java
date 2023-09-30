@@ -1,6 +1,6 @@
 package com.ssafy.nashda.simulGPT.entity;
 
-import com.ssafy.nashda.simulGPT.dto.ChatMessageDto;
+import com.ssafy.nashda.simulGPT.dto.response.ChatMessageDto;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

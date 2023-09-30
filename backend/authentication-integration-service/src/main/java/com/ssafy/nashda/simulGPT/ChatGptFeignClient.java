@@ -1,10 +1,10 @@
 package com.ssafy.nashda.simulGPT;
 
 import com.ssafy.nashda.simulGPT.config.ChatGptHeaderConfig;
-import com.ssafy.nashda.simulGPT.dto.ChatReqDto;
-import com.ssafy.nashda.simulGPT.dto.ChatResDto;
+import com.ssafy.nashda.simulGPT.dto.request.ChatReqDto;
+import com.ssafy.nashda.simulGPT.dto.response.ChatResDto;
+import com.ssafy.nashda.simulGPT.dto.response.ChatSttResDto;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -12,4 +12,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface ChatGptFeignClient {
     @PostMapping("/chat/completions")
     ChatResDto chatCompletion(@RequestBody ChatReqDto chatReqDto);
+
 }

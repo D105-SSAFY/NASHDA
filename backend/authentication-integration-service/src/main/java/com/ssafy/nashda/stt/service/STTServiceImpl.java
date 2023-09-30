@@ -76,4 +76,5 @@ public class STTServiceImpl implements STTService {
         String stt = (String) response.getBody().getData();
         return stt;
     }
+
 }

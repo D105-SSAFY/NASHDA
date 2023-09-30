@@ -1,4 +1,4 @@
-package com.ssafy.nashda.simulGPT.dto;
+package com.ssafy.nashda.simulGPT.dto.request;
 
 import lombok.Data;
 

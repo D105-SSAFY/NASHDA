@@ -1,4 +1,4 @@
-package com.ssafy.nashda.simulGPT.dto;
+package com.ssafy.nashda.simulGPT.dto.response;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
