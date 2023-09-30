@@ -62,5 +62,12 @@ public class StrickServiceImpl implements StrickService {
         strickRepository.updateTestCount(strick.getTestCount() + 1, strick.getIndex());
     }
 
+    @Override
+    public boolean isExistStrickBefore(Member member) {
+        //어제 날짜의 strick이 존재하는지 확인
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        return strickRepository.existsByMemberAndCreatOn(member, yesterday);
+    }
+
 
 }

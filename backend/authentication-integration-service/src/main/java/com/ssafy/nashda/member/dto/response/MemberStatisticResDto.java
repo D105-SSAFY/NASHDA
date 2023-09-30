@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
+/*@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberStatisticResDto {
@@ -20,4 +20,4 @@ public class MemberStatisticResDto {
         this.sentence_count = member.getSentenceCount();
         this.conversation_count = member.getConversationCount();
     }
-}
+}*/

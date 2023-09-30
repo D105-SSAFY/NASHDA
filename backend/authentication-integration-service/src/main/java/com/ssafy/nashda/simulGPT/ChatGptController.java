@@ -4,6 +4,7 @@ package com.ssafy.nashda.simulGPT;
 import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
+import com.ssafy.nashda.history.service.MemberHistoryService;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.repository.MemberRepository;
@@ -58,6 +59,7 @@ public class ChatGptController {
     private final StrickRepository strickRepository;
 
     private final AchievementService achievementService;
+    private final MemberHistoryService memberHistoryService;
 
     @Transactional
     @PostMapping("/{background}")
@@ -84,14 +86,16 @@ public class ChatGptController {
         if (ObjectUtils.isEmpty(messageReqDto.getId())) {
 
             // 해당 유저의 총 conversationCount +1
-            memberRepository.updateConversationCount(member.getConversationCount() + 1, member.getMemberNum());
-            achievementService.updateMemberAchievement(member, "conversation", member.getConversationCount()+1);
+ /*           memberRepository.updateConversationCount(member.getConversationCount() + 1, member.getMemberNum());
+            achievementService.updateMemberAchievement(member, "conversation", member.getConversationCount()+1);*/
+            memberHistoryService.increaseConversationCount(member);
+
             // 해당 유저가 해당 날짜에 로그인 한 기록이 존재하면 Strick conversationCount +1
             LocalDate date = LocalDate.now();
             Optional<Strick> strick = strickRepository.findByMemberAndCreatOn(member, date);
 
             if (strick.isPresent()) {
-                strickRepository.updateConversationCount(strick.get().getConversationCount()+1, strick.get().getIndex());
+                strickRepository.updateConversationCount(strick.get().getConversationCount() + 1, strick.get().getIndex());
             }
 
             if (background.equals("cafe")) {

@@ -4,7 +4,7 @@ import com.ssafy.nashda.member.dto.request.MemberResetPasswordReqDto;
 import com.ssafy.nashda.member.dto.response.MemberInfoResDto;
 import com.ssafy.nashda.member.dto.request.MemberSignInReqDto;
 import com.ssafy.nashda.member.dto.request.MemberSignUpReqDto;
-import com.ssafy.nashda.member.dto.response.MemberStatisticResDto;
+//import com.ssafy.nashda.member.dto.response.MemberStatisticResDto;
 import com.ssafy.nashda.member.entity.Member;
 
 import java.io.IOException;
@@ -34,7 +34,11 @@ public interface MemberService {
 
     boolean checkProgress(String email) throws IOException;
 
-    void updateWordCount(Member member, int wordCount);
+    void plusProgress(Member member, int count);
+
+/*    void updateWordCount(Member member, int wordCount);
     void updateSentenceCount(Member member, int sentenceCount);
-    void updateConversationCount(Member member, int conversationCount);
+    void updateConversationCount(Member member, int conversationCount);*/
+
+
 }

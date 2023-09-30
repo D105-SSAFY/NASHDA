@@ -2,11 +2,12 @@ package com.ssafy.nashda.member.service;
 
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
+import com.ssafy.nashda.history.service.MemberHistoryService;
 import com.ssafy.nashda.member.dto.request.MemberResetPasswordReqDto;
 import com.ssafy.nashda.member.dto.response.MemberInfoResDto;
 import com.ssafy.nashda.member.dto.request.MemberSignInReqDto;
 import com.ssafy.nashda.member.dto.request.MemberSignUpReqDto;
-import com.ssafy.nashda.member.dto.response.MemberStatisticResDto;
+//import com.ssafy.nashda.member.dto.response.MemberStatisticResDto;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.repository.MemberRepository;
 import com.ssafy.nashda.statistic.service.GameStatisticService;
@@ -16,6 +17,8 @@ import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
 import com.ssafy.nashda.week.entity.Week;
 import com.ssafy.nashda.week.service.WeekService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +30,7 @@ import java.util.Optional;
 @Service("MemberService")
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
@@ -36,6 +40,7 @@ public class MemberServiceImpl implements MemberService {
     private final WeekService weekService;
     private final GameStatisticService gameStatisticService;
     private final WeekTestStatisticService weekTestStatisticService;
+    private final MemberHistoryService memberHistoryService;
 
 
     @Override
@@ -54,6 +59,13 @@ public class MemberServiceImpl implements MemberService {
                     signUpReqDto.getHobbyIdx(),
                     signUpReqDto.getJobIdx());
             memberRepository.save(member);
+
+            try {
+                memberHistoryService.initMemberHistory(member);
+            }catch(Exception e){
+                throw new BadRequestException(ErrorCode.INTTERNAL_HISTORY_CREATE_ERROR);
+            }
+
 
             // 발음 통계 전부 저장
             try {
@@ -97,6 +109,11 @@ public class MemberServiceImpl implements MemberService {
             //week_test생성
             if (!weekTestStatisticService.isExistWeekTestResult(member, week)) {
                 weekTestStatisticService.initWeekTestResult(member, week);
+            }
+
+            //member_history 생성
+            if (!memberHistoryService.isExistMemberHistory(member)) {
+                memberHistoryService.initMemberHistory(member);
             }
 
             return new MemberInfoResDto(member);
@@ -174,6 +191,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public void plusProgress(Member member, int count) {
+        memberRepository.plusProgress(count, member.getMemberNum());
+
+    }
+
+  /*  @Override
     @Transactional
     public void updateWordCount(Member member, int wordCount) {
         memberRepository.updateWordCount(wordCount, member.getMemberNum());
@@ -189,7 +212,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void updateConversationCount(Member member, int conversationCount) {
         memberRepository.updateConversationCount(conversationCount, member.getMemberNum());
-    }
+    }*/
 
 
 }
