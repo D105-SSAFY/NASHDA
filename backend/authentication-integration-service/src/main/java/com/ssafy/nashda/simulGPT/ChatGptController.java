@@ -68,15 +68,13 @@ public class ChatGptController {
 
         Member member = memberController.findMemberByToken(accessToken);
         SimulType simulType = simulTypeRepository.findByName(background);
-        SimulStatistic simulStatistic = simulStaticRepository.findByMemberAndSimulType(member, simulType).orElseThrow(() -> {
-            return new BadRequestException(ErrorCode.NOT_EXISTS_SIMUL_STATISTIC);
-        });
+        Optional<SimulStatistic> optionalSimulStatistic = simulStaticRepository.findByMemberAndSimulType(member, simulType);
+        SimulStatistic simulStatistic = new SimulStatistic();
 
-        if (simulStatistic == null) {
-            simulStatisticService.createSimulStatic(member, simulType);
-            simulStatistic = simulStaticRepository.findByMemberAndSimulType(member, simulType).orElseThrow(() -> {
-                return new BadRequestException(ErrorCode.NOT_EXISTS_SIMUL_STATISTIC);
-            });
+        if (optionalSimulStatistic.isEmpty()) {
+            simulStatistic = simulStatisticService.createSimulStatic(member, simulType);
+        } else {
+            simulStatistic = optionalSimulStatistic.get();
         }
 
         List<ChatMessageDto> messages = new ArrayList<>();
@@ -122,10 +120,10 @@ public class ChatGptController {
             }
 
         } else {
-             memorizeChat = chatGptRepository.findById(messageReqDto.getId())
-                    .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_MESSAGE));
+            memorizeChat = chatGptRepository.findById(messageReqDto.getId()).orElseThrow(() -> {
+                throw new BadRequestException(ErrorCode.NOT_EXISTS_SIMUL_STATISTIC);
+            });
             messages = memorizeChat.getMessages();
-            chatGptRepository.deleteById(messageReqDto.getId());
         }
 
         messages.add(new ChatMessageDto("user", messageReqDto.getMessage()));
@@ -134,6 +132,7 @@ public class ChatGptController {
 
         String message = chatResDto.getChoices().get(0).getMessage().getContent();
         simulStaticRepository.updateTotal(simulStatistic.getTotal() + 1, simulStatistic.getIndex());
+
         // 상황에 옳은 답변인지 판단
         if (message.contains("옳지 않음.") || message.contains("죄송") || message.contains("업무")) {
             String temp[] = message.split("옳지 않음.");
@@ -168,10 +167,15 @@ public class ChatGptController {
         String newId = chatGptRepository.save(memorizeChat).getId();
         chatResDto.setId(newId);
 
+        if (chatResDto.getFinish()) {
+            chatGptRepository.deleteById(messageReqDto.getId());
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody(200, "gpt 응답 성공", chatResDto));
 
     }
 
+    @Transactional
     @PostMapping(value = "/stt", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<? extends BaseResponseBody> getStt(@RequestHeader("Authorization") String accessToken,
                                                              @RequestPart("sound") MultipartFile file) throws Exception {
