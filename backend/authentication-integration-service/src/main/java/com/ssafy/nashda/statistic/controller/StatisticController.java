@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Slf4j
@@ -59,6 +60,7 @@ public class StatisticController {
         for (MemberAchievement memberAchievement : memberAchievements) {
             resDtos.add(AchievementInfoResDto.fromMemberAchievement(memberAchievement));
         }
+        resDtos.sort(Comparator.comparing(AchievementInfoResDto::getCreate_on).reversed());
         return new ResponseEntity<>(new BaseResponseBody(200, "업적 전체 조회 성공", resDtos),
                 HttpStatus.OK);
     }
