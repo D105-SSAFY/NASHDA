@@ -90,5 +90,16 @@ public class StatisticController {
                 HttpStatus.OK);
     }
 
+    @GetMapping("/game/speed/{week}")
+    public ResponseEntity<? extends BaseResponseBody> getSpeedStatistic(@RequestHeader("Authorization") String token, @PathVariable("week") long
+            weekIdx) throws Exception {
+        Member member = memberController.findMemberByToken(token);
+        Week week = weekRepository.findByWeekIdx(weekIdx).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+//        SpeedStatisticResDto speedStatisticResDto = .getBlankStatistic(member, week);
+        SpeedStatisticResDto speedStatisticResDto = gameStatisticService.getSpeedStatistic(member, week);
+        return new ResponseEntity<>(new BaseResponseBody(200, "스피트 게임 통계 조회 성공", speedStatisticResDto),
+                HttpStatus.OK);
+    }
+
 
 }
