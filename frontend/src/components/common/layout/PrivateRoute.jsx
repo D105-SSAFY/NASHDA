@@ -9,12 +9,8 @@ export default function PrivateRoute() {
     const [isValid, setIsValid] = useState(null);
 
     useEffect(() => {
-        const values = {};
-
-        values.user = user;
-
         eetch
-            .tokenValidation(eetch.valid, values, dispatch)
+            .tokenValidation(eetch.valid, { user }, dispatch)
             .then(() => {
                 return setIsValid(true);
             })

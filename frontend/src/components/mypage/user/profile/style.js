@@ -2,8 +2,11 @@ import styled from "styled-components";
 
 export const DetailTypeBox = styled.div`
     position: absolute;
-    margin: auto 0;
-    margin-left: 30px;
+
+    // 세로 수직 중앙 정렬
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
 `;
 
 export const DetailTypeText = styled.p`
@@ -19,8 +22,10 @@ export const DetailTypeText = styled.p`
 
 export const DetailContentBox = styled.div`
     position: absolute;
-    margin: auto 0;
-    margin-left: 120px;
+
+    top: 50%;
+    left: 120px;
+    transform: translateY(-50%);
 `;
 
 export const DetailContentText = styled.p`
@@ -33,6 +38,8 @@ export const DetailContentText = styled.p`
 
 export const DivideLine = styled.div`
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     left: 105px;
     margin: auto 0;
 
@@ -42,8 +49,21 @@ export const DivideLine = styled.div`
     background-color: #000;
 `;
 
+export const InputWrapper = styled.div`
+    position: relative;
+    top: 59px;
+    left: 0px;
+    width: 660px;
+    height: 400px;
+
+    max-width: 100%;
+
+    overflow: hidden;
+`;
+
 export const InputBox = styled.div`
     position: absolute;
+
     left: 280px;
     margin: auto 0;
 

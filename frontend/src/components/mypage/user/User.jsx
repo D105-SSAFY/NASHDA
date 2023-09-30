@@ -18,10 +18,15 @@ export default function Setting({ tabSwitch }) {
 
     const [more, setMore] = React.useState(0);
     const [userInfo, setUserInfo] = React.useState({});
+    const [achievements, setAchievements] = React.useState([]);
 
     useEffect(() => {
         eetch.mypage({ user }).then((res) => {
             setUserInfo(res.data);
+        });
+
+        eetch.achievement({ user }).then((res) => {
+            setAchievements(res.data);
         });
     }, []);
 
@@ -43,15 +48,15 @@ export default function Setting({ tabSwitch }) {
                         <Statistics tabSwitch={tabSwitch} />
                     </u.modeChange>
                     <u.modeChange toggle={more === 1}>
-                        <NicknameDetail userInfo={userInfo} setUserInfo={setUserInfo} user setMore={setMore} />
+                        <NicknameDetail userInfo={userInfo} setUserInfo={setUserInfo} setMore={setMore} />
                     </u.modeChange>
                     <u.modeChange toggle={more === 3}>
-                        <ArchievementDetail setMore={setMore} />
+                        <ArchievementDetail setMore={setMore} achieved={achievements} />
                     </u.modeChange>
                 </u.UserCard>
                 {/* 유저 달성 카드 */}
                 <u.UserCard focus={more === 3} defocus={more === 0 || more === 3}>
-                    <Archievement setMore={setMore} />
+                    <Archievement setMore={setMore} mount={achievements.length} />
                 </u.UserCard>
                 {/* 유저 상세 카드 */}
                 <u.UserCard focus={more === 4} defocus={more === 0 || more === 4}>

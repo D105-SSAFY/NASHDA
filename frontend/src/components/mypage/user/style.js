@@ -25,6 +25,8 @@ export const UserSection = styled.section`
         top: 20px;
         left: 20px;
         width: 260px;
+
+        flex-direction: column;
     }
 
     & > :nth-child(2) {
@@ -33,7 +35,9 @@ export const UserSection = styled.section`
         width: 630px;
         height: ${(props) => (props.more === 3 ? "660px" : "320px")};
 
-        background-color: ${(props) => (props.more === 1 ? "#44475a" : "#64acef")};
+        flex-direction: column;
+
+        background-color: ${(props) => (props.more === 1 ? "#44475a" : props.more === 3 ? "#faf8f2" : "#64acef")};
 
         z-index: 1000;
 
@@ -61,8 +65,6 @@ export const UserSection = styled.section`
         width: ${(props) => (props.more === 4 ? "630px" : "260px")};
 
         background-color: #faf8f2;
-
-        overflow: hidden;
     }
 `;
 
@@ -72,7 +74,6 @@ export const UserCard = styled.article`
     height: 320px;
 
     display: flex;
-    flex-direction: column;
     justify-content: center;
 
     opacity: ${(props) => (props.defocus ? "1" : "0.5")};
@@ -83,6 +84,10 @@ export const UserCard = styled.article`
     background-color: #f2f2f2;
 
     transition: all ease 0.5s;
+
+    & > div {
+        max-height: 2000px;
+    }
 `;
 
 export const MoreButton = styled.button`

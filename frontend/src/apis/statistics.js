@@ -1,15 +1,14 @@
 import eetch from "apis/eetch";
 
-export const strick = async ({ email, user }) => {
+export const strick = async ({ user }) => {
     try {
-        const url = `${process.env.REACT_APP_API_URL}/statistics/strick`;
+        const url = `${process.env.REACT_APP_API_URL}/statistic/strick`;
         const options = {
-            method: "POST",
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ email }),
             credentials: "include"
         };
 
@@ -21,7 +20,7 @@ export const strick = async ({ email, user }) => {
 
 export const strickDetail = async ({ email, date, user }) => {
     try {
-        const url = `${process.env.REACT_APP_API_URL}/statistics/strick/detail`;
+        const url = `${process.env.REACT_APP_API_URL}/statistic/strick/detail`;
         const options = {
             method: "POST",
             headers: {
@@ -38,16 +37,15 @@ export const strickDetail = async ({ email, date, user }) => {
     }
 };
 
-export const achievement = async ({ email, user }) => {
+export const achievement = async ({ user }) => {
     try {
-        const url = `${process.env.REACT_APP_API_URL}/statistics/achievement`;
+        const url = `${process.env.REACT_APP_API_URL}/statistic/achievement`;
         const options = {
-            method: "POST",
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ email }),
             credentials: "include"
         };
 
@@ -59,7 +57,7 @@ export const achievement = async ({ email, user }) => {
 
 export const gameBlankWeek = async ({ email, week, user }) => {
     try {
-        const url = `${process.env.REACT_APP_API_URL}/statistics/game/blank/${week}`;
+        const url = `${process.env.REACT_APP_API_URL}/statistic/game/blank/${week}`;
         const options = {
             method: "POST",
             headers: {
@@ -78,7 +76,7 @@ export const gameBlankWeek = async ({ email, week, user }) => {
 
 export const gameSpeedWeek = async ({ email, week, user }) => {
     try {
-        const url = `${process.env.REACT_APP_API_URL}/statistics/game/speed/${week}`;
+        const url = `${process.env.REACT_APP_API_URL}/statistic/game/speed/${week}`;
         const options = {
             method: "POST",
             headers: {
@@ -97,7 +95,7 @@ export const gameSpeedWeek = async ({ email, week, user }) => {
 
 export const practiceWord = async ({ email, user }) => {
     try {
-        const url = `${process.env.REACT_APP_API_URL}/statistics/practice/word`;
+        const url = `${process.env.REACT_APP_API_URL}/statistic/practice/word`;
         const options = {
             method: "POST",
             headers: {
@@ -116,7 +114,7 @@ export const practiceWord = async ({ email, user }) => {
 
 export const practiceSimul = async ({ email, user }) => {
     try {
-        const url = `${process.env.REACT_APP_API_URL}/statistics/practice/simul`;
+        const url = `${process.env.REACT_APP_API_URL}/statistic/practice/simul`;
         const options = {
             method: "POST",
             headers: {
@@ -135,7 +133,7 @@ export const practiceSimul = async ({ email, user }) => {
 
 export const practiceSimulBackground = async ({ email, background, user }) => {
     try {
-        const url = `${process.env.REACT_APP_API_URL}/statistics/practice/simul/${background}`;
+        const url = `${process.env.REACT_APP_API_URL}/statistic/practice/simul/${background}`;
         const options = {
             method: "POST",
             headers: {

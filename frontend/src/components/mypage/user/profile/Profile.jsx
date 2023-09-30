@@ -99,32 +99,36 @@ export default function Profile({ userInfo, setUserInfo, more, setMore }) {
                 <p.DetailContentText>{getHobby(userInfo.hobby)}</p.DetailContentText>
             </p.DetailContentBox>
 
-            <p.InputBox>
-                <SigninInput
-                    data={{
-                        text: "나이",
-                        id: "age",
-                        name: "age",
-                        type: "text",
-                        onChangeFunc: handleChange,
-                        value: inputs[0]
-                    }}
-                />
-                <SelectInput
-                    data={{
-                        target: "직업",
-                        list: lists.jobList,
-                        callback: setJobHobby
-                    }}
-                />
-                <SelectInput
-                    data={{
-                        target: "취미",
-                        list: lists.hobbyList,
-                        callback: setJobHobby
-                    }}
-                />
-            </p.InputBox>
+            <p.InputWrapper>
+                <p.InputBox>
+                    <SigninInput
+                        data={{
+                            text: "나이",
+                            id: "age",
+                            name: "age",
+                            type: "text",
+                            onChangeFunc: handleChange,
+                            value: inputs[0] || 0
+                        }}
+                    />
+                    <SelectInput
+                        data={{
+                            target: "직업",
+                            list: lists.jobList,
+                            callback: setJobHobby,
+                            Idx: userInfo.job
+                        }}
+                    />
+                    <SelectInput
+                        data={{
+                            target: "취미",
+                            list: lists.hobbyList,
+                            callback: setJobHobby,
+                            Idx: userInfo.hobby
+                        }}
+                    />
+                </p.InputBox>
+            </p.InputWrapper>
 
             <MoreButton onClick={() => handleSubmit()}>
                 {more === 4 ? "수정 완료" : "상세 수정"}
