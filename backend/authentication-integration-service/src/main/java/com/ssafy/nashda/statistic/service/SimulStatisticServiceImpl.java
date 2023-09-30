@@ -19,8 +19,8 @@ public class SimulStatisticServiceImpl implements SimulStatisticService {
 
     @Override
     @Transactional
-    public void createSimulStatic(Member member, SimulType type) {
-        simulStatisticRepository.save(SimulStatistic.builder()
+    public SimulStatistic createSimulStatic(Member member, SimulType type) {
+        return simulStatisticRepository.save(SimulStatistic.builder()
                                         .member(member)
                                         .type(type)
                                         .build());
