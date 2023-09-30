@@ -7,10 +7,13 @@ import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.repository.MemberRepository;
-import com.ssafy.nashda.simulGPT.dto.*;
+import com.ssafy.nashda.simulGPT.dto.request.MessageReqDto;
+import com.ssafy.nashda.simulGPT.dto.response.ChatMessageDto;
+import com.ssafy.nashda.simulGPT.dto.response.ChatResDto;
+import com.ssafy.nashda.simulGPT.dto.response.ChatSttResDto;
 import com.ssafy.nashda.simulGPT.entity.MemorizeChat;
 import com.ssafy.nashda.simulGPT.repository.ChatGptRepository;
-import com.ssafy.nashda.simulGPT.service.ChatGptServiceImpl;
+import com.ssafy.nashda.simulGPT.service.ChatGptService;
 import com.ssafy.nashda.statistic.entity.SimulStatistic;
 import com.ssafy.nashda.statistic.entity.SimulType;
 import com.ssafy.nashda.statistic.entity.Strick;
@@ -23,9 +26,11 @@ import com.ssafy.nashda.statistic.service.SimulStatisticService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -42,7 +47,7 @@ public class ChatGptController {
     private final MemberController memberController;
     private final MemberRepository memberRepository;
 
-    private final ChatGptServiceImpl chatGptServiceImpl;
+    private final ChatGptService chatGptService;
     private final ChatGptRepository chatGptRepository;
 
     private final SimulStaticRepository simulStaticRepository;
@@ -125,7 +130,7 @@ public class ChatGptController {
 
         messages.add(new ChatMessageDto("user", messageReqDto.getMessage()));
 
-        ChatResDto chatResDto = chatGptServiceImpl.getChatCompletion(messages);
+        ChatResDto chatResDto = chatGptService.getChatCompletion(messages);
 
         String message = chatResDto.getChoices().get(0).getMessage().getContent();
         simulStaticRepository.updateTotal(simulStatistic.getTotal() + 1, simulStatistic.getIndex());
@@ -167,4 +172,11 @@ public class ChatGptController {
 
     }
 
+    @PostMapping(value = "/stt", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<? extends BaseResponseBody> getStt(@RequestHeader("Authorization") String accessToken,
+                                                             @RequestPart("sound") MultipartFile file) throws Exception {
+
+        ChatSttResDto chatSttResDto = chatGptService.getStt(file);
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody(200, "stt 변환 성공", chatSttResDto));
+    }
 }
