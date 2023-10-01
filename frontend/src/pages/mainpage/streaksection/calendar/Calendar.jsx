@@ -68,14 +68,14 @@ export default function Calendar({ props }) {
     };
 
     const { columns } = state;
-    const { values } = props;
+    const { stricks } = props;
     const { until } = props;
 
     if (panelColors === undefined || weekNames === undefined || monthNames === undefined) {
         return;
     }
 
-    const contributions = makeCalendarData(values, until, columns);
+    const contributions = makeCalendarData(stricks, until, columns);
     const innerDom = [];
 
     for (let i = 0; i < columns; i++) {

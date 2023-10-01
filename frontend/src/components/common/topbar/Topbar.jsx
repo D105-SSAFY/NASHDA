@@ -52,9 +52,9 @@ export default function Topbar() {
                         <t.NavListItem visible={isLogin}>
                             <t.NavLink to="/mypage">내 정보</t.NavLink>
                         </t.NavListItem>
-                        <t.NavListItem visible={isLogin}>
+                        {/* <t.NavListItem visible={isLogin}>
                             <t.NavLink to="/settings">설정</t.NavLink>
-                        </t.NavListItem>
+                        </t.NavListItem> */}
                         <t.NavListItem visible={isLogin}>
                             <t.NavLink to="/" onClick={signout}>
                                 로그아웃

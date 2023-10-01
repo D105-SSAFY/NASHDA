@@ -4,6 +4,7 @@ import * as question from "apis/question";
 import * as statistics from "apis/statistics";
 import * as test from "apis/test";
 import * as user from "apis/user";
+import * as history from "apis/history";
 
 import { refresh } from "apis/user";
 import { updateRefresh } from "redux/slice/userSlice";
@@ -62,11 +63,13 @@ eetch.replyDelete = (values) => question.replyDelete(values);
 eetch.strick = (values) => statistics.strick(values);
 eetch.strickDetail = (values) => statistics.strickDetail(values);
 eetch.achievement = (values) => statistics.achievement(values);
+eetch.games = (values) => statistics.games(values);
 eetch.gameBlankWeek = (values) => statistics.gameBlankWeek(values);
 eetch.gameSpeedWeek = (values) => statistics.gameSpeedWeek(values);
 eetch.practiceWord = (values) => statistics.practiceWord(values);
 eetch.practiceSimul = (values) => statistics.practiceSimul(values);
 eetch.practiceSimulBackground = (values) => statistics.practiceSimulBackground(values);
+eetch.weekTest = (values) => statistics.weekTest(values);
 
 eetch.wordList = (values) => test.wordList(values);
 eetch.wordSubmit = (values) => test.wordSubmit(values);
@@ -94,5 +97,7 @@ eetch.checkCode = (values) => user.checkCode(values);
 eetch.checkNickname = (values) => user.checkNickname(values);
 eetch.reset = (values) => user.reset(values);
 eetch.domain = (values) => user.domain(values);
+
+eetch.continuous = (values) => history.continuous(values);
 
 export default eetch;

@@ -1,10 +1,16 @@
 import React from "react";
+import { useSelector } from "react-redux";
+
 import * as s from "./style";
 import { MoreButton } from "components/mypage/user/style";
 
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 
-export default function Statistics({ tabSwitch }) {
+import eetch from "apis/eetch";
+
+export default function Statistics({ setMore }) {
+    const user = useSelector((state) => state.user);
+
     const [scores, setScores] = React.useState([
         { score: null, week: null },
         { score: null, week: null },
@@ -16,16 +22,10 @@ export default function Statistics({ tabSwitch }) {
     const [totals, setTotals] = React.useState([0, 0, 0]);
 
     React.useEffect(() => {
-        // 테스트용 타임 아웃
-        setTimeout(() => {
-            setScores([
-                { score: 97, week: 15 },
-                { score: 82, week: 14 },
-                { score: 74, week: 13 }
-            ]);
-        }, 100);
-
-        setTotals([100, 100, 100]);
+        eetch.weekTest({ user }).then((res) => {
+            setScores(res.data.test_info);
+            setTotals([res.data.member_info.word_count, res.data.member_info.sentence_count, res.data.member_info.conversation_count]);
+        });
     }, []);
 
     const graphs = () => {
@@ -57,7 +57,7 @@ export default function Statistics({ tabSwitch }) {
                 <s.GraphInfoContent>문장 {totals[1]}</s.GraphInfoContent>
                 <s.GraphInfoContent>대화 {totals[2]}</s.GraphInfoContent>
             </s.GraphInfo>
-            <MoreButton onClick={() => tabSwitch("통계")}>
+            <MoreButton onClick={() => setMore(5)}>
                 통계
                 <ArrowCircleRightOutlinedIcon />
             </MoreButton>
