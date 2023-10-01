@@ -1,7 +1,9 @@
 import React from "react";
 import * as a from "./style";
 
-export default function ArchievementDetail({ achieved }) {
+import { CloseButton } from "components/mypage/user/style";
+
+export default function ArchievementDetail({ setMore, achieved }) {
     const archieveList = (achieved) => {
         if (achieved.length === 0) return <a.ArchieveItem>없음</a.ArchieveItem>;
         const result = [];
@@ -20,5 +22,10 @@ export default function ArchievementDetail({ achieved }) {
         return result;
     };
 
-    return <a.ArchievesBox>{archieveList(achieved)}</a.ArchievesBox>;
+    return (
+        <>
+            <a.ArchievesBox>{archieveList(achieved)}</a.ArchievesBox>
+            <CloseButton onClick={() => setMore(0)} />
+        </>
+    );
 }
