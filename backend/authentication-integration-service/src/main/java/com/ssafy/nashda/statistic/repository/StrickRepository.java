@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StrickRepository extends JpaRepository<Strick, Long> {
-    List<Strick> findByMember(Member member, Pageable pageable);
+    List<Strick> findByMemberOrderByCreatOnDesc(Member member, Pageable pageable);
 
     Optional<Strick> findByMemberAndCreatOn(Member member, LocalDate date);
 
