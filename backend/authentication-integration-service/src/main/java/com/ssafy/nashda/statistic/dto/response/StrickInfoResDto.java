@@ -17,6 +17,7 @@ public class StrickInfoResDto {
     private int practice_count;
     private int conversation_count;
     private int test_count;
+    private int total_count;
     @Builder
     public StrickInfoResDto(Strick strick) {
         this.date = strick.getCreatOn();
@@ -25,6 +26,7 @@ public class StrickInfoResDto {
         this.practice_count = strick.getPracticeCount();
         this.conversation_count = strick.getConversationCount();
         this.test_count = strick.getTestCount();
+        this.total_count = this.blank_count+this.speed_count+this.practice_count+this.conversation_count+this.test_count;
     }
 
 }
