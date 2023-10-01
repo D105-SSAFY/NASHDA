@@ -4,6 +4,7 @@ import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.member.entity.Member;
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.*;
@@ -21,8 +23,8 @@ import java.util.*;
  */
 
 
-@Slf4j
-@Component
+@RequiredArgsConstructor
+@Service
 public class TokenProvider {
 
     @Value("${jwt.secret}")
