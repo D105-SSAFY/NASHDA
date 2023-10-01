@@ -22,7 +22,7 @@ public class StrickServiceImpl implements StrickService {
     public List<Strick> getStrick(Member member) {
         //member의 stick을 최대 365개 보내준다.
         Pageable pageable = PageRequest.of(0, 365);
-        return strickRepository.findByMemberOrderByCreatOnDescit(member, pageable);
+        return strickRepository.findByMemberOrderByCreatOnDesc(member, pageable);
     }
 
     @Override
