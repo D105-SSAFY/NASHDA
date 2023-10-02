@@ -2,55 +2,24 @@ import { useCallback, useEffect, useState } from "react";
 
 import * as s from "./style";
 
-import voice from "utils/VoiceFunc";
-
-import VoiceModal from "components/modals/voicemodal/VoiceModal";
+import HintModal from "components/modals/hintmodal/HintModal";
 import FilledButton from "components/buttons/filledbutton/FilledButton";
 import BorderButton from "components/buttons/borderbutton/BorderButton";
+import VoiceModal from "components/modals/voicemodal/VoiceModal";
 
 import MicIcon from "@mui/icons-material/Mic";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import RedoIcon from "@mui/icons-material/Redo";
 
-export default function PronunciationSection({ props: { pronunciation } }) {
+import voice from "utils/VoiceFunc";
+
+export default function PronunciationSection({ props: { problem, sentence } }) {
     const [audioText, setAudioText] = useState("");
     const [onModal, setOnModal] = useState(false);
+    const [onHintModal, setOnHintModal] = useState(false);
     const [onUpdate, setOnUpdate] = useState(false);
 
-    const checkProun = useCallback(() => {
-        if (!pronunciation || !audioText) {
-            return [];
-        }
-
-        const pronunciationWords = pronunciation.replaceAll(" ", "").split("");
-        const testWords = audioText.replaceAll(" ", "").split("");
-        const result = pronunciationWords.reduce((acc, cur, idx) => {
-            if (cur === testWords[idx]) {
-                acc.push({
-                    word: testWords[idx],
-                    match: true
-                });
-            } else {
-                acc.push({
-                    word: testWords[idx],
-                    match: false
-                });
-            }
-
-            return acc;
-        }, []);
-
-        if (testWords.length > pronunciationWords.length) {
-            testWords.splice(pronunciationWords.length, testWords.length).forEach((word) => {
-                result.push({
-                    word,
-                    match: false
-                });
-            });
-        }
-
-        return result;
-    }, [pronunciation, audioText]);
+    console.log(audioText);
 
     const showModal = useCallback(() => {
         setOnModal(true);
@@ -60,7 +29,15 @@ export default function PronunciationSection({ props: { pronunciation } }) {
         setOnModal(false);
     }, []);
 
-    const { onRecAudio, offRecAudio, createFile, play } = voice();
+    const showHintModal = useCallback(() => {
+        setOnHintModal(true);
+    }, []);
+
+    const unshowHintModal = useCallback(() => {
+        setOnHintModal(false);
+    }, []);
+
+    const { onRecAudio, offRecAudio, createFile } = voice();
 
     const onClickRecordOn = () => {
         showModal();
@@ -128,30 +105,22 @@ export default function PronunciationSection({ props: { pronunciation } }) {
     return (
         <>
             <s.Section>
-                <s.Header>
-                    <h2>나의 발음</h2>
-                </s.Header>
-                <s.Box>
-                    <s.Pron>
-                        {checkProun().map((word, index) =>
-                            word.match ? <s.Match key={word + index}>{word.word}</s.Match> : <s.Unmatch key={word + index}>{word.word}</s.Unmatch>
-                        )}
-                    </s.Pron>
-                    <s.SpeakButton visible={Boolean(audioText)} onClick={play}>
-                        <VolumeUpIcon />
-                    </s.SpeakButton>
-                </s.Box>
                 <s.ButtonWrapper>
                     <FilledButton props={{ background: "rgba(68, 71, 90, 0.7)", color: "#ffffff", hovercolor: "#44475A", callback: onClickRecordOn }}>
                         <MicIcon />
                         <span>녹음하기</span>
                     </FilledButton>
+                    <BorderButton props={{ color: "rgba(68, 71, 90, 0.7)", callback: showHintModal }}>
+                        <LightbulbIcon />
+                        <span>힌트</span>
+                    </BorderButton>
                     <BorderButton props={{ color: "rgba(68, 71, 90, 0.7)" }}>
                         <RedoIcon />
                         <span>다음</span>
                     </BorderButton>
                 </s.ButtonWrapper>
-                <VoiceModal props={{ title: "따라 읽어보세요.", content: pronunciation, visible: onModal, callback: onClickRecordOff }} />
+                <HintModal props={{ problem, display: onHintModal, hideModal: unshowHintModal }} />
+                <VoiceModal props={{ title: "정답을 말해보세요.", content: sentence, visible: onModal, callback: onClickRecordOff }} />
             </s.Section>
         </>
     );
