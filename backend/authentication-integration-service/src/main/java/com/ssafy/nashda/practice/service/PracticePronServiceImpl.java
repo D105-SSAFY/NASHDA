@@ -199,8 +199,8 @@ public class PracticePronServiceImpl implements PracticePronService {
         // STT 부분
         // FAST API 와 소통하기
         log.info("name : {}", sound.getOriginalFilename());
-//        String sttResult = sttService.getPronunciation(sound); // 받아온 STT
-        String sttResult = "강벼네서 자언어을 탁오 읻읍니다"; // 받아온 STT
+        String sttResult = sttService.getPronunciation(sound); // 받아온 STT
+//        String sttResult = "강벼네서 자언어을 탁오 읻읍니다"; // 받아온 STT
 //        "강벼네서 자전거를 타고 읻씀니다."
 
         // 통계 저장 부분
