@@ -104,7 +104,7 @@ public class TestServiceImpl implements TestService {
         String index = wordTestResultRepository.save(testResult).getId();
 
         WordTestStartResDto resDto = WordTestStartResDto.builder()
-                .try_count(tryCount)
+                .try_count(tryCount+1)
                 .index(index)
                 .problem(problem)
                 .convert(convert)
@@ -199,7 +199,12 @@ public class TestServiceImpl implements TestService {
         
         //soundfile을 s3에 업로드후 mongodb에 저장
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
-        Update update = new Update().set("user_pronunciation", url);
+        Update update = new Update().set("user_pronunciation_url", url);
+        mongoTemplate.updateFirst(query, update, WordTestResult.class);
+
+        update = new Update().set("user_pronunciation", stt);
+        mongoTemplate.updateFirst(query, update, WordTestResult.class);
+
 
         //변환된 text를 반환
 
@@ -214,7 +219,10 @@ public class TestServiceImpl implements TestService {
         String stt = sttService.getPronunciation(reqDto.getSound());
 
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
-        Update update = new Update().set("user_pronunciation." + reqDto.getOrder(), url);
+        Update update = new Update().set("user_pronunciation_url." + reqDto.getOrder(), url);
+        mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
+
+        update = new Update().set("user_pronunciation." + reqDto.getOrder(), stt);
         mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
 
         return stt;
