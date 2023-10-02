@@ -8,6 +8,7 @@ import com.ssafy.nashda.statistic.service.StrickService;
 import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
 import com.ssafy.nashda.test.dto.request.*;
 import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
+import com.ssafy.nashda.test.dto.response.WordTestResultAllResDto;
 import com.ssafy.nashda.test.dto.response.WordTestStartResDto;
 import com.ssafy.nashda.test.service.TestService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,16 @@ public class TestController {
     private final MemberController memberController;
     private final StrickService strickService;
     private final MemberHistoryService memberHistoryService;
+
+    @GetMapping("/week/all")
+    public ResponseEntity<? extends BaseResponseBody> weekTestAll(@RequestHeader("Authorization") String token) throws Exception {
+
+        Member member = memberController.findMemberByToken(token);
+        WordTestResultAllResDto allWordTestResult = testService.getAllWordTestResult(member);
+
+        return new ResponseEntity<>(new BaseResponseBody(200, "전체 점수", allWordTestResult),
+                HttpStatus.OK);
+    }
 
     @GetMapping("/word")
     public ResponseEntity<? extends BaseResponseBody> wordTestStart(@RequestHeader("Authorization") String token) throws Exception {
