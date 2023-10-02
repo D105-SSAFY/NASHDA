@@ -13,13 +13,10 @@ import com.ssafy.nashda.notice.repository.NoticeFileRepository;
 import com.ssafy.nashda.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -34,9 +31,6 @@ public class NoticeServiceImpl implements NoticeService {
     private final NoticeRepository noticeRepository;
     private final NoticeFileRepository noticeFileRepository;
     private final S3Uploader s3Uploader;
-
-    @Autowired
-    private EntityManager entityManager;
 
     @Override
     @Transactional
@@ -120,7 +114,6 @@ public class NoticeServiceImpl implements NoticeService {
 
                 if (files != null) {
 
-
                     for(MultipartFile file : files) {
                         String fileName = file.getOriginalFilename();
                         newFileNames.add(file.getOriginalFilename());
@@ -147,10 +140,10 @@ public class NoticeServiceImpl implements NoticeService {
 
                 Iterator<NoticeFile> iterator = notice.getFiles().iterator();
                 while (iterator.hasNext()) {
-                    NoticeFile oldfile = iterator.next();
-                    if (!newFileNames.contains(oldfile.getFileName())) {
+                    NoticeFile oldFile = iterator.next();
+                    if (!newFileNames.contains(oldFile.getFileName())) {
                         iterator.remove();
-                        noticeFileRepository.delete(oldfile);
+                        noticeFileRepository.delete(oldFile);
                     }
                 }
                 return;

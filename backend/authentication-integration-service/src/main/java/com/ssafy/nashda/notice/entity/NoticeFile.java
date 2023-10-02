@@ -1,7 +1,6 @@
 package com.ssafy.nashda.notice.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ssafy.nashda.common.entity.TimeEntity;
 import lombok.*;
 
 import javax.persistence.*;

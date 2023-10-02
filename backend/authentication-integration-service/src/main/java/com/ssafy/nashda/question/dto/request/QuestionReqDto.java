@@ -5,6 +5,7 @@ import com.ssafy.nashda.question.entity.Question;
 import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class QuestionReqDto {
     private String title;

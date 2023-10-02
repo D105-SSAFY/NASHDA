@@ -41,6 +41,7 @@ public enum ErrorCode {
 
 
     // 질문 게시판
+    NOT_EXISTS_QUESTION(HttpStatus.BAD_REQUEST, 400, "해당 유저가 작성한 질문글이 존재하지않습니다."),
     NOT_EXISTS_QUESTION_ID(HttpStatus.BAD_REQUEST, 400, "존재하지 않는 질문글입니다."),
 
     // 답변
