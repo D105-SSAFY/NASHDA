@@ -107,6 +107,9 @@ public class PracticeStatisticServiceImpl implements PracticeStatisticService {
 
             // 종성
             for (String str : coda) {
+                if("".equals(str)) continue;
+
+
                 CodaStatistic codaStatistic = CodaStatistic.builder()
                         .member(member)
                         .letter(str)
