@@ -1,8 +1,8 @@
 package com.ssafy.nashda.question.service;
 
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.question.dto.QuestionReqDto;
-import com.ssafy.nashda.question.dto.QuestionResDto;
+import com.ssafy.nashda.question.dto.request.QuestionReqDto;
+import com.ssafy.nashda.question.dto.response.QuestionResDto;
 import com.ssafy.nashda.question.entity.Question;
 
 import java.util.List;

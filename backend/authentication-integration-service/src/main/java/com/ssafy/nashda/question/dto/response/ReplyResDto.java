@@ -1,4 +1,4 @@
-package com.ssafy.nashda.question.dto;
+package com.ssafy.nashda.question.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.ssafy.nashda.question.entity.Reply;

@@ -1,7 +1,7 @@
 package com.ssafy.nashda.question.service;
 
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.question.dto.ReplyReqDto;
+import com.ssafy.nashda.question.dto.request.ReplyReqDto;
 
 
 public interface ReplyService {

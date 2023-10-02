@@ -1,4 +1,4 @@
-package com.ssafy.nashda.question.dto;
+package com.ssafy.nashda.question.dto.request;
 
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.question.entity.Reply;
