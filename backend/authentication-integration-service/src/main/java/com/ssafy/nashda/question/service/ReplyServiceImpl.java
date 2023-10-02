@@ -3,7 +3,7 @@ package com.ssafy.nashda.question.service;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.question.dto.ReplyReqDto;
+import com.ssafy.nashda.question.dto.request.ReplyReqDto;
 import com.ssafy.nashda.question.entity.Question;
 import com.ssafy.nashda.question.entity.Reply;
 import com.ssafy.nashda.question.repository.QuestionRepository;

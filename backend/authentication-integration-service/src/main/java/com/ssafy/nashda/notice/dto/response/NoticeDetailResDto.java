@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -15,12 +17,14 @@ public class NoticeDetailResDto {
     private Long view; // 조회수
     private LocalDateTime updateOn;
 
-    public NoticeDetailResDto(Notice notice) {
+    private List<NoticeFileResDto> files;
+
+    public NoticeDetailResDto(Notice notice, List<NoticeFileResDto> files) {
         this.index = notice.getIndex();
         this.title = notice.getTitle();
         this.content = notice.getContent();
         this.view = notice.getView();
         this.updateOn = notice.getUpdateOn();
+        this.files = files;
     }
-
 }

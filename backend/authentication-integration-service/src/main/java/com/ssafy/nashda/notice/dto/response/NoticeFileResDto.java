@@ -7,13 +7,11 @@ import lombok.*;
 @Setter
 public class NoticeFileResDto {
 
-    private String url;
     private String fileName;
+    private String url;
 
-    public NoticeFileResDto of(NoticeFile noticeFile) {
-        NoticeFileResDto noticeFileResDto = new NoticeFileResDto();
-        noticeFileResDto.setUrl(noticeFile.getUrl());
-        noticeFileResDto.setFileName(noticeFile.getFileName());
-        return noticeFileResDto;
+    public NoticeFileResDto (NoticeFile noticeFile) {
+        this.fileName = noticeFile.getFileName();
+        this.url = noticeFile.getUrl();
     }
 }

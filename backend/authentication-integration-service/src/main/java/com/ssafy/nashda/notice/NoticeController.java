@@ -4,10 +4,9 @@ package com.ssafy.nashda.notice;
 import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.notice.dto.response.NoticeAllResDto;
+import com.ssafy.nashda.notice.dto.response.NoticeResDto;
 import com.ssafy.nashda.notice.dto.request.NoticeReqDto;
 import com.ssafy.nashda.notice.service.NoticeService;
-import com.ssafy.nashda.token.config.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,7 +30,7 @@ public class NoticeController {
     public ResponseEntity<? extends BaseResponseBody> createNotice(@RequestHeader("Authorization") String accessToken,
                                                                    @RequestPart("title") String title,
                                                                    @RequestPart("content") String content,
-                                                                   @RequestPart("files") List<MultipartFile> files) {
+                                                                   @RequestPart(value = "files", required = false) List<MultipartFile> files) {
 
             Member member = memberController.findMemberByToken(accessToken);
             NoticeReqDto noticeReqDto = new NoticeReqDto();
@@ -46,9 +45,9 @@ public class NoticeController {
     @GetMapping
     public ResponseEntity<? extends BaseResponseBody> getNotices() {
 
-        List<NoticeAllResDto> notices = noticeService.getNotices()
+        List<NoticeResDto> notices = noticeService.getNotices()
                 .stream()
-                .map(NoticeAllResDto::new)
+                .map(NoticeResDto::new)
                 .collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "공지사항 전체 조회 성공", notices));

@@ -6,6 +6,7 @@ import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.notice.dto.response.NoticeDetailResDto;
 import com.ssafy.nashda.notice.dto.request.NoticeReqDto;
+import com.ssafy.nashda.notice.dto.response.NoticeFileResDto;
 import com.ssafy.nashda.notice.entity.Notice;
 import com.ssafy.nashda.notice.entity.NoticeFile;
 import com.ssafy.nashda.notice.repository.NoticeFileRepository;
@@ -17,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor // final이 붙거나 @NotNull이 붙은 필드의 생성자 추가
 @Transactional
@@ -34,22 +37,25 @@ public class NoticeServiceImpl implements NoticeService {
         if (member.getStatus() == 0) {
             Notice notice = noticeRepository.save(noticeReqDto.toEntity(member));
 
-            for(MultipartFile file : files) {
-                String uploadUrl;
-                try {
-                    uploadUrl = s3Uploader.uploadFiles(file, "notice-files");
-                } catch (IOException e) {
-                    throw new BadRequestException(ErrorCode.FAIL_UPLOAD_FILE);
+            if (files != null) {
+                for(MultipartFile file : files) {
+                    String uploadUrl;
+                    try {
+                        uploadUrl = s3Uploader.uploadFiles(file, "notice-files");
+                    } catch (IOException e) {
+                        throw new BadRequestException(ErrorCode.FAIL_UPLOAD_FILE);
+                    }
+
+                    NoticeFile noticeFile = NoticeFile.builder()
+                            .notice(notice)
+                            .url(uploadUrl)
+                            .fileName(file.getOriginalFilename())
+                            .build();
+
+                    noticeFileRepository.save(noticeFile);
                 }
-
-                NoticeFile noticeFile = NoticeFile.builder()
-                        .notice(notice)
-                        .url(uploadUrl)
-                        .fileName(file.getOriginalFilename())
-                        .build();
-
-                noticeFileRepository.save(noticeFile);
             }
+
         } else {
             throw new BadRequestException(ErrorCode.NOT_VALID_AUTHORIZATION);
         }
@@ -68,7 +74,15 @@ public class NoticeServiceImpl implements NoticeService {
         Long view = notice.getView();
         noticeRepository.updateView(view + 1, index);
         Notice newNotice = noticeRepository.getReferenceById(index);
-        return new NoticeDetailResDto(newNotice);
+
+        List<NoticeFileResDto> files = new ArrayList<>();
+        if (newNotice.getFiles() != null) {
+            files = newNotice.getFiles().stream()
+                    .map(NoticeFileResDto::new)
+                    .collect(Collectors.toList());
+        }
+
+        return new NoticeDetailResDto(newNotice, files);
     }
 
     @Transactional

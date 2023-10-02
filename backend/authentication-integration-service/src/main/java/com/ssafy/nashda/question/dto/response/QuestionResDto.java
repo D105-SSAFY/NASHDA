@@ -1,4 +1,4 @@
-package com.ssafy.nashda.question.dto;
+package com.ssafy.nashda.question.dto.response;
 
 import com.ssafy.nashda.question.entity.Question;
 import lombok.*;
