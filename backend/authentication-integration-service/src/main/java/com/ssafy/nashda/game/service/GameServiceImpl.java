@@ -10,7 +10,6 @@ import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.game.dto.request.*;
 import com.ssafy.nashda.game.dto.response.*;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.member.repository.MemberRepository;
 
 import com.ssafy.nashda.member.service.MemberService;
 import com.ssafy.nashda.stt.service.STTService;
@@ -25,7 +24,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.web.reactive.function.client.WebClient;
@@ -168,21 +166,21 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public GmaeSTTResDto convertSTT(GameSTTReqDto request) throws Exception {
+    public GameSTTResDto convertSTT(GameSTTReqDto request) throws Exception {
 
         int type = request.getType();   //0 : speed1, 1:speed2, 2:blank
         int index = request.getIndex();  //문제 번호
         String answer = request.getAnswer();
-        GmaeSTTResDto gmaeSTTResDto;
+        GameSTTResDto gameSTTResDto;
 
         String stt = sttService.getPronunciation(request.getSound());  //사용자의 음성 파일을 STT
         if (stt.equals(answer)) {
-            gmaeSTTResDto = new GmaeSTTResDto(true, stt);
+            gameSTTResDto = new GameSTTResDto(true, stt);
         } else {
-            gmaeSTTResDto = new GmaeSTTResDto(false, stt);
+            gameSTTResDto = new GameSTTResDto(false, stt);
         }
 
-        return gmaeSTTResDto;
+        return gameSTTResDto;
     }
 
     @Override

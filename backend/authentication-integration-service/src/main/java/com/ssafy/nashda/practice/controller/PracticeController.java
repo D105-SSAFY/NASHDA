@@ -4,21 +4,16 @@ import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.history.service.MemberHistoryService;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.member.service.MemberService;
 import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
 import com.ssafy.nashda.practice.dto.PronSTTResponseDto;
 import com.ssafy.nashda.practice.service.PracticePronService;
-import com.ssafy.nashda.statistic.service.AchievementService;
-import com.ssafy.nashda.statistic.service.StrickService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 연습 문제 전송 컨트롤러
@@ -146,7 +141,8 @@ public class PracticeController {
                                                                        @RequestHeader("Authorization") String token) throws Exception {
 
         Member member = memberController.findMemberByToken(token);
-        String stt = practicePronService.getSTT(member, practicePronRequestDto);
+        String stt = practicePronService.getPracSTT(member, practicePronRequestDto);
+
 
         //memberhistory에서 practice count 증가
         memberHistoryService.increasePracticeCount(member);
