@@ -219,10 +219,10 @@ public class TestServiceImpl implements TestService {
         String stt = sttService.getPronunciation(reqDto.getSound());
 
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
-        Update update = new Update().set("user_pronunciation_url." + reqDto.getOrder(), url);
+        Update update = new Update().set("user_pronunciation_url." + (reqDto.getOrder()-1), url);
         mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
 
-        update = new Update().set("user_pronunciation." + reqDto.getOrder(), stt);
+        update = new Update().set("user_pronunciation." + (reqDto.getOrder()-1), stt);
         mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
 
         return stt;
