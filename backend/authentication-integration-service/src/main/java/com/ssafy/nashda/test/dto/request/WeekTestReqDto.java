@@ -14,5 +14,5 @@ public class WeekTestReqDto {
     private String index;
     private int order;
     private String imgUrl;
-    private MultipartFile sound;
+//    private MultipartFile sound;
 }

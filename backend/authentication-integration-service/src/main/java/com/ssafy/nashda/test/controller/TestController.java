@@ -86,8 +86,10 @@ public class TestController {
     }
 
     @PostMapping(value = "/word/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<? extends BaseResponseBody> wordTestUserSpeak(@ModelAttribute WordTestResultSpeakReqDto reqDto) throws Exception {
-        String stt = testService.sttWordTest(reqDto);
+    public ResponseEntity<? extends BaseResponseBody> wordTestUserSpeak(
+            @RequestPart(value = "sound") MultipartFile sound,
+            @ModelAttribute WordTestResultSpeakReqDto reqDto) throws Exception {
+        String stt = testService.sttWordTest(sound, reqDto);
         return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 변환 성공", stt),
                 HttpStatus.OK);
     }
@@ -95,9 +97,10 @@ public class TestController {
 
     @PostMapping(value = "/sentence/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<? extends BaseResponseBody> sentenceTestUserSpeak(
+            @RequestPart(value = "sound") MultipartFile sound,
             @ModelAttribute SentenceTestSpeakReqDto reqDto) throws Exception {
 
-        String stt = testService.sttSentenceTest(reqDto);
+        String stt = testService.sttSentenceTest(sound, reqDto);
 
         return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 변환 성공(문장)", stt),
                 HttpStatus.OK);
@@ -115,14 +118,15 @@ public class TestController {
 
     @PostMapping(value = "/week/user",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<? extends BaseResponseBody> weekTestUser(
+            @RequestPart(value = "sound") MultipartFile sound,
             @ModelAttribute WeekTestReqDto reqDto) throws Exception {
 
         if(reqDto.getOrder()<5){
-            String stt = testService.sttMixTest(reqDto, "blank");
+            String stt = testService.sttMixTest(sound, reqDto, "blank");
             return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 저장 성공(blank)", stt),
                     HttpStatus.OK);
         }else if(reqDto.getOrder()<8){
-            String stt = testService.sttMixTest(reqDto, "speed1");
+            String stt = testService.sttMixTest(sound, reqDto, "speed1");
             return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 저장 성공(speed)", stt),
                     HttpStatus.OK);
         }else{

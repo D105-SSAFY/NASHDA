@@ -12,5 +12,5 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class WordTestResultSpeakReqDto {
     private String index;
-    private MultipartFile sound;
+//    private MultipartFile sound;
 }

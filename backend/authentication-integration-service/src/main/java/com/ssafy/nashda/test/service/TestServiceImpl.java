@@ -191,11 +191,11 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public String sttWordTest(WordTestResultSpeakReqDto reqDto) throws Exception {
+    public String sttWordTest(MultipartFile sound, WordTestResultSpeakReqDto reqDto) throws Exception {
 
         //받아온 soundfile을 stt로 변환
-        String url = s3Uploader.uploadFiles(reqDto.getSound(), "word_test");
-        String stt = sttService.getPronunciation(reqDto.getSound());
+        String url = s3Uploader.uploadFiles(sound, "word_test");
+        String stt = sttService.getPronunciation(sound);
         
         //soundfile을 s3에 업로드후 mongodb에 저장
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
@@ -212,11 +212,11 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public String sttSentenceTest(SentenceTestSpeakReqDto reqDto) throws Exception {
+    public String sttSentenceTest(MultipartFile sound, SentenceTestSpeakReqDto reqDto) throws Exception {
 
-        String url = s3Uploader.uploadFiles(reqDto.getSound(), "sentence_test");
+        String url = s3Uploader.uploadFiles(sound, "sentence_test");
 
-        String stt = sttService.getPronunciation(reqDto.getSound());
+        String stt = sttService.getPronunciation(sound);
 
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
         Update update = new Update().set("user_pronunciation_url." + (reqDto.getOrder()-1), url);
@@ -320,13 +320,13 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public String sttMixTest(WeekTestReqDto reqDto, String type) throws Exception {
+    public String sttMixTest(MultipartFile sound, WeekTestReqDto reqDto, String type) throws Exception {
 
         //s3에 sound파일을 업로드 한다.
-        String url = s3Uploader.uploadFiles(reqDto.getSound(), "week_test"+type);
+        String url = s3Uploader.uploadFiles(sound, "week_test"+type);
 
         //받아온 soundfile을 stt로 변환
-        String stt = sttService.getPronunciation(reqDto.getSound());
+        String stt = sttService.getPronunciation(sound);
 
         //url을 mongodb에 저장
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
