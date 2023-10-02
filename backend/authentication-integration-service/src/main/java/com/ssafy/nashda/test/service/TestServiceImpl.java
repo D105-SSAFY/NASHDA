@@ -12,6 +12,7 @@ import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
 import com.ssafy.nashda.stt.service.STTService;
 import com.ssafy.nashda.test.dto.request.*;
 import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
+import com.ssafy.nashda.test.dto.response.WordTestResultAllResDto;
 import com.ssafy.nashda.test.dto.response.WordTestStartResDto;
 
 import com.ssafy.nashda.test.entity.*;
@@ -36,6 +37,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -104,7 +107,7 @@ public class TestServiceImpl implements TestService {
         String index = wordTestResultRepository.save(testResult).getId();
 
         WordTestStartResDto resDto = WordTestStartResDto.builder()
-                .try_count(tryCount+1)
+                .try_count(tryCount + 1)
                 .index(index)
                 .problem(problem)
                 .convert(convert)
@@ -196,7 +199,7 @@ public class TestServiceImpl implements TestService {
         //받아온 soundfile을 stt로 변환
         String url = s3Uploader.uploadFiles(sound, "word_test");
         String stt = sttService.getPronunciation(sound);
-        
+
         //soundfile을 s3에 업로드후 mongodb에 저장
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
         Update update = new Update().set("user_pronunciation_url", url);
@@ -219,10 +222,10 @@ public class TestServiceImpl implements TestService {
         String stt = sttService.getPronunciation(sound);
 
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
-        Update update = new Update().set("user_pronunciation_url." + (reqDto.getOrder()-1), url);
+        Update update = new Update().set("user_pronunciation_url." + (reqDto.getOrder() - 1), url);
         mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
 
-        update = new Update().set("user_pronunciation." + (reqDto.getOrder()-1), stt);
+        update = new Update().set("user_pronunciation." + (reqDto.getOrder() - 1), stt);
         mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
 
         return stt;
@@ -323,7 +326,7 @@ public class TestServiceImpl implements TestService {
     public String sttMixTest(MultipartFile sound, WeekTestReqDto reqDto, String type) throws Exception {
 
         //s3에 sound파일을 업로드 한다.
-        String url = s3Uploader.uploadFiles(sound, "week_test"+type);
+        String url = s3Uploader.uploadFiles(sound, "week_test" + type);
 
         //받아온 soundfile을 stt로 변환
         String stt = sttService.getPronunciation(sound);
@@ -361,6 +364,25 @@ public class TestServiceImpl implements TestService {
         mongoTemplate.updateFirst(query, update, MixTestResult.class);
         Week week = weekService.getCurrentWeek().orElseThrow();
         weekTestStatisticService.updateWeekTestResult(member, week, reqDto);
+    }
+
+    @Override
+    public WordTestResultAllResDto getAllWordTestResult(Member member) {
+        List<MixTestResult> results = mixTestResultRepository.findByMemberNumberOrderByWeekAscTryCountAsc(member.getMemberNum());
+        Map<Long, List<Integer>> scoresByWeek = new HashMap<>();
+
+        for (MixTestResult result : results) {
+            long week = result.getWeek();
+            int score = result.getScore();
+
+            scoresByWeek
+                    .computeIfAbsent(week, k -> new ArrayList<>())
+                    .add(score);
+        }
+
+        return WordTestResultAllResDto.builder()
+                .scores(scoresByWeek)
+                .build();
     }
 
 }
