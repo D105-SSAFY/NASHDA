@@ -12,6 +12,7 @@ import com.ssafy.nashda.game.dto.response.*;
 import com.ssafy.nashda.member.entity.Member;
 
 import com.ssafy.nashda.member.service.MemberService;
+import com.ssafy.nashda.simulGPT.service.ChatGptService;
 import com.ssafy.nashda.stt.service.STTService;
 import com.ssafy.nashda.statistic.entity.GameStatistic;
 import com.ssafy.nashda.statistic.repository.GameStatisticRepository;
