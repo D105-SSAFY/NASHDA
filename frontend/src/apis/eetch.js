@@ -5,6 +5,7 @@ import * as statistics from "apis/statistics";
 import * as test from "apis/test";
 import * as user from "apis/user";
 import * as history from "apis/history";
+import * as practice from "apis/practice";
 
 import { refresh } from "apis/user";
 import { updateRefresh } from "redux/slice/userSlice";
@@ -70,6 +71,13 @@ eetch.practiceWord = (values) => statistics.practiceWord(values);
 eetch.practiceSimul = (values) => statistics.practiceSimul(values);
 eetch.practiceSimulBackground = (values) => statistics.practiceSimulBackground(values);
 eetch.weekTest = (values) => statistics.weekTest(values);
+
+eetch.problemNum = (values) => practice.problemNum(values);
+eetch.getProblem = (values) => practice.getProblem(values);
+eetch.getProblemSTT = (values) => practice.getProblemSTT(values);
+eetch.initSimulation = (values) => practice.initSimulation(values);
+eetch.getSimulationSTT = (values) => practice.getSimulationSTT(values);
+eetch.nextSimulation = (values) => practice.nextSimulation(values);
 
 eetch.wordList = (values) => test.wordList(values);
 eetch.wordSubmit = (values) => test.wordSubmit(values);
