@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface NoticeFileRepository extends JpaRepository<NoticeFile, Long> {
 
-    List<NoticeFile> findNoticeFileByNotice(Notice notice);
+    Optional<NoticeFile> findNoticeFileByFileNameAndNotice(String fileName, Notice notice);
 }

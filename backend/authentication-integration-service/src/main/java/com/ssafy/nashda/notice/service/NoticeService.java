@@ -13,7 +13,7 @@ public interface NoticeService {
     // 게시글 생성
     void createNotice (Member member, NoticeReqDto noticeReqDto, List<MultipartFile> files);
     // 게시글 수정
-    void updateNotice (Member member, Long index, NoticeReqDto noticeReqDto);
+    void updateNotice (Member member, Long index, NoticeReqDto noticeReqDto, List<MultipartFile> files);
 
     // 게시글 삭제
     void deleteNotice(Member member, Long noticeIndex);

@@ -33,9 +33,11 @@ public class NoticeController {
                                                                    @RequestPart(value = "files", required = false) List<MultipartFile> files) {
 
             Member member = memberController.findMemberByToken(accessToken);
+
             NoticeReqDto noticeReqDto = new NoticeReqDto();
             noticeReqDto.setTitle(title);
             noticeReqDto.setContent(content);
+
             noticeService.createNotice(member, noticeReqDto, files);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(201,"공지사항 생성 성공"));
@@ -61,10 +63,17 @@ public class NoticeController {
     @PutMapping("/{index}")
     public ResponseEntity<? extends BaseResponseBody> updateNotice(@PathVariable Long index,
                                                                    @RequestHeader("Authorization") String accessToken,
-                                                                   @RequestBody NoticeReqDto noticeReqDto) {
+                                                                   @RequestPart("title") String title,
+                                                                   @RequestPart("content") String content,
+                                                                   @RequestPart(value = "files", required = false) List<MultipartFile> files) {
 
         Member member = memberController.findMemberByToken(accessToken);
-        noticeService.updateNotice(member, index, noticeReqDto);
+
+        NoticeReqDto noticeReqDto = new NoticeReqDto();
+        noticeReqDto.setTitle(title);
+        noticeReqDto.setContent(content);
+
+        noticeService.updateNotice(member, index, noticeReqDto, files);
         return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody(201, "공지사항 수정 성공"));
     }
 
