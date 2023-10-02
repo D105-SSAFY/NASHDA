@@ -11,5 +11,5 @@ import org.springframework.web.multipart.MultipartFile;
 public class PracticePronRequestDto {
     private long index;
     private String type;
-    private MultipartFile sound;
+//    private MultipartFile sound;
 }

@@ -3,6 +3,7 @@ package com.ssafy.nashda.practice.service;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *  발음 연습 서비스
@@ -32,5 +33,5 @@ public interface PracticePronService {
     void updateSentenceCount(Member member) throws Exception;*/
 
 
-    String getPracSTT(Member member, PracticePronRequestDto practicePronRequestDto) throws Exception;
+    String getPracSTT(Member member, MultipartFile sound, PracticePronRequestDto practicePronRequestDto) throws Exception;
 }

@@ -14,5 +14,5 @@
         private int type;   //문제 유형 0:speed1, 1:speed2, 2:blank
         private int index;  //문제 번호
         private String answer;  //정답
-        private MultipartFile sound;
+//        private MultipartFile sound;
     }

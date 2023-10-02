@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 연습 문제 전송 컨트롤러
@@ -137,11 +138,12 @@ public class PracticeController {
     }
 
     @PostMapping(value = "/pron/result")
-    public ResponseEntity<? extends BaseResponseBody> getPronunciation(@ModelAttribute PracticePronRequestDto practicePronRequestDto,
+    public ResponseEntity<? extends BaseResponseBody> getPronunciation(@RequestPart(value = "sound") MultipartFile sound,
+                                                                        @ModelAttribute PracticePronRequestDto practicePronRequestDto,
                                                                        @RequestHeader("Authorization") String token) throws Exception {
 
         Member member = memberController.findMemberByToken(token);
-        String stt = practicePronService.getPracSTT(member, practicePronRequestDto);
+        String stt = practicePronService.getPracSTT(member, sound, practicePronRequestDto);
 
 
         //memberhistory에서 practice count 증가

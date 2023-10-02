@@ -27,6 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -168,7 +169,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public GameSTTResDto convertSTT(GameSTTReqDto request) throws Exception {
+    public GameSTTResDto convertSTT(MultipartFile sound, GameSTTReqDto request) throws Exception {
 
         int type = request.getType();   //0 : speed1, 1:speed2, 2:blank
         int index = request.getIndex();  //문제 번호
@@ -176,7 +177,7 @@ public class GameServiceImpl implements GameService {
         GameSTTResDto gameSTTResDto;
 
         // String stt = sttService.getPronunciation(request.getSound());  //사용자의 음성 파일을 STT
-        String stt = chatGptService.getStt(request.getSound()).getText();
+        String stt = chatGptService.getStt(sound).getText();
         if (stt.equals(answer)) {
             gameSTTResDto = new GameSTTResDto(true, stt);
         } else {
