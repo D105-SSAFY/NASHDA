@@ -62,6 +62,8 @@ public class PracticeStatisticServiceImpl implements PracticeStatisticService {
 
     @Override
     public CodaStatistic updateCodaByMemberAndLetter(Member member, String letter, boolean isAnswer) throws Exception {
+        if("".equals(letter)) return null; // 빈칸 인경우 업데이트 X
+        
         CodaStatistic codaStatistic = codaStatisticRepository.findByMemberAndLetter(member, letter)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
 
