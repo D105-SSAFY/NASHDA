@@ -3,7 +3,7 @@ package com.ssafy.nashda.statistic.service;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.practice.service.TextProcessService;
+import com.ssafy.nashda.common.text.service.TextProcessService;
 import com.ssafy.nashda.statistic.dto.response.PhonemeInterface;
 import com.ssafy.nashda.statistic.entity.CodaStatistic;
 import com.ssafy.nashda.statistic.entity.NucleusStatistic;
