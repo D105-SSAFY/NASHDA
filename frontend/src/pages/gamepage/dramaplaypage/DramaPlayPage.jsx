@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 
 import * as s from "./style";
 
-// Import DiffSelectSection from "components/section/diffselectsection/DiffSelectSection";
+import DiffSelectSection from "components/section/diffselectsection/DiffSelectSection";
 
 import ProblemSection from "./problemsection/ProblemSection";
 import PronunciationSection from "./pronunciationsection/PronunciationSection";
 
 const diffList = ["상", "중", "하"];
-const diff = diffList[Math.floor(Math.random() * diffList.length)];
+// Const diff = diffList[Math.floor(Math.random() * diffList.length)];
 
 export default function DramaPlayPage() {
-    // Const [diff, setDiff] = useState("");
+    const [diff, setDiff] = useState("");
     const [problem, setProblem] = useState({});
     const [sentence, setSentence] = useState("");
 
@@ -54,17 +54,18 @@ export default function DramaPlayPage() {
         }
 
         setSentence(sentence);
-    }, [problem]);
+    }, [problem, diff]);
 
     return (
         <s.Main>
-            <ProblemSection props={{ problem, sentence }} />
-            <PronunciationSection props={{ problem, sentence }} />
-            {/* {diff ? (
-                <>asdfasd</>
+            {diff ? (
+                <>
+                    <ProblemSection props={{ problem, sentence }} />
+                    <PronunciationSection props={{ problem, sentence }} />
+                </>
             ) : (
-                <DiffSelectSection props={{ diffList, setDiff, title: "발음 연습", description: "발음 연습의 난이도를 선택해주세요." }} />
-            )} */}
+                <DiffSelectSection props={{ diffList, setDiff, title: "드라마 플레이", description: "그림을 보고 문장을 채워주세요." }} />
+            )}
         </s.Main>
     );
 }

@@ -80,6 +80,7 @@ import ProblemPage from "pages/practicepage/problempage/ProblemPage";
 import StretchingPage from "pages/practicepage/stretchingpage/StretchingPage";
 
 import DramaPlayPage from "pages/gamepage/dramaplaypage/DramaPlayPage";
+import SpeedQuizPage from "pages/gamepage/speedquizpage/SpeedQuizPage";
 
 export default function App() {
     return (
@@ -109,6 +110,7 @@ export default function App() {
                                 <Route path="/2" element={<ConversationPage />} />
                                 <Route path="/3" element={<StretchingPage />} />
                                 <Route path="/4" element={<DramaPlayPage />} />
+                                <Route path="/5" element={<SpeedQuizPage />} />
                             </Route>
                             {/* main page */}
                         </Routes>

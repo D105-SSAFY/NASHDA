@@ -151,8 +151,8 @@ export default function PronunciationSection({ props: { pronunciation } }) {
                         <span>다음</span>
                     </BorderButton>
                 </s.ButtonWrapper>
+                <VoiceModal props={{ title: "따라 읽어보세요.", content: pronunciation, visible: onModal, callback: onClickRecordOff }} />
             </s.Section>
-            <VoiceModal props={{ title: "따라 읽어보세요.", content: pronunciation, visible: onModal, callback: onClickRecordOff }} />
         </>
     );
 }

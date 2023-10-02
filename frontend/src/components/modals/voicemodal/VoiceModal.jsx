@@ -10,10 +10,10 @@ export default function VoiceModal({ props: { title, content, visible, callback 
         <s.Wrapper visible={visible}>
             <s.Section>
                 <header>
-                    <h2>음성 입력 모달</h2>
+                    <h3>음성 입력 모달</h3>
                 </header>
                 <s.Read>{title}</s.Read>
-                <s.Pron>&quot;{content}&quot;</s.Pron>
+                {content ? <s.Pron>&quot;{content}&quot;</s.Pron> : <></>}
                 <SoundWave props={{ start: visible }} />
                 <s.ButtonWrapper>
                     <FilledButton props={{ background: "rgba(68, 71, 90, 0.7)", color: "#ffffff", hovercolor: "#44475A", callback }}>

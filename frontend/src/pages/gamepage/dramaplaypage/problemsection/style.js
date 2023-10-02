@@ -2,7 +2,7 @@ import IROnly from "style/IROnly";
 import styled from "styled-components";
 
 export const Section = styled.section`
-    width: 640px;
+    width: 810px;
 
     margin-top: 30px;
     padding: 40px 60px;
@@ -13,7 +13,7 @@ export const Section = styled.section`
 
     & > img {
         width: 100%;
-        height: 280px;
+        height: 320px;
         object-fit: cover;
 
         border-radius: 10px;
