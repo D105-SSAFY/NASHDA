@@ -14,7 +14,9 @@ export const Section = styled.section`
 `;
 
 export const ListenWrapper = styled.div`
-    margin-top: 30px;
+    width: 500px;
+
+    margin: 30px auto 0;
 
     padding: 20px 30px;
 
@@ -70,17 +72,16 @@ export const ImageList = styled.ul`
 `;
 
 export const ImageButton = styled.button`
-    padding: 20px 80px;
+    height: 240px;
 
-    border: 2px solid #f2f2f2;
-    border-radius: 10px;
+    border-radius: 12px;
     box-shadow: 0 0 15px 1px #f2f2f2;
 
     overflow: hidden;
 
     & > img {
-        width: 160px;
-        height: 140px;
+        width: 300px;
+        height: 240px;
 
         object-fit: cover;
     }

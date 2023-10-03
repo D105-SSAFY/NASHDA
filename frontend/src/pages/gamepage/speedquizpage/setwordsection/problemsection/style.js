@@ -33,12 +33,18 @@ export const Explain = styled.p`
 `;
 
 export const ImageWrapper = styled.div`
-    width: 200px;
+    width: 500px;
+
+    border-radius: 12px;
+    box-shadow: 0 0 15px 1px #f2f2f2;
+
+    overflow: hidden;
 
     margin: 0 auto;
 
     & > img {
         width: 100%;
+        height: 360px;
 
         object-fit: cover;
     }

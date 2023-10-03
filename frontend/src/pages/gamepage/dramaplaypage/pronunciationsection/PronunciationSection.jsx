@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 import * as s from "./style";
 
@@ -8,18 +10,28 @@ import BorderButton from "components/buttons/borderbutton/BorderButton";
 import VoiceModal from "components/modals/voicemodal/VoiceModal";
 
 import MicIcon from "@mui/icons-material/Mic";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import RedoIcon from "@mui/icons-material/Redo";
 
 import voice from "utils/VoiceFunc";
+import eetch from "apis/eetch";
 
-export default function PronunciationSection({ props: { problem, sentence } }) {
-    const [audioText, setAudioText] = useState("");
+export default function PronunciationSection({
+    props: { problemList, problemIndex, sentence, setProblemIndex, setCorrect, hint, showHint, onHintModal, setOnHintModal }
+}) {
+    const [audioText, setAudioText] = useState({
+        text: "",
+        correct: false
+    });
     const [onModal, setOnModal] = useState(false);
-    const [onHintModal, setOnHintModal] = useState(false);
     const [onUpdate, setOnUpdate] = useState(false);
 
-    console.log(audioText);
+    const timerRef = useRef(null);
+
+    const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const showModal = useCallback(() => {
         setOnModal(true);
@@ -37,7 +49,7 @@ export default function PronunciationSection({ props: { problem, sentence } }) {
         setOnHintModal(false);
     }, []);
 
-    const { onRecAudio, offRecAudio, createFile } = voice();
+    const { onRecAudio, offRecAudio, createFile, play } = voice();
 
     const onClickRecordOn = () => {
         showModal();
@@ -49,7 +61,26 @@ export default function PronunciationSection({ props: { problem, sentence } }) {
         offRecAudio();
     };
 
-    const send = async () => {
+    useEffect(() => {
+        setAudioText({
+            text: "",
+            correct: false
+        });
+    }, [problemIndex]);
+
+    useEffect(() => {
+        if (!audioText.correct) {
+            return;
+        }
+
+        setCorrect((correct) => correct + 1);
+
+        timerRef.current = setTimeout(() => {
+            setProblemIndex((index) => index + 1);
+        }, 1000);
+    }, [audioText]);
+
+    const getSTT = async () => {
         const file = createFile();
 
         if (!file) {
@@ -58,20 +89,26 @@ export default function PronunciationSection({ props: { problem, sentence } }) {
 
         const formData = new FormData();
 
-        formData.append("file_upload", file);
+        formData.append("sound", file);
+        formData.append("answer", problemList[problemIndex].answer);
+        formData.append("type", 2);
 
-        try {
-            const response = await fetch("http://127.0.0.1:8000/file", {
-                method: "POST",
-                body: formData
+        const values = {};
+
+        values.user = user;
+        values.formData = formData;
+
+        eetch
+            .tokenValidation(eetch.game, values, dispatch)
+            .then((result) => {
+                setAudioText({
+                    text: result.data.convert,
+                    correct: result.data.result
+                });
+            })
+            .catch(() => {
+                navigate("/signin");
             });
-
-            const result = await response.json();
-
-            return result;
-        } catch (e) {
-            console.log(e);
-        }
     };
 
     useEffect(() => {
@@ -87,16 +124,6 @@ export default function PronunciationSection({ props: { problem, sentence } }) {
             return;
         }
 
-        const getSTT = async () => {
-            const result = await send();
-
-            if (!result) {
-                return;
-            }
-
-            setAudioText(result.result);
-        };
-
         getSTT();
 
         setOnUpdate(false);
@@ -105,21 +132,43 @@ export default function PronunciationSection({ props: { problem, sentence } }) {
     return (
         <>
             <s.Section>
+                <s.Header>
+                    <h2>나의 발음</h2>
+                </s.Header>
+                <s.Box>
+                    <s.Pron correct={audioText.correct}>{audioText.text}</s.Pron>
+                    <s.SpeakButton visible={Boolean(audioText.text)} onClick={play}>
+                        <VolumeUpIcon />
+                    </s.SpeakButton>
+                </s.Box>
                 <s.ButtonWrapper>
                     <FilledButton props={{ background: "rgba(68, 71, 90, 0.7)", color: "#ffffff", hovercolor: "#44475A", callback: onClickRecordOn }}>
                         <MicIcon />
-                        <span>녹음하기</span>
+                        <span>{audioText.text ? "다시 녹음하기" : "녹음하기"}</span>
                     </FilledButton>
-                    <BorderButton props={{ color: "rgba(68, 71, 90, 0.7)", callback: showHintModal }}>
-                        <LightbulbIcon />
-                        <span>힌트</span>
-                    </BorderButton>
-                    <BorderButton props={{ color: "rgba(68, 71, 90, 0.7)" }}>
+                    <s.HintWrapper showHint={showHint}>
+                        <BorderButton props={{ color: "rgba(68, 71, 90, 0.7)", callback: showHintModal }}>
+                            <LightbulbIcon />
+                            <span>힌트</span>
+                        </BorderButton>
+                    </s.HintWrapper>
+                    <BorderButton
+                        props={{
+                            color: "rgba(68, 71, 90, 0.7)",
+                            callback() {
+                                if (timerRef.current) {
+                                    clearTimeout(timerRef.current);
+                                }
+
+                                setProblemIndex((index) => index + 1);
+                            }
+                        }}
+                    >
                         <RedoIcon />
                         <span>다음</span>
                     </BorderButton>
                 </s.ButtonWrapper>
-                <HintModal props={{ problem, display: onHintModal, hideModal: unshowHintModal }} />
+                {problemList.length !== 0 && problemIndex !== -1 && <HintModal props={{ hint, display: onHintModal, hideModal: unshowHintModal }} />}
                 <VoiceModal props={{ title: "정답을 말해보세요.", content: sentence, visible: onModal, callback: onClickRecordOff }} />
             </s.Section>
         </>

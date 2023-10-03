@@ -1,15 +1,14 @@
 import eetch from "apis/eetch";
 
-export const game = async ({ type, index, sound, user }) => {
+export const game = async ({ formData, user }) => {
     try {
         const url = `${process.env.REACT_APP_API_URL}/game`;
         const options = {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ type, index, sound }),
+            body: formData,
             credentials: "include"
         };
 
@@ -92,16 +91,15 @@ export const speedResult = async ({ total, score, user }) => {
     }
 };
 
-export const blank = async ({ level, user }) => {
+export const blank = async ({ user }) => {
     try {
         const url = `${process.env.REACT_APP_API_URL}/game/blank`;
         const options = {
-            method: "POST",
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ level }),
             credentials: "include"
         };
 

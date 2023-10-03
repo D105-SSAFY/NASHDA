@@ -4,16 +4,42 @@ import styled from "styled-components";
 export const Section = styled.section`
     height: 100%;
 
+    position: relative;
+
     display: flex;
     flex-direction: column;
+`;
 
-    & > header {
+export const Header = styled.header`
+    & > h2 {
         ${IROnly}
     }
 `;
 
+export const Explain = styled.p`
+    padding: 14px 22px;
+
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    border: 2px solid #f2f2f2;
+    border-radius: 10px;
+
+    background-color: #ffffff;
+
+    font-size: 1.9rem;
+    font-weight: 500;
+    color: rgb(170, 170, 170);
+
+    & > span {
+        color: rgb(80, 80, 80);
+    }
+`;
+
 export const ConversationList = styled.ul`
-    padding: 26px 0;
+    padding: 86px 0 26px;
 
     flex-grow: 1;
     display: flex;
@@ -90,4 +116,24 @@ export const MyChat = styled(Chat)`
     background-color: #eee;
 
     border-radius: 10px 0 10px 10px;
+`;
+
+export const Incorrect = styled.p`
+    width: 100%;
+
+    font-size: 1.3rem;
+    font-weight: 500;
+    line-height: 22px;
+
+    color: #ff4455;
+
+    margin: 6px 0;
+
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    & > span {
+        margin-left: auto;
+    }
 `;
