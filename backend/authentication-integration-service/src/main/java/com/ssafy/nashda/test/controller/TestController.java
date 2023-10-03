@@ -35,19 +35,8 @@ public class TestController {
     private final MemberController memberController;
     private final StrickService strickService;
     private final MemberHistoryService memberHistoryService;
-    private final MixTestResultRepository mixTestResultRepository;
 
-    @GetMapping("/week/datail/{week}/{tryCount}")
-    public ResponseEntity<? extends BaseResponseBody> weekTestDetail(@RequestHeader("Authorization") String token, @PathVariable("week") long week, @PathVariable("tryCount") int tryCount) throws Exception {
 
-        Member member = memberController.findMemberByToken(token);
-        WeekTestResultDetailResDto mixTestStartResDto = testService.getWeekTestResultDetail(member, week, tryCount);
-
-        MixTestResult m = mixTestResultRepository.findByMemberNumberAndWeekAndTryCount(member.getMemberNum(), week, tryCount).get();
-
-        return new ResponseEntity<>(new BaseResponseBody(200, "통합 시험 불러오기 성공", mixTestStartResDto),
-                HttpStatus.OK);
-    }
 
     @GetMapping("/week/all")
     public ResponseEntity<? extends BaseResponseBody> weekTestAll(@RequestHeader("Authorization") String token) throws Exception {
@@ -169,7 +158,6 @@ public class TestController {
     public ResponseEntity<? extends BaseResponseBody> weekTestResult(@RequestHeader("Authorization") String token, @RequestBody WeekTestResultReqDto reqDto) throws Exception {
         Member member = memberController.findMemberByToken(token);
         testService.saveWeekTestScore(reqDto, member);
-        //stick표시를 위한 작업
         strickService.increaseTestCount(member);
 
         //업적을 위한 testing
