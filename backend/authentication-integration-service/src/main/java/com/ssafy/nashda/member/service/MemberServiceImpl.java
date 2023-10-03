@@ -93,7 +93,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public MemberInfoResDto singIn(MemberSignInReqDto signinInfo) throws IOException, InterruptedException {
         Member member = memberRepository.findByEmail(signinInfo.getEmail()).orElseThrow(() -> new BadRequestException(ErrorCode.USER_NOT_EXIST));
-        ;
+
         Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         if (passwordEncoder.matches(signinInfo.getPassword(), member.getPassword())) {
             //strick 생성, 로그인 할때마다
@@ -101,6 +101,7 @@ public class MemberServiceImpl implements MemberService {
                 strickService.initStrick(member);
             }
 
+            /*
             //gamestatistic 생성, 로그인 할때마다
             if (!gameStatisticService.isExistGameStatistic(member, week)) {
                 gameStatisticService.initGameStatistic(member, week);
@@ -110,6 +111,8 @@ public class MemberServiceImpl implements MemberService {
             if (!weekTestStatisticService.isExistWeekTestResult(member, week)) {
                 weekTestStatisticService.initWeekTestResult(member, week);
             }
+
+            */
 
             //member_history 생성
             if (!memberHistoryService.isExistMemberHistory(member)) {

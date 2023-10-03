@@ -1,15 +1,20 @@
 package com.ssafy.nashda.test.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
+import com.ssafy.nashda.common.error.code.ErrorCode;
+import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.history.service.MemberHistoryService;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.statistic.service.StrickService;
+import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
 import com.ssafy.nashda.test.dto.request.*;
 import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
 import com.ssafy.nashda.test.dto.response.WeekTestResultAllResDto;
 import com.ssafy.nashda.test.dto.response.WordTestStartResDto;
 import com.ssafy.nashda.test.service.TestService;
+import com.ssafy.nashda.week.entity.Week;
+import com.ssafy.nashda.week.service.WeekService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,6 +33,8 @@ public class TestController {
     private final MemberController memberController;
     private final StrickService strickService;
     private final MemberHistoryService memberHistoryService;
+    private final WeekTestStatisticService weekTestStatisticService;
+    private final WeekService weekService;
 
     @GetMapping("/week/all")
     public ResponseEntity<? extends BaseResponseBody> weekTestAll(@RequestHeader("Authorization") String token) throws Exception {
@@ -148,6 +155,12 @@ public class TestController {
     @PostMapping("/week/result")
     public ResponseEntity<? extends BaseResponseBody> weekTestResult(@RequestHeader("Authorization") String token, @RequestBody WeekTestResultReqDto reqDto) throws Exception {
         Member member = memberController.findMemberByToken(token);
+
+        Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        if (!weekTestStatisticService.isExistWeekTestResult(member, week)) {
+            weekTestStatisticService.initWeekTestResult(member, week);
+        }
+
         testService.saveWeekTestScore(reqDto, member);
         strickService.increaseTestCount(member);
 

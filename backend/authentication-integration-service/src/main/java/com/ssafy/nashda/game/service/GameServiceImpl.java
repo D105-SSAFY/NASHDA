@@ -13,6 +13,7 @@ import com.ssafy.nashda.member.entity.Member;
 
 import com.ssafy.nashda.member.service.MemberService;
 import com.ssafy.nashda.simulGPT.service.ChatGptService;
+import com.ssafy.nashda.statistic.service.GameStatisticService;
 import com.ssafy.nashda.stt.service.STTService;
 import com.ssafy.nashda.statistic.entity.GameStatistic;
 import com.ssafy.nashda.statistic.repository.GameStatisticRepository;
@@ -46,6 +47,7 @@ public class GameServiceImpl implements GameService {
     private final WeekService weekService;
     private final STTService sttService;
     private final S3Uploader s3Uploader;
+    private final GameStatisticService gameStatisticService;
 
     @Value("${env.PROBLEM_URL}")
     private String URL;
@@ -190,7 +192,7 @@ public class GameServiceImpl implements GameService {
     public void saveSpeedResult(SpeedResultReqDto request, Member member) throws Exception {
         GameStatistic gameStatistic = null;
         Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
-        Optional<GameStatistic> optionalGameStatistic = gameStatisticRepository.findByMemberAndWeek(member, week);
+       /* Optional<GameStatistic> optionalGameStatistic = gameStatisticRepository.findByMemberAndWeek(member, week);
         if (optionalGameStatistic.isEmpty()) {
             gameStatistic = saveGameStatistic(member, week);
         } else {
@@ -199,20 +201,34 @@ public class GameServiceImpl implements GameService {
 
         gameStatistic.setSpeedScore(gameStatistic.getSpeedScore() + request.getScore());
         gameStatistic.setSpeedTotal(gameStatistic.getSpeedTotal() + request.getTotal());
-        gameStatistic.setSpeedSet(gameStatistic.getSpeedSet() + 1);
+        gameStatistic.setSpeedSet(gameStatistic.getSpeedSet() + 1);*/
 
-        gameStatisticRepository.save(gameStatistic);
+        //판수 증가
+        gameStatisticService.updateSpeedSet(member, week);
+        //점수 증가
+        gameStatisticService.updateSpeedScore(member, week, request.getScore());
+        //total증가
+        gameStatisticService.updateSpeedTotal(member, week, request.getTotal());
     }
 
     @Override
     public int saveBlankResult(BlankResultReqDto request, Member member) throws Exception {
 
         Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
-        GameStatistic gameStatistic = gameStatisticRepository.findByMemberAndWeek(member,week).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
-        gameStatistic.setBlankSet(gameStatistic.getBlankSet() + 1);
+/*        GameStatistic gameStatistic = gameStatisticRepository.findByMemberAndWeek(member,week).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        gameStatistic.setBlankSet(gameStatistic.getBlankSet() + 1);*/
 
-        //level 2일떄만 progress update
-        member.setSentenceCount(member.getSentenceCount() + request.getTotal());
+        if (!gameStatisticService.isExistGameStatistic(member, week)) {
+            gameStatisticService.initGameStatistic(member, week);
+        }
+
+        //판수 증가
+        gameStatisticService.updateBlankSet(member, week);
+        //점수 증가
+        gameStatisticService.updateBlankScore(member, week, request.getScore());
+        //total증가
+        gameStatisticService.updateBlankTotal(member, week, request.getTotal());
+
         if (request.getLevel() > 1) {
            memberService.plusProgress(member, request.getTotal());
            return member.getProgress()+request.getTotal();
@@ -220,11 +236,13 @@ public class GameServiceImpl implements GameService {
         return member.getProgress();
     }
 
+/*
     public GameStatistic saveGameStatistic(Member member, Week week) throws Exception {
         GameStatistic gameStatistic = new GameStatistic(member, week);
         gameStatisticRepository.save(gameStatistic);
         return gameStatistic;
     }
+*/
 
     @Override
     public ImgWordSetResponseDto saveImgWordSet(ImgWordSetSaveReqDto imgWordSetSaveReqDto) throws Exception {
