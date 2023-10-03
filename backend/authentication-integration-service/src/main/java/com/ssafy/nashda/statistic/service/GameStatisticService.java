@@ -18,4 +18,11 @@ public interface GameStatisticService {
     SpeedStatisticResDto getSpeedStatistic(Member member, Week week);   //스피드 게임 통계 불러오기
     void initGameStatistic(Member member, Week week);   //게임 통계 초기화
     boolean isExistGameStatistic(Member member, Week week);   //게임 통계가 존재하는지 확인
+    void updateBlankScore(Member member, Week week, int score);  //게임 통계 점수  increase
+    void updateBlankSet(Member member, Week week);
+    void updateBlankTotal(Member member, Week week, int count);
+
+    void updateSpeedScore(Member member, Week week, int score);  //speed 통계 점수  increase
+    void updateSpeedSet(Member member, Week week);
+    void updateSpeedTotal(Member member, Week week, int count);
 }

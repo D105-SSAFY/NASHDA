@@ -59,4 +59,34 @@ public class GameStatisticServiceImpl implements GameStatisticService {
     public boolean isExistGameStatistic(Member member, Week week) {
         return gameStatisticRepository.existsByMemberAndWeek(member, week);
     }
+
+    public void updateBlankScore(Member member, Week week, int score){
+        gameStatisticRepository.plusBlankScore(member, score,week);
+    }
+
+    @Override
+    public void updateBlankSet(Member member, Week week) {
+        gameStatisticRepository.increaseBlankSet(member, week);
+    }
+
+    @Override
+    public void updateBlankTotal(Member member, Week week, int count) {
+        gameStatisticRepository.plusBlankTotal(member,count,week);
+    }
+
+    @Override
+    public void updateSpeedScore(Member member, Week week, int score) {
+        gameStatisticRepository.plusSpeedScore(member, score,week);
+    }
+
+    @Override
+    public void updateSpeedSet(Member member, Week week) {
+        gameStatisticRepository.increaseSpeedSet(member,week);
+    }
+
+    @Override
+    public void updateSpeedTotal(Member member, Week week, int count) {
+        gameStatisticRepository.plusSpeedTotal(member,count,week);
+
+    }
 }
