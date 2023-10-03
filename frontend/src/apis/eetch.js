@@ -71,6 +71,8 @@ eetch.practiceWord = (values) => statistics.practiceWord(values);
 eetch.practiceSimul = (values) => statistics.practiceSimul(values);
 eetch.practiceSimulBackground = (values) => statistics.practiceSimulBackground(values);
 eetch.weekTest = (values) => statistics.weekTest(values);
+eetch.weekTestDetail = (values) => statistics.weekTestDetail(values);
+eetch.weekTestAll = (values) => statistics.weekTestAll(values);
 
 eetch.problemNum = (values) => practice.problemNum(values);
 eetch.getProblem = (values) => practice.getProblem(values);

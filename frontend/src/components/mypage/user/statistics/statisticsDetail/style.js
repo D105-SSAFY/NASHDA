@@ -3,25 +3,28 @@ import styled from "styled-components";
 export const StatDetailWrapper = styled.div`
     position: relative;
     & > :first-child {
-        height: ${(props) => (props.isData[0] ? (props.isToggle[0] ? "880px" : "250px") : "fit-content")};
+        height: ${(props) => (props.isChar ? "250px" : "auto")};
     }
 
     & > :nth-child(2) {
-        height: ${(props) =>
-            props.isData[1]
-                ? props.isToggle[1]
-                    ? props.amount === 1
-                        ? "554px"
-                        : props.amount === 2
-                        ? "932px"
-                        : "1310px"
-                    : "116px"
-                : "fit-content"};
+        height: ${(props) => (props.isConv ? "116px" : "auto")};
+        transition: all ease 0.9s;
     }
 
     & > :nth-child(3) {
-        height: ${(props) => (props.isData[2] ? (props.isToggle[2] ? "880px" : "250px") : "fit-content")};
+        height: ${(props) => (props.isWeek ? "260px" : "auto")};
     }
+
+    & > :nth-child(4) {
+        height: ${(props) => (props.isGame ? "190px" : "auto")};
+        padding-bottom: ${(props) => (props.isGame ? "80px" : "0")};
+        transition: all ease 0.8s;
+    }
+`;
+
+export const SizeWrapper = styled.div`
+    height: auto;
+    overflow: visible;
 `;
 
 export const StatDetailCard = styled.section`
@@ -36,7 +39,7 @@ export const StatDetailCard = styled.section`
 
 export const CardDivLine = styled.div`
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 1%;
 
     width: 98%;

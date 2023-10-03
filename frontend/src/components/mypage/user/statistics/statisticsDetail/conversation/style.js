@@ -1,6 +1,31 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+export const ConversationWrapper = styled.div`
+    padding-bottom: ${(props) => (props.isConv ? "80px" : "0")};
+    & > :nth-child(2) {
+        margin-top: 20px;
+
+        & > :first-child {
+            margin-left: 30px;
+            background-color: #f2f2f2;
+        }
+
+        & > :nth-child(2) {
+            width: 830px;
+            margin-left: 30px;
+            background-color: transparent;
+        }
+
+        & > ul {
+            width: 830px;
+            margin-top: -181px;
+            margin-left: 30px;
+
+            border-radius: 10px;
+        }
+    }
+`;
 export const ConversationTitle = styled.h2``;
 
 export const InfoWrapper = styled.div`
@@ -67,7 +92,7 @@ export const ChatBox = styled.section`
 
     padding-top: 20px;
 
-    border-radius: 4px;
+    border-radius: 10px;
     background-color: #44475a;
 
     overflow-y: scroll;

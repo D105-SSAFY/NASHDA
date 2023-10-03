@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import eetch from "apis/eetch";
 
@@ -8,13 +8,14 @@ import GraphDivs from "components/common/graph/GraphDivs";
 import * as c from "./style";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 
-export default function Character({ setDatas }) {
+export default function Character({ isChar, setIsChar }) {
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
     const [characters, setCharacters] = useState([]);
     const [charsInfo, setCharsInfo] = useState([]);
 
     useEffect(() => {
-        eetch.practiceWord({ user }).then((res) => {
+        eetch.tokenValidation(eetch.practiceWord, { user }, dispatch).then((res) => {
             const sorted = res.data.sort((a, b) => {
                 return b.incorrect / b.total - a.incorrect / a.total;
             });
@@ -40,7 +41,8 @@ export default function Character({ setDatas }) {
 
     useEffect(() => {
         if (characters.length !== 0) {
-            setDatas(0, true);
+            console.log(characters);
+            setIsChar(true);
         }
     }, [characters]);
 
@@ -62,9 +64,9 @@ export default function Character({ setDatas }) {
     };
 
     const charsContentDetail = () => {
-        const cont = [];
+        const charList = [];
         charsInfo.forEach((obj, index) => {
-            cont.push(
+            charList.push(
                 <tr key={index}>
                     <th>{index + 1}</th>
                     <td>{obj.letter}</td>
@@ -76,11 +78,11 @@ export default function Character({ setDatas }) {
             );
         });
 
-        return cont;
+        return charList;
     };
 
     return (
-        <>
+        <c.CharactersWrapper isChar={isChar}>
             {characters.length === 0 ? (
                 <c.NoDataWrapper>
                     <c.NoData>아직 문자 정확도에 대한 자료가 부족해요.</c.NoData>
@@ -112,6 +114,6 @@ export default function Character({ setDatas }) {
                     </c.StatTable>
                 </>
             )}
-        </>
+        </c.CharactersWrapper>
     );
 }
