@@ -33,6 +33,14 @@ public class ReplyServiceImpl implements ReplyService {
             throw new BadRequestException(ErrorCode.EXIST_REPLY);
         }
 
+        if (replyReqDto.getTitle() == null || replyReqDto.getTitle().trim().isEmpty()) {
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_TITLE);
+        }
+
+        if (replyReqDto.getContent() == null || replyReqDto.getContent().trim().isEmpty()) {
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_CONTENT);
+        }
+
         if (member.getStatus() == 0) {
             Reply reply = Reply.builder()
                     .title(replyReqDto.getTitle())
@@ -66,16 +74,16 @@ public class ReplyServiceImpl implements ReplyService {
                 String title = replyReqDto.getTitle();
                 String content = replyReqDto.getContent();
 
-                if (title != null) {
-                    reply.setTitle(title);
-                } else {
+                if (title == null || title.trim().isEmpty()) {
                     throw new BadRequestException(ErrorCode.NOT_EXISTS_TITLE);
+                } else {
+                    reply.setTitle(title);
                 }
 
-                if (content != null) {
-                    reply.setContent(content);
-                } else {
+                if (content == null || content.trim().isEmpty()) {
                     throw new BadRequestException(ErrorCode.NOT_EXISTS_CONTENT);
+                } else {
+                    reply.setContent(content);
                 }
                 return;
 

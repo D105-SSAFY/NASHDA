@@ -49,8 +49,10 @@ public class QuestionController {
         return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "문의글 전체 조회 성공", questionService.getQuestions(member)));
     }
     @GetMapping("/{index}")
-    public ResponseEntity<? extends BaseResponseBody> getQuestion(@PathVariable Long index) {
-        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody(200, "문의글 상세 조회 성공", questionService.getQuestion(index)));
+    public ResponseEntity<? extends BaseResponseBody> getQuestion(@RequestHeader("Authorization") String accessToken,
+                                                                  @PathVariable Long index) {
+        Member member = memberController.findMemberByToken(accessToken);
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody(200, "문의글 상세 조회 성공", questionService.getQuestion(member, index)));
     }
 
     @PutMapping("/{index}")

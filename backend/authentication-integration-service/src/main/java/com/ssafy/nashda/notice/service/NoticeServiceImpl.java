@@ -38,11 +38,23 @@ public class NoticeServiceImpl implements NoticeService {
         if (member.getStatus() == 0) {
             Notice notice = noticeRepository.save(noticeReqDto.toEntity(member));
 
+            if (noticeReqDto.getTitle() == null || noticeReqDto.getTitle().trim().isEmpty()) {
+                throw new BadRequestException(ErrorCode.NOT_EXISTS_TITLE);
+            }
+
+            if (noticeReqDto.getContent() == null || noticeReqDto.getContent().trim().isEmpty()) {
+                throw new BadRequestException(ErrorCode.NOT_EXISTS_CONTENT);
+            }
+
             if (files != null) {
                 for(MultipartFile file : files) {
                     String uploadUrl;
                     try {
-                        uploadUrl = s3Uploader.uploadFiles(file, "notice-files");
+                        if (file.getOriginalFilename().endsWith(".txt")) {
+                            continue;
+                        } else {
+                            uploadUrl = s3Uploader.uploadFiles(file, "notice-files");
+                        }
                     } catch (IOException e) {
                         throw new BadRequestException(ErrorCode.FAIL_UPLOAD_FILE);
                     }
@@ -95,17 +107,16 @@ public class NoticeServiceImpl implements NoticeService {
                 String title = noticeReqDto.getTitle();
                 String content = noticeReqDto.getContent();
 
-                if (title != null) {
-                    notice.setTitle(title);
-                } else {
+                if (title == null || title.trim().isEmpty()) {
                     throw new BadRequestException(ErrorCode.NOT_EXISTS_TITLE);
+                } else {
+                    notice.setTitle(title);
                 }
 
-
-                if (content != null) {
-                    notice.setContent(content);
-                } else {
+                if (content == null || content.trim().isEmpty()) {
                     throw new BadRequestException(ErrorCode.NOT_EXISTS_CONTENT);
+                } else {
+                    notice.setContent(content);
                 }
                 // 기존 공지사항에 연결된 파일 목록 조회
                 List<NoticeFile> oldFiles = new ArrayList<>(notice.getFiles());
@@ -122,7 +133,11 @@ public class NoticeServiceImpl implements NoticeService {
                         // 해당 파일이 기존 목록에 존재하지 않으면 s3 업로드
                         String uploadUrl;
                         try {
-                            uploadUrl = s3Uploader.uploadFiles(file, "notice-files");
+                            if (file.getOriginalFilename().endsWith(".txt")) {
+                                continue;
+                            } else {
+                                uploadUrl = s3Uploader.uploadFiles(file, "notice-files");
+                            }
                         } catch (IOException e) {
                             throw new BadRequestException(ErrorCode.FAIL_UPLOAD_FILE);
                         }
