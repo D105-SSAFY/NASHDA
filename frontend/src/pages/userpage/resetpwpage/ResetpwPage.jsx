@@ -1,7 +1,7 @@
-/* eslint-disable no-alert */
 import * as r from "./style";
 import video1 from "assets/image/nashda_move.mov";
 import ResetpwInput from "components/input/FormInputCol";
+import ResetpwModal from "components/modals/signupmodal/SignupModal";
 import eetch from "apis/eetch";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router";
@@ -13,6 +13,10 @@ export default function ResetpwPage() {
         password: "",
         checkedPassword: ""
     });
+
+    const [onModal, setOnModal] = useState(false);
+    const [onModalText, setOnModalText] = useState("");
+
     const [isLoading, setIsLoading] = useState(false);
     const [validEmail, setValidEmail] = useState(null);
     const [validPassword, setValidPassword] = useState(null);
@@ -131,42 +135,36 @@ export default function ResetpwPage() {
         setIsLoading(false);
 
         if (result.status === 200) {
-            alert("인증번호를 전송했어요!");
+            setOnModal("success");
+            setOnModalText("인증번호를 전송했어요!");
             setValidEmail(3);
         } else {
-            alert("인증번호 전송에 실패했어요!");
+            setOnModal("false");
+            setOnModalText("인증번호 전송에 실패했어요!");
         }
     };
 
     const handleCheck = async (e) => {
         e.preventDefault();
 
-        if (!inputs.email) {
-            alert("이메일 입력하세요!!");
-            return;
-        }
-
-        if (!inputs.code) {
-            alert("인증번호 입력하세요!");
-            return;
-        }
-
-        if (!inputs.password) {
-            alert("비밀번호 입력하세요!");
-            return;
-        }
-
-        if (!inputs.checkedPassword) {
-            alert("비밀번호확인 입력하세요!");
-        }
-
         const result = await eetch.resetPw({ email: inputs.email, newpassword: inputs.password, code: inputs.code });
         console.log(result);
         if (result.status === 200) {
-            alert("비밀번호 변경 성공!");
+            setOnModal("success");
+            setOnModalText("비밀번호 변경 성공!");
+        } else {
+            setOnModal("false");
+            setOnModalText("회원가입에 실패했습니다!");
+        }
+    };
+
+    const onClickModal = () => {
+        if (onModalText === "비밀번호 변경 성공!") {
+            setOnModal(false);
             navigate("/signin");
         } else {
-            alert("비밀번호 변경에 실패했습니다!");
+            setOnModal(false);
+            setOnModalText("");
         }
     };
 
@@ -229,6 +227,7 @@ export default function ResetpwPage() {
                 </r.StyledForm>
                 <r.StyledFooter></r.StyledFooter>
             </r.StyledMainSection>
+            <ResetpwModal props={{ text: onModalText, visible: onModal, callback: onClickModal }} />
         </r.StyledMain>
     );
 }

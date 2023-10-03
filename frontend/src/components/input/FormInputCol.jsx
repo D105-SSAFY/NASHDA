@@ -1,19 +1,23 @@
 import * as f from "./style";
 import loadingSpinner from "assets/image/Spinner-1s-45px.gif";
-// Import { useState } from "react";
+import { useState } from "react";
 export default function FormInputCol({
     data: { text, type, id, name, onChangeFunc, onClickFunc, placeholder, value, readOnly, ref, check, loading }
 }) {
-    // Const [isClicked, setIsClicked] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
 
-    // const handleInputClick = () => {
-    //     setIsClicked(true);
-    // };
+    const handleFocus = () => {
+        setIsFocused(true);
+    };
+
+    const handleBlur = () => {
+        setIsFocused(false);
+    };
 
     // eslint-disable-next-line no-return-assign
     return (
         <f.StyledDiv>
-            <f.StyledLabel htmlFor={id} isFill={Boolean(value)}>
+            <f.StyledLabel htmlFor={id} isFill={Boolean(value) || isFocused}>
                 {text}
             </f.StyledLabel>
             <f.StyledInput
@@ -26,6 +30,8 @@ export default function FormInputCol({
                 value={value}
                 readOnly={readOnly === 5}
                 check={check === 2 || check === 3 || check === 4}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
             ></f.StyledInput>
             {loading ? (
                 <f.StyledImg src={loadingSpinner}></f.StyledImg>
