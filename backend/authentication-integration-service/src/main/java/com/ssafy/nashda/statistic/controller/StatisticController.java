@@ -42,7 +42,7 @@ public class StatisticController {
     private final WeekTestStatisticService weekTestResultService;
     private final TestService testService;
 
-    @GetMapping("/test/week/datail/{week}")
+    @GetMapping("/test/week/detail/{week}")
     public ResponseEntity<? extends BaseResponseBody> weekTestDetail(@RequestHeader("Authorization") String token, @PathVariable("week") long week) throws Exception {
 
         Member member = memberController.findMemberByToken(token);
