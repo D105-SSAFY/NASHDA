@@ -200,7 +200,7 @@ public class PracticePronServiceImpl implements PracticePronService {
         // FAST API 와 소통하기
         log.info("name : {}", sound.getOriginalFilename());
         String sttResult = sttService.getPronunciation(sound); // 받아온 STT
-//        String sttResult = "강벼네서 자언어을 탁오 읻읍니다"; // 받아온 STT
+//        String sttResult =  "한 궈네 조은 채근 최고에 친구이다"; // 받아온 STT
 //        "강벼네서 자전거를 타고 읻씀니다."
 
         // 통계 저장 부분
@@ -232,35 +232,69 @@ public class PracticePronServiceImpl implements PracticePronService {
         PronResponseDto pronResponse = mapper.convertValue(response.getBody().getData(), PronResponseDto.class);
 
         String convertOrigin = pronResponse.getConvert(); // 원발음
+
+        String convertOriginTrim = convertOrigin.trim().replaceAll("[\\s!@#$%^&*().]", "");
+        String sttTrim = sttResult.trim().replaceAll("[\\s!@#$%^&*().]", "");
+
         String origin = pronResponse.getOrigin().trim().replaceAll("[\\s!@#$%^&*().]", ""); // 빈칸이 제거된 원문
         log.info("origin : {}", origin);
 
+        // 일치하는 문자열 저장
 
+        // Longest Common SubString
         // 0 : 공통 문자열 시작 인덱스, 1: 공통 문자열 끝 인덱스
-        int[] incorrectStringIndex = textProcessService.findIncorrectString(convertOrigin, sttResult);
-        log.info("start index : {} ,  end index : {}", incorrectStringIndex[0], incorrectStringIndex[1]);
+//        int[] incorrectStringIndex = textProcessService.findIncorrectString(convertOrigin, sttResult);
+//        log.info("start index : {} ,  end index : {}", incorrectStringIndex[0], incorrectStringIndex[1]);
+//        for (int i = 0; i < origin.length(); ++i) {
+////            log.info("origin.charAt() : {}", origin.charAt(i));
+//            String onset = textProcessService.getOnset(origin.charAt(i)); // 초성
+//            String nucleus = textProcessService.getNucleus(origin.charAt(i)); // 중성
+//            String coda = textProcessService.getCoda(origin.charAt(i)); // 종성
+//
+//            if (incorrectStringIndex[0] <= i && i <= incorrectStringIndex[1]) {
+////                log.info("맞는 발음 : {}", origin.charAt(i));
+//                // 맞는 발음인 경우
+//                practiceStatisticService.updateOnsetByMemberAndLetter(member, onset, true);
+//                practiceStatisticService.updateNucleusByMemberAndLetter(member, nucleus, true);
+//                practiceStatisticService.updateCodaByMemberAndLetter(member, coda, true);
+//
+//
+//            } else {
+////                log.info("틀린 발음 : {}", origin.charAt(i));
+//                // 틀린 발음의 경우
+//                practiceStatisticService.updateOnsetByMemberAndLetter(member, onset, false);
+//                practiceStatisticService.updateNucleusByMemberAndLetter(member, nucleus, false);
+//                practiceStatisticService.updateCodaByMemberAndLetter(member, coda, false);
+//            }
+//
+//        }
+
+        // Longest Common Subsequence
+        String correctSentence = textProcessService.findLCS(convertOriginTrim, sttTrim); // 발음과 원문과 매치되는 문자열
+        int compIndex = 0;
+
         for (int i = 0; i < origin.length(); ++i) {
-//            log.info("origin.charAt() : {}", origin.charAt(i));
             String onset = textProcessService.getOnset(origin.charAt(i)); // 초성
             String nucleus = textProcessService.getNucleus(origin.charAt(i)); // 중성
             String coda = textProcessService.getCoda(origin.charAt(i)); // 종성
 
-            if (incorrectStringIndex[0] <= i && i <= incorrectStringIndex[1]) {
-//                log.info("맞는 발음 : {}", origin.charAt(i));
-                // 맞는 발음인 경우
+            // 일치하는 패턴의 길이보다 인덱스가 안크면서
+            if (compIndex < correctSentence.length() && convertOriginTrim.charAt(i) == correctSentence.charAt(compIndex)) {
+                // 사용자의 발음과 원문의 발음이 일치하는 경우 해당 문자를 정답으로 기록
+                log.info("맞는 발음 : {}", origin.charAt(i));
                 practiceStatisticService.updateOnsetByMemberAndLetter(member, onset, true);
                 practiceStatisticService.updateNucleusByMemberAndLetter(member, nucleus, true);
                 practiceStatisticService.updateCodaByMemberAndLetter(member, coda, true);
 
-
+                compIndex++;
             } else {
-//                log.info("틀린 발음 : {}", origin.charAt(i));
-                // 틀린 발음의 경우
+                // 발음이 틀린 경우 해당 문자를 오답으로 기록
+                log.info("틀린 발음 : {}", origin.charAt(i));
                 practiceStatisticService.updateOnsetByMemberAndLetter(member, onset, false);
                 practiceStatisticService.updateNucleusByMemberAndLetter(member, nucleus, false);
                 practiceStatisticService.updateCodaByMemberAndLetter(member, coda, false);
-            }
 
+            }
         }
 
         return sttResult;

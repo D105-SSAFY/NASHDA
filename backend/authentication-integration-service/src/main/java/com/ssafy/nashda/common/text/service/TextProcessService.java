@@ -95,4 +95,39 @@ public class TextProcessService {
             return new int[]{startIndex, endIndex}; // 공통되는 문자열 인덱스 범위 반환
         }
     }
+
+    public String findLCS(String originConvert, String pronunciation) {
+        int m = originConvert.length();
+        int n = pronunciation.length();
+
+        int[][] dp = new int[m + 1][n + 1];
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (originConvert.charAt(i - 1) == pronunciation.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        int lcsLength = dp[m][n];
+        char[] lcs = new char[lcsLength];
+        int i = m, j = n;
+        while (i > 0 && j > 0) {
+            if (originConvert.charAt(i - 1) == pronunciation.charAt(j - 1)) {
+                lcs[--lcsLength] = originConvert.charAt(i - 1);
+                i--;
+                j--;
+            } else if (dp[i - 1][j] > dp[i][j - 1]) {
+                i--;
+            } else {
+                j--;
+            }
+        }
+
+        return new String(lcs);
+    }
+    
 }
