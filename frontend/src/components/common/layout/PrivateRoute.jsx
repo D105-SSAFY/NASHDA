@@ -12,12 +12,12 @@ export default function PrivateRoute({ isPrivate = true }) {
         eetch
             .tokenValidation(eetch.valid, { user }, dispatch)
             .then(() => {
-                return setIsValid(true);
+                setIsValid(true);
             })
             .catch(() => {
-                return setIsValid(false);
+                setIsValid(false);
             });
-    }, []);
+    }, [dispatch, user]);
 
     if (isValid === null) return null;
 

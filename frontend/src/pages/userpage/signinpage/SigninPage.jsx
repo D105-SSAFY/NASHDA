@@ -3,7 +3,6 @@ import * as s from "./style";
 import video1 from "assets/image/nashda_move.mov";
 import image2 from "assets/image/signinbtn.png";
 import SigninInput from "components/input/FormInputCol";
-// Import { login } from "apis/user";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "redux/slice/userSlice";
@@ -48,8 +47,7 @@ export default function SigninPage() {
                     accessToken: result.data.accessToken,
                     refreshToken: result.data.refreshToken
                 })
-            );
-            navigate("/");
+            ).then(() => navigate("/main"));
         } else {
             alert("로그인에 실패했습니다!");
         }

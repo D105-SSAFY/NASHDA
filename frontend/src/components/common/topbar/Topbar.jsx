@@ -5,10 +5,12 @@ import { clearUser } from "redux/slice/userSlice";
 import * as t from "./style";
 
 import AirIcon from "@mui/icons-material/Air";
+import { useNavigate } from "react-router";
 
 export default function Topbar() {
     // Dispath 초기화
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // 유저 정보 가져오기
     const user = useSelector((state) => state.user);
@@ -27,7 +29,7 @@ export default function Topbar() {
 
     // 로그아웃
     const signout = () => {
-        dispatch(clearUser());
+        dispatch(clearUser()).then(() => navigate("/"));
     };
 
     // !!!!

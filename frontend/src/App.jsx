@@ -94,6 +94,7 @@ export default function App() {
                                 <Route path="/" element={<PrivateRoute isPrivate={false} />}>
                                     <Route index element={<Intro />} />
                                 </Route>
+                                <Route path="/greeting" element={<Intro />} />
 
                                 {/* user pages */}
                                 <Route path="/signin" element={<PrivateRoute isPrivate={false} />}>
