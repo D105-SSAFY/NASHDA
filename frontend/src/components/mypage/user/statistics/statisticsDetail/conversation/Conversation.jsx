@@ -1,22 +1,30 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import eetch from "apis/eetch";
 
 import * as c from "./style";
+
+import SelectInput from "components/input/FormSelectCol";
+
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 
-export default function Conversation({ setDatas, setAmount }) {
+export default function Conversation({ isConv, setIsConv, convExpand, setAmount }) {
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
     const [totalIncorrect, setTotalIncorrect] = useState(-1);
     // const [conversations, setConversations] = useState([]);
-    const [isCafe, setIsCafe] = useState(false);
-    const [isPolice, setIsPolice] = useState(false);
-    const [isTheater, setIsTheater] = useState(false);
     const [Cafe, setCafe] = useState([]);
     const [Police, setPolice] = useState([]);
     const [Theater, setTheater] = useState([]);
+    const [place, setPlace] = useState(0);
+
+    const [places, setPlaces] = useState([]);
+
+    const changePlace = (target, idx) => {
+        if (target === "취미") setPlace(idx);
+    };
 
     const makeChat = (type) => {
         const temp = [];
@@ -68,42 +76,57 @@ export default function Conversation({ setDatas, setAmount }) {
     };
 
     useEffect(() => {
-        eetch.practiceSimul({ user }).then((res) => {
-            // setConversations(res.data);
+        eetch.tokenValidation(eetch.practiceSimul, { user }, dispatch).then((res) => {
             if (res.data) {
-                setTotalIncorrect(res.data.reduce((acc, cur) => acc + cur.total - cur.score, 0));
+                if (res.data) {
+                    setTotalIncorrect(res.data.reduce((acc, cur) => acc + cur.total - cur.score, 0));
+                }
+
+                res.data.forEach((obj) => {
+                    if (obj.background === "cafe") {
+                        places.push({ hobbyIdx: 1, hobby: "카페" });
+                        setPlaces(places);
+                    }
+
+                    if (obj.background === "police") {
+                        places.push({ hobbyIdx: 2, hobby: "경찰서" });
+                        setPlaces(places);
+                    }
+
+                    if (obj.background === "theater") {
+                        places.push({ hobbyIdx: 3, hobby: "영화관" });
+                        setPlaces(places);
+                    }
+                });
+
+                setAmount(res.data.length);
             }
-
-            res.data.forEach((obj) => {
-                if (obj.background === "cafe") setIsCafe(true);
-                if (obj.background === "police") setIsPolice(true);
-                if (obj.background === "theater") setIsTheater(true);
-            });
-
-            setAmount(res.data.length);
         });
 
-        eetch.practiceSimulBackground({ background: "cafe", user }).then((res) => {
+        eetch.tokenValidation(eetch.practiceSimulBackground, { background: "cafe", user }, dispatch).then((res) => {
             setCafe(res.data);
         });
 
-        eetch.practiceSimulBackground({ background: "police", user }).then((res) => {
+        eetch.tokenValidation(eetch.practiceSimulBackground, { background: "police", user }, dispatch).then((res) => {
             setPolice(res.data);
         });
 
-        eetch.practiceSimulBackground({ background: "theater", user }).then((res) => {
+        eetch.tokenValidation(eetch.practiceSimulBackground, { background: "theater", user }, dispatch).then((res) => {
             setTheater(res.data);
         });
     }, []);
 
     useEffect(() => {
         if (totalIncorrect > 0) {
-            setDatas(1, true);
+            setIsConv(true);
         }
     }, [totalIncorrect]);
 
+    useEffect(() => {
+        if (place !== 0) convExpand();
+    }, [place]);
     return (
-        <>
+        <c.ConversationWrapper isConv={isConv}>
             <c.ConversationTitle>
                 {totalIncorrect === -1 ? (
                     <c.NoDataWrapper>
@@ -121,30 +144,35 @@ export default function Conversation({ setDatas, setAmount }) {
                     <c.InfoWrapper>
                         <c.InfoTitle>AI와의 대화 중 총 {totalIncorrect}번의 어색한 대화가 있었어요.</c.InfoTitle>
                     </c.InfoWrapper>
-                )}{" "}
+                )}
             </c.ConversationTitle>
             {totalIncorrect > 0 ? (
                 <>
-                    {isCafe ? (
+                    <SelectInput
+                        data={{
+                            target: "취미",
+                            list: places,
+                            callback: changePlace,
+                            Idx: place
+                        }}
+                    ></SelectInput>
+                    {place === 1 ? (
                         <>
-                            <c.TypeTitle>카페</c.TypeTitle>
                             <c.ChatBox>{makeChat("cafe")}</c.ChatBox>
                         </>
                     ) : null}
-                    {isPolice ? (
+                    {place === 2 ? (
                         <>
-                            <c.TypeTitle>경찰서</c.TypeTitle>
                             <c.ChatBox>{makeChat("police")}</c.ChatBox>
                         </>
                     ) : null}
-                    {isTheater ? (
+                    {place === 3 ? (
                         <>
-                            <c.TypeTitle>영화관</c.TypeTitle>
                             <c.ChatBox>{makeChat("theater")}</c.ChatBox>
                         </>
                     ) : null}
                 </>
             ) : null}
-        </>
+        </c.ConversationWrapper>
     );
 }

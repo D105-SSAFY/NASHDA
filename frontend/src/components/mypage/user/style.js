@@ -7,7 +7,7 @@ export const DeFocusTouch = styled.div`
     left: 0;
 
     width: 100%;
-    height: calc(100% - 123px);
+    height: 100%;
 `;
 
 export const UserSection = styled.section`
@@ -117,10 +117,6 @@ export const UserCard = styled.article`
     background-color: #f2f2f2;
 
     transition: all ease 0.5s;
-
-    & > div {
-        max-height: 2000px;
-    }
 `;
 
 export const MoreButton = styled.button`

@@ -19,7 +19,11 @@ export default function SummarySection() {
         });
 
         eetch.weekTest({ user }).then((res) => {
-            setHistory([res.data.member_info.word_count, res.data.member_info.sentence_count, res.data.member_info.conversation_count]);
+            setHistory([
+                res.data.member_info.word_count.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
+                res.data.member_info.sentence_count.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
+                res.data.member_info.conversation_count.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+            ]);
         });
     }, []);
 

@@ -106,14 +106,18 @@ export const GraphInfoTitle = styled.p`
     margin-bottom: 1rem;
 
     color: #ffffff;
-    font-size: 1.8rem;
+    font-size: ${(props) => (props.more === 5 ? "2.5rem" : "1.8rem")};
     font-weight: 600;
+
+    transition: font-size ease 0.5s;
 `;
 
 export const GraphInfoContent = styled.p`
     margin-bottom: 0.3rem;
 
     color: #ffffff;
-    font-size: 1.6rem;
+    font-size: ${(props) => (props.more === 5 ? "2.22rem" : "1.6rem")};
     font-weight: 300;
+
+    transition: font-size ease 0.5s;
 `;

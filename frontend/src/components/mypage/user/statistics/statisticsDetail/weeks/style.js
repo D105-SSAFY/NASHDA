@@ -1,15 +1,8 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-export const GamesWrapper = styled.div`
-    padding-bottom: ${(props) => (props.isGame ? "80px" : "0")};
-    & > :first-child {
-        margin-top: ${(props) => (props.isGame ? "20px" : "0")};
-    }
-
-    & > :last-child {
-        margin-bottom: 0;
-    }
+export const WeekWrapper = styled.div`
+    padding-bottom: ${(props) => (props.isWeek ? "80px" : "0")};
 `;
 
 export const StatTable = styled.table`
@@ -18,19 +11,24 @@ export const StatTable = styled.table`
     border-spacing: 0 5px;
 
     margin: 0 auto;
+    margin-top: 20px;
     margin-bottom: 60px;
-`;
 
+    table-layout: fixed;
+`;
 export const StatTableHead = styled.thead`
     font-size: 1.4rem;
-    font-weight: 700;
+    font-weight: 500;
 `;
-
 export const StatTableBody = styled.tbody`
     & > tr {
         background-color: #fff;
         font-size: 1.8rem;
         font-weight: 500;
+
+        & > td {
+            // 모든 td 넓이 동일하게
+        }
 
         & > :first-child {
             border-radius: 10px 0 0 10px;
@@ -54,22 +52,6 @@ export const StatTableBody = styled.tbody`
             text-align: center;
         }
     }
-`;
-
-export const TableTitle = styled.h3`
-    padding: 5px 12px 5px 12px;
-    margin-bottom: 15px;
-    margin-left: 40px;
-
-    font-size: 2rem;
-    text-align: center;
-    width: fit-content;
-
-    border-radius: 30px;
-
-    color: #fff;
-
-    background-color: #44475a;
 `;
 
 export const NoDataWrapper = styled.div`

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import * as p from "./style";
 import { MoreButton, CloseButton } from "components/mypage/user/style";
 import SigninInput from "components/input/FormInputCol";
@@ -9,6 +10,8 @@ import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOu
 import eetch from "apis/eetch";
 
 export default function Profile({ userInfo, setUserInfo, more, setMore }) {
+    const dispatch = useDispatch();
+
     const [lists, setLists] = useState({});
     const [age, setAge] = useState(0);
     const [inputs, setInputs] = useState([0, 0]);
@@ -26,7 +29,7 @@ export default function Profile({ userInfo, setUserInfo, more, setMore }) {
             userInfo.job = inputs[0];
             userInfo.hobby = inputs[1];
 
-            eetch.updateProfile(userInfo).then((res) => {
+            eetch.tokenValidation(eetch.updateProfile, userInfo, dispatch).then((res) => {
                 setUserInfo(res.data);
             });
         } else setMore(4);
@@ -73,6 +76,7 @@ export default function Profile({ userInfo, setUserInfo, more, setMore }) {
     useEffect(() => {
         eetch.domain().then((res) => {
             setLists({ jobList: res.data.jobList, hobbyList: res.data.hobbyList });
+            console.log(res.data);
         });
     }, []);
 

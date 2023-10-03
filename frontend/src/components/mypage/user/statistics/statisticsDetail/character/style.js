@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+export const CharactersWrapper = styled.div`
+    padding-bottom: ${(props) => (props.isChar ? "80px" : "0")};
+`;
+
 export const GraphTarget = styled.span`
     display: inline;
     width: 250px;

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import * as n from "./style";
 import { MoreButton, CloseButton } from "components/mypage/user/style";
 
@@ -7,6 +8,7 @@ import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOu
 import eetch from "apis/eetch";
 
 export default function NicknameDetail({ userInfo, setUserInfo, setMore }) {
+    const dispatch = useDispatch();
     const [nickname, setNickname] = useState(userInfo.nickname);
 
     const handleInputChange = (e) => {
@@ -15,7 +17,7 @@ export default function NicknameDetail({ userInfo, setUserInfo, setMore }) {
 
     const handleSubmit = () => {
         userInfo.nickname = nickname;
-        eetch.updateProfile(userInfo).then((res) => {
+        eetch.tokenValidation(eetch.updateProfile, userInfo, dispatch).then((res) => {
             setUserInfo(res.data);
         });
     };

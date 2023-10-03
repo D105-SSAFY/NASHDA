@@ -180,3 +180,41 @@ export const weekTest = async ({ user }) => {
         console.error(err);
     }
 };
+
+export const weekTestDetail = async ({ week, count, user }) => {
+    try {
+        const url = `${process.env.REACT_APP_API_URL}/statistic/test/week/detail/${week}/${count}`;
+
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.accessToken}`
+            },
+            credentials: "include"
+        };
+
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+export const weekTestAll = async ({ user }) => {
+    try {
+        const url = `${process.env.REACT_APP_API_URL}/statistic/test/week/all`;
+
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.accessToken}`
+            },
+            credentials: "include"
+        };
+
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
+    }
+};

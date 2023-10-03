@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as u from "./style";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Nickname from "components/mypage/user/nickname/Nickname";
 import Statistics from "components/mypage/user/statistics/Statistics";
@@ -14,15 +14,15 @@ import eetch from "apis/eetch";
 import StatisticsDetail from "./statistics/statisticsDetail/StatisticsDetail";
 
 export default function Setting() {
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
 
     // 테스트로 5로 해놨음!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 0으로 돌려야 함!!!!!!!!!
-    const [more, setMore] = useState(5);
+    const [more, setMore] = useState(0);
     const [userInfo, setUserInfo] = useState({});
     const [achievements, setAchievements] = useState([]);
     const [tabChanged, setTabChanged] = useState(false);
-    const [isToggle, setIsToggle] = useState([false, false, false]);
+    const [isToggle, setIsToggle] = useState([false, false, false, false]);
 
     const transitionHandler = () => {
         if (more === 5) {
@@ -31,11 +31,11 @@ export default function Setting() {
     };
 
     useEffect(() => {
-        eetch.mypage({ user }).then((res) => {
+        eetch.tokenValidation(eetch.mypage, { user }, dispatch).then((res) => {
             setUserInfo(res.data);
         });
 
-        eetch.achievement({ user }).then((res) => {
+        eetch.tokenValidation(eetch.achievement, { user }, dispatch).then((res) => {
             setAchievements(res.data);
         });
     }, []);
@@ -53,7 +53,7 @@ export default function Setting() {
             <u.DeFocusTouch
                 onClick={() => {
                     setMore(0);
-                    setIsToggle([false, false, false]);
+                    setIsToggle([false, false, false, false]);
                 }}
             />
             <u.UserSection more={more} tabChanged={tabChanged}>
@@ -68,7 +68,7 @@ export default function Setting() {
                     onTransitionEnd={transitionHandler}
                 >
                     <u.modeChange toggle={more === 0 || more === 2 || more === 4 || more === 5}>
-                        <Statistics setMore={setMore} />
+                        <Statistics more={more} setMore={setMore} />
                     </u.modeChange>
                     <u.modeChange toggle={more === 1}>
                         <NicknameDetail userInfo={userInfo} setUserInfo={setUserInfo} setMore={setMore} />
