@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 import eetch from "apis/eetch";
 
-export default function PrivateRoute() {
+export default function PrivateRoute({ isPrivate = true }) {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
     const [isValid, setIsValid] = useState(null);
@@ -12,14 +12,15 @@ export default function PrivateRoute() {
         eetch
             .tokenValidation(eetch.valid, { user }, dispatch)
             .then(() => {
-                return setIsValid(true);
+                setIsValid(true);
             })
             .catch(() => {
-                return setIsValid(false);
+                setIsValid(false);
             });
-    }, []);
+    }, [dispatch, user]);
 
     if (isValid === null) return null;
 
-    return isValid ? <Outlet /> : <Navigate to="/signin" />;
+    if (isPrivate) return isValid ? <Outlet /> : <Navigate to="/signin" />;
+    return isValid ? <Navigate to="/main" /> : <Outlet />;
 }

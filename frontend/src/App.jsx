@@ -79,6 +79,9 @@ import ConversationPage from "pages/practicepage/conversationpage/ConversationPa
 import ProblemPage from "pages/practicepage/problempage/ProblemPage";
 import StretchingPage from "pages/practicepage/stretchingpage/StretchingPage";
 
+import DramaPlayPage from "pages/gamepage/dramaplaypage/DramaPlayPage";
+import SpeedQuizPage from "pages/gamepage/speedquizpage/SpeedQuizPage";
+
 export default function App() {
     return (
         <Provider store={store}>
@@ -88,12 +91,22 @@ export default function App() {
                     <BrowserRouter forceRefresh={true}>
                         <Routes>
                             <Route path="/" element={<Layout />}>
-                                <Route path="/" element={<Intro />} />
+                                <Route path="/" element={<PrivateRoute isPrivate={false} />}>
+                                    <Route index element={<Intro />} />
+                                </Route>
+                                <Route path="/greeting" element={<Intro />} />
 
                                 {/* user pages */}
-                                <Route path="/signin" element={<SigninPage />} />
-                                <Route path="/signup" element={<SignupPage />} />
-                                <Route path="/resetpw" element={<ResetpwPage />} />
+                                <Route path="/signin" element={<PrivateRoute isPrivate={false} />}>
+                                    <Route index element={<SigninPage />} />
+                                </Route>
+                                <Route path="/signup" element={<PrivateRoute isPrivate={false} />}>
+                                    <Route index element={<SignupPage />} />
+                                </Route>
+                                <Route path="/resetpw" element={<PrivateRoute isPrivate={false} />}>
+                                    <Route index element={<ResetpwPage />} />
+                                </Route>
+
                                 {/* private pages */}
                                 <Route path="/mypage" element={<PrivateRoute />}>
                                     <Route index element={<MyPage />} />
@@ -106,6 +119,8 @@ export default function App() {
                                 <Route path="/1" element={<ProblemPage />} />
                                 <Route path="/2" element={<ConversationPage />} />
                                 <Route path="/3" element={<StretchingPage />} />
+                                <Route path="/4" element={<DramaPlayPage />} />
+                                <Route path="/5" element={<SpeedQuizPage />} />
                             </Route>
                             {/* main page */}
                         </Routes>

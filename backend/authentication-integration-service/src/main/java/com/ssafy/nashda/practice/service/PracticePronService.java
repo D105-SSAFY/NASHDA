@@ -33,5 +33,5 @@ public interface PracticePronService {
     void updateSentenceCount(Member member) throws Exception;*/
 
 
-    String getSTT(Member member, PracticePronRequestDto practicePronRequestDto) throws Exception;
+    String getPracSTT(Member member, MultipartFile sound, PracticePronRequestDto practicePronRequestDto) throws Exception;
 }

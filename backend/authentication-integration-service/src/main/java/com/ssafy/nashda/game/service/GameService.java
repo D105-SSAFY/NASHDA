@@ -17,7 +17,7 @@ public interface GameService {
 
     long getSpeedSetNum();
 
-    GmaeSTTResDto convertSTT(GameSTTReqDto request) throws Exception;
+    GameSTTResDto convertSTT(MultipartFile sound, GameSTTReqDto request) throws Exception;
 
     void saveSpeedResult(SpeedResultReqDto request, Member member) throws Exception;
 

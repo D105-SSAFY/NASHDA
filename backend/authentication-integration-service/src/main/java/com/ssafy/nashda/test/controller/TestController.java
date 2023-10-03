@@ -1,5 +1,6 @@
 package com.ssafy.nashda.test.controller;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.history.service.MemberHistoryService;
 import com.ssafy.nashda.member.controller.MemberController;
@@ -8,7 +9,11 @@ import com.ssafy.nashda.statistic.service.StrickService;
 import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
 import com.ssafy.nashda.test.dto.request.*;
 import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
+import com.ssafy.nashda.test.dto.response.WeekTestResultDetailResDto;
+import com.ssafy.nashda.test.dto.response.WordTestResultAllResDto;
 import com.ssafy.nashda.test.dto.response.WordTestStartResDto;
+import com.ssafy.nashda.test.entity.MixTestResult;
+import com.ssafy.nashda.test.repository.MixTestResultRepository;
 import com.ssafy.nashda.test.service.TestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +35,16 @@ public class TestController {
     private final MemberController memberController;
     private final StrickService strickService;
     private final MemberHistoryService memberHistoryService;
+
+    @GetMapping("/week/all")
+    public ResponseEntity<? extends BaseResponseBody> weekTestAll(@RequestHeader("Authorization") String token) throws Exception {
+
+        Member member = memberController.findMemberByToken(token);
+        WordTestResultAllResDto allWordTestResult = testService.getAllWordTestResult(member);
+
+        return new ResponseEntity<>(new BaseResponseBody(200, "전체 점수", allWordTestResult),
+                HttpStatus.OK);
+    }
 
     @GetMapping("/word")
     public ResponseEntity<? extends BaseResponseBody> wordTestStart(@RequestHeader("Authorization") String token) throws Exception {
@@ -86,8 +101,10 @@ public class TestController {
     }
 
     @PostMapping(value = "/word/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<? extends BaseResponseBody> wordTestUserSpeak(@ModelAttribute WordTestResultSpeakReqDto reqDto) throws Exception {
-        String stt = testService.sttWordTest(reqDto);
+    public ResponseEntity<? extends BaseResponseBody> wordTestUserSpeak(
+            @RequestPart(value = "sound") MultipartFile sound,
+            @ModelAttribute WordTestResultSpeakReqDto reqDto) throws Exception {
+        String stt = testService.sttWordTest(sound, reqDto);
         return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 변환 성공", stt),
                 HttpStatus.OK);
     }
@@ -95,9 +112,10 @@ public class TestController {
 
     @PostMapping(value = "/sentence/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<? extends BaseResponseBody> sentenceTestUserSpeak(
+            @RequestPart(value = "sound") MultipartFile sound,
             @ModelAttribute SentenceTestSpeakReqDto reqDto) throws Exception {
 
-        String stt = testService.sttSentenceTest(reqDto);
+        String stt = testService.sttSentenceTest(sound, reqDto);
 
         return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 변환 성공(문장)", stt),
                 HttpStatus.OK);
@@ -115,14 +133,15 @@ public class TestController {
 
     @PostMapping(value = "/week/user",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<? extends BaseResponseBody> weekTestUser(
+            @RequestPart(value = "sound") MultipartFile sound,
             @ModelAttribute WeekTestReqDto reqDto) throws Exception {
 
         if(reqDto.getOrder()<5){
-            String stt = testService.sttMixTest(reqDto, "blank");
+            String stt = testService.sttMixTest(sound, reqDto, "blank");
             return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 저장 성공(blank)", stt),
                     HttpStatus.OK);
         }else if(reqDto.getOrder()<8){
-            String stt = testService.sttMixTest(reqDto, "speed1");
+            String stt = testService.sttMixTest(sound, reqDto, "speed1");
             return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 저장 성공(speed)", stt),
                     HttpStatus.OK);
         }else{
@@ -137,7 +156,6 @@ public class TestController {
     public ResponseEntity<? extends BaseResponseBody> weekTestResult(@RequestHeader("Authorization") String token, @RequestBody WeekTestResultReqDto reqDto) throws Exception {
         Member member = memberController.findMemberByToken(token);
         testService.saveWeekTestScore(reqDto, member);
-        //stick표시를 위한 작업
         strickService.increaseTestCount(member);
 
         //업적을 위한 testing

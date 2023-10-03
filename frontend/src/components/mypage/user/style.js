@@ -13,17 +13,23 @@ export const DeFocusTouch = styled.div`
 export const UserSection = styled.section`
     position: relative;
     width: 950px;
+    height: fit-content;
+    min-height: 700px;
 
     margin: 0 auto;
     margin-top: 25px;
     padding: 0 20px;
 
+    overflow: hidden;
+
     font-weight: 700;
     font-size: 3rem;
 
     & > :first-child {
+        position: relative;
+
         top: 20px;
-        left: 20px;
+        left: ${(props) => (props.more === 5 ? "-280px" : "0px")};
         width: 260px;
 
         flex-direction: column;
@@ -32,7 +38,7 @@ export const UserSection = styled.section`
     & > :nth-child(2) {
         top: 20px;
         right: 20px;
-        width: 630px;
+        width: ${(props) => (props.more === 5 ? "910px" : "630px")};
         height: ${(props) => (props.more === 3 ? "660px" : "320px")};
 
         flex-direction: column;
@@ -48,23 +54,50 @@ export const UserSection = styled.section`
             font-weight: 400;
         }
 
+        & > div > button {
+            opacity: ${(props) => (props.more === 5 ? "0.3" : "1")};
+            pointer-events: ${(props) => (props.more === 5 ? "none" : "auto")};
+
+            transition: opacity ease 0.5s;
+        }
+
         overflow-x: hidden;
         overflow-y: ${(props) => (props.more === 3 ? "auto" : "hidden")};
     }
 
     & > :nth-child(3) {
         top: 360px;
-        left: 20px;
+        left: ${(props) => (props.more === 5 && props.tabChanged ? "950px" : "20px")};
+
         width: 260px;
+
+        transition: ${(props) => (props.more === 5 ? "all ease 0.9s" : "all ease 0.5s")};
     }
 
     & > :nth-child(4) {
         top: 360px;
-        left: 300px;
+        left: ${(props) => (props.more === 5 && props.tabChanged ? "1230px" : "300px")};
 
         width: ${(props) => (props.more === 4 ? "630px" : "260px")};
 
+        transition: ${(props) => (props.more === 5 ? "all ease 0.9s" : "all ease 0.5s")};
+
         background-color: #faf8f2;
+    }
+
+    & > :nth-child(5) {
+        position: relative;
+
+        margin-top: 40px;
+        left: ${(props) => (props.more === 5 && props.tabChanged ? "0px" : "-930px")};
+        width: 910px;
+        height: fit-content;
+
+        visibility: ${(props) => (props.more === 5 && props.tabChanged ? "show" : "hidden")};
+
+        background-color: #f2f2f2;
+
+        transition: ${(props) => (props.more === 5 ? "all ease 0.9s" : "all ease 0.5s")};
     }
 `;
 

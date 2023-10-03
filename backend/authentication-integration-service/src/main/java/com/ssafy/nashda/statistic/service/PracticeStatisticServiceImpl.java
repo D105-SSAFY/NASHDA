@@ -3,7 +3,7 @@ package com.ssafy.nashda.statistic.service;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.practice.service.TextProcessService;
+import com.ssafy.nashda.common.text.service.TextProcessService;
 import com.ssafy.nashda.statistic.dto.response.PhonemeInterface;
 import com.ssafy.nashda.statistic.entity.CodaStatistic;
 import com.ssafy.nashda.statistic.entity.NucleusStatistic;
@@ -62,6 +62,8 @@ public class PracticeStatisticServiceImpl implements PracticeStatisticService {
 
     @Override
     public CodaStatistic updateCodaByMemberAndLetter(Member member, String letter, boolean isAnswer) throws Exception {
+        if("".equals(letter)) return null; // 빈칸 인경우 업데이트 X
+        
         CodaStatistic codaStatistic = codaStatisticRepository.findByMemberAndLetter(member, letter)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
 
@@ -107,6 +109,9 @@ public class PracticeStatisticServiceImpl implements PracticeStatisticService {
 
             // 종성
             for (String str : coda) {
+                if("".equals(str)) continue;
+
+
                 CodaStatistic codaStatistic = CodaStatistic.builder()
                         .member(member)
                         .letter(str)

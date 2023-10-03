@@ -5,15 +5,15 @@ import SoundWave from "components/soundwave/SoundWave";
 
 import MicOffIcon from "@mui/icons-material/MicOff";
 
-export default function VoiceModal({ props: { pronunciation, visible, callback } }) {
+export default function VoiceModal({ props: { title, content, visible, callback } }) {
     return (
         <s.Wrapper visible={visible}>
             <s.Section>
                 <header>
-                    <h2>음성 입력 모달</h2>
+                    <h3>음성 입력 모달</h3>
                 </header>
-                <s.Read>따라 읽어 보세요.</s.Read>
-                <s.Pron>&quot;{pronunciation}&quot;</s.Pron>
+                <s.Read>{title}</s.Read>
+                {content ? <s.Pron>&quot;{content}&quot;</s.Pron> : <></>}
                 <SoundWave props={{ start: visible }} />
                 <s.ButtonWrapper>
                     <FilledButton props={{ background: "rgba(68, 71, 90, 0.7)", color: "#ffffff", hovercolor: "#44475A", callback }}>

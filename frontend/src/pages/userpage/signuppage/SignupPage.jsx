@@ -31,19 +31,19 @@ export default function SignupPage() {
     const [overlapPassword2, setOverlapPassword2] = useState(null);
     const timeoutIdRef = useRef(null);
     const checkEmailText = [
-        "중복된 이메일 입니다!",
-        "이메일 형식을 확인하세요!",
-        "사용 가능한 이메일 입니다!",
-        "인증번호를 입력하세요!",
-        "인증번호가 일치하지 않습니다!",
-        "인증 성공!"
+        "*중복된 이메일 입니다!",
+        "*이메일 형식을 확인하세요!",
+        "*사용 가능한 이메일 입니다!",
+        "*인증번호를 입력하세요!",
+        "*인증번호가 일치하지 않습니다!",
+        "*인증 성공!"
     ];
-    const checkNicknameText = ["중복된 닉네임 입니다!", "2~6자, 특수문자 사용 X", "사용할 수 있는 닉네임 입니다!"];
+    const checkNicknameText = ["*중복된 닉네임 입니다!", "*2~6자, 특수문자 사용 X", "*사용할 수 있는 닉네임 입니다!"];
     const checkPassword2Text = [
-        "8~16자, 특수문자 1자 이상을 포함해야 합니다!",
-        "사용 가능한 비밀번호 입니다!",
-        "비밀번호가 일치하지 않습니다!",
-        "비밀번호가 일치합니다!"
+        "*8~16자, 특수문자 1자 이상을 포함해야 합니다!",
+        "*사용 가능한 비밀번호 입니다!",
+        "*비밀번호가 일치하지 않습니다!",
+        "*비밀번호가 일치합니다!"
     ];
     const [domainList, setDomainList] = useState([]);
     const navigate = useNavigate();

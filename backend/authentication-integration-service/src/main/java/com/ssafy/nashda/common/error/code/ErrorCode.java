@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
     // S3
+    FAIL_UPLOAD_FILE(HttpStatus.INTERNAL_SERVER_ERROR, 7000, "서버 장애로 s3에 파일에 업로드할 때 오류가 발생하였습니다."),
     FAIL_DELETE_FILE(HttpStatus.INTERNAL_SERVER_ERROR, 7000, "S3에 업로드 된 파일을 지울 때 오류가 발생하였습니다."),
 
     // STT 오류
@@ -40,6 +41,7 @@ public enum ErrorCode {
 
 
     // 질문 게시판
+    NOT_EXISTS_QUESTION(HttpStatus.BAD_REQUEST, 400, "해당 유저가 작성한 질문글이 존재하지않습니다."),
     NOT_EXISTS_QUESTION_ID(HttpStatus.BAD_REQUEST, 400, "존재하지 않는 질문글입니다."),
 
     // 답변

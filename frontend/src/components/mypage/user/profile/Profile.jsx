@@ -10,20 +10,21 @@ import eetch from "apis/eetch";
 
 export default function Profile({ userInfo, setUserInfo, more, setMore }) {
     const [lists, setLists] = useState({});
-    const [inputs, setInputs] = useState([0, 0, 0]);
+    const [age, setAge] = useState(0);
+    const [inputs, setInputs] = useState([0, 0]);
 
-    const handleChange = (e) => {
-        inputs[0] = e.target.value;
-        setInputs(inputs);
-    };
+    function handleChange(e) {
+        setAge(e.target.value ? e.target.value : 0);
+        console.log(age);
+    }
 
     const handleSubmit = () => {
         if (more === 4) {
             setMore(0);
 
-            userInfo.age = inputs[0];
-            userInfo.job = inputs[1];
-            userInfo.hobby = inputs[2];
+            userInfo.age = age;
+            userInfo.job = inputs[0];
+            userInfo.hobby = inputs[1];
 
             eetch.updateProfile(userInfo).then((res) => {
                 setUserInfo(res.data);
@@ -63,8 +64,8 @@ export default function Profile({ userInfo, setUserInfo, more, setMore }) {
     };
 
     const setJobHobby = (target, idx) => {
-        if (target === "직업") inputs[1] = idx;
-        else inputs[2] = idx;
+        if (target === "직업") inputs[0] = idx;
+        else inputs[1] = idx;
 
         setInputs(inputs);
     };
@@ -76,7 +77,8 @@ export default function Profile({ userInfo, setUserInfo, more, setMore }) {
     }, []);
 
     useEffect(() => {
-        setInputs([userInfo.age, userInfo.job, userInfo.hobby]);
+        setAge(userInfo.age);
+        setInputs([userInfo.job, userInfo.hobby]);
     }, [userInfo]);
 
     return (
@@ -106,9 +108,9 @@ export default function Profile({ userInfo, setUserInfo, more, setMore }) {
                             text: "나이",
                             id: "age",
                             name: "age",
-                            type: "text",
+                            type: "number",
                             onChangeFunc: handleChange,
-                            value: inputs[0] || 0
+                            value: age || 0
                         }}
                     />
                     <SelectInput

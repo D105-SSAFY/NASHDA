@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Section = styled.section`
     display: flex;
@@ -70,4 +71,10 @@ export const Sentences = styled.span`
 
 export const Chats = styled.span`
     color: #b1b8e8;
+`;
+
+export const NameLink = styled(Link)`
+    color: #000;
+    text-decoration: underline;
+    text-underline-offset: 4px;
 `;

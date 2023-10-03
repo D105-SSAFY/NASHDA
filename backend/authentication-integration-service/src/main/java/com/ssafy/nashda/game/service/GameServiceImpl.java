@@ -10,9 +10,9 @@ import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.game.dto.request.*;
 import com.ssafy.nashda.game.dto.response.*;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.member.repository.MemberRepository;
 
 import com.ssafy.nashda.member.service.MemberService;
+import com.ssafy.nashda.simulGPT.service.ChatGptService;
 import com.ssafy.nashda.stt.service.STTService;
 import com.ssafy.nashda.statistic.entity.GameStatistic;
 import com.ssafy.nashda.statistic.repository.GameStatisticRepository;
@@ -25,9 +25,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
 
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -46,6 +46,7 @@ public class GameServiceImpl implements GameService {
     private final WeekService weekService;
     private final STTService sttService;
     private final S3Uploader s3Uploader;
+    private final ChatGptService chatGptService;
 
     @Value("${env.PROBLEM_URL}")
     private String URL;
@@ -168,21 +169,22 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public GmaeSTTResDto convertSTT(GameSTTReqDto request) throws Exception {
+    public GameSTTResDto convertSTT(MultipartFile sound, GameSTTReqDto request) throws Exception {
 
         int type = request.getType();   //0 : speed1, 1:speed2, 2:blank
         int index = request.getIndex();  //문제 번호
         String answer = request.getAnswer();
-        GmaeSTTResDto gmaeSTTResDto;
+        GameSTTResDto gameSTTResDto;
 
-        String stt = sttService.getPronunciation(request.getSound());  //사용자의 음성 파일을 STT
+        // String stt = sttService.getPronunciation(request.getSound());  //사용자의 음성 파일을 STT
+        String stt = chatGptService.getStt(sound).getText();
         if (stt.equals(answer)) {
-            gmaeSTTResDto = new GmaeSTTResDto(true, stt);
+            gameSTTResDto = new GameSTTResDto(true, stt);
         } else {
-            gmaeSTTResDto = new GmaeSTTResDto(false, stt);
+            gameSTTResDto = new GameSTTResDto(false, stt);
         }
 
-        return gmaeSTTResDto;
+        return gameSTTResDto;
     }
 
     @Override
@@ -214,7 +216,6 @@ public class GameServiceImpl implements GameService {
         member.setSentenceCount(member.getSentenceCount() + request.getTotal());
         if (request.getLevel() > 1) {
            memberService.plusProgress(member, request.getTotal());
-
            return member.getProgress()+request.getTotal();
         }
         return member.getProgress();

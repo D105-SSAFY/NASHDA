@@ -45,6 +45,8 @@ public class MixTestResult {
     @Field("speed_test2")
     private List<SpeedTest2> speedTest2;
 
+
+
     @Builder
     public MixTestResult(long memberNumber, long week, int tryCount, List<BlankTest> blankTest, List<SpeedTest1> speedTest1, List<SpeedTest2> speedTest2) {
         this.memberNumber = memberNumber;

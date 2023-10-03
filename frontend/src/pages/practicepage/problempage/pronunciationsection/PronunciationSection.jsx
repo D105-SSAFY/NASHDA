@@ -10,6 +10,7 @@ import BorderButton from "components/buttons/borderbutton/BorderButton";
 
 import MicIcon from "@mui/icons-material/Mic";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import RedoIcon from "@mui/icons-material/Redo";
 
 export default function PronunciationSection({ props: { pronunciation } }) {
     const [audioText, setAudioText] = useState("");
@@ -146,11 +147,12 @@ export default function PronunciationSection({ props: { pronunciation } }) {
                         <span>녹음하기</span>
                     </FilledButton>
                     <BorderButton props={{ color: "rgba(68, 71, 90, 0.7)" }}>
+                        <RedoIcon />
                         <span>다음</span>
                     </BorderButton>
                 </s.ButtonWrapper>
+                <VoiceModal props={{ title: "따라 읽어보세요.", content: pronunciation, visible: onModal, callback: onClickRecordOff }} />
             </s.Section>
-            <VoiceModal props={{ pronunciation, visible: onModal, callback: onClickRecordOff }} />
         </>
     );
 }

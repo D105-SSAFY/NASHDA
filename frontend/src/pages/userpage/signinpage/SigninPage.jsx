@@ -50,8 +50,7 @@ export default function SigninPage() {
                     accessToken: result.data.accessToken,
                     refreshToken: result.data.refreshToken
                 })
-            );
-            navigate("/");
+            ).then(() => navigate("/main"));
         } else {
             setOnModal("false");
             setOnModalText("아이디 또는 비밀번호를 잘못 입력했습니다!");

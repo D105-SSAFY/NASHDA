@@ -1,10 +1,11 @@
-package com.ssafy.nashda.question.dto;
+package com.ssafy.nashda.question.dto.request;
 
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.question.entity.Question;
 import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class QuestionReqDto {
     private String title;

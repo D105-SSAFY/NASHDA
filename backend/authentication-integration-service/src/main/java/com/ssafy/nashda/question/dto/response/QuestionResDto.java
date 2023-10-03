@@ -1,9 +1,10 @@
-package com.ssafy.nashda.question.dto;
+package com.ssafy.nashda.question.dto.response;
 
 import com.ssafy.nashda.question.entity.Question;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,14 +14,17 @@ public class QuestionResDto {
     private String title;
     private String content;
     private LocalDateTime updateOn;
+    private List<QuestionFileResDto> files;
     private ReplyResDto reply;
 
 
-    public QuestionResDto (Question question, ReplyResDto replyResDto) {
+
+    public QuestionResDto (Question question, ReplyResDto replyResDto, List<QuestionFileResDto> files) {
         this.index = question.getIndex();
         this.title = question.getTitle();
         this.content = question.getContent();
         this.updateOn = question.getUpdateOn();
+        this.files = files;
         this.reply = replyResDto;
     }
 }

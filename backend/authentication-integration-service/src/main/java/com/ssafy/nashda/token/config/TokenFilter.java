@@ -79,7 +79,7 @@ public class TokenFilter extends OncePerRequestFilter {
           // 직접 HTTP 응답 작성
           response.setStatus(HttpStatus.BAD_REQUEST.value());
           response.setContentType("application/json;charset=utf-8");
-          response.getWriter().write("{\"errorCode\":500,\"message\":\"토큰이 유효하지 않습니다.\"}");
+          response.getWriter().write("{\"status\":500,\"message\":\"토큰이 유효하지 않습니다.\"}");
           response.getWriter().flush();
       }
   }

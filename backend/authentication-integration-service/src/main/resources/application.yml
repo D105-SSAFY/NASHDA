@@ -65,7 +65,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        show_sql: true
+      #        show_sql: true
       # format_sql: true
 
 
@@ -101,9 +101,9 @@ cloud:
 
 
 env:
- PROBLEM_URL: http://172.17.0.5:8082
-#    PROBLEM_URL: http://localhost:8082
+  PROBLEM_URL: http://172.17.0.5:8082
+  #    PROBLEM_URL: http://localhost:8082
 
- STT_URL: http://172.17.0.6:8083
+  STT_URL: http://172.17.0.6:8083
 #    STT_URL: http://localhost:8000
 

@@ -6,6 +6,7 @@ import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
 import com.ssafy.nashda.common.s3.S3Uploader;
+import com.ssafy.nashda.common.text.service.TextProcessService;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.service.MemberService;
 import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
@@ -21,7 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
@@ -193,11 +194,14 @@ public class PracticePronServiceImpl implements PracticePronService {
     }*/
 
     @Override
-    public String getSTT(Member member, PracticePronRequestDto practicePronRequestDto) throws Exception {
+    public String getPracSTT(Member member, MultipartFile sound, PracticePronRequestDto practicePronRequestDto) throws Exception {
 
         // STT 부분
         // FAST API 와 소통하기
-        String sttResult = sttService.getPronunciation(practicePronRequestDto.getSound()); // 받아온 STT
+        log.info("name : {}", sound.getOriginalFilename());
+        String sttResult = sttService.getPronunciation(sound); // 받아온 STT
+//        String sttResult = "강벼네서 자언어을 탁오 읻읍니다"; // 받아온 STT
+//        "강벼네서 자전거를 타고 읻씀니다."
 
         // 통계 저장 부분
 
@@ -226,51 +230,37 @@ public class PracticePronServiceImpl implements PracticePronService {
                 .block();
 
         PronResponseDto pronResponse = mapper.convertValue(response.getBody().getData(), PronResponseDto.class);
+
         String convertOrigin = pronResponse.getConvert(); // 원발음
+        String origin = pronResponse.getOrigin().trim().replaceAll("[\\s!@#$%^&*().]", ""); // 빈칸이 제거된 원문
+        log.info("origin : {}", origin);
 
-        String origin = pronResponse.getOrigin(); // 원문
 
-        // 2. STT와 발음을 비교 하여 틀린 부분을 찾는다.
-        // 1. STT의 발음 길이가 원문의 길이보다 긴 경우
-        // 만약 앞에 헛소리해서 긴 경우 -> 다시 요청하기
+        // 0 : 공통 문자열 시작 인덱스, 1: 공통 문자열 끝 인덱스
+        int[] incorrectStringIndex = textProcessService.findIncorrectString(convertOrigin, sttResult);
+        log.info("start index : {} ,  end index : {}", incorrectStringIndex[0], incorrectStringIndex[1]);
+        for (int i = 0; i < origin.length(); ++i) {
+//            log.info("origin.charAt() : {}", origin.charAt(i));
+            String onset = textProcessService.getOnset(origin.charAt(i)); // 초성
+            String nucleus = textProcessService.getNucleus(origin.charAt(i)); // 중성
+            String coda = textProcessService.getCoda(origin.charAt(i)); // 종성
 
-        // 2. STT의 발음 길이가 원문의 길이보다 짧은 경우
-        // 만약 앞에 소리가 짤렸다면? -> 다시 요청하기
-
-        // 3. 길이가 같은 경우
-        for (int i = 0; i < convertOrigin.length(); ++i) {
-            // 초성 비교
-            String onsetResult = textProcessService.getOnset(sttResult.charAt(i));
-            String onsetOrigin = textProcessService.getOnset(convertOrigin.charAt(i));
-            String onset = textProcessService.getOnset(origin.charAt(i));
-            if (!onsetOrigin.equals(onsetResult)) { // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
-                practiceStatisticService.updateOnsetByMemberAndLetter(member, onset, false);
-                log.info("초성 오류 !!! : {}", onset);
-            } else { // 맞는 경우
+            if (incorrectStringIndex[0] <= i && i <= incorrectStringIndex[1]) {
+//                log.info("맞는 발음 : {}", origin.charAt(i));
+                // 맞는 발음인 경우
                 practiceStatisticService.updateOnsetByMemberAndLetter(member, onset, true);
-            }
-
-            // 중성 비교
-            String nucleusResult = textProcessService.getNucleus(sttResult.charAt(i));
-            String nucleusOrigin = textProcessService.getNucleus(convertOrigin.charAt(i));
-            String nucleus = textProcessService.getNucleus(origin.charAt(i));
-            if (!nucleusOrigin.equals(nucleusResult)) { // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
-                practiceStatisticService.updateNucleusByMemberAndLetter(member, nucleus, false);
-                log.info("중성 오류 !!! : {}", nucleus);
-            } else { // 맞는 경우
                 practiceStatisticService.updateNucleusByMemberAndLetter(member, nucleus, true);
+                practiceStatisticService.updateCodaByMemberAndLetter(member, coda, true);
+
+
+            } else {
+//                log.info("틀린 발음 : {}", origin.charAt(i));
+                // 틀린 발음의 경우
+                practiceStatisticService.updateOnsetByMemberAndLetter(member, onset, false);
+                practiceStatisticService.updateNucleusByMemberAndLetter(member, nucleus, false);
+                practiceStatisticService.updateCodaByMemberAndLetter(member, coda, false);
             }
 
-            // 종성 비교
-            String codaResult = textProcessService.getCoda(sttResult.charAt(i));
-            String codaOrigin = textProcessService.getCoda(convertOrigin.charAt(i));
-            String coda = textProcessService.getCoda(origin.charAt(i));
-            if (!codaOrigin.equals(codaResult)) { // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
-                practiceStatisticService.updateCodaByMemberAndLetter(member, coda, false);
-                log.info("종성 오류 !!! : {}", coda);
-            } else { // 맞는 경우
-                practiceStatisticService.updateCodaByMemberAndLetter(member, coda, true);
-            }
         }
 
         return sttResult;

@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,6 +35,17 @@ public class MemberHistoryController {
 
         HistoryResDto historyResDto = memberHistoryService.getMemberHistory(member);
         return ResponseEntity.status(200).body(new BaseResponseBody<>(200, "회원 전체 기록 조회 성공", historyResDto));
+    }
+
+    @GetMapping("/continuous")
+    public ResponseEntity<? extends BaseResponseBody> getMemberContinuousLogin(@RequestHeader("Authorization") String token){
+        Member member = memberController.findMemberByToken(token);
+        HistoryResDto historyResDto = memberHistoryService.getMemberHistory(member);
+
+        Map<String, Integer> map = new HashMap<>();
+        map.put("continuous", historyResDto.getContinuous_login_count());
+
+        return ResponseEntity.status(200).body(new BaseResponseBody(200, "연속 로그인 수 조회", map));
     }
 
 }
