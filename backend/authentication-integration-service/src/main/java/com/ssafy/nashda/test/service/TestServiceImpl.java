@@ -329,7 +329,6 @@ public class TestServiceImpl implements TestService {
 
         //받아온 soundfile을 stt로 변환
         String stt = sttService.getPronunciation(sound);
-//        String stt  = "stt";
 
         //url을 mongodb에 저장
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
