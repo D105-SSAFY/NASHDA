@@ -1,19 +1,14 @@
 package com.ssafy.nashda.test.controller;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.history.service.MemberHistoryService;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.statistic.service.StrickService;
-import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
 import com.ssafy.nashda.test.dto.request.*;
 import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
-import com.ssafy.nashda.test.dto.response.WeekTestResultDetailResDto;
-import com.ssafy.nashda.test.dto.response.WordTestResultAllResDto;
+import com.ssafy.nashda.test.dto.response.WeekTestResultAllResDto;
 import com.ssafy.nashda.test.dto.response.WordTestStartResDto;
-import com.ssafy.nashda.test.entity.MixTestResult;
-import com.ssafy.nashda.test.repository.MixTestResultRepository;
 import com.ssafy.nashda.test.service.TestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @Slf4j
 @RestController
@@ -40,7 +33,7 @@ public class TestController {
     public ResponseEntity<? extends BaseResponseBody> weekTestAll(@RequestHeader("Authorization") String token) throws Exception {
 
         Member member = memberController.findMemberByToken(token);
-        WordTestResultAllResDto allWordTestResult = testService.getAllWordTestResult(member);
+        WeekTestResultAllResDto allWordTestResult = testService.getAllWordTestResult(member);
 
         return new ResponseEntity<>(new BaseResponseBody(200, "전체 점수", allWordTestResult),
                 HttpStatus.OK);

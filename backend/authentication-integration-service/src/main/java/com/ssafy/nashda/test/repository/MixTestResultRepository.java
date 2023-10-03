@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MixTestResultRepository extends MongoRepository<MixTestResult, String> {
-    List<MixTestResult> findByMemberNumberAndWeek(long memberNumber, long week);
+    List<MixTestResult> findByMemberNumberAndWeekOrderByTryCount(long memberNumber, long week);
     List<MixTestResult> findByMemberNumberOrderByWeekAscTryCountAsc(long memberNumber);
-    Optional<MixTestResult> findByMemberNumberAndWeekAndTryCount(long memberNumber, long week, int tryCount);
+//    Optional<MixTestResult> findByMemberNumberAndWeekAndTryCount(long memberNumber, long week, int tryCount);
 }
