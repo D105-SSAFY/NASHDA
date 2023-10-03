@@ -91,12 +91,21 @@ export default function App() {
                     <BrowserRouter forceRefresh={true}>
                         <Routes>
                             <Route path="/" element={<Layout />}>
-                                <Route path="/" element={<Intro />} />
+                                <Route path="/" element={<PrivateRoute isPrivate={false} />}>
+                                    <Route index element={<Intro />} />
+                                </Route>
 
                                 {/* user pages */}
-                                <Route path="/signin" element={<SigninPage />} />
-                                <Route path="/signup" element={<SignupPage />} />
-                                <Route path="/resetpw" element={<ResetpwPage />} />
+                                <Route path="/signin" element={<PrivateRoute isPrivate={false} />}>
+                                    <Route index element={<SigninPage />} />
+                                </Route>
+                                <Route path="/signup" element={<PrivateRoute isPrivate={false} />}>
+                                    <Route index element={<SignupPage />} />
+                                </Route>
+                                <Route path="/resetpw" element={<PrivateRoute isPrivate={false} />}>
+                                    <Route index element={<ResetpwPage />} />
+                                </Route>
+
                                 {/* private pages */}
                                 <Route path="/mypage" element={<PrivateRoute />}>
                                     <Route index element={<MyPage />} />
