@@ -13,7 +13,7 @@ import com.ssafy.nashda.stt.service.STTService;
 import com.ssafy.nashda.test.dto.request.*;
 import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
 import com.ssafy.nashda.test.dto.response.WeekTestResultDetailResDto;
-import com.ssafy.nashda.test.dto.response.WordTestResultAllResDto;
+import com.ssafy.nashda.test.dto.response.WeekTestResultAllResDto;
 import com.ssafy.nashda.test.dto.response.WordTestStartResDto;
 
 import com.ssafy.nashda.test.entity.*;
@@ -37,7 +37,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -296,7 +295,7 @@ public class TestServiceImpl implements TestService {
 
         List<SpeedTest2> speed2List = (List<SpeedTest2>) speed2.get("data");
         Week week = weekService.getCurrentWeek().orElseThrow();
-        int tryCount = mixTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
+        int tryCount = mixTestResultRepository.findByMemberNumberAndWeekOrderByTryCount(member.getMemberNum(), week.getWeekIdx()).size();
 
 
         MixTestResult mixTestResult = MixTestResult.builder()
@@ -366,7 +365,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public WordTestResultAllResDto getAllWordTestResult(Member member) {
+    public WeekTestResultAllResDto getAllWordTestResult(Member member) {
         List<MixTestResult> results = mixTestResultRepository.findByMemberNumberOrderByWeekAscTryCountAsc(member.getMemberNum());
         Map<Long, List<Integer>> scoresByWeek = new HashMap<>();
 
@@ -379,24 +378,28 @@ public class TestServiceImpl implements TestService {
                     .add(score);
         }
 
-        return WordTestResultAllResDto.builder()
+        return WeekTestResultAllResDto.builder()
                 .scores(scoresByWeek)
                 .build();
     }
 
     @Override
-    public WeekTestResultDetailResDto getWeekTestResultDetail(Member member, long week, int tryCount) {
+    public List<WeekTestResultDetailResDto> getWeekTestResultDetail(Member member, long week) {
 
-        MixTestResult mixTestResult = mixTestResultRepository.findByMemberNumberAndWeekAndTryCount(member.getMemberNum(), week, tryCount).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        List<MixTestResult> mixTestResult = mixTestResultRepository.findByMemberNumberAndWeekOrderByTryCount(member.getMemberNum(), week);
 
-        WeekTestResultDetailResDto resDto = WeekTestResultDetailResDto.builder()
-                .score(mixTestResult.getScore())
-                .blankTest(mixTestResult.getBlankTest())
-                .speedTest1(mixTestResult.getSpeedTest1())
-                .speedTest2(mixTestResult.getSpeedTest2())
-                .build();
+        List<WeekTestResultDetailResDto> resDtos = new ArrayList<>();
+        for (MixTestResult result : mixTestResult) {
+            resDtos.add(WeekTestResultDetailResDto.builder()
+                    .try_count(result.getTryCount())
+                    .score(result.getScore())
+                    .blankTest(result.getBlankTest())
+                    .speedTest1(result.getSpeedTest1())
+                    .speedTest2(result.getSpeedTest2())
+                    .build());
+        }
 
-        return resDto;
+        return resDtos;
     }
 
 }

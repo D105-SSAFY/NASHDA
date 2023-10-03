@@ -12,6 +12,6 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WordTestResultAllResDto {
+public class WeekTestResultAllResDto {
     private Map<Long, List<Integer>> scores;
 }
