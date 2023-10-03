@@ -37,6 +37,15 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public void createQuestion(Member member, QuestionReqDto questionReqDto, List<MultipartFile> files) {
+
+        if (questionReqDto.getTitle() == null || questionReqDto.getTitle().trim().isEmpty()) {
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_TITLE);
+        }
+
+        if (questionReqDto.getContent() == null || questionReqDto.getContent().trim().isEmpty()) {
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_CONTENT);
+        }
+
         Question question = questionRepository.save(questionReqDto.toEntity(member));
 
         if (files != null) {
@@ -128,16 +137,16 @@ public class QuestionServiceImpl implements QuestionService {
                 String title = questionReqDto.getTitle();
                 String content = questionReqDto.getContent();
 
-                if (title != null) {
-                    question.setTitle(title);
-                } else {
+                if (title == null || title.trim().isEmpty()) {
                     throw new BadRequestException(ErrorCode.NOT_EXISTS_TITLE);
+                } else {
+                    question.setTitle(title);
                 }
 
-                if (content != null) {
-                    question.setContent(content);
-                } else {
+                if (content == null || content.trim().isEmpty()) {
                     throw new BadRequestException(ErrorCode.NOT_EXISTS_CONTENT);
+                } else {
+                    question.setContent(content);
                 }
 
                 List<QuestionFile> oldFiles = new ArrayList<>(question.getFiles());

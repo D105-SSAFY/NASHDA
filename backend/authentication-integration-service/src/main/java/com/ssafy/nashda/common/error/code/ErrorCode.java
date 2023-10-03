@@ -26,8 +26,6 @@ public enum ErrorCode {
     FAIL_SENDEMAIL(HttpStatus.BAD_REQUEST, 400, "이메일 전송에 실패하였습니다."),
     TOKEN_NOT_FOUND(HttpStatus.BAD_REQUEST, 400, "토큰이 존재하지 않습니다."),
 
-
-
     // 인증, 인가
     NOT_VALID_TOKEN(HttpStatus.UNAUTHORIZED, 401, "해당 토큰은 유효한 토큰이 아닙니다."),
     NOT_EXISTS_AUTHORIZATION(HttpStatus.UNAUTHORIZED, 401, "Authorization Header가 빈 값입니다."),
@@ -38,7 +36,6 @@ public enum ErrorCode {
     NOT_EXISTS_NOTICE_ID(HttpStatus.BAD_REQUEST, 400, "존재하지 않는 공지사항글입니다."),
     NOT_EXISTS_TITLE(HttpStatus.BAD_REQUEST, 400, "제목은 필수입력항목입니다."),
     NOT_EXISTS_CONTENT(HttpStatus.BAD_REQUEST, 400, "내용은 필수입력항목입니다."),
-
 
     // 질문 게시판
     NOT_EXISTS_QUESTION(HttpStatus.BAD_REQUEST, 400, "해당 유저가 작성한 질문글이 존재하지않습니다."),
