@@ -3,14 +3,16 @@ import * as s from "./style";
 import ProblemSection from "./problemsection/ProblemSection";
 import PronunciationSection from "./pronunciationsection/PronunciationSection";
 
-export default function SetWordSection({ props: { problem } }) {
+export default function SetWordSection({ props: { problem, getNextProblem, setCorrect } }) {
+    console.log(problem);
+
     return (
         <s.Section>
             <header>
                 <h2>단어 맞추기 영역</h2>
             </header>
             <ProblemSection props={{ problem }} />
-            <PronunciationSection />
+            <PronunciationSection props={{ problem, getNextProblem, setCorrect }} />
         </s.Section>
     );
 }

@@ -1,13 +1,51 @@
-import BorderButton from "components/buttons/borderbutton/BorderButton";
+import { useEffect, useState } from "react";
 import * as s from "./style";
+
+import BorderButton from "components/buttons/borderbutton/BorderButton";
 
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import RedoIcon from "@mui/icons-material/Redo";
 
-export default function SetImageSection({ props: { problem } }) {
+export default function SetImageSection({ props: { problem, getNextProblem, setCorrect } }) {
+    const [imgList, setImgList] = useState([]);
+    const [answer, setAnswer] = useState(0);
+
+    useEffect(() => {
+        if (!problem.answer) {
+            return;
+        }
+
+        const list = problem.img.reduce((acc, cur, idx) => {
+            if (!cur) {
+                return acc;
+            }
+
+            if (idx === 0) {
+                return acc;
+            }
+
+            acc.push(cur);
+
+            return acc;
+        }, []);
+
+        const index = Math.floor(Math.random() * 4);
+
+        list.splice(index, 0, problem.img[0]);
+
+        setImgList([...list]);
+        setAnswer(index);
+    }, [problem]);
+
     if (!problem.answer) {
         return;
     }
+
+    const checkCorrect = (index) => {
+        if (index === answer) {
+            setCorrect((correct) => correct + 1);
+        }
+    };
 
     return (
         <s.Section>
@@ -22,10 +60,15 @@ export default function SetImageSection({ props: { problem } }) {
                 </s.SpeakButton>
             </s.ListenWrapper>
             <s.ImageList>
-                {problem.img.map((image, idx) => {
+                {imgList.map((image, idx) => {
                     return (
                         <li key={idx}>
-                            <s.ImageButton>
+                            <s.ImageButton
+                                onClick={() => {
+                                    checkCorrect(idx);
+                                    getNextProblem();
+                                }}
+                            >
                                 <img src={image} alt="" />
                             </s.ImageButton>
                         </li>
@@ -33,7 +76,7 @@ export default function SetImageSection({ props: { problem } }) {
                 })}
             </s.ImageList>
             <s.ButtonWrapper>
-                <BorderButton props={{ color: "rgba(68, 71, 90, 0.7)" }}>
+                <BorderButton props={{ color: "rgba(68, 71, 90, 0.7)", callback: getNextProblem }}>
                     <RedoIcon />
                     <span>다음</span>
                 </BorderButton>

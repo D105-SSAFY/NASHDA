@@ -214,7 +214,7 @@ export default function PronunciationSection({ props: { problem, diff, setUpdate
                 <s.ButtonWrapper>
                     <FilledButton props={{ background: "rgba(68, 71, 90, 0.7)", color: "#ffffff", hovercolor: "#44475A", callback: onClickRecordOn }}>
                         <MicIcon />
-                        <span>녹음하기</span>
+                        <span>{audioText ? "다시 녹음하기" : "녹음하기"}</span>
                     </FilledButton>
                     <BorderButton
                         props={{
