@@ -13,6 +13,7 @@ import com.ssafy.nashda.statistic.service.GameStatisticService;
 import com.ssafy.nashda.statistic.service.StrickService;
 import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
 import com.ssafy.nashda.test.dto.response.WeekTestResultDetailResDto;
+import com.ssafy.nashda.test.dto.response.WordTestResultAllResDto;
 import com.ssafy.nashda.test.entity.MixTestResult;
 import com.ssafy.nashda.test.service.TestService;
 import com.ssafy.nashda.week.entity.Week;
@@ -96,6 +97,8 @@ public class StatisticController {
                 HttpStatus.OK);
     }
 
+
+
     @GetMapping("/game/blank/{week}")
     public ResponseEntity<? extends BaseResponseBody> getBlankStatistic(@RequestHeader("Authorization") String token, @PathVariable("week") long
             weekIdx) throws Exception {
@@ -117,5 +120,13 @@ public class StatisticController {
                 HttpStatus.OK);
     }
 
+    @GetMapping("/test/week/all")
+    public ResponseEntity<? extends BaseResponseBody> weekTestAll(@RequestHeader("Authorization") String token) throws Exception {
 
+        Member member = memberController.findMemberByToken(token);
+        WordTestResultAllResDto allWordTestResult = testService.getAllWordTestResult(member);
+
+        return new ResponseEntity<>(new BaseResponseBody(200, "전체 점수", allWordTestResult),
+                HttpStatus.OK);
+    }
 }
