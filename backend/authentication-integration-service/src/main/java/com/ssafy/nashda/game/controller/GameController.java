@@ -63,7 +63,6 @@ public class GameController {
     @PostMapping("")
     public ResponseEntity<? extends BaseResponseBody> getSTT(@RequestPart(value = "sound") MultipartFile sound,
                                                             @ModelAttribute GameSTTReqDto gameSTTReqDto) throws Exception {
-//       return ResponseEntity.ok(new BaseResponseBody(200, "채점 결과", gameService.convertSTT(gameSTTReqDto, sound)));
         return ResponseEntity.ok(new BaseResponseBody(200, "채점 결과", gameService.convertSTT(sound, gameSTTReqDto)));
 
     }

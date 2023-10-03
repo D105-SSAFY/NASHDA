@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const ChangeBox = styled.div`
     width: fit-content;
-
+    //flex, margin 쓰지않고 수평, 수직 중앙정렬
     position: absolute;
     top: 50%;
     left: 50%;

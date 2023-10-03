@@ -12,9 +12,11 @@ import com.ssafy.nashda.statistic.service.AchievementService;
 import com.ssafy.nashda.statistic.service.GameStatisticService;
 import com.ssafy.nashda.statistic.service.StrickService;
 import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
+import com.ssafy.nashda.test.dto.response.WeekTestResultDetailResDto;
+import com.ssafy.nashda.test.dto.response.WeekTestResultAllResDto;
+import com.ssafy.nashda.test.service.TestService;
 import com.ssafy.nashda.week.entity.Week;
 import com.ssafy.nashda.week.repository.WeekRepository;
-import com.ssafy.nashda.week.service.WeekService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -38,6 +40,17 @@ public class StatisticController {
     private final GameStatisticService blankStatisticService;
     private final WeekRepository weekRepository;
     private final WeekTestStatisticService weekTestResultService;
+    private final TestService testService;
+
+    @GetMapping("/test/week/detail/{week}")
+    public ResponseEntity<? extends BaseResponseBody> weekTestDetail(@RequestHeader("Authorization") String token, @PathVariable("week") long week) throws Exception {
+
+        Member member = memberController.findMemberByToken(token);
+        List<WeekTestResultDetailResDto> weekTestResultDetailResDto = testService.getWeekTestResultDetail(member, week);
+
+        return new ResponseEntity<>(new BaseResponseBody(200, "통합 시험 디테일 불러오기 성공", weekTestResultDetailResDto),
+                HttpStatus.OK);
+    }
 
     @GetMapping("/strick")
     public ResponseEntity<? extends BaseResponseBody> getStrick(@RequestHeader("Authorization") String token) throws Exception {
@@ -82,6 +95,7 @@ public class StatisticController {
                 HttpStatus.OK);
     }
 
+
     @GetMapping("/game/blank/{week}")
     public ResponseEntity<? extends BaseResponseBody> getBlankStatistic(@RequestHeader("Authorization") String token, @PathVariable("week") long
             weekIdx) throws Exception {
@@ -103,5 +117,13 @@ public class StatisticController {
                 HttpStatus.OK);
     }
 
+    @GetMapping("/test/week/all")
+    public ResponseEntity<? extends BaseResponseBody> weekTestAll(@RequestHeader("Authorization") String token) throws Exception {
 
+        Member member = memberController.findMemberByToken(token);
+        WeekTestResultAllResDto allWordTestResult = testService.getAllWordTestResult(member);
+
+        return new ResponseEntity<>(new BaseResponseBody(200, "전체 점수", allWordTestResult),
+                HttpStatus.OK);
+    }
 }

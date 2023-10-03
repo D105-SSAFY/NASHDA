@@ -1,4 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+export const loginUser = createAsyncThunk(`user/loginUser`, async (tokens) => {
+    return tokens;
+});
+
+export const clearUser = createAsyncThunk("user/clearUser", async () => {
+    return {};
+});
 
 export const userSlice = createSlice({
     name: "user",
@@ -7,12 +15,6 @@ export const userSlice = createSlice({
         refreshToken: ""
     },
     reducers: {
-        loginUser(state, action) {
-            state.accessToken = action.payload.accessToken;
-            state.refreshToken = action.payload.refreshToken;
-
-            return state;
-        },
         updateRefresh(state, action) {
             state.accessToken = action.payload.accessToken;
 
@@ -24,8 +26,19 @@ export const userSlice = createSlice({
 
             return state;
         }
+    },
+    extraReducers(builder) {
+        builder.addCase(loginUser.fulfilled, (state, action) => {
+            state.accessToken = action.payload.accessToken;
+            state.refreshToken = action.payload.refreshToken;
+        });
+
+        builder.addCase(clearUser.fulfilled, (state) => {
+            state.accessToken = "";
+            state.refreshToken = "";
+        });
     }
 });
 
-export const { loginUser, clearUser, updateRefresh } = userSlice.actions;
+export const { updateRefresh } = userSlice.actions;
 export default userSlice.reducer;

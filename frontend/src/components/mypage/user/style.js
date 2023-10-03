@@ -26,8 +26,10 @@ export const UserSection = styled.section`
     font-size: 3rem;
 
     & > :first-child {
+        position: relative;
+
         top: 20px;
-        left: ${(props) => (props.more === 5 ? "-260px" : "20px")};
+        left: ${(props) => (props.more === 5 ? "-280px" : "0px")};
         width: 260px;
 
         flex-direction: column;
@@ -50,6 +52,13 @@ export const UserSection = styled.section`
             color: #ffffff;
 
             font-weight: 400;
+        }
+
+        & > div > button {
+            opacity: ${(props) => (props.more === 5 ? "0.3" : "1")};
+            pointer-events: ${(props) => (props.more === 5 ? "none" : "auto")};
+
+            transition: opacity ease 0.5s;
         }
 
         overflow-x: hidden;
@@ -79,14 +88,14 @@ export const UserSection = styled.section`
     & > :nth-child(5) {
         position: relative;
 
-        top: 360px;
+        margin-top: 40px;
         left: ${(props) => (props.more === 5 && props.tabChanged ? "0px" : "-930px")};
         width: 910px;
-        height: 1000px;
+        height: fit-content;
 
         visibility: ${(props) => (props.more === 5 && props.tabChanged ? "show" : "hidden")};
 
-        background-color: aqua;
+        background-color: #f2f2f2;
 
         transition: ${(props) => (props.more === 5 ? "all ease 0.9s" : "all ease 0.5s")};
     }

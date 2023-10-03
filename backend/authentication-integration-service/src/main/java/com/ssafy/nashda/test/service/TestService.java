@@ -3,11 +3,12 @@ package com.ssafy.nashda.test.service;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.test.dto.request.*;
 import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
-import com.ssafy.nashda.test.dto.response.WordTestResultAllResDto;
+import com.ssafy.nashda.test.dto.response.WeekTestResultDetailResDto;
+import com.ssafy.nashda.test.dto.response.WeekTestResultAllResDto;
 import com.ssafy.nashda.test.dto.response.WordTestStartResDto;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.List;
 
 public interface TestService {
     WordTestStartResDto wordTestStart(Member member);
@@ -20,5 +21,7 @@ public interface TestService {
     String sttMixTest(MultipartFile sound, WeekTestReqDto reqDto, String type) throws Exception;
     void saveWeekTestSpeed2(WeekTestReqDto reqDtos);
     void saveWeekTestScore(WeekTestResultReqDto reqDto, Member member);
-    WordTestResultAllResDto getAllWordTestResult(Member member);
+    WeekTestResultAllResDto getAllWordTestResult(Member member);
+
+    List<WeekTestResultDetailResDto> getWeekTestResultDetail(Member member, long week);
 }

@@ -12,7 +12,8 @@ import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
 import com.ssafy.nashda.stt.service.STTService;
 import com.ssafy.nashda.test.dto.request.*;
 import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
-import com.ssafy.nashda.test.dto.response.WordTestResultAllResDto;
+import com.ssafy.nashda.test.dto.response.WeekTestResultDetailResDto;
+import com.ssafy.nashda.test.dto.response.WeekTestResultAllResDto;
 import com.ssafy.nashda.test.dto.response.WordTestStartResDto;
 
 import com.ssafy.nashda.test.entity.*;
@@ -36,7 +37,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -171,7 +171,7 @@ public class TestServiceImpl implements TestService {
         String index = sentenceTestResultRepository.save(testResult).getId();
 
         WordTestStartResDto resDto = WordTestStartResDto.builder()
-                .try_count(tryCount)
+                .try_count(tryCount+1)
                 .index(index)
                 .problem(problem)
                 .convert(convert)
@@ -245,7 +245,6 @@ public class TestServiceImpl implements TestService {
                 .onStatus(
                         HttpStatus.BAD_REQUEST::equals,
                         clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
-                            log.info("s : {}", s.getErrorCode());
                             if (s.getErrorCode() == 4000) {
                                 return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
                             }
@@ -265,7 +264,6 @@ public class TestServiceImpl implements TestService {
                 .onStatus(
                         HttpStatus.BAD_REQUEST::equals,
                         clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
-                            log.info("s : {}", s.getErrorCode());
                             if (s.getErrorCode() == 4000) {
                                 return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
                             }
@@ -297,13 +295,13 @@ public class TestServiceImpl implements TestService {
 
         List<SpeedTest2> speed2List = (List<SpeedTest2>) speed2.get("data");
         Week week = weekService.getCurrentWeek().orElseThrow();
-        int tryCount = mixTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
+        int tryCount = mixTestResultRepository.findByMemberNumberAndWeekOrderByTryCount(member.getMemberNum(), week.getWeekIdx()).size();
 
 
         MixTestResult mixTestResult = MixTestResult.builder()
                 .memberNumber(member.getMemberNum())
                 .week(week.getWeekIdx())
-                .tryCount(tryCount)
+                .tryCount(tryCount+1)
                 .blankTest(blankList)
                 .speedTest1(speed1List)
                 .speedTest2(speed2List)
@@ -334,12 +332,12 @@ public class TestServiceImpl implements TestService {
         //url을 mongodb에 저장
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
         if (type.equals("blank")) {
-            Update update = new Update().set("blank_test." + (reqDto.getOrder() - 1) + ".user_answer", stt);
+            Update update = new Update().set("blank_test." + (reqDto.getOrder() - 1) + ".user_stt", stt);
             mongoTemplate.updateFirst(query, update, MixTestResult.class);
             update = new Update().set("blank_test." + (reqDto.getOrder() - 1) + ".sound_url", url);
             mongoTemplate.updateFirst(query, update, MixTestResult.class);
         } else {
-            Update update = new Update().set("speed_test1." + (reqDto.getOrder() - 5) + ".user_answer", stt);
+            Update update = new Update().set("speed_test1." + (reqDto.getOrder() - 5) + ".user_stt", stt);
             mongoTemplate.updateFirst(query, update, MixTestResult.class);
             update = new Update().set("speed_test1." + (reqDto.getOrder() - 5) + ".sound_url", url);
             mongoTemplate.updateFirst(query, update, MixTestResult.class);
@@ -367,7 +365,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public WordTestResultAllResDto getAllWordTestResult(Member member) {
+    public WeekTestResultAllResDto getAllWordTestResult(Member member) {
         List<MixTestResult> results = mixTestResultRepository.findByMemberNumberOrderByWeekAscTryCountAsc(member.getMemberNum());
         Map<Long, List<Integer>> scoresByWeek = new HashMap<>();
 
@@ -380,9 +378,28 @@ public class TestServiceImpl implements TestService {
                     .add(score);
         }
 
-        return WordTestResultAllResDto.builder()
+        return WeekTestResultAllResDto.builder()
                 .scores(scoresByWeek)
                 .build();
+    }
+
+    @Override
+    public List<WeekTestResultDetailResDto> getWeekTestResultDetail(Member member, long week) {
+
+        List<MixTestResult> mixTestResult = mixTestResultRepository.findByMemberNumberAndWeekOrderByTryCount(member.getMemberNum(), week);
+
+        List<WeekTestResultDetailResDto> resDtos = new ArrayList<>();
+        for (MixTestResult result : mixTestResult) {
+            resDtos.add(WeekTestResultDetailResDto.builder()
+                    .try_count(result.getTryCount())
+                    .score(result.getScore())
+                    .blankTest(result.getBlankTest())
+                    .speedTest1(result.getSpeedTest1())
+                    .speedTest2(result.getSpeedTest2())
+                    .build());
+        }
+
+        return resDtos;
     }
 
 }

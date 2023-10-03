@@ -5,10 +5,9 @@ import com.ssafy.nashda.history.service.MemberHistoryService;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.statistic.service.StrickService;
-import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
 import com.ssafy.nashda.test.dto.request.*;
 import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
-import com.ssafy.nashda.test.dto.response.WordTestResultAllResDto;
+import com.ssafy.nashda.test.dto.response.WeekTestResultAllResDto;
 import com.ssafy.nashda.test.dto.response.WordTestStartResDto;
 import com.ssafy.nashda.test.service.TestService;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @Slf4j
 @RestController
@@ -36,7 +33,7 @@ public class TestController {
     public ResponseEntity<? extends BaseResponseBody> weekTestAll(@RequestHeader("Authorization") String token) throws Exception {
 
         Member member = memberController.findMemberByToken(token);
-        WordTestResultAllResDto allWordTestResult = testService.getAllWordTestResult(member);
+        WeekTestResultAllResDto allWordTestResult = testService.getAllWordTestResult(member);
 
         return new ResponseEntity<>(new BaseResponseBody(200, "전체 점수", allWordTestResult),
                 HttpStatus.OK);
@@ -152,7 +149,6 @@ public class TestController {
     public ResponseEntity<? extends BaseResponseBody> weekTestResult(@RequestHeader("Authorization") String token, @RequestBody WeekTestResultReqDto reqDto) throws Exception {
         Member member = memberController.findMemberByToken(token);
         testService.saveWeekTestScore(reqDto, member);
-        //stick표시를 위한 작업
         strickService.increaseTestCount(member);
 
         //업적을 위한 testing
