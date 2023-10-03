@@ -93,7 +93,7 @@ export default function voice() {
         }
 
         // File 생성자를 사용해 파일로 변환
-        const sound = new File([audioUrl], "soundBlob", {
+        const sound = new File([audioUrl], "soundBlob.wav", {
             lastModified: new Date().getTime(),
             type: "audio/wav"
         });

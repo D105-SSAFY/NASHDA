@@ -1,18 +1,28 @@
 import { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 import * as s from "./style";
 
-import voice from "utils/VoiceFunc";
-
 import FilledButton from "components/buttons/filledbutton/FilledButton";
 import SoundWave from "components/soundwave/SoundWave";
+import BorderButton from "components/buttons/borderbutton/BorderButton";
 
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
-export default function VoiceSection({ props: { moveToEnd, updateConvs } }) {
+import voice from "utils/VoiceFunc";
+import eetch from "apis/eetch";
+
+export default function VoiceSection({ props: { moveToEnd, updateConvs, id, background } }) {
     const [onRecord, setOnRecord] = useState(false);
     const [onUpdate, setOnUpdate] = useState(false);
+    const [next, setNext] = useState("");
+
+    const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const startRecord = useCallback(() => {
         setOnRecord(true);
@@ -34,7 +44,7 @@ export default function VoiceSection({ props: { moveToEnd, updateConvs } }) {
         offRecAudio();
     };
 
-    const send = async () => {
+    const getSTT = async () => {
         const file = createFile();
 
         if (!file) {
@@ -43,20 +53,66 @@ export default function VoiceSection({ props: { moveToEnd, updateConvs } }) {
 
         const formData = new FormData();
 
-        formData.append("file_upload", file);
+        formData.append("sound", file);
 
-        try {
-            const response = await fetch("http://127.0.0.1:8000/file", {
-                method: "POST",
-                body: formData
+        const values = {};
+
+        values.user = user;
+        values.formData = formData;
+
+        eetch
+            .tokenValidation(eetch.getSimulationSTT, values, dispatch)
+            .then((result) => {
+                updateConvs((convs) => {
+                    const updated = [
+                        ...convs,
+                        {
+                            type: "user",
+                            text: result.data.text,
+                            correct: true
+                        }
+                    ];
+
+                    return updated;
+                });
+                setNext(result.data.text);
+            })
+            .catch(() => {
+                navigate("/signin");
             });
+    };
 
-            const result = await response.json();
+    const getNext = async () => {
+        const values = {};
 
-            return result;
-        } catch (e) {
-            console.log(e);
-        }
+        values.user = user;
+        values.background = background.en;
+        values.message = next;
+        values.id = id;
+
+        eetch
+            .tokenValidation(eetch.nextSimulation, values, dispatch)
+            .then((result) => {
+                updateConvs((convs) => {
+                    const updated = [...convs];
+
+                    if (result.data.correct) {
+                        updated.push({
+                            type: "chatbot",
+                            text: result.data.choices[0].message.content
+                        });
+                    } else {
+                        updated[updated.length - 1].correct = false;
+                    }
+
+                    return updated;
+                });
+
+                setNext("");
+            })
+            .catch(() => {
+                navigate("/signin");
+            });
     };
 
     useEffect(() => {
@@ -72,18 +128,6 @@ export default function VoiceSection({ props: { moveToEnd, updateConvs } }) {
             return;
         }
 
-        const getSTT = async () => {
-            const result = await send();
-
-            if (!result) {
-                return;
-            }
-
-            console.log(result, updateConvs);
-
-            // 나중에 문장 업데이트 해주기
-        };
-
         getSTT();
 
         setOnUpdate(false);
@@ -92,6 +136,18 @@ export default function VoiceSection({ props: { moveToEnd, updateConvs } }) {
     useEffect(() => {
         moveToEnd();
     }, [onRecord]);
+
+    useEffect(() => {
+        if (!next) {
+            return;
+        }
+
+        getNext();
+    }, [next]);
+
+    const onClickExit = useCallback(() => {
+        navigate("/main");
+    }, []);
 
     return (
         <s.Section>
@@ -116,6 +172,11 @@ export default function VoiceSection({ props: { moveToEnd, updateConvs } }) {
                         <span>녹음하기</span>
                     </FilledButton>
                 )}
+
+                <BorderButton props={{ color: "rgba(68, 71, 90, 0.7)", callback: onClickExit }}>
+                    <ExitToAppIcon />
+                    <span>종료</span>
+                </BorderButton>
             </s.ButtonWrapper>
         </s.Section>
     );

@@ -4,6 +4,8 @@ import styled from "styled-components";
 export const Section = styled.section`
     width: 810px;
 
+    position: relative;
+
     margin-top: 30px;
     padding: 40px 60px;
 
@@ -12,9 +14,12 @@ export const Section = styled.section`
     box-shadow: 0 0 15px 1px #f2f2f2;
 
     & > img {
-        width: 100%;
+        width: 60%;
         height: 320px;
         object-fit: cover;
+
+        display: block;
+        margin: 0 auto;
 
         border-radius: 10px;
     }
@@ -39,4 +44,15 @@ export const Sentence = styled.p`
     font-weight: 500;
 
     color: rgb(120, 120, 120);
+`;
+
+export const Time = styled.p`
+    position: absolute;
+    top: 30px;
+    right: 35px;
+
+    font-size: 1.8rem;
+    font-weight: 500;
+
+    color: ${(props) => (props.alret ? "#ff4455" : "rgb(100, 100, 100)")};
 `;

@@ -37,9 +37,10 @@ export const SoundText = styled.p`
 `;
 
 export const ButtonWrapper = styled.div`
-    width: calc(max(50%, 200px));
+    /* width: calc(max(50%, 200px)); */
 
     margin: 0 auto;
 
     display: flex;
+    gap: 10px;
 `;

@@ -46,7 +46,6 @@ public class GameServiceImpl implements GameService {
     private final WeekService weekService;
     private final STTService sttService;
     private final S3Uploader s3Uploader;
-    private final ChatGptService chatGptService;
 
     @Value("${env.PROBLEM_URL}")
     private String URL;
@@ -177,7 +176,7 @@ public class GameServiceImpl implements GameService {
         GameSTTResDto gameSTTResDto;
 
         // String stt = sttService.getPronunciation(request.getSound());  //사용자의 음성 파일을 STT
-        String stt = chatGptService.getStt(sound).getText();
+        String stt = sttService.getText(sound);
         if (stt.equals(answer)) {
             gameSTTResDto = new GameSTTResDto(true, stt);
         } else {

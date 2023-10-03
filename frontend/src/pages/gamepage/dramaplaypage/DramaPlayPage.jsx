@@ -1,68 +1,173 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 import * as s from "./style";
 
 import DiffSelectSection from "components/section/diffselectsection/DiffSelectSection";
-
 import ProblemSection from "./problemsection/ProblemSection";
 import PronunciationSection from "./pronunciationsection/PronunciationSection";
+import ProgressSection from "./progresssection/ProgressSection";
+
+import FilledButton from "components/buttons/filledbutton/FilledButton";
+import BorderButton from "components/buttons/borderbutton/BorderButton";
+
+import RedoIcon from "@mui/icons-material/Redo";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+
+import eetch from "apis/eetch";
 
 const diffList = ["상", "중", "하"];
-// Const diff = diffList[Math.floor(Math.random() * diffList.length)];
 
 export default function DramaPlayPage() {
     const [diff, setDiff] = useState("");
-    const [problem, setProblem] = useState({});
+    const [problemList, setProblemList] = useState([]);
+    const [problemIndex, setProblemIndex] = useState(-1);
     const [sentence, setSentence] = useState("");
+    const [correct, setCorrect] = useState(0);
+    const [showHint, setShowHint] = useState(false);
+    const [hint, setHint] = useState([]);
+    const [onHintModal, setOnHintModal] = useState(false);
+
+    const [totalTime, setTotaltime] = useState(200);
+    const totalTimer = useRef(null);
+
+    const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const startTotalTimer = () => {
+        if (totalTimer.current) {
+            clearTimeout(totalTimer.current);
+        }
+
+        totalTimer.current = setInterval(() => {
+            setTotaltime((time) => time - 1);
+        }, 1000);
+    };
+
+    const stopTotalTimer = () => {
+        if (totalTimer.current) {
+            clearTimeout(totalTimer.current);
+        }
+    };
+
+    const endTotalTimer = () => {
+        if (totalTimer.current) {
+            clearTimeout(totalTimer.current);
+        }
+
+        totalTimer.current = null;
+        setProblemIndex(4);
+        setTotaltime(200);
+    };
 
     useEffect(() => {
-        setProblem({
-            img: "https://plus.unsplash.com/premium_photo-1661897401664-ca20addf3e8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80",
-            word: ["곰", "강", "물고기"],
-            hint: [
-                ["명사", "깊은 산이나 북극 지방에 살며 나무에 잘 오르고 잡식성으로 대부분 겨울에는 굴속에서 겨울잠을 잔다."],
-                ["명사", "깊은 산이나 북극 지방에 살며 나무에 잘 오르고 잡식성으로 대부분 겨울에는 굴속에서 겨울잠을 잔다."],
-                ["명사", "깊은 산이나 북극 지방에 살며 나무에 잘 오르고 잡식성으로 대부분 겨울에는 굴속에서 겨울잠을 잔다."]
-            ],
-            answer: "곰이 강에서 물고기를 잡고 있습니다."
-        });
-    }, []);
-
-    useEffect(() => {
-        if (!problem.answer) {
+        if (totalTime !== -1) {
             return;
         }
 
-        let sentence = problem.answer;
+        endTotalTimer();
+    }, [totalTime]);
 
-        if (diff === "하") {
-            sentence = sentence.replace(problem.word[Math.floor(Math.random() * problem.word.length)], "__");
-        } else if (diff === "중") {
-            const execption = problem.word[Math.floor(Math.random() * problem.word.length)];
-
-            problem.word.forEach((word) => {
-                if (execption === word) {
-                    return;
-                }
-
-                sentence = sentence.replace(word, "__");
-            });
-        } else {
-            problem.word.forEach((word) => {
-                sentence = sentence.replace(word, "__");
-            });
+    useEffect(() => {
+        if (problemIndex !== 0) {
+            return;
         }
 
-        setSentence(sentence);
-    }, [problem, diff]);
+        startTotalTimer();
+    }, [problemIndex]);
+
+    useEffect(() => {
+        setShowHint(false);
+    }, [problemIndex]);
+
+    useEffect(() => {
+        if (problemIndex !== 4) {
+            return;
+        }
+
+        endTotalTimer();
+
+        const values = {};
+
+        values.user = user;
+        values.total = 4;
+        values.score = correct;
+        values.level = diff === "상" ? 3 : diff === "중" ? 2 : 1;
+
+        eetch
+            .tokenValidation(eetch.blankResult, values, dispatch)
+            .then(() => {
+                // console.log(result);
+            })
+            .catch(() => {
+                navigate("/signin");
+            });
+    }, [problemIndex]);
 
     return (
         <s.Main>
             {diff ? (
-                <>
-                    <ProblemSection props={{ problem, sentence }} />
-                    <PronunciationSection props={{ problem, sentence }} />
-                </>
+                problemIndex === 4 ? (
+                    <s.Section>
+                        <s.Header>
+                            <h2>테스트 종료</h2>
+                        </s.Header>
+                        <s.ButtonWrapper>
+                            <FilledButton
+                                props={{
+                                    background: "rgba(68, 71, 90, 0.7)",
+                                    color: "#ffffff",
+                                    hovercolor: "#44475A",
+                                    callback() {
+                                        setProblemList([]);
+                                        setProblemIndex(-1);
+                                        setSentence("");
+                                        setCorrect(0);
+                                    }
+                                }}
+                            >
+                                <RedoIcon />
+                                <span>계속 풀기</span>
+                            </FilledButton>
+                            <BorderButton
+                                props={{
+                                    color: "rgba(68, 71, 90, 0.7)",
+                                    callback() {
+                                        navigate("/main");
+                                    }
+                                }}
+                            >
+                                <ExitToAppIcon />
+                                <span>종료</span>
+                            </BorderButton>
+                        </s.ButtonWrapper>
+                    </s.Section>
+                ) : (
+                    <>
+                        <ProgressSection props={{ total: 200, now: totalTime }} />
+                        <ProblemSection
+                            props={{
+                                diff,
+                                problemList,
+                                setProblemList,
+                                problemIndex,
+                                setProblemIndex,
+                                sentence,
+                                setSentence,
+                                setHint,
+                                setShowHint,
+                                onHintModal,
+                                startTotalTimer,
+                                stopTotalTimer
+                            }}
+                        />
+                        <PronunciationSection
+                            props={{ problemList, problemIndex, sentence, setProblemIndex, setCorrect, hint, showHint, onHintModal, setOnHintModal }}
+                        />
+                    </>
+                )
             ) : (
                 <DiffSelectSection props={{ diffList, setDiff, title: "드라마 플레이", description: "그림을 보고 문장을 채워주세요." }} />
             )}
