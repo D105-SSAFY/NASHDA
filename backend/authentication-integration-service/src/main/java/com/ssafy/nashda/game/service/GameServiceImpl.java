@@ -216,7 +216,6 @@ public class GameServiceImpl implements GameService {
         member.setSentenceCount(member.getSentenceCount() + request.getTotal());
         if (request.getLevel() > 1) {
            memberService.plusProgress(member, request.getTotal());
-
            return member.getProgress()+request.getTotal();
         }
         return member.getProgress();

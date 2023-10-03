@@ -1,5 +1,6 @@
 package com.ssafy.nashda.test.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,9 +17,10 @@ import java.util.List;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class SpeedTest1 {
-
-    @Field("img_url")
-    private String imgUrl;    //항상 0번째가 정답이다.
+//
+//    @Field("img_url")
+//    @JsonProperty("img")
+    private String img;    //항상 0번째가 정답이다.
     private String answer;
 
     @Field("user_stt")
