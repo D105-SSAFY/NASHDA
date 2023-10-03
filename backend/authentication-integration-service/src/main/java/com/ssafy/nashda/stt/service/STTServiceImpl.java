@@ -5,6 +5,8 @@ import com.ssafy.nashda.common.dto.InternalResponseDto;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
+import com.ssafy.nashda.simulGPT.dto.response.ChatSttResDto;
+import com.ssafy.nashda.simulGPT.service.ChatGptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +25,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RequiredArgsConstructor
 @Slf4j
 public class STTServiceImpl implements STTService {
+
+    private final ChatGptService chatGptService;
 
     @Value("${env.STT_URL}")
     private String URL;
@@ -75,6 +79,11 @@ public class STTServiceImpl implements STTService {
 
         String stt = (String) response.getBody().getData();
         return stt;
+    }
+
+    @Override
+    public String getText(MultipartFile sound) throws Exception {
+        return chatGptService.getStt(sound).getText();
     }
 
 }

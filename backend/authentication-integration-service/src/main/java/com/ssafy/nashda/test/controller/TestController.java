@@ -124,20 +124,20 @@ public class TestController {
                 HttpStatus.OK);
     }
 
-    @PostMapping(value = "/week/user",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/week/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<? extends BaseResponseBody> weekTestUser(
             @RequestPart(value = "sound") MultipartFile sound,
             @ModelAttribute WeekTestReqDto reqDto) throws Exception {
 
-        if(reqDto.getOrder()<5){
+        if (reqDto.getOrder() < 5) {
             String stt = testService.sttMixTest(sound, reqDto, "blank");
             return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 저장 성공(blank)", stt),
                     HttpStatus.OK);
-        }else if(reqDto.getOrder()<8){
+        } else if (reqDto.getOrder() < 8) {
             String stt = testService.sttMixTest(sound, reqDto, "speed1");
             return new ResponseEntity<>(new BaseResponseBody(200, "사용자 음성 파일 STT 저장 성공(speed)", stt),
                     HttpStatus.OK);
-        }else{
+        } else {
             testService.saveWeekTestSpeed2(reqDto);
             return new ResponseEntity<>(new BaseResponseBody(200, "사용자 선택 저장 성공(speed2)"),
                     HttpStatus.OK);
