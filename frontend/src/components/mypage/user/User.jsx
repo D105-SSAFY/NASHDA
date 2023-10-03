@@ -11,20 +11,21 @@ import NicknameDetail from "components/mypage/user/nickname/nicknameDetail/Nickn
 import ArchievementDetail from "./archievement/archievementDetail/ArchievementDetail";
 
 import eetch from "apis/eetch";
-import StatisticsDetail from "../statistics/StatisticsDetail.jsx/StatisticsDetail";
+import StatisticsDetail from "./statistics/statisticsDetail/StatisticsDetail";
 
 export default function Setting() {
     // const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
 
-    const [more, setMore] = useState(0);
+    // 테스트로 5로 해놨음!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 0으로 돌려야 함!!!!!!!!!
+    const [more, setMore] = useState(5);
     const [userInfo, setUserInfo] = useState({});
     const [achievements, setAchievements] = useState([]);
     const [tabChanged, setTabChanged] = useState(false);
+    const [isToggle, setIsToggle] = useState([false, false, false]);
 
     const transitionHandler = () => {
         if (more === 5) {
-            console.log("end!!");
             setTabChanged(true);
         }
     };
@@ -49,7 +50,12 @@ export default function Setting() {
 
     return (
         <>
-            <u.DeFocusTouch onClick={() => setMore(0)} />
+            <u.DeFocusTouch
+                onClick={() => {
+                    setMore(0);
+                    setIsToggle([false, false, false]);
+                }}
+            />
             <u.UserSection more={more} tabChanged={tabChanged}>
                 {/* 유저 별명 카드 */}
                 <u.UserCard focus={more === 1} defocus={more === 0 || more === 1 || more === 5}>
@@ -80,7 +86,7 @@ export default function Setting() {
                     <Profile userInfo={userInfo} setUserInfo={setUserInfo} setMore={setMore} more={more} />
                 </u.UserCard>
                 <u.UserCard defocus={true}>
-                    <StatisticsDetail></StatisticsDetail>
+                    <StatisticsDetail setMore={setMore} isToggle={isToggle} setIsToggle={setIsToggle}></StatisticsDetail>
                 </u.UserCard>
             </u.UserSection>
         </>
