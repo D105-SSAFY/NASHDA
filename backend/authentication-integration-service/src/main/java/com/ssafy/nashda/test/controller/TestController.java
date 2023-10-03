@@ -36,8 +36,6 @@ public class TestController {
     private final StrickService strickService;
     private final MemberHistoryService memberHistoryService;
 
-
-
     @GetMapping("/week/all")
     public ResponseEntity<? extends BaseResponseBody> weekTestAll(@RequestHeader("Authorization") String token) throws Exception {
 
