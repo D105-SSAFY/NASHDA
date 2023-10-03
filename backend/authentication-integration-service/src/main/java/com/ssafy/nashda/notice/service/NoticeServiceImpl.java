@@ -42,7 +42,11 @@ public class NoticeServiceImpl implements NoticeService {
                 for(MultipartFile file : files) {
                     String uploadUrl;
                     try {
-                        uploadUrl = s3Uploader.uploadFiles(file, "notice-files");
+                        if (file.getOriginalFilename().endsWith(".txt")) {
+                            continue;
+                        } else {
+                            uploadUrl = s3Uploader.uploadFiles(file, "notice-files");
+                        }
                     } catch (IOException e) {
                         throw new BadRequestException(ErrorCode.FAIL_UPLOAD_FILE);
                     }
@@ -122,7 +126,11 @@ public class NoticeServiceImpl implements NoticeService {
                         // 해당 파일이 기존 목록에 존재하지 않으면 s3 업로드
                         String uploadUrl;
                         try {
-                            uploadUrl = s3Uploader.uploadFiles(file, "notice-files");
+                            if (file.getOriginalFilename().endsWith(".txt")) {
+                                continue;
+                            } else {
+                                uploadUrl = s3Uploader.uploadFiles(file, "notice-files");
+                            }
                         } catch (IOException e) {
                             throw new BadRequestException(ErrorCode.FAIL_UPLOAD_FILE);
                         }

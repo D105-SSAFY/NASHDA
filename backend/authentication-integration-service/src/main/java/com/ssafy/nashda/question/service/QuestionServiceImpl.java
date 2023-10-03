@@ -43,7 +43,11 @@ public class QuestionServiceImpl implements QuestionService {
             for(MultipartFile file : files) {
                 String uploadUrl;
                 try {
-                    uploadUrl = s3Uploader.uploadFiles(file, "question-files");
+                    if (file.getOriginalFilename().endsWith(".txt")) {
+                        continue;
+                    } else {
+                        uploadUrl = s3Uploader.uploadFiles(file, "question-files");
+                    }
                 } catch (IOException e) {
                     throw new BadRequestException(ErrorCode.FAIL_UPLOAD_FILE);
                 }
@@ -88,10 +92,15 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional
-    public QuestionResDto getQuestion(Long index) {
+    public QuestionResDto getQuestion(Member member, Long index) {
+
         Question question = questionRepository.findById(index).orElseThrow(() -> {
-            return new BadRequestException(ErrorCode.NOT_EXISTS_QUESTION_ID);
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_QUESTION_ID);
         });
+
+        if (!member.equals(question.getMember())) {
+            throw new BadRequestException(ErrorCode.NOT_EQUAL_USER);
+        }
 
         Reply reply = question.getReply();
         ReplyResDto replyResDto = (reply != null) ? new ReplyResDto(reply) : null;
@@ -144,7 +153,11 @@ public class QuestionServiceImpl implements QuestionService {
 
                         String uploadUrl;
                         try {
-                            uploadUrl = s3Uploader.uploadFiles(file, "question-files");
+                            if (file.getOriginalFilename().endsWith(".txt")) {
+                                continue;
+                            } else {
+                                uploadUrl = s3Uploader.uploadFiles(file, "question-files");
+                            }
                         } catch (IOException e) {
                             throw new BadRequestException(ErrorCode.FAIL_UPLOAD_FILE);
                         }

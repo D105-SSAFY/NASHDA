@@ -18,5 +18,5 @@ public interface QuestionService {
 
     List<QuestionResDto> getQuestions(Member member);
 
-    QuestionResDto getQuestion(Long questionIndex);
+    QuestionResDto getQuestion(Member member, Long questionIndex);
 }
