@@ -1,15 +1,11 @@
-import { createStore, applyMiddleware, combineReducers } from "redux";
-import userSlice from "redux/slice/userSlice";
-
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { createStateSyncMiddleware, initMessageListener } from "redux-state-sync";
-
-import { persistStore, persistReducer } from "redux-persist";
-// Import storage from "redux-persist/lib/storage";
+import { persistReducer, persistStore } from "redux-persist";
 import storageSession from "redux-persist/lib/storage/session";
+import userSlice from "redux/slice/userSlice";
 
 const persistConfig = {
     key: "root",
-    // Storage,
     storage: storageSession
 };
 
@@ -19,14 +15,18 @@ const rootReducer = combineReducers({
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const store = createStore(
-    persistedReducer,
-    applyMiddleware(
-        createStateSyncMiddleware({
-            blacklist: ["persist/PERSIST", "persist/REHYDRATE"]
-        })
-    )
-);
+// Replace createStore with configureStore
+const store = configureStore({
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false
+        }).concat(
+            createStateSyncMiddleware({
+                blacklist: ["persist/PERSIST", "persist/REHYDRATE"]
+            })
+        )
+});
 
 initMessageListener(store);
 
