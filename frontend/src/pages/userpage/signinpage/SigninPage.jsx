@@ -44,7 +44,7 @@ export default function SigninPage() {
         }
 
         const result = await eetch.signin({ email: inputs.email, password: inputs.password });
-        if (result.status === 200) {
+        if (result.status === 201) {
             dispatch(
                 loginUser({
                     accessToken: result.data.accessToken,
