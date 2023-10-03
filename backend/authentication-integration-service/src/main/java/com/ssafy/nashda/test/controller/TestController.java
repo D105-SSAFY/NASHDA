@@ -1,5 +1,6 @@
 package com.ssafy.nashda.test.controller;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.history.service.MemberHistoryService;
 import com.ssafy.nashda.member.controller.MemberController;
@@ -8,8 +9,11 @@ import com.ssafy.nashda.statistic.service.StrickService;
 import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
 import com.ssafy.nashda.test.dto.request.*;
 import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
+import com.ssafy.nashda.test.dto.response.WeekTestResultDetailResDto;
 import com.ssafy.nashda.test.dto.response.WordTestResultAllResDto;
 import com.ssafy.nashda.test.dto.response.WordTestStartResDto;
+import com.ssafy.nashda.test.entity.MixTestResult;
+import com.ssafy.nashda.test.repository.MixTestResultRepository;
 import com.ssafy.nashda.test.service.TestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +35,19 @@ public class TestController {
     private final MemberController memberController;
     private final StrickService strickService;
     private final MemberHistoryService memberHistoryService;
+    private final MixTestResultRepository mixTestResultRepository;
+
+    @GetMapping("/week/datail/{week}/{tryCount}")
+    public ResponseEntity<? extends BaseResponseBody> weekTestDetail(@RequestHeader("Authorization") String token, @PathVariable("week") long week, @PathVariable("tryCount") int tryCount) throws Exception {
+
+        Member member = memberController.findMemberByToken(token);
+        WeekTestResultDetailResDto mixTestStartResDto = testService.getWeekTestResultDetail(member, week, tryCount);
+
+        MixTestResult m = mixTestResultRepository.findByMemberNumberAndWeekAndTryCount(member.getMemberNum(), week, tryCount).get();
+
+        return new ResponseEntity<>(new BaseResponseBody(200, "통합 시험 불러오기 성공", mixTestStartResDto),
+                HttpStatus.OK);
+    }
 
     @GetMapping("/week/all")
     public ResponseEntity<? extends BaseResponseBody> weekTestAll(@RequestHeader("Authorization") String token) throws Exception {
