@@ -1,9 +1,8 @@
-/* eslint-disable no-alert */
 import * as s from "./style";
 import video1 from "assets/image/nashda_move.mov";
 import SignupInput from "components/input/FormInputCol";
 import FormSelectCol from "components/input/FormSelectCol";
-// Import { checkEmail, sendCode, checkCode, signUp } from "apis/user";
+import SignupModal from "components/modals/signupmodal/SignupModal";
 import eetch from "apis/eetch";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
@@ -11,6 +10,8 @@ import { useNavigate } from "react-router";
 export default function SignupPage() {
     const [isLoading, setIsLoading] = useState(false);
 
+    const [onModal, setOnModal] = useState(false);
+    const [onModalText, setOnModalText] = useState("");
     const [inputs, setInputs] = useState({
         email: "",
         code: "",
@@ -199,10 +200,12 @@ export default function SignupPage() {
         setIsLoading(false);
 
         if (result.status === 200) {
-            alert("인증번호를 전송했어요!");
+            setOnModal("success");
+            setOnModalText("인증번호를 전송했어요!");
             setOverlapEmail(3);
         } else {
-            alert("인증번호 전송에 실패했어요!");
+            setOnModal("false");
+            setOnModalText("인증번호 전송에 실패했어요!");
         }
     };
 
@@ -210,7 +213,8 @@ export default function SignupPage() {
         e.preventDefault();
 
         if (!inputs.name || inputs.name.includes(" ")) {
-            alert("사용할 수 없는 이름입니다!");
+            setOnModal("false");
+            setOnModalText("본명을 확인해주세요!");
             return;
         }
 
@@ -224,10 +228,11 @@ export default function SignupPage() {
         });
         console.log(result);
         if (result.status === 200) {
-            alert("회원가입 성공!");
-            navigate("/signin");
+            setOnModal("success");
+            setOnModalText("회원가입 성공!");
         } else {
-            alert("회원가입에 실패했습니다!");
+            setOnModal("false");
+            setOnModalText("회원가입에 실패했습니다!");
         }
     };
 
@@ -251,6 +256,16 @@ export default function SignupPage() {
         }
 
         console.log(inputs2);
+    };
+
+    const onClickModal = () => {
+        if (onModalText === "회원가입 성공!") {
+            setOnModal(false);
+            navigate("/signin");
+        } else {
+            setOnModal(false);
+            setOnModalText("");
+        }
     };
 
     return (
@@ -339,6 +354,7 @@ export default function SignupPage() {
                 </s.StyledForm>
                 <s.StyledFooter></s.StyledFooter>
             </s.StyledMainSection>
+            <SignupModal props={{ text: onModalText, visible: onModal, callback: onClickModal }} />
         </s.StyledMain>
     );
 }

@@ -1,8 +1,8 @@
-/* eslint-disable no-alert */
 import * as s from "./style";
 import video1 from "assets/image/nashda_move.mov";
 import image2 from "assets/image/signinbtn.png";
 import SigninInput from "components/input/FormInputCol";
+import SigninModal from "components/modals/signupmodal/SignupModal";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "redux/slice/userSlice";
@@ -13,12 +13,13 @@ export default function SigninPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const [onModal, setOnModal] = useState(false);
+    const [onModalText, setOnModalText] = useState("");
+
     const [inputs, setInputs] = useState({
         email: "",
         password: ""
     });
-
-    // Input에 0.3초 이상 연속 입력이 되지 않을 경우에 console.log('hello') 출력하는 이벤트 핸들러
 
     const handleChange = (e) => {
         setInputs({
@@ -31,17 +32,19 @@ export default function SigninPage() {
         e.preventDefault();
 
         if (!inputs.email) {
-            alert("이메일을 입력해주세요!");
+            setOnModal("false");
+            setOnModalText("이메일을 입력해주세요!");
             return;
         }
 
         if (!inputs.password) {
-            alert("비밀번호를 입력해주세요!");
+            setOnModal("false");
+            setOnModalText("비밀번호를 입력해주세요!");
             return;
         }
 
         const result = await eetch.signin({ email: inputs.email, password: inputs.password });
-        if (result) {
+        if (result.status === 200) {
             dispatch(
                 loginUser({
                     accessToken: result.data.accessToken,
@@ -49,8 +52,14 @@ export default function SigninPage() {
                 })
             ).then(() => navigate("/main"));
         } else {
-            alert("로그인에 실패했습니다!");
+            setOnModal("false");
+            setOnModalText("아이디 또는 비밀번호를 잘못 입력했습니다!");
         }
+    };
+
+    const onClickModal = () => {
+        setOnModal(false);
+        setOnModalText("");
     };
 
     return (
@@ -90,6 +99,7 @@ export default function SigninPage() {
                 </s.StyledLinkSection>
             </s.StyledMainSection>
             <s.StyledFooter></s.StyledFooter>
+            <SigninModal props={{ text: onModalText, visible: onModal, callback: onClickModal }} />
         </s.StyledMain>
     );
 }
