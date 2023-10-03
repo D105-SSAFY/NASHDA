@@ -42,7 +42,7 @@ export default function FormSelectCol({ data: { list, target, callback, Idx = 0 
     }, [Idx]);
 
     return (
-        <S.Wrapper>
+        <S.StyledDiv>
             <S.StyledLabel isFill={Boolean(selectedItem)}>{target}</S.StyledLabel>
             <S.Button clicked={clicked} onClick={onClickButton}>
                 <span>{selectedItem}</span>
@@ -72,6 +72,6 @@ export default function FormSelectCol({ data: { list, target, callback, Idx = 0 
                         );
                     })}
             </S.List>
-        </S.Wrapper>
+        </S.StyledDiv>
     );
 }

@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 
 import * as s from "./style";
 import { MoreButton } from "components/mypage/user/style";
-
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 
 import eetch from "apis/eetch";

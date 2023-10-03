@@ -35,36 +35,13 @@ export const StyledInput = styled.input`
         outline: ${(props) => (props.readOnly ? "none" : "")};
     }
 `;
-export const StyledSelect = styled.select`
-    width: 100%;
-    border-radius: 8px;
-    border: solid 1.8px black;
-    font-family: "PrVr", sans-serif;
-    font-size: 16px;
-    background-color: ${(props) => (props.readOnly ? "#eee" : "")};
-    height: 50px;
-    text-align: center;
-    padding-right: ${(props) => (props.check ? "35px" : "")};
-    size: 30;
-    &:focus {
-        outline: 1px solid #000;
-        outline: ${(props) => (props.readOnly ? "none" : "")};
-    }
-    & > option {
-        /* option 요소에 적용할 스타일 지정 */
-        /* 예: */
-        border-radius: 10px;
-    }
-`;
-export const StyledOption = styled.option`
-    border: solid 15px black;
-`;
+
 export const StyledButton = styled.button`
     position: absolute;
     height: auto;
-    font-size: 20px;
-    font-weight: bold;
-    color: #8f47f5;
+    font-size: 16px;
+    font-weight: 600;
+    color: #6366f8;
     display: ${(props) => (props.check ? "" : "none")};
     right: 15px;
     top: 30%;
@@ -73,13 +50,8 @@ export const StyledButton = styled.button`
 export const StyledImg = styled.img`
     position: absolute;
     right: 5px;
-    top: 10%;
-`;
-
-export const Wrapper = styled.div`
-    width: 100%;
-    position: relative;
-    margin: 10px;
+    top: 50%;
+    transform: translateY(-50%);
 `;
 
 export const Button = styled.button`
@@ -89,10 +61,19 @@ export const Button = styled.button`
     padding: 0 12px;
     position: relative;
     background-color: white;
-    font-size: 20px;
-    border: 2px solid;
-    border-radius: 6px;
+    font-size: 16px;
+    border: solid 1.8px black;
+    border-radius: 10px;
     color: black;
+
+    & > span {
+        position: relative;
+        display: block;
+        width: fit-content;
+        margin-left: 7px;
+        font-weight: 400;
+        font-size: 1.6rem;
+    }
 
     &::before {
         content: "";
@@ -166,6 +147,15 @@ export const ListButton = styled.button`
     text-align: left;
     font-size: 20px;
     background-color: white;
+
+    & > span {
+        position: relative;
+        display: block;
+        width: fit-content;
+        margin-left: 4px;
+        font-weight: 400;
+        font-size: 1.6rem;
+    }
 
     &:hover {
         background-color: lightskyblue;

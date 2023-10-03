@@ -18,7 +18,6 @@ export const StyledVid = styled.video`
 
 export const StyledSignupBtn = styled.button`
     padding: 10px;
-    background-color: ivory;
     border-radius: 6px;
     margin-top: 30px;
     font-size: 20px;
@@ -47,12 +46,12 @@ export const StyledText = styled.p`
     width: 100%;
     height: 16px;
     text-align: left;
-    margin: 5px 0 0 5px;
-    font-size: 16px;
+    margin: 0 0 1px 32px;
+    font-size: 14px;
     color: ${(props) =>
         props.colorEmail === 2 || props.colorEmail === 5 || props.colorPassword === 1 || props.colorPassword === 3 || props.colorNickname === 2
-            ? "blue"
-            : "red"};
+            ? "#6366f8"
+            : "#f47560"};
 `;
 
 export const StyledAnchorSection = styled.section`
