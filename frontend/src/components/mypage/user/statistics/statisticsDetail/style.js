@@ -8,7 +8,7 @@ export const StatDetailWrapper = styled.div`
 
     & > :nth-child(2) {
         height: ${(props) => (props.isConv ? "116px" : "auto")};
-        transition: all ease 0.9s;
+        transition: all ease 0.5s;
     }
 
     & > :nth-child(3) {
@@ -30,7 +30,6 @@ export const SizeWrapper = styled.div`
 export const StatDetailCard = styled.section`
     position: relative;
     width: 910px;
-    height: fit-content;
 
     overflow: hidden;
 

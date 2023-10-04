@@ -41,7 +41,6 @@ export default function Character({ isChar, setIsChar }) {
 
     useEffect(() => {
         if (characters.length !== 0) {
-            console.log(characters);
             setIsChar(true);
         }
     }, [characters]);

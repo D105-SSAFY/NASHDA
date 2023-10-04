@@ -181,9 +181,9 @@ export const weekTest = async ({ user }) => {
     }
 };
 
-export const weekTestDetail = async ({ week, count, user }) => {
+export const weekTestDetail = async ({ user }) => {
     try {
-        const url = `${process.env.REACT_APP_API_URL}/statistic/test/week/detail/${week}/${count}`;
+        const url = `${process.env.REACT_APP_API_URL}/statistic/test/week/detail`;
 
         const options = {
             method: "GET",

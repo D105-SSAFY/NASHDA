@@ -10,7 +10,7 @@ import SelectInput from "components/input/FormSelectCol";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 
-export default function Conversation({ isConv, setIsConv, convExpand, setAmount }) {
+export default function Conversation({ isConv, setIsConv, setAmount }) {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
     const [totalIncorrect, setTotalIncorrect] = useState(-1);
@@ -19,7 +19,6 @@ export default function Conversation({ isConv, setIsConv, convExpand, setAmount 
     const [Police, setPolice] = useState([]);
     const [Theater, setTheater] = useState([]);
     const [place, setPlace] = useState(0);
-
     const [places, setPlaces] = useState([]);
 
     const changePlace = (target, idx) => {
@@ -119,12 +118,10 @@ export default function Conversation({ isConv, setIsConv, convExpand, setAmount 
     useEffect(() => {
         if (totalIncorrect > 0) {
             setIsConv(true);
+            setPlace(1);
         }
     }, [totalIncorrect]);
 
-    useEffect(() => {
-        if (place !== 0) convExpand();
-    }, [place]);
     return (
         <c.ConversationWrapper isConv={isConv}>
             <c.ConversationTitle>
@@ -150,12 +147,13 @@ export default function Conversation({ isConv, setIsConv, convExpand, setAmount 
                 <>
                     <SelectInput
                         data={{
+                            label: "장소",
                             target: "취미",
                             list: places,
                             callback: changePlace,
                             Idx: place
                         }}
-                    ></SelectInput>
+                    />
                     {place === 1 ? (
                         <>
                             <c.ChatBox>{makeChat("cafe")}</c.ChatBox>

@@ -21,6 +21,8 @@ export default function StatisticsDetail({ setMore, isToggle, setIsToggle }) {
     const charSizeRef = useRef();
     const convRef = useRef();
     const convSizeRef = useRef();
+    const weekRef = useRef();
+    const weekSizeRef = useRef();
     const gameRef = useRef();
     const gameSizeRef = useRef();
 
@@ -39,14 +41,16 @@ export default function StatisticsDetail({ setMore, isToggle, setIsToggle }) {
 
     const convToggle = () => {
         setToggles(1, !isToggle[1]);
-        console.log(33333);
         if (convRef.current.clientHeight === 116) {
             convRef.current.style.height = convSizeRef.current.clientHeight + "px";
         } else convRef.current.style.height = 116 + "px";
     };
 
-    const convExpand = () => {
-        convRef.current.style.height = convSizeRef.current.clientHeight + "px";
+    const weekToggle = () => {
+        setToggles(2, !isToggle[2]);
+        if (weekRef.current.clientHeight === 260) {
+            weekRef.current.style.height = weekSizeRef.current.clientHeight + 800 + "px";
+        } else weekRef.current.style.height = 260 + "px";
     };
 
     const gameToggle = () => {
@@ -59,11 +63,7 @@ export default function StatisticsDetail({ setMore, isToggle, setIsToggle }) {
     useEffect(() => {
         if (!isToggle[0] && !isToggle[1] && !isToggle[2] && !isToggle[3] && true) {
             if (isChar) charRef.current.style.height = 250 + "px";
-            if (isConv) {
-                convRef.current.style.height = 116 + "px";
-                console.log("changed!!");
-            }
-
+            if (isConv) convRef.current.style.height = 116 + "px";
             if (isGame) gameRef.current.style.height = 190 + "px";
         }
     }, [isToggle]);
@@ -84,7 +84,7 @@ export default function StatisticsDetail({ setMore, isToggle, setIsToggle }) {
             <s.StatDetailCard ref={convRef}>
                 <s.CardDivLine />
                 <s.SizeWrapper ref={convSizeRef}>
-                    <Conversation setAmount={setAmount} convExpand={convExpand} isConv={isConv} setIsConv={setIsConv} />
+                    <Conversation setAmount={setAmount} isConv={isConv} setIsConv={setIsConv} />
                     {isConv ? (
                         <MoreButton onClick={() => convToggle()}>
                             {isToggle[1] ? "접기" : "틀린 대화 내용"}
@@ -93,15 +93,17 @@ export default function StatisticsDetail({ setMore, isToggle, setIsToggle }) {
                     ) : null}
                 </s.SizeWrapper>
             </s.StatDetailCard>
-            <s.StatDetailCard>
+            <s.StatDetailCard ref={weekRef}>
                 <s.CardDivLine />
-                <Weeks isWeek={isWeek} setIsWeek={setIsWeek} />
-                {isWeek ? (
-                    <MoreButton onClick={() => setToggles(2, !isToggle[2])}>
-                        {isToggle[2] ? "접기" : "주간 테스트 분석"}
-                        {isToggle[2] ? <ArrowCircleUpIcon /> : <ArrowCircleDownIcon />}
-                    </MoreButton>
-                ) : null}
+                <s.SizeWrapper ref={weekSizeRef}>
+                    <Weeks isWeek={isWeek} setIsWeek={setIsWeek} />
+                    {isWeek ? (
+                        <MoreButton onClick={() => weekToggle()}>
+                            {isToggle[2] ? "접기" : "주간 테스트 분석"}
+                            {isToggle[2] ? <ArrowCircleUpIcon /> : <ArrowCircleDownIcon />}
+                        </MoreButton>
+                    ) : null}
+                </s.SizeWrapper>
             </s.StatDetailCard>
             <s.StatDetailCard ref={gameRef}>
                 <s.CardDivLine />

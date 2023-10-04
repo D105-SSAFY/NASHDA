@@ -8,31 +8,21 @@ import eetch from "apis/eetch";
 
 import SendIcon from "@mui/icons-material/Send";
 import FilePresentIcon from "@mui/icons-material/FilePresent";
-import AttachmentIcon from "@mui/icons-material/Attachment";
 
 export default function Qna() {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
     const [messages, setMessages] = useState([]);
-    const [inputTitle, setInputTitle] = useState("");
-    const [inputContent, setInputContent] = useState("");
+    const [inputValue, setInputValue] = useState("");
     const [selectedFiles, setSelectedFiles] = useState([]);
     const fileInputRef = useRef();
 
-    const [isUploading, setIsUploading] = useState(false);
-
-    const handleTitleChange = (e) => {
-        setInputTitle(e.target.value);
-    };
-
-    const handleContentChange = (e) => {
-        setInputContent(e.target.value);
+    const handleChange = (e) => {
+        setInputValue(e.target.value);
     };
 
     const handleFileChange = (event) => {
         setSelectedFiles(Array.from(event.target.files));
-
-        console.log(selectedFiles);
     };
 
     useEffect(() => {
@@ -41,33 +31,25 @@ export default function Qna() {
         });
     }, []);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
+        const formData = new FormData();
 
-        if (isUploading) {
-            console.log("stop!!");
-        } else {
-            setIsUploading(true);
+        selectedFiles.forEach((file, index) => {
+            formData.append(`files[${index}]`, file);
+        });
 
-            const formData = new FormData();
-
-            formData.append("title", inputTitle);
-            formData.append("content", inputContent);
-
-            selectedFiles.forEach((file) => {
-                formData.append(`files`, file);
+        try {
+            // Replace "/upload" with your actual upload URL.
+            await fetch("/upload", {
+                method: "POST",
+                body: formData
             });
 
-            eetch.tokenValidation(eetch.questionWrite, { formData, user }, dispatch).then(() => {
-                eetch.tokenValidation(eetch.questionList, { user }, dispatch).then((res) => {
-                    setMessages(res.data);
-                    setInputTitle("");
-                    setInputContent("");
-                    setSelectedFiles([]);
+            // Handle success case.
+        } catch (error) {
+            console.error(error);
 
-                    setIsUploading(false);
-                });
-            });
+            // Handle error case.
         }
     };
 
@@ -78,24 +60,16 @@ export default function Qna() {
         </div>
     ));
 
-    const fileList = selectedFiles.map((file, idx) => (
-        <li key={idx}>
-            <AttachmentIcon />
-            {file.name}
-        </li>
-    ));
-
     return (
         <>
             <s.QuestionBackground />
             <s.QnaList>{qnaList}</s.QnaList>
             <s.AskBox>
-                <s.TitleArea value={inputTitle} onChange={handleTitleChange} placeholder="질문 제목" />
+                <s.TitleArea value={inputValue} onChange={handleChange} placeholder="질문 제목" />
                 <s.ContentWrapper>
-                    <s.ContentArea value={inputContent} onChange={handleContentChange} selected={selectedFiles.length} placeholder="질문 내용" />
+                    <s.ContentArea placeholder="질문 내용" />
                     <FilePresentIcon onClick={() => fileInputRef.current.click()} />
                     <input type="file" ref={fileInputRef} style={{ display: "none" }} onChange={handleFileChange} multiple />
-                    <s.SelectedFiles>{fileList}</s.SelectedFiles>
                 </s.ContentWrapper>
                 <s.SubmitButton onClick={handleSubmit}>
                     <SendIcon />
