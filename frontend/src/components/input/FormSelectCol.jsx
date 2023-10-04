@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import * as S from "./style";
 
-export default function FormSelectCol({ data: { list, target, callback, Idx = 0 } }) {
+export default function FormSelectCol({ data: { list, target, callback, Idx = 0, label = target } }) {
     const [clicked, setClicked] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     // 드랍 다운 버튼 클릭
@@ -43,7 +43,7 @@ export default function FormSelectCol({ data: { list, target, callback, Idx = 0 
 
     return (
         <S.StyledDiv>
-            <S.StyledLabel isFill={Boolean(selectedItem)}>{target}</S.StyledLabel>
+            <S.StyledLabel isFill={Boolean(selectedItem)}>{label}</S.StyledLabel>
             <S.Button clicked={clicked} onClick={onClickButton}>
                 <span>{selectedItem}</span>
             </S.Button>

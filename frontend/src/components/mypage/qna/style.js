@@ -75,25 +75,44 @@ export const TitleArea = styled.input`
     }
 `;
 
-export const ContentArea = styled.textarea`
+export const ContentWrapper = styled.div`
     width: 100%;
-    height: 200px;
-    padding: 20px;
+    height: 190px;
+    padding: 15px 20px 50px 20px;
     margin-top: 3px;
 
-    border: none;
+    background-color: #ffffff;
     border-radius: 0 0 12px 12px;
 
-    background-color: #ffffff;
+    box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.08),
+        0 3px 6px rgba(0, 0, 0, 0.13);
+
+    & > svg {
+        position: absolute;
+        bottom: 44px;
+        left: 38px;
+
+        width: 2.4rem;
+        height: 2.4rem;
+
+        color: #6446ff;
+        cursor: pointer;
+    }
+`;
+
+export const ContentArea = styled.textarea`
+    width: ${(props) => (props.selected > 0 ? "calc(100% - 200px)" : "100%")};
+    height: 100%;
+
+    border: none;
+
+    background-color: transparent;
     color: #000000cc;
     font-size: 1.6rem;
     font-weight: 500;
 
     resize: none;
-
-    box-shadow:
-        0 3px 6px rgba(0, 0, 0, 0.08),
-        0 3px 6px rgba(0, 0, 0, 0.13);
 
     &:focus {
         outline: none;
@@ -105,13 +124,54 @@ export const SubmitButton = styled.button`
     top: 20px;
     right: 20px;
 
-    width: 120px;
+    width: 80px;
     height: 60px;
 
     border-radius: 0 12px 0 0;
 
-    background-color: #a56cf5;
+    background-color: #6446ff;
     color: #ffffff;
     font-size: 1.6rem;
     font-weight: 550;
+
+    & > svg {
+        width: 2.4rem;
+        height: 2.4rem;
+    }
+`;
+
+export const SelectedFiles = styled.ul`
+    position: absolute;
+    width: 200px;
+    height: 125px;
+
+    padding: 0 10 px 0 10px;
+
+    top: 98px;
+    right: 32px;
+
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    & > li {
+        position: relative;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: #6446ff;
+
+        overflow-x: hidden;
+        overflow-y: hidden;
+
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        & > svg {
+            position: relative;
+
+            top: 2px;
+            margin-right: 2px;
+
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+    }
 `;

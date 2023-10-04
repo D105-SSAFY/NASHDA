@@ -1,15 +1,14 @@
 import eetch from "apis/eetch";
 
-export const questionWrite = async ({ email, title, content, writer, user }) => {
+export const questionWrite = async ({ formData, user }) => {
     try {
         const url = `${process.env.REACT_APP_API_URL}/question`;
         const options = {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ email, title, content, writer }),
+            body: formData,
             credentials: "include"
         };
 

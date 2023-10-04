@@ -18,7 +18,6 @@ export default function Profile({ userInfo, setUserInfo, more, setMore }) {
 
     function handleChange(e) {
         setAge(e.target.value ? e.target.value : 0);
-        console.log(age);
     }
 
     const handleSubmit = () => {
@@ -76,7 +75,6 @@ export default function Profile({ userInfo, setUserInfo, more, setMore }) {
     useEffect(() => {
         eetch.domain().then((res) => {
             setLists({ jobList: res.data.jobList, hobbyList: res.data.hobbyList });
-            console.log(res.data);
         });
     }, []);
 
