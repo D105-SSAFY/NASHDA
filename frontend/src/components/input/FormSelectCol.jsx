@@ -4,7 +4,7 @@ import * as S from "./style";
 export default function FormSelectCol({ data: { list, target, callback, Idx = 0 } }) {
     const [clicked, setClicked] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
-    // 드랍 다운 버튼 클릭
+
     const onClickButton = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -12,20 +12,17 @@ export default function FormSelectCol({ data: { list, target, callback, Idx = 0 
         setClicked(!clicked);
     };
 
-    // 드랍 박스 이외의 영역을 눌렀을 때
     window.addEventListener("click", () => {
         setClicked(false);
     });
 
-    // 드랍 박스 리스트 버튼 클릭
     const onClickListButton = (e, idx, text) => {
         e.preventDefault();
         setSelectedItem(text);
-        setClicked(false); // 드롭다운 닫기
+        setClicked(false);
         callback(target, idx);
     };
 
-    // 타겟 값 변경 시
     useEffect(() => {
         setClicked(false);
     }, [target]);
