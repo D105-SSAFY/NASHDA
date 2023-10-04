@@ -49,8 +49,7 @@ export default function SignupPage() {
     const navigate = useNavigate();
 
     const emailPattern =
-        // eslint-disable-next-line no-useless-escape
-        /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*()\-_=+[\]{};:'",.<>/?\\|~`])[a-zA-Z\d!@#$%^&*()\-_=+[\]{};:'",.<>/?\\|~`]{8,16}$/;
     const nicknamePattern = /^[\u3131-\u318E\uAC00-\uD7A3a-zA-Z\d]{2,6}$/;
 
@@ -61,7 +60,6 @@ export default function SignupPage() {
         }
 
         fetchData();
-        console.log(domainList.jobList);
     }, []);
 
     const handleChange = async (e) => {
@@ -69,7 +67,6 @@ export default function SignupPage() {
             ...inputs,
             [e.target.name]: e.target.value
         });
-        console.log(inputs);
 
         if (e.target.name === "email") {
             if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
@@ -100,7 +97,6 @@ export default function SignupPage() {
 
             if (!e.target.value) {
                 setOverlapEmail(3);
-                console.log("여기");
                 return;
             }
 
@@ -124,7 +120,6 @@ export default function SignupPage() {
             }
 
             if (e.target.value.includes(" ") || !nicknamePattern.test(e.target.value)) {
-                console.log("여기여기");
                 setOverlapNickname(1);
                 return;
             }
@@ -146,7 +141,6 @@ export default function SignupPage() {
             ...inputs2,
             [e.target.name]: e.target.value
         });
-        console.log(inputs2);
 
         if (e.target.name === "password") {
             if (!e.target.value) {
@@ -226,7 +220,7 @@ export default function SignupPage() {
             jobIdx: Number(inputs2.job),
             hobbyIdx: Number(inputs2.hobby)
         });
-        console.log(result);
+
         if (result.status === 200) {
             setOnModal("success");
             setOnModalText("회원가입 성공!");
@@ -254,8 +248,6 @@ export default function SignupPage() {
                 hobby: idx
             });
         }
-
-        console.log(inputs2);
     };
 
     const onClickModal = () => {
