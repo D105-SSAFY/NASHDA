@@ -20,16 +20,28 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-model_id = "openai/whisper-base"
+model_01 = "openai/whisper-base"
 
-transcribe = pipeline(
+transcribe_01 = pipeline(
     task="automatic-speech-recognition",
-    model=model_id,
+    model=model_01,
     chunk_length_s=30,
     device=-1,
 )
 
-transcribe.model.config.forced_decoder_ids = transcribe.tokenizer.get_decoder_prompt_ids(language="Korean", task="transcribe")
+transcribe_01.model.config.forced_decoder_ids = transcribe_01.tokenizer.get_decoder_prompt_ids(language="Korean", task="transcribe")
+
+
+model_02 = "openai/whisper-small"
+
+transcribe_02 = pipeline(
+    task="automatic-speech-recognition",
+    model=model_02,
+    chunk_length_s=30,
+    device=-1,
+)
+
+transcribe_02.model.config.forced_decoder_ids = transcribe_02.tokenizer.get_decoder_prompt_ids(language="Korean", task="transcribe")
 
 
 @app.post("/pron")
@@ -41,7 +53,7 @@ async def file(file_upload: UploadFile):
             f.write(data)
         
 
-        outputs = transcribe("audio.wav")["text"][1:]    
+        outputs = transcribe_01("audio.wav")["text"][1:]    
         
         outputs = outputs.split(' ')
 
@@ -58,4 +70,18 @@ async def file(file_upload: UploadFile):
         print("Error occured :", e)
         return {"status" : "400", "message" : "STT 변환 실패", "data" : e}
 
+@app.post("/stt")
+async def file(file_upload: UploadFile):
+    try:
+        data = await file_upload.read()
 
+        with open("audio.wav", "wb") as f:
+            f.write(data)
+        
+
+        output = transcribe_02("audio.wav")["text"][1:]
+
+        return { "status": "200", "message" : "STT 결과", "data": output}
+    except Exception as e:
+        print("Error occured :", e)
+        return {"status" : "400", "message" : "STT 변환 실패", "data" : e}
