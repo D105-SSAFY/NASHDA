@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Section = styled.section`
     margin-top: 30px;
+    width: 100%;
 
     flex-grow: 1;
 
@@ -13,7 +14,7 @@ export const Header = styled.header`
     margin-bottom: 14px;
     margin-left: 3px;
 
-    & > h3 {
+    & > h2 {
         font-size: 1.4rem;
         font-weight: 500;
         color: rgb(120, 120, 120);
@@ -33,8 +34,7 @@ export const Box = styled.div`
 export const Pron = styled.p`
     font-size: 2rem;
     font-weight: 500;
-
-    color: ${(props) => (props.correct ? "#57ea74" : "#ff4455")};
+    color: rgb(100, 100, 100);
 `;
 
 export const ButtonWrapper = styled.div`
@@ -42,20 +42,4 @@ export const ButtonWrapper = styled.div`
 
     display: flex;
     gap: 10px;
-`;
-
-export const SpeakButton = styled.button`
-    height: 20px;
-
-    margin: auto 0 1px 20px;
-
-    text-align: right;
-    color: rgb(140, 140, 140);
-
-    display: ${(props) => (props.visible ? "block" : "none")};
-
-    & > svg {
-        width: 20px;
-        height: 20px;
-    }
 `;

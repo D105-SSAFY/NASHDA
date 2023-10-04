@@ -33,8 +33,7 @@ export const Box = styled.div`
 export const Pron = styled.p`
     font-size: 2rem;
     font-weight: 500;
-
-    color: ${(props) => (props.correct ? "#57ea74" : "#ff4455")};
+    color: rgb(100, 100, 100);
 `;
 
 export const ButtonWrapper = styled.div`

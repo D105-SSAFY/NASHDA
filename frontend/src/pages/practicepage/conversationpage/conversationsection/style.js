@@ -34,7 +34,7 @@ export const Explain = styled.p`
     color: rgb(170, 170, 170);
 
     & > span {
-        color: rgb(80, 80, 80);
+        color: rgb(40, 40, 40);
     }
 `;
 

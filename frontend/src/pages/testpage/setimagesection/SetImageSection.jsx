@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import * as s from "./style";
 
 import BorderButton from "components/buttons/borderbutton/BorderButton";
 
 import RedoIcon from "@mui/icons-material/Redo";
 
-export default function SetImageSection({ props: { problem, getNextProblem, setCorrect } }) {
+import eetch from "apis/eetch";
+
+export default function SetImageSection({ props: { problem, getNextProblem, setCorrect, testIndex, problemIndex, setError } }) {
     const [imgList, setImgList] = useState([]);
     const [answer, setAnswer] = useState(0);
+
+    const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (!problem.answer) {
@@ -36,6 +43,10 @@ export default function SetImageSection({ props: { problem, getNextProblem, setC
         setAnswer(index);
     }, [problem]);
 
+    if (!problem.answer) {
+        return;
+    }
+
     const checkCorrect = (index) => {
         if (index === answer) {
             setCorrect((correct) => correct + 1);
@@ -55,7 +66,33 @@ export default function SetImageSection({ props: { problem, getNextProblem, setC
                     return (
                         <li key={idx}>
                             <s.ImageButton
-                                onClick={() => {
+                                onClick={async () => {
+                                    const sound = new File(["dummy"], "dummy.wav", {
+                                        lastModified: new Date().getTime(),
+                                        type: "audio/wav"
+                                    });
+
+                                    const formData = new FormData();
+
+                                    formData.append("sound", sound);
+                                    formData.append("index", testIndex);
+                                    formData.append("order", problemIndex + 1);
+                                    formData.append("imgUrl", image);
+
+                                    const values = {};
+
+                                    values.user = user;
+                                    values.formData = formData;
+
+                                    eetch
+                                        .tokenValidation(eetch.weekSubmit, values, dispatch)
+                                        .then((result) => {
+                                            console.log(result);
+                                        })
+                                        .catch(() => {
+                                            setError(true);
+                                        });
+
                                     checkCorrect(idx);
                                     getNextProblem();
                                 }}

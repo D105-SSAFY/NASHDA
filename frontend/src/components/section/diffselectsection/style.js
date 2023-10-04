@@ -1,25 +1,51 @@
 import styled from "styled-components";
 
+export const Wrapper = styled.div`
+    display: ${(props) => (props.showModal ? "none" : "block")};
+
+    position: absolute;
+    top: 72px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    overflow: hidden;
+
+    background-color: rgba(120, 120, 120, 0.4);
+
+    z-index: 1000;
+`;
+
 export const Section = styled.section`
-    width: 500px;
+    width: 100%;
 
-    margin: 60px auto 0;
+    position: absolute;
+    top: 0;
+    left: 0;
 
-    flex-grow: 1;
+    padding: 45px 0;
+
+    background-color: #f2f2f2;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 export const Header = styled.header`
-    & > h2 {
-        margin-bottom: 12px;
+    text-align: center;
 
-        font-size: 2.2rem;
+    & > h2 {
+        margin-bottom: 24px;
+
+        font-size: 3rem;
         font-weight: 500;
 
-        color: rgb(120, 120, 120);
+        color: rgb(100, 100, 100);
     }
 
     & > p {
-        font-size: 1.5rem;
+        font-size: 2rem;
         font-weight: 500;
 
         color: rgb(170, 170, 170);
@@ -33,13 +59,38 @@ export const List = styled.ul`
 
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    align-items: center;
 
     & > li {
-        display: flex;
+        width: 100%;
     }
 `;
 
 export const Button = styled.button`
     width: 100%;
+
+    padding: 4px 0;
+
+    display: flex;
+
+    font-size: 1.7rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: rgb(120, 120, 120);
+
+    transition: all 0.2s;
+
+    &:hover {
+        color: rgb(30, 30, 30);
+        background-color: rgb(220, 220, 220);
+    }
+`;
+
+export const TextWrapper = styled.span`
+    width: 60px;
+
+    margin: 0 auto;
+
+    display: flex;
+    justify-content: space-between;
 `;

@@ -6,7 +6,7 @@ export const Main = styled.main`
     height: calc(100vh - 72px);
 
     margin: 0 auto;
-    padding: 0 55px 60px;
+    padding: 0 55px 30px;
 
     display: flex;
     flex-direction: column;

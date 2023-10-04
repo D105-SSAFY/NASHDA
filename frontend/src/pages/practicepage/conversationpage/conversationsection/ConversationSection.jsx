@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 
 import * as s from "./style";
 
@@ -29,7 +28,7 @@ const place = [
     }
 ];
 
-export default function ConversationSection() {
+export default function ConversationSection({ props: { setError } }) {
     const [background, setBackground] = useState({});
     const [id, setId] = useState("");
     const [convs, setConvs] = useState([]);
@@ -37,7 +36,6 @@ export default function ConversationSection() {
 
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     useEffect(() => {
         setBackground(place[Math.floor(Math.random() * place.length)]);
@@ -66,7 +64,7 @@ export default function ConversationSection() {
                 ]);
             })
             .catch(() => {
-                navigate("/signin");
+                setError(true);
             });
     }, [background]);
 
@@ -89,7 +87,7 @@ export default function ConversationSection() {
             </s.Header>
             {background.kr ? (
                 <s.Explain>
-                    저희는 지금, <span>{background.kr}</span>에 있습니다.
+                    저희는 지금, <span>&quot;{background.kr}&quot;</span>에 있습니다.
                 </s.Explain>
             ) : (
                 <></>
@@ -124,7 +122,7 @@ export default function ConversationSection() {
                     <div ref={messageEndRef}></div>
                 </li>
             </s.ConversationList>
-            <VoiceSection props={{ moveToEnd, updateConvs: setConvs, id, background }} />
+            <VoiceSection props={{ moveToEnd, updateConvs: setConvs, id, background, setError }} />
         </s.Section>
     );
 }

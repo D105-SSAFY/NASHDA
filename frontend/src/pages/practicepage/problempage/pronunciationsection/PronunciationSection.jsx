@@ -18,12 +18,12 @@ import eetch from "apis/eetch";
 
 const diffWord = {
     단어: "word",
-    구: "phase",
-    절: "simple",
+    단락: "phase",
+    단순절: "simple",
     복합절: "complex"
 };
 
-export default function PronunciationSection({ props: { problem, diff, setUpdate } }) {
+export default function PronunciationSection({ props: { problem, diff, setUpdate, setError } }) {
     const [audioText, setAudioText] = useState("");
     const [onModal, setOnModal] = useState(false);
     const [onUpdate, setOnUpdate] = useState(false);
@@ -169,7 +169,7 @@ export default function PronunciationSection({ props: { problem, diff, setUpdate
                 setAudioText(result.data.stt);
             })
             .catch(() => {
-                navigate("/signin");
+                setError(true);
             });
     };
 
@@ -222,7 +222,6 @@ export default function PronunciationSection({ props: { problem, diff, setUpdate
                             callback() {
                                 setUpdate(true);
                                 setAudioText("");
-                                // findIncorrectString();
                             }
                         }}
                     >

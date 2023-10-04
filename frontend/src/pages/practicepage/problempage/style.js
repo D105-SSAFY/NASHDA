@@ -11,13 +11,6 @@ export const Main = styled.main`
     flex-direction: column;
 `;
 
-export const TutorialMain = styled.main`
-    height: calc(100vh - 72px);
-
-    display: flex;
-    flex-direction: column;
-`;
-
 export const Section = styled.section`
     flex-grow: 1;
     display: flex;

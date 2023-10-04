@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 
 import * as s from "./style";
 
@@ -9,19 +8,22 @@ import eetch from "apis/eetch";
 
 const diffWord = {
     단어: "word",
-    구: "phase",
-    절: "simple",
+    단락: "phase",
+    단순절: "simple",
     복합절: "complex"
 };
 
-export default function ProblemSection({ props: { diff, problem, setProblem, update, setUpdate } }) {
+export default function ProblemSection({ props: { diff, problem, setProblem, update, setUpdate, setError } }) {
     const [numProblem, setNumProblem] = useState(0);
 
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     useEffect(() => {
+        if (!diff) {
+            return;
+        }
+
         const values = {};
 
         values.type = diffWord[diff];
@@ -33,9 +35,9 @@ export default function ProblemSection({ props: { diff, problem, setProblem, upd
                 setNumProblem(result.data);
             })
             .catch(() => {
-                navigate("/signin");
+                setError(true);
             });
-    }, []);
+    }, [diff]);
 
     useEffect(() => {
         if (numProblem === 0 || !update) {
@@ -56,7 +58,7 @@ export default function ProblemSection({ props: { diff, problem, setProblem, upd
                 setUpdate(false);
             })
             .catch(() => {
-                navigate("/signin");
+                setError(true);
             });
     }, [update, numProblem]);
 

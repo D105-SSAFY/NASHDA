@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import * as s from "./style";
@@ -9,20 +9,14 @@ import VoiceModal from "components/modals/voicemodal/VoiceModal";
 
 import MicIcon from "@mui/icons-material/Mic";
 import RedoIcon from "@mui/icons-material/Redo";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
 import voice from "utils/VoiceFunc";
 import eetch from "apis/eetch";
 
-export default function PronunciationSection({ props: { problem, getNextProblem, setCorrect, setError } }) {
-    const [audioText, setAudioText] = useState({
-        text: "",
-        correct: false
-    });
+export default function PronunciationSection({ props: { problem, getNextProblem, setCorrect, testIndex, problemIndex, setError } }) {
+    const [audioText, setAudioText] = useState("");
     const [onModal, setOnModal] = useState(false);
     const [onUpdate, setOnUpdate] = useState(false);
-
-    const timerRef = useRef(null);
 
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
@@ -35,7 +29,7 @@ export default function PronunciationSection({ props: { problem, getNextProblem,
         setOnModal(false);
     }, []);
 
-    const { onRecAudio, offRecAudio, createFile, play } = voice();
+    const { onRecAudio, offRecAudio, createFile } = voice();
 
     const onClickRecordOn = () => {
         showModal();
@@ -48,21 +42,8 @@ export default function PronunciationSection({ props: { problem, getNextProblem,
     };
 
     useEffect(() => {
-        if (!audioText.correct) {
-            return;
-        }
-
-        setCorrect((correct) => correct + 1);
-
-        timerRef.current = setTimeout(() => {
-            setAudioText({
-                text: "",
-                correct: false
-            });
-
-            getNextProblem();
-        }, 1000);
-    }, [audioText]);
+        setAudioText("");
+    }, [problem]);
 
     const getSTT = async () => {
         const file = createFile();
@@ -74,9 +55,9 @@ export default function PronunciationSection({ props: { problem, getNextProblem,
         const formData = new FormData();
 
         formData.append("sound", file);
-        formData.append("answer", problem.answer);
-        formData.append("index", problem.index);
-        formData.append("type", problem.type - 1);
+        formData.append("index", testIndex);
+        formData.append("order", problemIndex + 1);
+        formData.append("imgUrl", "");
 
         const values = {};
 
@@ -84,14 +65,9 @@ export default function PronunciationSection({ props: { problem, getNextProblem,
         values.formData = formData;
 
         eetch
-            .tokenValidation(eetch.game, values, dispatch)
+            .tokenValidation(eetch.weekSubmit, values, dispatch)
             .then((result) => {
-                // console.log(result);
-
-                setAudioText({
-                    text: result.data.convert,
-                    correct: result.data.result
-                });
+                setAudioText(result.data);
             })
             .catch(() => {
                 setError(true);
@@ -115,35 +91,39 @@ export default function PronunciationSection({ props: { problem, getNextProblem,
 
         setOnUpdate(false);
     }, [onUpdate]);
+
+    const getSentence = () => {
+        let sentence = problem.answer;
+
+        problem.word.forEach((word) => {
+            sentence = sentence.replace(word, "__");
+        });
+
+        return sentence;
+    };
+
     return (
         <>
             <s.Section>
                 <s.Header>
-                    <h3>나의 발음</h3>
+                    <h2>나의 발음</h2>
                 </s.Header>
                 <s.Box>
-                    <s.Pron correct={audioText.correct}>{audioText.text}</s.Pron>
-                    <s.SpeakButton visible={Boolean(audioText.text)} onClick={play}>
-                        <VolumeUpIcon />
-                    </s.SpeakButton>
+                    <s.Pron>{audioText}</s.Pron>
                 </s.Box>
                 <s.ButtonWrapper>
                     <FilledButton props={{ background: "rgba(68, 71, 90, 0.7)", color: "#ffffff", hovercolor: "#44475A", callback: onClickRecordOn }}>
                         <MicIcon />
-                        <span>{audioText.text ? "다시 녹음하기" : "녹음하기"}</span>
+                        <span>{audioText ? "다시 녹음하기" : "녹음하기"}</span>
                     </FilledButton>
                     <BorderButton
                         props={{
                             color: "rgba(68, 71, 90, 0.7)",
                             callback() {
-                                if (timerRef.current) {
-                                    clearTimeout(timerRef.current);
+                                if (audioText === problem.answer) {
+                                    setCorrect((correct) => correct + 1);
                                 }
 
-                                setAudioText({
-                                    text: "",
-                                    correct: false
-                                });
                                 getNextProblem();
                             }
                         }}
@@ -152,8 +132,8 @@ export default function PronunciationSection({ props: { problem, getNextProblem,
                         <span>다음</span>
                     </BorderButton>
                 </s.ButtonWrapper>
+                <VoiceModal props={{ title: "정답을 말해보세요.", content: getSentence(), visible: onModal, callback: onClickRecordOff }} />
             </s.Section>
-            <VoiceModal props={{ title: "단어를 말해보세요.", content: "", visible: onModal, callback: onClickRecordOff }} />
         </>
     );
 }
