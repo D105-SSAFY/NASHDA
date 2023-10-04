@@ -26,8 +26,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Slf4j
 public class STTServiceImpl implements STTService {
 
-    private final ChatGptService chatGptService;
-
     @Value("${env.STT_URL}")
     private String URL;
 
@@ -83,7 +81,52 @@ public class STTServiceImpl implements STTService {
 
     @Override
     public String getText(MultipartFile sound) throws Exception {
-        return chatGptService.getStt(sound).getText();
+        String extension = StringUtils.getFilenameExtension(sound.getOriginalFilename());
+//        log.info("EXTENSION : {}", extension);
+
+        if(!extension.equals("wav")){
+            throw new BadRequestException(ErrorCode.NOT_VALID_EXTENSION);
+        }
+
+        // 문제 서버에 요청
+        WebClient client = WebClient.builder()
+                .baseUrl(URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("file_upload", sound.getResource());
+
+        ResponseEntity<InternalResponseDto> response = client.post()
+                .uri("/stt")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(builder.build()))
+                .retrieve()
+                .onStatus(
+                        HttpStatus.BAD_REQUEST::equals,
+                        clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
+                            log.info("s : {}", s.getErrorCode());
+                            // 에러 코드 별로 예외 처리 가능
+                            if (s.getErrorCode() == 4000) {
+                                return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
+                            }
+
+                            return new BadRequestException(ErrorCode.TEST);
+                        })
+                )
+                .toEntity(InternalResponseDto.class)
+                .block();
+
+        String status = response.getBody().getStatus();
+        if("400".equals(status)){
+            throw new BadRequestException(ErrorCode.STT_ERROR);
+        }
+
+        String stt = (String) response.getBody().getData();
+//        log.info("stt : {}", stt);
+
+        return stt;
+
     }
 
 }

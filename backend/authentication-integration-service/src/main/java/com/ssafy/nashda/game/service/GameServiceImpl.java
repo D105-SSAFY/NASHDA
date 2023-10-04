@@ -8,17 +8,15 @@ import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
 import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.game.dto.request.*;
-import com.ssafy.nashda.game.dto.response.*;
+import com.ssafy.nashda.game.dto.response.BlankSetResponseDto;
+import com.ssafy.nashda.game.dto.response.GameSTTResDto;
+import com.ssafy.nashda.game.dto.response.ImgWordSetListResponseDto;
+import com.ssafy.nashda.game.dto.response.ImgWordSetResponseDto;
 import com.ssafy.nashda.member.entity.Member;
-
 import com.ssafy.nashda.member.service.MemberService;
-import com.ssafy.nashda.simulGPT.dto.request.ChatSttReqDto;
-import com.ssafy.nashda.simulGPT.dto.response.ChatSttResDto;
-import com.ssafy.nashda.simulGPT.service.ChatGptService;
+import com.ssafy.nashda.statistic.entity.GameStatistic;
 import com.ssafy.nashda.statistic.service.GameStatisticService;
 import com.ssafy.nashda.stt.service.STTService;
-import com.ssafy.nashda.statistic.entity.GameStatistic;
-import com.ssafy.nashda.statistic.repository.GameStatisticRepository;
 import com.ssafy.nashda.week.entity.Week;
 import com.ssafy.nashda.week.service.WeekService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +27,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -37,14 +34,12 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class GameServiceImpl implements GameService {
     private final ObjectMapper mapper;
-    private final ChatGptService chatGptService;
     private final MemberService memberService;
     private final WeekService weekService;
     private final STTService sttService;
@@ -182,8 +177,8 @@ public class GameServiceImpl implements GameService {
         // String stt = sttService.getPronunciation(request.getSound());  //사용자의 음성 파일을 STT
 //        String stt = sttService.getText(sound);
 
-        ChatSttResDto response = chatGptService.getStt(sound);
-        String stt = response.getText();
+
+        String stt = sttService.getText(sound);
 
         if (stt.equals(answer)) {
             gameSTTResDto = new GameSTTResDto(true, stt);
@@ -236,8 +231,8 @@ public class GameServiceImpl implements GameService {
         gameStatisticService.updateBlankTotal(member, week, request.getTotal());
 
         if (request.getLevel() > 1) {
-           memberService.plusProgress(member, request.getTotal());
-           return member.getProgress()+request.getTotal();
+            memberService.plusProgress(member, request.getTotal());
+            return member.getProgress() + request.getTotal();
         }
         return member.getProgress();
     }
@@ -277,7 +272,7 @@ public class GameServiceImpl implements GameService {
         ResponseEntity<InternalResponseDto> response = client.post()
                 .uri("/game/img-word/save")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(imgWordSaveReqDto),InternalImgWordSaveReqDto.class)
+                .body(Mono.just(imgWordSaveReqDto), InternalImgWordSaveReqDto.class)
                 .retrieve()
                 .onStatus(
                         HttpStatus.BAD_REQUEST::equals,
@@ -294,9 +289,9 @@ public class GameServiceImpl implements GameService {
                 .toEntity(InternalResponseDto.class)
                 .block();
 
-        log.info("response : {}, type : {}",response.getBody().getStatus(), response.getBody().getStatus().getClass().getName());
+        log.info("response : {}, type : {}", response.getBody().getStatus(), response.getBody().getStatus().getClass().getName());
         String status = response.getBody().getStatus();
-        if("400".equals(status)){
+        if ("400".equals(status)) {
             throw new BadRequestException(ErrorCode.STT_ERROR);
         }
 
@@ -308,7 +303,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public BlankSetResponseDto saveBlankSet( BlankSetSaveReqDto blankSetSaveReqDto) throws Exception {
+    public BlankSetResponseDto saveBlankSet(BlankSetSaveReqDto blankSetSaveReqDto) throws Exception {
 
 
         // 이미지 저장
@@ -366,7 +361,7 @@ public class GameServiceImpl implements GameService {
                 .block();
 
         String status = response.getBody().getStatus();
-        if("400".equals(status)){
+        if ("400".equals(status)) {
             throw new BadRequestException(ErrorCode.STT_ERROR);
         }
 
