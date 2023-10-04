@@ -27,14 +27,15 @@ public class PracticeStatisticController {
 
 
     @GetMapping("/word")
-    public ResponseEntity<? extends BaseResponseBody> getWordPractice(@RequestHeader("Authorization") String token) throws Exception{
+    public ResponseEntity<? extends BaseResponseBody> getWordPractice(@RequestHeader("Authorization") String token) throws Exception {
         Member member = memberController.findMemberByToken(token);
 
         List<PhonemeInterface> statisticIncorrectPhoneme = practiceStatisticService.getStatisticIncorrectPhoneme(member);
 
         return ResponseEntity.ok(new BaseResponseBody<>(200, "발음 통계 조회 성공",
                 statisticIncorrectPhoneme.stream()
-                .map(phonemeInterface -> new WordStatisticResDto(phonemeInterface))
-                .collect(Collectors.toList())));
+                        .filter(phonemeInterface -> phonemeInterface.getIncorrect() > 0)
+                        .map(phonemeInterface -> new WordStatisticResDto(phonemeInterface))
+                        .collect(Collectors.toList())));
     }
 }
