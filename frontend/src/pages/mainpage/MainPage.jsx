@@ -23,7 +23,7 @@ export default function MainPage() {
                 </s.SectionHeader>
                 <s.SectionList>
                     <li>
-                        <Link to="/">
+                        <Link to="/weeklytest">
                             <s.Article color="#B1B8E8">
                                 <CalendarTodayIcon />
                                 <s.ArticleHeader>
@@ -41,7 +41,7 @@ export default function MainPage() {
                 </s.SectionHeader>
                 <s.SectionList>
                     <li>
-                        <Link to="/">
+                        <Link to="/dramaplay">
                             <s.Article color="#FDE4AD">
                                 <ContactsIcon />
                                 <s.ArticleHeader>
@@ -52,7 +52,7 @@ export default function MainPage() {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/">
+                        <Link to="/speedquiz">
                             <s.Article color="#FF9DA5">
                                 <SpeedIcon />
                                 <s.ArticleHeader>
@@ -70,7 +70,7 @@ export default function MainPage() {
                 </s.SectionHeader>
                 <s.SectionList>
                     <li>
-                        <Link to="/">
+                        <Link to="/practice">
                             <s.Article color="#8CBCCF">
                                 <MicIcon />
                                 <s.ArticleHeader>
@@ -81,7 +81,7 @@ export default function MainPage() {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/">
+                        <Link to="/simulation">
                             <s.Article color="#BEE7E3">
                                 <ConnectWithoutContactIcon />
                                 <s.ArticleHeader>
@@ -92,7 +92,7 @@ export default function MainPage() {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/">
+                        <Link to="/1">
                             <s.Article color="#A38FA1">
                                 <TagFacesIcon />
                                 <s.ArticleHeader>

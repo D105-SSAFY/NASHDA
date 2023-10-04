@@ -114,16 +114,15 @@ export const sentenceResult = async ({ index, score, user }) => {
     }
 };
 
-export const weekList = async ({ email, user }) => {
+export const weekList = async ({ user }) => {
     try {
         const url = `${process.env.REACT_APP_API_URL}/test/week`;
         const options = {
-            method: "POST",
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ email }),
             credentials: "include"
         };
 
@@ -133,16 +132,15 @@ export const weekList = async ({ email, user }) => {
     }
 };
 
-export const weekSubmit = async ({ index, order, sound, user }) => {
+export const weekSubmit = async ({ formData, user }) => {
     try {
         const url = `${process.env.REACT_APP_API_URL}/test/week/user`;
         const options = {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ index, order, sound }),
+            body: formData,
             credentials: "include"
         };
 

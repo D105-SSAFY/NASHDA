@@ -15,7 +15,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import voice from "utils/VoiceFunc";
 import eetch from "apis/eetch";
 
-export default function VoiceSection({ props: { moveToEnd, updateConvs, id, background } }) {
+export default function VoiceSection({ props: { moveToEnd, updateConvs, id, background, setError } }) {
     const [onRecord, setOnRecord] = useState(false);
     const [onUpdate, setOnUpdate] = useState(false);
     const [next, setNext] = useState("");
@@ -78,7 +78,7 @@ export default function VoiceSection({ props: { moveToEnd, updateConvs, id, back
                 setNext(result.data.text);
             })
             .catch(() => {
-                navigate("/signin");
+                setError(true);
             });
     };
 
@@ -111,7 +111,7 @@ export default function VoiceSection({ props: { moveToEnd, updateConvs, id, back
                 setNext("");
             })
             .catch(() => {
-                navigate("/signin");
+                setError(true);
             });
     };
 

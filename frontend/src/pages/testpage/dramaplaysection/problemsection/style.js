@@ -45,14 +45,3 @@ export const Sentence = styled.p`
 
     color: rgb(120, 120, 120);
 `;
-
-export const Time = styled.p`
-    position: absolute;
-    top: 30px;
-    right: 35px;
-
-    font-size: 1.8rem;
-    font-weight: 500;
-
-    color: ${(props) => (props.alret ? "#ff4455" : "rgb(100, 100, 100)")};
-`;

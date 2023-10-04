@@ -32,12 +32,6 @@ export default function Topbar() {
         dispatch(clearUser()).then(() => navigate("/"));
     };
 
-    // !!!!
-    // 테스트용 로그인 토글 메소드 (추후 삭제)
-    const loginToggle = () => {
-        setIsLogin(!isLogin);
-    };
-
     return (
         <t.Header>
             <t.Wrapper>
@@ -45,7 +39,6 @@ export default function Topbar() {
                     <AirIcon />
                     <h1>내쉬다</h1>
                 </t.Title>
-                <button onClick={loginToggle}>로그인 토글 테스트</button>
                 <nav>
                     <t.NavList>
                         <li>

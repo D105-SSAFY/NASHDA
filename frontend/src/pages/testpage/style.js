@@ -23,6 +23,7 @@ export const Section = styled.section`
 
     display: flex;
     flex-direction: column;
+    align-items: center;
 `;
 
 export const Header = styled.header`
@@ -33,14 +34,14 @@ export const Header = styled.header`
     & > h2 {
         ${IROnly}
     }
+`;
 
-    & > p {
-        font-size: 3.2rem;
-        font-weight: 500;
-        color: rgb(100, 100, 100);
+export const Title = styled.p`
+    font-size: 3rem;
+    font-weight: 500;
+    color: rgb(100, 100, 100);
 
-        margin-bottom: 30px;
-    }
+    margin-bottom: 18px;
 `;
 
 export const Content = styled.p`
@@ -51,8 +52,16 @@ export const Content = styled.p`
     margin-bottom: 45px;
 `;
 
+export const Correct = styled.p`
+    font-size: 3rem;
+    font-weight: 500;
+    color: rgb(100, 100, 100);
+
+    margin-bottom: 32px;
+`;
+
 export const ButtonWrapper = styled.div`
-    margin-top: auto;
+    width: 400px;
 
     display: flex;
     gap: 10px;
