@@ -67,6 +67,12 @@ public class TestServiceImpl implements TestService {
     //단어 문제를 불러오고, mongo에 저장
     @Override
     public WordTestStartResDto wordTestStart(Member member) {
+        Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        int tryCount = wordTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
+
+        if(tryCount>=3){
+            throw new BadRequestException(ErrorCode.OVER_TEST_TEMP);
+        }
 
         WebClient client = WebClient.builder()
                 .baseUrl(URL)
@@ -97,8 +103,7 @@ public class TestServiceImpl implements TestService {
         List<String> convert = internalWordTestReqDto.getConvert();
 
 
-        Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
-        int tryCount = wordTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
+
 
 
         WordTestResult testResult = WordTestResult.builder()
@@ -133,6 +138,14 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public WordTestStartResDto sentenceTestStart(Member member) {
+        Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        int tryCount = sentenceTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
+
+        if(tryCount>=3){
+            throw new BadRequestException(ErrorCode.OVER_TEST_TEMP);
+        }
+
+
         WebClient client = WebClient.builder()
                 .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -162,9 +175,7 @@ public class TestServiceImpl implements TestService {
         List<String> convert = internalWordTestReqDto.getConvert();
 
 
-        Week week = weekService.getCurrentWeek().orElseThrow();
 //        int tryCount = sentenceTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
-        int tryCount = sentenceTestResultRepository.countByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx());
         SentenceTestResult testResult = SentenceTestResult.builder()
                 .memberNumber(member.getMemberNum())
                 .week(week.getWeekIdx())
@@ -236,6 +247,17 @@ public class TestServiceImpl implements TestService {
     @Override
     public MixTestStartResDto mixTestStart(Member member) {
 
+        Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        int tryCount = mixTestResultRepository.findByMemberNumberAndWeekOrderByTryCount(member.getMemberNum(), week.getWeekIdx()).size();
+
+        log.info("tryCount : {}", tryCount);
+
+        if(tryCount>=3){
+            log.info("tryCount : {}", tryCount);
+            throw new BadRequestException(ErrorCode.OVER_TEST_TEMP);
+        }
+
+
         WebClient client = WebClient.builder()
                 .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -296,8 +318,6 @@ public class TestServiceImpl implements TestService {
                 .block();
 
         List<SpeedTest2> speed2List = (List<SpeedTest2>) speed2.get("data");
-        Week week = weekService.getCurrentWeek().orElseThrow();
-        int tryCount = mixTestResultRepository.findByMemberNumberAndWeekOrderByTryCount(member.getMemberNum(), week.getWeekIdx()).size();
 
 
         MixTestResult mixTestResult = MixTestResult.builder()

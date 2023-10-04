@@ -53,7 +53,10 @@ public enum ErrorCode {
     NOT_PLAY_SIMUL_TYPE(HttpStatus.BAD_REQUEST, 400, "해당 유형의 시뮬레이션에서 조회할 오답 데이터가 존재하지 않습니다."),
 
     //member history
-    INTTERNAL_HISTORY_CREATE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "회원 히스토리 생성 실패");
+    INTTERNAL_HISTORY_CREATE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "회원 히스토리 생성 실패"),
+    
+    //test
+    OVER_TEST_TEMP(HttpStatus.INTERNAL_SERVER_ERROR,400,"시도 횟수 초과");
 
     private HttpStatus httpStatus;
     private int errorCode;
