@@ -8,7 +8,7 @@ export const StyledMainSection = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 910px;
+    max-width: 910px;
     /* border : black solid 1px; */
 `;
 export const StyledVid = styled.video`
@@ -39,6 +39,7 @@ export const StyledForm = styled.form`
     flex-direction: column;
     align-items: center;
     width: 35%;
+    min-width: 200px;
     margin-top: 20px;
 `;
 

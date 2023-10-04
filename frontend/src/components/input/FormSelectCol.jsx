@@ -50,6 +50,11 @@ export default function FormSelectCol({ data: { list, target, callback, Idx = 0 
                     e.stopPropagation();
                 }}
             >
+                <S.ListItem key="none">
+                    <S.ListButton onClick={(e) => onClickListButton(e, 0, "없음")}>
+                        <span>없음</span>
+                    </S.ListButton>
+                </S.ListItem>
                 {list &&
                     list.map((item) => {
                         const key = target === "취미" ? item.hobbyIdx : item.jobIdx;
