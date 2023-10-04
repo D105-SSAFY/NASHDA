@@ -12,6 +12,8 @@ import com.ssafy.nashda.game.dto.response.*;
 import com.ssafy.nashda.member.entity.Member;
 
 import com.ssafy.nashda.member.service.MemberService;
+import com.ssafy.nashda.simulGPT.dto.request.ChatSttReqDto;
+import com.ssafy.nashda.simulGPT.dto.response.ChatSttResDto;
 import com.ssafy.nashda.simulGPT.service.ChatGptService;
 import com.ssafy.nashda.statistic.service.GameStatisticService;
 import com.ssafy.nashda.stt.service.STTService;
@@ -42,7 +44,7 @@ import java.util.Optional;
 @Slf4j
 public class GameServiceImpl implements GameService {
     private final ObjectMapper mapper;
-    private final GameStatisticRepository gameStatisticRepository;
+    private final ChatGptService chatGptService;
     private final MemberService memberService;
     private final WeekService weekService;
     private final STTService sttService;
@@ -178,7 +180,11 @@ public class GameServiceImpl implements GameService {
         GameSTTResDto gameSTTResDto;
 
         // String stt = sttService.getPronunciation(request.getSound());  //사용자의 음성 파일을 STT
-        String stt = sttService.getText(sound);
+//        String stt = sttService.getText(sound);
+
+        ChatSttResDto response = chatGptService.getStt(sound);
+        String stt = response.getText();
+
         if (stt.equals(answer)) {
             gameSTTResDto = new GameSTTResDto(true, stt);
         } else {
