@@ -133,7 +133,7 @@ public class TestController {
 
     @PostMapping(value = "/week/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<? extends BaseResponseBody> weekTestUser(
-            @RequestPart(value = "sound") MultipartFile sound,
+            @RequestPart(value = "sound", required = false) MultipartFile sound,
             @ModelAttribute WeekTestReqDto reqDto) throws Exception {
 
         if (reqDto.getOrder() < 5) {
