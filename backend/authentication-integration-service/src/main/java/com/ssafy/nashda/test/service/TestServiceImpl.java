@@ -8,6 +8,8 @@ import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.member.entity.Member;
 
 import com.ssafy.nashda.member.service.MemberService;
+import com.ssafy.nashda.simulGPT.dto.response.ChatSttResDto;
+import com.ssafy.nashda.simulGPT.service.ChatGptService;
 import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
 import com.ssafy.nashda.stt.service.STTService;
 import com.ssafy.nashda.test.dto.request.*;
@@ -60,6 +62,7 @@ public class TestServiceImpl implements TestService {
     private final WeekTestStatisticService weekTestStatisticService;
     private final MemberService memberService;
     private final STTService sttService;
+    private final ChatGptService chatGptService;
 
     //단어 문제를 불러오고, mongo에 저장
     @Override
@@ -220,7 +223,6 @@ public class TestServiceImpl implements TestService {
         String url = s3Uploader.uploadFiles(sound, "sentence_test");
 
         String stt = sttService.getPronunciation(sound);
-
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
         Update update = new Update().set("user_pronunciation_url." + (reqDto.getOrder() - 1), url);
         mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
@@ -327,8 +329,8 @@ public class TestServiceImpl implements TestService {
         String url = s3Uploader.uploadFiles(sound, "week_test" + type);
 
         //받아온 soundfile을 stt로 변환
-//        String stt = sttService.getPronunciation(sound);
-        String stt = sttService.getText(sound); // 발음이 아닌 단어로 반환
+        ChatSttResDto response = chatGptService.getStt(sound);
+        String stt = response.getText();
 
         //url을 mongodb에 저장
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
