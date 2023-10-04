@@ -9,8 +9,7 @@ import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.common.text.service.TextProcessService;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.service.MemberService;
-import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
-import com.ssafy.nashda.practice.dto.PronResponseDto;
+import com.ssafy.nashda.practice.dto.*;
 import com.ssafy.nashda.statistic.service.AchievementService;
 import com.ssafy.nashda.statistic.service.PracticeStatisticService;
 import com.ssafy.nashda.stt.service.STTService;
@@ -21,9 +20,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -194,14 +197,14 @@ public class PracticePronServiceImpl implements PracticePronService {
     }*/
 
     @Override
-    public String getPracSTT(Member member, MultipartFile sound, PracticePronRequestDto practicePronRequestDto) throws Exception {
+    public PronSTTResponseDto getPracSTT(Member member, MultipartFile sound, PracticePronRequestDto practicePronRequestDto) throws Exception {
 
+        List<PronImgDto> pronImgDtoList = new ArrayList<>();
         // STT 부분
         // FAST API 와 소통하기
         log.info("name : {}", sound.getOriginalFilename());
         String sttResult = sttService.getPronunciation(sound); // 받아온 STT
-//        String sttResult =  "한 궈네 조은 채근 최고에 친구이다"; // 받아온 STT
-//        "강벼네서 자전거를 타고 읻씀니다."
+//        String sttResult =  "한 구네 조은 채근 최고에 친구이다"; // 받아온 STT
 
         // 통계 저장 부분
 
@@ -240,35 +243,6 @@ public class PracticePronServiceImpl implements PracticePronService {
         log.info("origin : {}", origin);
 
         // 일치하는 문자열 저장
-
-        // Longest Common SubString
-        // 0 : 공통 문자열 시작 인덱스, 1: 공통 문자열 끝 인덱스
-//        int[] incorrectStringIndex = textProcessService.findIncorrectString(convertOrigin, sttResult);
-//        log.info("start index : {} ,  end index : {}", incorrectStringIndex[0], incorrectStringIndex[1]);
-//        for (int i = 0; i < origin.length(); ++i) {
-////            log.info("origin.charAt() : {}", origin.charAt(i));
-//            String onset = textProcessService.getOnset(origin.charAt(i)); // 초성
-//            String nucleus = textProcessService.getNucleus(origin.charAt(i)); // 중성
-//            String coda = textProcessService.getCoda(origin.charAt(i)); // 종성
-//
-//            if (incorrectStringIndex[0] <= i && i <= incorrectStringIndex[1]) {
-////                log.info("맞는 발음 : {}", origin.charAt(i));
-//                // 맞는 발음인 경우
-//                practiceStatisticService.updateOnsetByMemberAndLetter(member, onset, true);
-//                practiceStatisticService.updateNucleusByMemberAndLetter(member, nucleus, true);
-//                practiceStatisticService.updateCodaByMemberAndLetter(member, coda, true);
-//
-//
-//            } else {
-////                log.info("틀린 발음 : {}", origin.charAt(i));
-//                // 틀린 발음의 경우
-//                practiceStatisticService.updateOnsetByMemberAndLetter(member, onset, false);
-//                practiceStatisticService.updateNucleusByMemberAndLetter(member, nucleus, false);
-//                practiceStatisticService.updateCodaByMemberAndLetter(member, coda, false);
-//            }
-//
-//        }
-
         // Longest Common Subsequence
         String correctSentence = textProcessService.findLCS(convertOriginTrim, sttTrim); // 발음과 원문과 매치되는 문자열
         int compIndex = 0;
@@ -290,14 +264,33 @@ public class PracticePronServiceImpl implements PracticePronService {
             } else {
                 // 발음이 틀린 경우 해당 문자를 오답으로 기록
                 log.info("틀린 발음 : {}", origin.charAt(i));
-                practiceStatisticService.updateOnsetByMemberAndLetter(member, onset, false);
-                practiceStatisticService.updateNucleusByMemberAndLetter(member, nucleus, false);
-                practiceStatisticService.updateCodaByMemberAndLetter(member, coda, false);
+                String convertOnset = textProcessService.getOnset(convertOriginTrim.charAt(i)); // 발음의 초성
+                int onsetIndex = textProcessService.getOnsetIndex(convertOriginTrim.charAt(i)); // 발음의 초성 인덱스
 
+                String consonantURL = TextProcessService.CONSONANT[onsetIndex];
+                pronImgDtoList.add(new PronImgDto(convertOnset, consonantURL));
+                practiceStatisticService.updateOnsetByMemberAndLetter(member, onset, false);
+
+                String convertNucleus = textProcessService.getNucleus(convertOriginTrim.charAt(i));
+                int nucleusIndex = textProcessService.getNucleusIndex(convertOriginTrim.charAt(i));
+
+                String vowelURL = TextProcessService.VOWEL[nucleusIndex];
+                pronImgDtoList.add(new PronImgDto(convertNucleus, vowelURL));
+                practiceStatisticService.updateNucleusByMemberAndLetter(member, nucleus, false);
+
+                String convertCoda = textProcessService.getCoda(convertOriginTrim.charAt(i));
+                if (!"".equals(convertCoda)) {
+                    int codaIndex = textProcessService.getCodaIndex(convertOriginTrim.charAt(i));
+
+                    String consonantCodaURL = TextProcessService.CONSONANT_CODA[codaIndex];
+                    pronImgDtoList.add(new PronImgDto(convertCoda, consonantCodaURL));
+                    practiceStatisticService.updateCodaByMemberAndLetter(member, coda, false);
+                }
             }
         }
 
-        return sttResult;
+
+        return new PronSTTResponseDto(sttResult, pronImgDtoList);
     }
 
 

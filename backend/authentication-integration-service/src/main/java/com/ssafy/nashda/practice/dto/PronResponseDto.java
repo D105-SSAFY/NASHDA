@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -13,6 +15,6 @@ public class PronResponseDto {
     private String index;
     private String origin;
     private String convert;
-
+    private List<String> imgList;
 
 }

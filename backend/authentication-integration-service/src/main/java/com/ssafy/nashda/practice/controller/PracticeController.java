@@ -143,13 +143,12 @@ public class PracticeController {
                                                                        @RequestHeader("Authorization") String token) throws Exception {
 
         Member member = memberController.findMemberByToken(token);
-        String stt = practicePronService.getPracSTT(member, sound, practicePronRequestDto);
-
+        PronSTTResponseDto pronSTTResponseDto = practicePronService.getPracSTT(member, sound, practicePronRequestDto);
 
         //memberhistory에서 practice count 증가
         memberHistoryService.increasePracticeCount(member);
         return new ResponseEntity<>(new BaseResponseBody(200, "발음 연습 결과 전송 완료",
-                new PronSTTResponseDto(stt)),
+                pronSTTResponseDto),
                 HttpStatus.OK);
     }
 
