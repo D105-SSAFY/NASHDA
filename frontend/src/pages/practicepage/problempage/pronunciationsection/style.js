@@ -51,6 +51,22 @@ export const SpeakButton = styled.button`
     }
 `;
 
+export const FeedbackButton = styled.button`
+    height: 20px;
+
+    margin: auto 0 1px auto;
+
+    text-align: right;
+    color: #ff4455;
+
+    display: ${(props) => (props.visible ? "block" : "none")};
+
+    & > svg {
+        width: 20px;
+        height: 20px;
+    }
+`;
+
 export const Match = styled.span`
     color: #57ea74;
 `;
