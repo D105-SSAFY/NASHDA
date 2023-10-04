@@ -250,13 +250,10 @@ public class TestServiceImpl implements TestService {
         Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         int tryCount = mixTestResultRepository.findByMemberNumberAndWeekOrderByTryCount(member.getMemberNum(), week.getWeekIdx()).size();
 
-        log.info("tryCount : {}", tryCount);
-
-        if(tryCount>=3){
+/*        if(tryCount>=3){
             log.info("tryCount : {}", tryCount);
             throw new BadRequestException(ErrorCode.OVER_TEST_TEMP);
-        }
-
+        }*/
 
         WebClient client = WebClient.builder()
                 .baseUrl(URL)
