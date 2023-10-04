@@ -13,6 +13,7 @@ export const StatDetailWrapper = styled.div`
 
     & > :nth-child(3) {
         height: ${(props) => (props.isWeek ? "260px" : "auto")};
+        transition: all ease 1.2s;
     }
 
     & > :nth-child(4) {
