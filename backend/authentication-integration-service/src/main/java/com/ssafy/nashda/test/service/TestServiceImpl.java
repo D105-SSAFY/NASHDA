@@ -342,8 +342,7 @@ public class TestServiceImpl implements TestService {
         String url = s3Uploader.uploadFiles(sound, "week_test" + type);
 
         //받아온 soundfile을 stt로 변환
-        ChatSttResDto response = chatGptService.getStt(sound);
-        String stt = response.getText();
+        String stt = sttService.getText(sound);
 
         //url을 mongodb에 저장
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
