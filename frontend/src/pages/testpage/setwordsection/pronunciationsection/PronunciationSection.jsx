@@ -91,6 +91,7 @@ export default function PronunciationSection({ props: { problem, getNextProblem,
 
         setOnUpdate(false);
     }, [onUpdate]);
+
     return (
         <>
             <s.Section>

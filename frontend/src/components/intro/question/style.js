@@ -45,8 +45,8 @@ export const Question = styled.article`
     align-items: center;
     justify-content: center;
 
-    border-left: 8px solid #d9d9d9;
-    border-right: 8px solid #d9d9d9;
+    border-left: 8px solid ${(props) => (props.micOn ? "#8f47f580" : "#d9d9d9")};
+    border-right: 8px solid ${(props) => (props.micOn ? "#8f47f580" : "#d9d9d9")};
 
     & > svg {
         position: absolute;
@@ -57,6 +57,13 @@ export const Question = styled.article`
         height: 2.4rem;
 
         opacity: 0.5;
+
+        color: ${(props) => (props.micOn ? "#8F47F5" : "rgb(120, 120, 120)")};
+    }
+
+    & > button,
+    & > p {
+        color: ${(props) => (props.micOn ? "#8F47F5" : "rgb(120, 120, 120)")};
     }
 `;
 
@@ -64,6 +71,8 @@ export const QuestionText = styled.h1`
     text-align: center;
     font-size: 3.6rem;
     font-weight: 800;
+
+    margin-bottom: 30px;
 
     color: #8f47f580;
 `;
@@ -75,7 +84,7 @@ export const Greet = styled.img`
     width: 600px;
 `;
 
-export const MicText = styled.p`
+export const MicButton = styled.button`
     position: absolute;
     bottom: 1rem;
     left: 2.9rem;
@@ -90,7 +99,7 @@ export const MicText = styled.p`
 
 export const StepText = styled.p`
     position: absolute;
-    right: 0.5rem;
+    right: 1rem;
     bottom: 1rem;
 
     font-size: 1.4rem;

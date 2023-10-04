@@ -78,6 +78,9 @@ export default function App() {
                                 <Route path="/weeklytest" element={<PrivateRoute />}>
                                     <Route index element={<TestPage />} />
                                 </Route>
+                                <Route path="/greeting" element={<PrivateRoute />}>
+                                    <Route index element={<Intro />} />
+                                </Route>
 
                                 <Route path="/1" element={<StretchingPage />} />
                             </Route>
