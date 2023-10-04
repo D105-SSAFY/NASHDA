@@ -28,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -39,10 +40,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -70,7 +69,7 @@ public class TestServiceImpl implements TestService {
         Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         int tryCount = wordTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
 
-        if(tryCount>=3){
+        if (tryCount >= 3) {
             throw new BadRequestException(ErrorCode.OVER_TEST_TEMP);
         }
 
@@ -101,9 +100,6 @@ public class TestServiceImpl implements TestService {
 
         List<String> problem = internalWordTestReqDto.getProblem();
         List<String> convert = internalWordTestReqDto.getConvert();
-
-
-
 
 
         WordTestResult testResult = WordTestResult.builder()
@@ -141,7 +137,7 @@ public class TestServiceImpl implements TestService {
         Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         int tryCount = sentenceTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
 
-        if(tryCount>=3){
+        if (tryCount >= 3) {
             throw new BadRequestException(ErrorCode.OVER_TEST_TEMP);
         }
 
@@ -185,7 +181,7 @@ public class TestServiceImpl implements TestService {
         String index = sentenceTestResultRepository.save(testResult).getId();
 
         WordTestStartResDto resDto = WordTestStartResDto.builder()
-                .try_count(tryCount+1)
+                .try_count(tryCount + 1)
                 .index(index)
                 .problem(problem)
                 .convert(convert)
@@ -320,7 +316,7 @@ public class TestServiceImpl implements TestService {
         MixTestResult mixTestResult = MixTestResult.builder()
                 .memberNumber(member.getMemberNum())
                 .week(week.getWeekIdx())
-                .tryCount(tryCount+1)
+                .tryCount(tryCount + 1)
                 .blankTest(blankList)
                 .speedTest1(speed1List)
                 .speedTest2(speed2List)
@@ -330,7 +326,7 @@ public class TestServiceImpl implements TestService {
 
         MixTestStartResDto mixTestStartResDto = MixTestStartResDto.builder()
                 .index(index)
-                .try_count(tryCount+1)
+                .try_count(tryCount + 1)
                 .blank(blankList)
                 .speed1(speed1List)
                 .speed2(speed2List)
@@ -404,13 +400,29 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public List<WeekTestResultDetailResDto> getWeekTestResultDetail(Member member, long week) {
+    public List<WeekTestResultDetailResDto> getWeekTestResultDetail(Member member/*, long week*/) {
 
-        List<MixTestResult> mixTestResult = mixTestResultRepository.findByMemberNumberAndWeekOrderByTryCount(member.getMemberNum(), week);
+        List<MixTestResult> weeks = mixTestResultRepository.findDistinctWeeksByMemberNumber(member.getMemberNum(), Sort.by(Sort.Order.desc("week")));
+
+        // 중복을 제거하기 위한 Set
+        Set<Long> distinctWeeks = new LinkedHashSet<>();
+
+        for (MixTestResult result : weeks) {
+            distinctWeeks.add(result.getWeek());
+            if (distinctWeeks.size() == 3) {
+                break;
+            }
+        }
+
+        List<MixTestResult> mixTestResult = mixTestResultRepository.findByMemberNumberAndWeekIn((Long) member.getMemberNum(), distinctWeeks);
+
+        //mixtestresult 를 week의 내림차순으로 정렬
+        mixTestResult.sort(Comparator.comparing(MixTestResult::getWeek).reversed());
 
         List<WeekTestResultDetailResDto> resDtos = new ArrayList<>();
         for (MixTestResult result : mixTestResult) {
             resDtos.add(WeekTestResultDetailResDto.builder()
+                    .week(result.getWeek())
                     .try_count(result.getTryCount())
                     .score(result.getScore())
                     .blankTest(result.getBlankTest())
@@ -418,6 +430,8 @@ public class TestServiceImpl implements TestService {
                     .speedTest2(result.getSpeedTest2())
                     .build());
         }
+
+        log.info("resDtosCount : {}", resDtos.size());
 
         return resDtos;
     }

@@ -18,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class WeekTestResultDetailResDto {
+    private long week;
     private int try_count;
     private int score;
     private List<BlankTest> blankTest;
@@ -26,6 +27,7 @@ public class WeekTestResultDetailResDto {
 
     @Builder
     public WeekTestResultDetailResDto(MixTestResult mixTestResult){
+        this.week = mixTestResult.getWeek();
         this.try_count = mixTestResult.getTryCount();
         this.score = mixTestResult.getScore();
         this.blankTest = mixTestResult.getBlankTest();
