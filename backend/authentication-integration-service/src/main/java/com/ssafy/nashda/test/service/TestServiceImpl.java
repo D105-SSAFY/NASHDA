@@ -330,7 +330,7 @@ public class TestServiceImpl implements TestService {
 
         MixTestStartResDto mixTestStartResDto = MixTestStartResDto.builder()
                 .index(index)
-                .try_count(tryCount)
+                .try_count(tryCount+1)
                 .blank(blankList)
                 .speed1(speed1List)
                 .speed2(speed2List)
