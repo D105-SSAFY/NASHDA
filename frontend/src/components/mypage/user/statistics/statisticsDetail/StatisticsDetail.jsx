@@ -49,7 +49,7 @@ export default function StatisticsDetail({ setMore, isToggle, setIsToggle }) {
     const weekToggle = () => {
         setToggles(2, !isToggle[2]);
         if (weekRef.current.clientHeight === 260) {
-            weekRef.current.style.height = weekSizeRef.current.clientHeight + 800 + "px";
+            weekRef.current.style.height = weekSizeRef.current.clientHeight + "px";
         } else weekRef.current.style.height = 260 + "px";
     };
 
