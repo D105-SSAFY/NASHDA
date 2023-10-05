@@ -23,5 +23,5 @@ public interface TestService {
     void saveWeekTestScore(WeekTestResultReqDto reqDto, Member member);
     WeekTestResultAllResDto getAllWordTestResult(Member member);
     List<WeekTestResultDetailResDto> getWeekTestResultDetail(Member member/*, long week*/);
-    boolean isTestInWeek(Member member);
+    int countTestInWeek(Member member);
 }

@@ -179,7 +179,7 @@ public class PracticePronServiceImpl implements PracticePronService {
         // FAST API 와 소통하기
         log.info("name : {}", sound.getOriginalFilename());
         String sttResult = sttService.getPronunciation(sound); // 받아온 STT
-
+        log.info("STT : {}", sttResult);
         // 1. 해당 문제를 받아온다.
         WebClient client = WebClient.builder()
                 .baseUrl(URL)
@@ -216,9 +216,11 @@ public class PracticePronServiceImpl implements PracticePronService {
 
         // 일치하는 문자열 저장
         String correctSentence = textProcessService.findLCS(convertOriginTrim, sttTrim); // 발음과 원문과 매치되는 문자열
+        log.info("correctSentence : {}", correctSentence);
         int compIndex = 0;
 
         for (int i = 0; i < origin.length(); ++i) {
+            log.info("cur Char : {}", correctSentence.charAt(i));
             String onset = textProcessService.getOnset(origin.charAt(i)); // 초성
             String nucleus = textProcessService.getNucleus(origin.charAt(i)); // 중성
             String coda = textProcessService.getCoda(origin.charAt(i)); // 종성

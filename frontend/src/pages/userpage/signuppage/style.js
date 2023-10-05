@@ -43,7 +43,7 @@ export const StyledForm = styled.form`
     flex-direction: column;
     align-items: center;
     width: 35%;
-    min-width: 200px;
+    min-width: 250px;
     margin-top: 20px;
 `;
 
@@ -51,8 +51,8 @@ export const StyledText = styled.p`
     width: 100%;
     height: 16px;
     text-align: left;
-    margin: 0 0 1px 32px;
-    font-size: 14px;
+    margin: 5px 32px 1px;
+    font-size: 13px;
     color: ${(props) =>
         props.colorEmail === 2 || props.colorEmail === 5 || props.colorPassword === 1 || props.colorPassword === 3 || props.colorNickname === 2
             ? "#6366f8"
@@ -76,5 +76,5 @@ export const StyledFooter = styled.footer`
 export const StyledLine = styled.hr`
     color: lightgray;
     width: 90%;
-    margin: 14px 0 30px 0;
+    margin: 14px 0 36px 0;
 `;

@@ -234,7 +234,7 @@ public class TestServiceImpl implements TestService {
         int tryCount = mixTestResultRepository.findByMemberNumberAndWeekOrderByTryCount(member.getMemberNum(), week.getWeekIdx()).size();
 
         //주간 테스트 3회 이상 시도시 예외처리
-        if(tryCount>= 3 && member.getMemberNum()!=60){
+        if (tryCount >= 3 && member.getMemberNum() != 60) {
             throw new BadRequestException(ErrorCode.OVER_TEST_TEMP);
         }
 
@@ -417,12 +417,10 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public boolean isTestInWeek(Member member) {
+    public int countTestInWeek(Member member) {
         Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         List<MixTestResult> list = mixTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx());
-
-        if(list==null||list.isEmpty()) return false;
-        return true;
+        return list.size();
     }
 
 }

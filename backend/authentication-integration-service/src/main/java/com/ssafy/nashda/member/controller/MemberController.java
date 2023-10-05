@@ -61,9 +61,9 @@ public class MemberController {
         if (member.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new BaseResponseBody<>(404, "회원 정보가 없습니다."));
         } else {
-            boolean isTest = testService.isTestInWeek(member.get());
+            int remaining = testService.countTestInWeek(member.get());
             MemberInfoResDto resDto = new MemberInfoResDto(member.get());
-            resDto.setTest(isTest);
+            resDto.setRemain_count(3-remaining);
             resDto.setCurrent_week(week.getWeekIdx());
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "회원 정보 조회 성공", resDto));
         }
