@@ -86,7 +86,15 @@ export default function Intro() {
                 </q.Question>
                 <q.Greet src={greet}></q.Greet>
             </q.Box>
-            {step === 3 ? <Result props={{ origin: questionTexts, result }} /> : <></>}
+            {step === 3 ? (
+                () => {
+                    SpeechRecognition.stopListening();
+
+                    return <Result props={{ origin: questionTexts, result }} />;
+                }
+            ) : (
+                <></>
+            )}
         </>
     );
 }

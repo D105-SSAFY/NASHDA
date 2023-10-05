@@ -8,6 +8,7 @@ import VoiceModal from "components/modals/voicemodal/VoiceModal";
 import FilledButton from "components/buttons/filledbutton/FilledButton";
 import BorderButton from "components/buttons/borderbutton/BorderButton";
 import FeedbackModal from "components/modals/feedbackmodal/FeedbackModal";
+import LoadingModal from "components/modals/loadingmodal/LoadingModal";
 
 import MicIcon from "@mui/icons-material/Mic";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
@@ -31,6 +32,7 @@ export default function PronunciationSection({ props: { problem, diff, setUpdate
     const [onUpdate, setOnUpdate] = useState(false);
     const [feedbackList, setFeedbackList] = useState([]);
     const [onFeedback, setOnFeedback] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
@@ -134,6 +136,8 @@ export default function PronunciationSection({ props: { problem, diff, setUpdate
             return false;
         }
 
+        setLoading(true);
+
         const formData = new FormData();
 
         formData.append("sound", file);
@@ -150,6 +154,7 @@ export default function PronunciationSection({ props: { problem, diff, setUpdate
             .then((result) => {
                 setAudioText(result.data.stt);
                 setFeedbackList(result.data.pronImgDtoList);
+                setLoading(false);
             })
             .catch(() => {
                 setError(true);
@@ -163,6 +168,8 @@ export default function PronunciationSection({ props: { problem, diff, setUpdate
 
         setOnUpdate(true);
     }, [onModal]);
+
+    console.log(loading);
 
     useEffect(() => {
         if (!onUpdate) {
@@ -227,6 +234,7 @@ export default function PronunciationSection({ props: { problem, diff, setUpdate
                 </s.ButtonWrapper>
                 <VoiceModal props={{ title: "따라 읽어보세요.", content: problem.convert, visible: onModal, callback: onClickRecordOff }} />
                 <FeedbackModal props={{ onFeedback, setOnFeedback, feedbackList }} />
+                {loading ? <LoadingModal /> : <></>}
             </s.Section>
         </>
     );

@@ -32,6 +32,7 @@ export default function ConversationSection({ props: { setError } }) {
     const [background, setBackground] = useState({});
     const [id, setId] = useState("");
     const [convs, setConvs] = useState([]);
+    const [end, setEnd] = useState(false);
     const messageEndRef = useRef(null);
 
     const user = useSelector((state) => state.user);
@@ -87,7 +88,13 @@ export default function ConversationSection({ props: { setError } }) {
             </s.Header>
             {background.kr ? (
                 <s.Explain>
-                    저희는 지금, <span>&quot;{background.kr}&quot;</span>에 있습니다.
+                    {end ? (
+                        <span>시뮬레이션 완료! 훌륭해요!</span>
+                    ) : (
+                        <span>
+                            저희는 지금, <span>&quot;{background.kr}&quot;</span>에 있습니다.
+                        </span>
+                    )}
                 </s.Explain>
             ) : (
                 <></>
@@ -118,11 +125,26 @@ export default function ConversationSection({ props: { setError } }) {
                         </li>
                     );
                 })}
+                {convs.length === 0 || (convs[convs.length - 1].type !== "chatbot" && convs[convs.length - 1].correct && !end) ? (
+                    <li>
+                        <s.BotTalker>
+                            <SmartToyIcon />
+                            <span>챗봇</span>
+                        </s.BotTalker>
+                        <s.BotChatAnimation>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </s.BotChatAnimation>
+                    </li>
+                ) : (
+                    <></>
+                )}
                 <li>
                     <div ref={messageEndRef}></div>
                 </li>
             </s.ConversationList>
-            <VoiceSection props={{ moveToEnd, updateConvs: setConvs, id, background, setError }} />
+            <VoiceSection props={{ moveToEnd, updateConvs: setConvs, id, background, setError, end, setEnd }} />
         </s.Section>
     );
 }

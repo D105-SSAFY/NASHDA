@@ -6,6 +6,7 @@ import * as s from "./style";
 import FilledButton from "components/buttons/filledbutton/FilledButton";
 import BorderButton from "components/buttons/borderbutton/BorderButton";
 import VoiceModal from "components/modals/voicemodal/VoiceModal";
+import LoadingModal from "components/modals/loadingmodal/LoadingModal";
 
 import MicIcon from "@mui/icons-material/Mic";
 import RedoIcon from "@mui/icons-material/Redo";
@@ -17,6 +18,7 @@ export default function PronunciationSection({ props: { problem, getNextProblem,
     const [audioText, setAudioText] = useState("");
     const [onModal, setOnModal] = useState(false);
     const [onUpdate, setOnUpdate] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
@@ -52,6 +54,8 @@ export default function PronunciationSection({ props: { problem, getNextProblem,
             return false;
         }
 
+        setLoading(true);
+
         const formData = new FormData();
 
         formData.append("sound", file);
@@ -68,6 +72,7 @@ export default function PronunciationSection({ props: { problem, getNextProblem,
             .tokenValidation(eetch.weekSubmit, values, dispatch)
             .then((result) => {
                 setAudioText(result.data);
+                setLoading(false);
             })
             .catch(() => {
                 setError(true);
@@ -133,6 +138,7 @@ export default function PronunciationSection({ props: { problem, getNextProblem,
                     </BorderButton>
                 </s.ButtonWrapper>
                 <VoiceModal props={{ title: "정답을 말해보세요.", content: getSentence(), visible: onModal, callback: onClickRecordOff }} />
+                {loading ? <LoadingModal /> : <></>}
             </s.Section>
         </>
     );
