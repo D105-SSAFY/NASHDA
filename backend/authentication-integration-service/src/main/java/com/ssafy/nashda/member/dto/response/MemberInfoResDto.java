@@ -1,12 +1,15 @@
 package com.ssafy.nashda.member.dto.response;
 
 import com.ssafy.nashda.member.entity.Member;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
+@Builder
 @Getter
+@Setter
+@AllArgsConstructor
 public class MemberInfoResDto {
     private String nickname;
     private String name;
@@ -16,6 +19,8 @@ public class MemberInfoResDto {
     private int hobby;
     private int progress;
     private LocalDateTime createOn;
+    private boolean isTest;
+    private long current_week;
 
     public MemberInfoResDto(Member member) {
         this.nickname = member.getNickname();

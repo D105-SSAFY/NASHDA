@@ -57,7 +57,6 @@ public class TestServiceImpl implements TestService {
     private final WeekTestStatisticService weekTestStatisticService;
     private final MemberService memberService;
     private final STTService sttService;
-    private final ChatGptService chatGptService;
 
     @Override
     public WordTestStartResDto wordTestStart(Member member) {
@@ -116,13 +115,10 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public void saveWordTestScore(WordTestResultReqDto reqDto, Member member) {
-
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
-
         Update update = new Update();
         update.set("score", reqDto.getScore());
         update.set("userPron", reqDto.getPron());
-
         mongoTemplate.updateFirst(query, update, WordTestResult.class);
     }
 
@@ -418,6 +414,15 @@ public class TestServiceImpl implements TestService {
         }
 
         return resDtos;
+    }
+
+    @Override
+    public boolean isTestInWeek(Member member) {
+        Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        List<MixTestResult> list = mixTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx());
+
+        if(list==null||list.isEmpty()) return false;
+        return true;
     }
 
 }

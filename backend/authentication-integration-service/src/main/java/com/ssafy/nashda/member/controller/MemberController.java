@@ -8,6 +8,7 @@ import com.ssafy.nashda.member.dto.request.MemberSignUpReqDto;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.mail.service.MailSenderService;
 import com.ssafy.nashda.member.service.MemberService;
+import com.ssafy.nashda.test.service.TestService;
 import com.ssafy.nashda.token.config.TokenProvider;
 import com.ssafy.nashda.token.dto.resonse.TokenResDto;
 import com.ssafy.nashda.token.service.TokenService;
@@ -35,6 +36,7 @@ public class MemberController {
     private final TokenService tokenService;
     private final MailSenderService mailSenderService;
     private final WeekService weekService;
+    private final TestService testService;
 
     @GetMapping("/current")
     public ResponseEntity<? extends BaseResponseBody> curWeek(){
@@ -53,12 +55,17 @@ public class MemberController {
     @GetMapping("/mypage")
     public ResponseEntity<? extends BaseResponseBody> memberInfo(
             @RequestHeader("Authorization") String token) throws IOException {
+        Week week = weekService.getCurrentWeek().orElseThrow(() -> new IllegalArgumentException("내부 에러"));
         String nickname = findMemberByToken(token).getNickname();
         Optional<Member> member = memberService.findByNickname(nickname);
         if (member.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new BaseResponseBody<>(404, "회원 정보가 없습니다."));
         } else {
-            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "회원 정보 조회 성공", new MemberInfoResDto(member.get())));
+            boolean isTest = testService.isTestInWeek(member.get());
+            MemberInfoResDto resDto = new MemberInfoResDto(member.get());
+            resDto.setTest(isTest);
+            resDto.setCurrent_week(week.getWeekIdx());
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "회원 정보 조회 성공", resDto));
         }
     }
 
