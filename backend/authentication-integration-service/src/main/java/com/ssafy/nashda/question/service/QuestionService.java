@@ -2,9 +2,7 @@ package com.ssafy.nashda.question.service;
 
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.question.dto.request.QuestionReqDto;
-import com.ssafy.nashda.question.dto.response.QuestionFileResDto;
 import com.ssafy.nashda.question.dto.response.QuestionResDto;
-import com.ssafy.nashda.question.entity.Question;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

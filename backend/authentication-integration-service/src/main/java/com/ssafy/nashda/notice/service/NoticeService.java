@@ -10,18 +10,13 @@ import java.util.List;
 
 public interface NoticeService {
 
-    // 게시글 생성
     void createNotice (Member member, NoticeReqDto noticeReqDto, List<MultipartFile> files);
-    // 게시글 수정
     void updateNotice (Member member, Long index, NoticeReqDto noticeReqDto, List<MultipartFile> files);
 
-    // 게시글 삭제
     void deleteNotice(Member member, Long noticeIndex);
 
-    // 게시글 전체 조회
     List<Notice> getNotices();
 
-    // 게시글 상세 조회 및 조회수 업데이트
     NoticeDetailResDto getNotice(Long noticeIndex);
 
 }
