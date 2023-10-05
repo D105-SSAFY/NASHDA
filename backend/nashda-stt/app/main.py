@@ -20,7 +20,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-model_01 = "openai/whisper-base"
+model_01 = "base"
 
 transcribe_01 = pipeline(
     task="automatic-speech-recognition",
