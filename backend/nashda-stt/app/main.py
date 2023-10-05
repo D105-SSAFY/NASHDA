@@ -20,7 +20,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-model_01 = "/var/lib/jenkins/workspace/nashda/backend/nashda-stt/app/base"
+model_01 = "/code/app/base"
 
 transcribe_01 = pipeline(
     task="automatic-speech-recognition",
