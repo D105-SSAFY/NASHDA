@@ -41,7 +41,7 @@ export const StyledForm = styled.form`
     flex-direction: column;
     align-items: center;
     width: 35%;
-    min-width: 200px;
+    min-width: 250px;
     margin-top: 20px;
 `;
 export const StyledLinkSection = styled.section`
