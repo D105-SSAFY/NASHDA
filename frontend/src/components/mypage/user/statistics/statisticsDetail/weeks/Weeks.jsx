@@ -231,7 +231,7 @@ export default function Weeks({ isWeek, setIsWeek }) {
 
     const weekDetailsContent = () => {
         const content = [];
-        if (weekDetails.length !== 0) {
+        if (weekDetails.length !== 0 && weekDetails[weekSelected - 1]) {
             const blank = weekDetails[weekSelected - 1].blankTest;
             const speed1 = weekDetails[weekSelected - 1].speedTest1;
             const speed2 = weekDetails[weekSelected - 1].speedTest2;

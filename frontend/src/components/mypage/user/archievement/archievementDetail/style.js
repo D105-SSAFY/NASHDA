@@ -77,3 +77,10 @@ export const ArchieveVertDivLine = styled.div`
     background-color: #000000;
     opacity: 0.15;
 `;
+
+export const NoDataSign = styled.h2`
+    text-align: center;
+
+    opacity: 0.5;
+    font-weight: 400;
+`;

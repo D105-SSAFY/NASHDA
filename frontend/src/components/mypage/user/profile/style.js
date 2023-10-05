@@ -1,12 +1,11 @@
 import styled from "styled-components";
 
 export const DetailTypeBox = styled.div`
+    top: 20px;
     position: absolute;
 
     // 세로 수직 중앙 정렬
-    top: 50%;
-    left: 30px;
-    transform: translateY(-50%);
+    left: 20px;
 `;
 
 export const DetailTypeText = styled.p`
@@ -21,11 +20,10 @@ export const DetailTypeText = styled.p`
 `;
 
 export const DetailContentBox = styled.div`
+    top: 20px;
     position: absolute;
 
-    top: 50%;
-    left: 120px;
-    transform: translateY(-50%);
+    left: 100px;
 `;
 
 export const DetailContentText = styled.p`
@@ -37,10 +35,9 @@ export const DetailContentText = styled.p`
 `;
 
 export const DivideLine = styled.div`
+    top: 20px;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 105px;
+    left: 90px;
     margin: auto 0;
 
     height: 154px;
@@ -64,7 +61,7 @@ export const InputWrapper = styled.div`
 export const InputBox = styled.div`
     position: absolute;
 
-    left: 280px;
+    left: 355px;
     margin: auto 0;
 
     & > div {
@@ -111,4 +108,13 @@ export const InputBox = styled.div`
         font-weight: 400;
         font-size: 1.6rem;
     }
+`;
+
+export const GradBox = styled.div`
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 200px;
+    background: linear-gradient(90deg, rgba(250, 248, 242, 0) 0%, rgba(250, 248, 242, 1) 65%, rgba(250, 248, 242, 1) 100%);
 `;

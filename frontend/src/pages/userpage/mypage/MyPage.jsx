@@ -33,16 +33,6 @@ export default function MyPage() {
                                 질문 현황
                             </m.NavLink>
                         </li>
-                        <li>
-                            <m.NavLink
-                                onClick={() => {
-                                    setTab("설정");
-                                }}
-                                $highlight={tab === "설정"}
-                            >
-                                설정
-                            </m.NavLink>
-                        </li>
                     </m.NavList>
                 </m.Wrapper>
             </m.MyPageNav>

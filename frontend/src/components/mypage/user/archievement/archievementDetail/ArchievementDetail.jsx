@@ -5,7 +5,7 @@ import { CloseButton } from "components/mypage/user/style";
 
 export default function ArchievementDetail({ setMore, achieved }) {
     const archieveList = (achieved) => {
-        if (achieved.length === 0) return <a.ArchieveItem>없음</a.ArchieveItem>;
+        if (achieved.length === 0) return null;
         const result = [];
         for (let i = 0; i < achieved.length; i++) {
             result.push(
@@ -24,6 +24,8 @@ export default function ArchievementDetail({ setMore, achieved }) {
 
     return (
         <>
+            {achieved.length === 0 ? <a.NoDataSign>아직 달성한 도전과제가 없어요.</a.NoDataSign> : null}
+            <a.NoDataSign></a.NoDataSign>
             <a.ArchievesBox>{archieveList(achieved)}</a.ArchievesBox>
             <CloseButton onClick={() => setMore(0)} />
         </>

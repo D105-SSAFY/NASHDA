@@ -85,25 +85,25 @@ export default function Profile({ userInfo, setUserInfo, more, setMore }) {
 
     return (
         <>
-            <p.DetailTypeBox>
-                <p.DetailTypeText>{detailText("이메일")}</p.DetailTypeText>
-                <p.DetailTypeText>{detailText("본명")}</p.DetailTypeText>
-                <br />
-                <p.DetailTypeText>{detailText(`나이`)}</p.DetailTypeText>
-                <p.DetailTypeText>{detailText("직업")}</p.DetailTypeText>
-                <p.DetailTypeText>{detailText("취미")}</p.DetailTypeText>
-            </p.DetailTypeBox>
-            <p.DivideLine />
-            <p.DetailContentBox>
-                <p.DetailContentText>{userInfo.email}</p.DetailContentText>
-                <p.DetailContentText>{userInfo.name}</p.DetailContentText>
-                <br />
-                <p.DetailContentText>{userInfo.age}</p.DetailContentText>
-                <p.DetailContentText>{getJob(userInfo.job)}</p.DetailContentText>
-                <p.DetailContentText>{getHobby(userInfo.hobby)}</p.DetailContentText>
-            </p.DetailContentBox>
-
             <p.InputWrapper>
+                <p.DetailTypeBox>
+                    <p.DetailTypeText>{detailText("이메일")}</p.DetailTypeText>
+                    <p.DetailTypeText>{detailText("본명")}</p.DetailTypeText>
+                    <br />
+                    <p.DetailTypeText>{detailText(`나이`)}</p.DetailTypeText>
+                    <p.DetailTypeText>{detailText("직업")}</p.DetailTypeText>
+                    <p.DetailTypeText>{detailText("취미")}</p.DetailTypeText>
+                </p.DetailTypeBox>
+                <p.DivideLine />
+                <p.DetailContentBox>
+                    <p.DetailContentText>{userInfo.email}</p.DetailContentText>
+                    <p.DetailContentText>{userInfo.name}</p.DetailContentText>
+                    <br />
+                    <p.DetailContentText>{userInfo.age}</p.DetailContentText>
+                    <p.DetailContentText>{getJob(userInfo.job)}</p.DetailContentText>
+                    <p.DetailContentText>{getHobby(userInfo.hobby)}</p.DetailContentText>
+                </p.DetailContentBox>
+                <p.GradBox />
                 <p.InputBox>
                     <SigninInput
                         data={{
@@ -133,7 +133,6 @@ export default function Profile({ userInfo, setUserInfo, more, setMore }) {
                     />
                 </p.InputBox>
             </p.InputWrapper>
-
             <MoreButton onClick={() => handleSubmit()}>
                 {more === 4 ? "수정 완료" : "상세 수정"}
                 <ArrowCircleRightOutlinedIcon />
