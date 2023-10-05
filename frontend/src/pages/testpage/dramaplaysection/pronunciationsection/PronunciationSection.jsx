@@ -99,10 +99,10 @@ export default function PronunciationSection({ props: { problem, getNextProblem,
     }, [onUpdate]);
 
     const getSentence = () => {
-        let sentence = problem.answer;
+        let sentence = problem.answer.replaceAll(" ", "  ");
 
         problem.word.forEach((word) => {
-            sentence = sentence.replace(word, "__");
+            sentence = sentence.replace(word, "__ ".repeat(word.length));
         });
 
         return sentence;
