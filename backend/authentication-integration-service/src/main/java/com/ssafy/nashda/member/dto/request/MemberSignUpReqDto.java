@@ -2,7 +2,6 @@ package com.ssafy.nashda.member.dto.request;
 
 import com.ssafy.nashda.member.entity.Member;
 import lombok.*;
-
 @Getter
 @Setter
 @NoArgsConstructor

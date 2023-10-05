@@ -5,8 +5,6 @@ import com.ssafy.nashda.common.dto.InternalResponseDto;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
-import com.ssafy.nashda.simulGPT.dto.response.ChatSttResDto;
-import com.ssafy.nashda.simulGPT.service.ChatGptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,7 +67,6 @@ public class STTServiceImpl implements STTService {
                 .toEntity(InternalResponseDto.class)
                 .block();
 
-//        log.info("response : {}, type : {}",response.getBody().getStatus(), response.getBody().getStatus().getClass().getName());
         String status = response.getBody().getStatus();
         if("400".equals(status)){
             throw new BadRequestException(ErrorCode.STT_ERROR);
@@ -82,8 +79,6 @@ public class STTServiceImpl implements STTService {
     @Override
     public String getText(MultipartFile sound) throws Exception {
         String extension = StringUtils.getFilenameExtension(sound.getOriginalFilename());
-//        log.info("EXTENSION : {}", extension);
-
         if(!extension.equals("wav")){
             throw new BadRequestException(ErrorCode.NOT_VALID_EXTENSION);
         }
@@ -121,10 +116,7 @@ public class STTServiceImpl implements STTService {
         if("400".equals(status)){
             throw new BadRequestException(ErrorCode.STT_ERROR);
         }
-
         String stt = (String) response.getBody().getData();
-//        log.info("stt : {}", stt);
-
         return stt;
 
     }

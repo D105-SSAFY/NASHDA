@@ -21,7 +21,6 @@ public class WeekService {
     @Scheduled(cron = "0 0 0 * * 1")
     @Transactional
     public void run() {
-        ZonedDateTime startZonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
         LocalDateTime startDateTime = LocalDateTime.now();
         LocalDateTime endDateTime = startDateTime.plusDays(6).with(LocalTime.MAX);
 

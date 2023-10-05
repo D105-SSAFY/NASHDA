@@ -46,7 +46,6 @@ import java.util.Optional;
 @RequestMapping("/simul")
 public class ChatGptController {
     private final MemberController memberController;
-    private final MemberRepository memberRepository;
 
     private final ChatGptService chatGptService;
     private final ChatGptRepository chatGptRepository;
@@ -58,7 +57,6 @@ public class ChatGptController {
 
     private final StrickRepository strickRepository;
 
-    private final AchievementService achievementService;
     private final MemberHistoryService memberHistoryService;
 
     @Transactional
@@ -86,8 +84,6 @@ public class ChatGptController {
         if (ObjectUtils.isEmpty(messageReqDto.getId())) {
 
             // 해당 유저의 총 conversationCount +1
- /*           memberRepository.updateConversationCount(member.getConversationCount() + 1, member.getMemberNum());
-            achievementService.updateMemberAchievement(member, "conversation", member.getConversationCount()+1);*/
             memberHistoryService.increaseConversationCount(member);
 
             // 해당 유저가 해당 날짜에 로그인 한 기록이 존재하면 Strick conversationCount +1

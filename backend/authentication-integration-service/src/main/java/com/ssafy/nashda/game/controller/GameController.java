@@ -1,24 +1,15 @@
 package com.ssafy.nashda.game.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
-import com.ssafy.nashda.common.error.code.ErrorCode;
-import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.game.dto.request.*;
 import com.ssafy.nashda.game.dto.response.*;
 import com.ssafy.nashda.game.service.GameService;
 import com.ssafy.nashda.history.service.MemberHistoryService;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.member.service.MemberService;
-import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
-import com.ssafy.nashda.statistic.service.AchievementService;
-import com.ssafy.nashda.statistic.service.GameStatisticService;
 import com.ssafy.nashda.statistic.service.StrickService;
-import com.ssafy.nashda.week.entity.Week;
-import com.ssafy.nashda.week.service.WeekService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,8 +27,6 @@ public class GameController {
     private final MemberController memberController;
     private final StrickService strickService;
     private final MemberHistoryService memberHistoryService;
-    private final GameStatisticService gameStatisticService;
-    private final WeekService weekService;
 
     @GetMapping("/speed")
     public ResponseEntity<? extends BaseResponseBody> getSpeedNum() throws Exception {
@@ -78,7 +67,6 @@ public class GameController {
 
 
         gameService.saveSpeedResult(request, member);
-        //strick에 표시할 것
         strickService.increaseSpeedCount(member);
         memberHistoryService.plusWordCount(member, request.getTotal());
         memberHistoryService.increaseGameSpeedCount(member);

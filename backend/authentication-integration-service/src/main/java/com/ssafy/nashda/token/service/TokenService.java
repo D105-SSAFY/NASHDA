@@ -5,8 +5,8 @@ import com.ssafy.nashda.token.dto.resonse.TokenResDto;
 
 public interface TokenService {
 
-    public TokenResDto createRefreshToken(Member member);
-    public String createAccessToken(String refreshToken);
-    public boolean tokenMathchEmail(String token, String email);
+    TokenResDto createRefreshToken(Member member);
+    String createAccessToken(String refreshToken);
+    boolean tokenMathchEmail(String token, String email);
 
 }

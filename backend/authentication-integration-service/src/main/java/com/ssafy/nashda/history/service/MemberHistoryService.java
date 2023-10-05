@@ -21,7 +21,6 @@ public interface MemberHistoryService{
     void initMemberHistory(Member member);
     void plusWordCount(Member member, int count);
     void plusSentenceCount(Member member, int count);
-
     HistoryResDto getMemberHistory(Member member);
     boolean isExistMemberHistory(Member member);
 }

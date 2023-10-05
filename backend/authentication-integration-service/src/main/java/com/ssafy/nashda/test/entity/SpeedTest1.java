@@ -1,13 +1,10 @@
 package com.ssafy.nashda.test.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import java.util.List;
 
 /*
     그림 보고 단어 맞추기~!
@@ -17,9 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class SpeedTest1 {
-//
-//    @Field("img_url")
-//    @JsonProperty("img")
     private String img;    //항상 0번째가 정답이다.
     private String answer;
 

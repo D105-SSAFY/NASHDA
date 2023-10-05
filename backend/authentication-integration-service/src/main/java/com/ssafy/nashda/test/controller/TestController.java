@@ -164,10 +164,9 @@ public class TestController {
         testService.saveWeekTestScore(reqDto, member);
         strickService.increaseTestCount(member);
 
-        //업적을 위한 testing
         memberHistoryService.increaseTestWeekCount(member); //test시험 수 증가
-        memberHistoryService.plusWordCount(member, 6); //test시험 칠때는 스피트 6개를 하니까!
-        memberHistoryService.plusSentenceCount(member, 4); //test시험 칠때는 스피트 4개를 하니까!
+        memberHistoryService.plusWordCount(member, 6); //test시험 칠때는 스피트 6개
+        memberHistoryService.plusSentenceCount(member, 4); //test시험 칠때는 스피트 4개
 
         return new ResponseEntity<>(new BaseResponseBody(200, "문장 시험 결과 저장 성공"),
                 HttpStatus.OK);

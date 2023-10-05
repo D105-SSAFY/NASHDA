@@ -15,10 +15,8 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class TimeEntity {
-
     @CreatedDate
     private LocalDateTime createOn;
-
     @LastModifiedDate
     private LocalDateTime updateOn;
 

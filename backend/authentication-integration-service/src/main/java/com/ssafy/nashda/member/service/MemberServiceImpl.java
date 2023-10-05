@@ -101,23 +101,12 @@ public class MemberServiceImpl implements MemberService {
                 strickService.initStrick(member);
             }
 
-            /*
-            //gamestatistic 생성, 로그인 할때마다
-            if (!gameStatisticService.isExistGameStatistic(member, week)) {
-                gameStatisticService.initGameStatistic(member, week);
-            }
-
-            //week_test생성
-            if (!weekTestStatisticService.isExistWeekTestResult(member, week)) {
-                weekTestStatisticService.initWeekTestResult(member, week);
-            }
-
-            */
-
             //member_history 생성
             if (!memberHistoryService.isExistMemberHistory(member)) {
                 memberHistoryService.initMemberHistory(member);
             }
+
+            memberHistoryService.increaseContinuousLoginCount(member);
 
             return new MemberInfoResDto(member);
         } else {

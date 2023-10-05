@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,5 +13,4 @@ public class WeekTestReqDto {
     private String index;
     private int order;
     private String imgUrl;
-//    private MultipartFile sound;
 }

@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface GameService {
-    //    ImgWordSetResponseDto saveImgWordSet(ImgWordSetSaveRequestDto requestDto) throws Exception;
     ImgWordSetResponseDto getImgWordSet(long index) throws Exception;
 
     ImgWordSetListResponseDto getImgWordSetList(long index) throws Exception;

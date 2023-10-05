@@ -1,7 +1,9 @@
 package com.ssafy.nashda.statistic.dto.response;
 
 import com.ssafy.nashda.statistic.entity.SimulDetail;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter

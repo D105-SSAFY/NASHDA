@@ -1,7 +1,6 @@
 package com.ssafy.nashda.member.entity;
 
 import com.ssafy.nashda.common.entity.TimeEntity;
-import com.ssafy.nashda.statistic.entity.Achievement;
 import com.ssafy.nashda.statistic.entity.MemberAchievement;
 import com.sun.istack.NotNull;
 import lombok.Setter;
@@ -10,7 +9,6 @@ import org.hibernate.annotations.ColumnDefault;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -23,7 +21,7 @@ import java.util.Set;
 @Table(name = "members")
 public class Member extends TimeEntity {
     @Id //Primary Key
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //autoincreasement 설정
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_number")
     private Long memberNum;
 

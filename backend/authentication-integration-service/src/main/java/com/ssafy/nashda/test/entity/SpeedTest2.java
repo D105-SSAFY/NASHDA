@@ -14,11 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SpeedTest2 {
     private int index;
-
-//    @Field("img_url")
     private List<String> img;    //항상 0번째가 정답이다.
     private String answer;
-
     @Field("user_answer")
     String userAnswer;
 

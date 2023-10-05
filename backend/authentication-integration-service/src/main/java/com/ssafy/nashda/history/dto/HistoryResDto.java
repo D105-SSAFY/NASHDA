@@ -10,14 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HistoryResDto {
-
     private int practice_count;
     private int practice_word_count;
     private int practice_sentence_count;
     private int game_count;
     private int game_blank_count;
     private int game_speed_count;
-
     private int test_count;
     private int test_speed_count;
     private int test_word_count;
@@ -26,7 +24,6 @@ public class HistoryResDto {
     private int word_count;
     private int sentence_count;
     private int conversation_count;
-
 
     @Builder
     public HistoryResDto(MemberHistory memberHistory){

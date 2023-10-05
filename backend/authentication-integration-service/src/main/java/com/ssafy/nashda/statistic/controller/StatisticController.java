@@ -78,7 +78,6 @@ public class StatisticController {
                 HttpStatus.OK);
     }
 
-    //게임 통계 최대 5개씩 불러오기, 혹시 몰라서
     @GetMapping("/game")
     public ResponseEntity<? extends BaseResponseBody> getGameStatistic(@RequestHeader("Authorization") String token) throws Exception {
         Member member = memberController.findMemberByToken(token);
@@ -111,7 +110,6 @@ public class StatisticController {
             weekIdx) throws Exception {
         Member member = memberController.findMemberByToken(token);
         Week week = weekRepository.findByWeekIdx(weekIdx).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
-//        SpeedStatisticResDto speedStatisticResDto = .getBlankStatistic(member, week);
         SpeedStatisticResDto speedStatisticResDto = gameStatisticService.getSpeedStatistic(member, week);
         return new ResponseEntity<>(new BaseResponseBody(200, "스피트 게임 통계 조회 성공", speedStatisticResDto),
                 HttpStatus.OK);

@@ -48,12 +48,14 @@ public class MemberHistoryServiceImpl implements MemberHistoryService {
     public void increaseGameBlankCount(Member member) {
         memberHistoryRepository.increaseGameBlankCount(member);
         MemberHistory history = memberHistoryRepository.findByMember(member);
+        increaseGameCount(member);
         achievementService.updateMemberAchievement(member, "game_blank", history.getGameBlankCount());
     }
 
     @Override
     public void increaseGameSpeedCount(Member member) {
         memberHistoryRepository.increaseGameSpeedCount(member);
+        increaseGameCount(member);
         MemberHistory history = memberHistoryRepository.findByMember(member);
         achievementService.updateMemberAchievement(member, "game_speed", history.getGameSpeedCount());
     }
@@ -90,12 +92,14 @@ public class MemberHistoryServiceImpl implements MemberHistoryService {
     public void increaseTestSentenceCount(Member member) {
         memberHistoryRepository.increaseTestSpeedCount(member);
         MemberHistory history = memberHistoryRepository.findByMember(member);
+        increaseTestCount(member);
         achievementService.updateMemberAchievement(member, "test_speed", history.getTestSentenceCount());
     }
 
     @Override
     public void increaseTestWordCount(Member member) {
         memberHistoryRepository.increaseTestWordCount(member);
+        increaseTestCount(member);
         MemberHistory history = memberHistoryRepository.findByMember(member);
         achievementService.updateMemberAchievement(member, "test_word", history.getTestWordCount());
     }
@@ -104,6 +108,7 @@ public class MemberHistoryServiceImpl implements MemberHistoryService {
     public void increaseTestWeekCount(Member member) {
         memberHistoryRepository.increaseTestWeekCount(member);
         MemberHistory history = memberHistoryRepository.findByMember(member);
+        increaseTestCount(member);
         achievementService.updateMemberAchievement(member, "test_week", history.getTestWeekCount());
     }
 

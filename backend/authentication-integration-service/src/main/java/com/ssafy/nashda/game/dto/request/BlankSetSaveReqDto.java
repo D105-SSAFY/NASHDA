@@ -21,8 +21,4 @@ public class BlankSetSaveReqDto {
     private String word3;
     private String word3Type;
     private String word3Description;
-
-//    private ImgWordHintSaveDto word1;
-//    private ImgWordHintSaveDto word2;
-//    private ImgWordHintSaveDto word3;
 }

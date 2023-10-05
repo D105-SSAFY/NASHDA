@@ -23,11 +23,8 @@ public class CodaStatistic {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "member_number", nullable = false)
     private Member member;
-
     private String letter;
-
     private int incorrect;
-
     private int total;
 
     public void update(boolean isAnswer){

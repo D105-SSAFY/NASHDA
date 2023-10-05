@@ -5,12 +5,9 @@ import com.ssafy.nashda.common.dto.InternalResponseDto;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
-import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.common.text.service.TextProcessService;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.member.service.MemberService;
 import com.ssafy.nashda.practice.dto.*;
-import com.ssafy.nashda.statistic.service.AchievementService;
 import com.ssafy.nashda.statistic.service.PracticeStatisticService;
 import com.ssafy.nashda.stt.service.STTService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +17,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -34,11 +30,8 @@ import java.util.List;
 public class PracticePronServiceImpl implements PracticePronService {
     private final ObjectMapper mapper;
     private final TextProcessService textProcessService;
-    private final S3Uploader s3Uploader;
     private final STTService sttService;
     private final PracticeStatisticService practiceStatisticService;
-    private final MemberService memberService;
-    private final AchievementService achievementService;
     @Value("${env.PROBLEM_URL}")
     private String URL;
 
@@ -76,8 +69,6 @@ public class PracticePronServiceImpl implements PracticePronService {
 
     @Override
     public PronResponseDto getPronPhaseSets(int index) throws Exception {
-//        PronPhaseSet pronPhaseSet = pronPhaseSetRepository.findByNum(index)
-//                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         // 문제 서버에 요청
         WebClient client = WebClient.builder()
                 .baseUrl(URL)
@@ -108,8 +99,6 @@ public class PracticePronServiceImpl implements PracticePronService {
 
     @Override
     public PronResponseDto getPronSimpleSets(int index) throws Exception {
-//        PronSimpleSet pronSimpleSet = pronSimpleSetRepository.findByNum(index)
-//                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         WebClient client = WebClient.builder()
                 .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -167,7 +156,6 @@ public class PracticePronServiceImpl implements PracticePronService {
 
     @Override
     public long getPronSetNum(String seqName) throws Exception {
-        // 문제 서버에 요청
         WebClient client = WebClient.builder()
                 .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -182,19 +170,6 @@ public class PracticePronServiceImpl implements PracticePronService {
         return (long) (int) response.getBody().getData();
     }
 
-/*    @Override
-    @Transactional
-    public void updateWordCount(Member member) throws Exception {
-        memberService.updateWordCount(member, 1);
-        achievementService.updateMemberAchievement(member, "word", member.getWordCount() + 1);
-    }
-
-    @Override
-    @Transactional
-    public void updateSentenceCount(Member member) throws Exception {
-        memberService.updateSentenceCount(member, 1);
-        achievementService.updateMemberAchievement(member, "sentence", member.getSentenceCount() + 1);
-    }*/
 
     @Override
     public PronSTTResponseDto getPracSTT(Member member, MultipartFile sound, PracticePronRequestDto practicePronRequestDto) throws Exception {
@@ -204,9 +179,6 @@ public class PracticePronServiceImpl implements PracticePronService {
         // FAST API 와 소통하기
         log.info("name : {}", sound.getOriginalFilename());
         String sttResult = sttService.getPronunciation(sound); // 받아온 STT
-//        String sttResult =  "한 구네 조은 채근 최고에 친구이다"; // 받아온 STT
-
-        // 통계 저장 부분
 
         // 1. 해당 문제를 받아온다.
         WebClient client = WebClient.builder()
@@ -243,7 +215,6 @@ public class PracticePronServiceImpl implements PracticePronService {
         log.info("origin : {}", origin);
 
         // 일치하는 문자열 저장
-        // Longest Common Subsequence
         String correctSentence = textProcessService.findLCS(convertOriginTrim, sttTrim); // 발음과 원문과 매치되는 문자열
         int compIndex = 0;
 

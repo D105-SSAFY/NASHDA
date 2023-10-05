@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-
 import javax.persistence.*;
 
 @Getter
@@ -17,7 +15,7 @@ import javax.persistence.*;
 public class Job {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //autoincreasement 설정
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "job_index")
     private Long jobIdx;
 

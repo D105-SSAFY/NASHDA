@@ -14,7 +14,6 @@ import java.util.TimeZone;
 @EnableScheduling   //스케줄링 활성화
 @EnableFeignClients // 외부 인터페이스 사용
 public class NashdaApplication {
-
     public static void main(String[] args) {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
         SpringApplication.run(NashdaApplication.class, args);

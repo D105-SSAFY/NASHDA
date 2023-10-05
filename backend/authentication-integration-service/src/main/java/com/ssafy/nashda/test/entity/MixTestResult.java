@@ -14,12 +14,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-/*
-    mix test는 빈칸 4문제
-    speed game1 3개
-    speed game2 3개
-    로 구성되어 있다.
- */
 public class MixTestResult {
     @Transient
     public static final String SEQUENCE_NAME = "mix_test_result";

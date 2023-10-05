@@ -1,7 +1,6 @@
 package com.ssafy.nashda.statistic.dto.response;
 
 import com.ssafy.nashda.history.dto.HistoryStaticticResDto;
-//import com.ssafy.nashda.member.dto.response.MemberStatisticResDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

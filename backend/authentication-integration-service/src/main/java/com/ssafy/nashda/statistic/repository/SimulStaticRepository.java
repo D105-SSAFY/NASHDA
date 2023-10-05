@@ -21,7 +21,6 @@ public interface SimulStaticRepository extends JpaRepository<SimulStatistic, Lon
 
     Optional<SimulStatistic> findByMemberAndSimulType(Member member, SimulType simulType);
 
-
     @Query("SELECT SUM(s.total) FROM SimulStatistic s WHERE s.member = :member")
     Long sumTotalByMember(Member member);
 

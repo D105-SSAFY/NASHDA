@@ -3,7 +3,6 @@ package com.ssafy.nashda.member.dto.response;
 import com.ssafy.nashda.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @NoArgsConstructor

@@ -19,7 +19,6 @@ public interface MixTestResultRepository extends MongoRepository<MixTestResult, 
 
     @Query(value = "{'memberNumber': ?0}", fields = "{'week': 1}")
     List<MixTestResult> findDistinctWeeksByMemberNumber(long memberNumber, Sort sort);
-//    List<MixTestResult> findDistinctWeeksByMemberNumber(long memberNumber, Sort sort);
     List<MixTestResult> findByMemberNumberAndWeekIn(long memberNumber, Set<Long> weeks);
 
 }

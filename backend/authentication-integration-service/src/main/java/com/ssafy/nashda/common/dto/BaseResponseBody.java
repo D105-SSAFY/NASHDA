@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL) //  null 값을 가지는 필드는, JSON 응답에 포함되지 않음
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponseBody<T>  {
     private int status;
     private String message;

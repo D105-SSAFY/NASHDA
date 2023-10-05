@@ -1,6 +1,5 @@
 package com.ssafy.nashda.test.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,10 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class BlankTest {
-    //이미지와 문장을 보고 빈칸 뚫고 빈칸에 들어갈 말 찾기
-
-//    @Field("img_url")
-//    @JsonProperty("imgUrl")
     String imgURL;
     String answer;  //전체 문장
     List<String> word;  //뚫은 빈칸들

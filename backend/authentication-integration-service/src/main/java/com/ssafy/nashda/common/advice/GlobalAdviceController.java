@@ -20,14 +20,6 @@
             return ResponseEntity.status(e.getErrorCode().getHttpStatus()).body(errorResponse);
         }
 
-        // Authentication 관련 ExceptionHandler
-    //    @ExceptionHandler(value = {AuthenticationException.class})
-    //    protected ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException e) {
-    //        log.error("AuthenticationException", e);
-    //        ErrorResponse errorResponse = ErrorResponse.of(e.getErrorCode().getHttpStatus().toString(), e.getErrorCode().getErrorCode(), e.getMessage());
-    //        return ResponseEntity.status(e.getErrorCode().getHttpStatus()).body(errorResponse);
-    //    }
-
         // 지원하지 않는 Http Method 관련 ExceptionHandler
         @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
         protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {

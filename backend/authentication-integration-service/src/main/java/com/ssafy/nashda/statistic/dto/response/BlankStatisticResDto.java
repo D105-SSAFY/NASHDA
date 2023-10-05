@@ -1,13 +1,11 @@
 package com.ssafy.nashda.statistic.dto.response;
 
 import com.ssafy.nashda.statistic.entity.GameStatistic;
-import com.ssafy.nashda.week.entity.Week;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

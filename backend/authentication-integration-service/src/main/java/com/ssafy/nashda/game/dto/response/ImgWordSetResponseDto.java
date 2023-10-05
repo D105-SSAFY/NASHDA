@@ -16,16 +16,3 @@ public class ImgWordSetResponseDto {
     private String answer;
 
 }
-
-
-//{
-//        “status” : “200”,
-//        “message” : “문제 불러오기 성공”,
-//        “data” :
-//        {
-//        “type” : 1,
-//        “index” : 2,
-//        “img” : “src”,
-//        “answer” : “사과”
-//        }
-//        }

@@ -1,7 +1,6 @@
 package com.ssafy.nashda.member.controller;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
-import com.ssafy.nashda.history.service.MemberHistoryService;
 import com.ssafy.nashda.member.dto.request.MemberResetPasswordReqDto;
 import com.ssafy.nashda.member.dto.response.MemberInfoResDto;
 import com.ssafy.nashda.member.dto.request.MemberSignInReqDto;
@@ -9,7 +8,6 @@ import com.ssafy.nashda.member.dto.request.MemberSignUpReqDto;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.mail.service.MailSenderService;
 import com.ssafy.nashda.member.service.MemberService;
-import com.ssafy.nashda.statistic.service.StrickService;
 import com.ssafy.nashda.token.config.TokenProvider;
 import com.ssafy.nashda.token.dto.resonse.TokenResDto;
 import com.ssafy.nashda.token.service.TokenService;
@@ -139,7 +137,6 @@ public class MemberController {
         } else
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponseBody<>(400, "비밀번호 변경 실패"));
     }
-
 
     @GetMapping("/checkprogress")
     public ResponseEntity<? extends BaseResponseBody> checkProgress(@RequestHeader("Authorization") String token) throws IOException {

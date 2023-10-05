@@ -6,18 +6,15 @@ import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
 import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.member.entity.Member;
-
 import com.ssafy.nashda.member.service.MemberService;
-import com.ssafy.nashda.simulGPT.dto.response.ChatSttResDto;
 import com.ssafy.nashda.simulGPT.service.ChatGptService;
 import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
 import com.ssafy.nashda.stt.service.STTService;
 import com.ssafy.nashda.test.dto.request.*;
 import com.ssafy.nashda.test.dto.response.MixTestStartResDto;
-import com.ssafy.nashda.test.dto.response.WeekTestResultDetailResDto;
 import com.ssafy.nashda.test.dto.response.WeekTestResultAllResDto;
+import com.ssafy.nashda.test.dto.response.WeekTestResultDetailResDto;
 import com.ssafy.nashda.test.dto.response.WordTestStartResDto;
-
 import com.ssafy.nashda.test.entity.*;
 import com.ssafy.nashda.test.repository.MixTestResultRepository;
 import com.ssafy.nashda.test.repository.SentenceTestResultRepository;
@@ -41,7 +38,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +59,6 @@ public class TestServiceImpl implements TestService {
     private final STTService sttService;
     private final ChatGptService chatGptService;
 
-    //단어 문제를 불러오고, mongo에 저장
     @Override
     public WordTestStartResDto wordTestStart(Member member) {
         Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
@@ -84,7 +79,6 @@ public class TestServiceImpl implements TestService {
                 .onStatus(
                         HttpStatus.BAD_REQUEST::equals,
                         clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
-                            log.info("s : {}", s.getErrorCode());
                             if (s.getErrorCode() == 4000) {
                                 return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
                             }
@@ -153,7 +147,6 @@ public class TestServiceImpl implements TestService {
                 .onStatus(
                         HttpStatus.BAD_REQUEST::equals,
                         clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
-                            log.info("s : {}", s.getErrorCode());
                             if (s.getErrorCode() == 4000) {
                                 return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
                             }
@@ -170,8 +163,6 @@ public class TestServiceImpl implements TestService {
         List<String> problem = internalWordTestReqDto.getProblem();
         List<String> convert = internalWordTestReqDto.getConvert();
 
-
-//        int tryCount = sentenceTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
         SentenceTestResult testResult = SentenceTestResult.builder()
                 .memberNumber(member.getMemberNum())
                 .week(week.getWeekIdx())
@@ -246,11 +237,6 @@ public class TestServiceImpl implements TestService {
         Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         int tryCount = mixTestResultRepository.findByMemberNumberAndWeekOrderByTryCount(member.getMemberNum(), week.getWeekIdx()).size();
 
-/*        if(tryCount>=3){
-            log.info("tryCount : {}", tryCount);
-            throw new BadRequestException(ErrorCode.OVER_TEST_TEMP);
-        }*/
-
         WebClient client = WebClient.builder()
                 .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -299,7 +285,6 @@ public class TestServiceImpl implements TestService {
                 .onStatus(
                         HttpStatus.BAD_REQUEST::equals,
                         clientResponse -> clientResponse.bodyToMono(ErrorResponse.class).map(s -> {
-                            log.info("s : {}", s.getErrorCode());
                             if (s.getErrorCode() == 4000) {
                                 return new BadRequestException(ErrorCode.NOT_EXISTS_DATA);
                             }
@@ -403,7 +388,6 @@ public class TestServiceImpl implements TestService {
 
         List<MixTestResult> weeks = mixTestResultRepository.findDistinctWeeksByMemberNumber(member.getMemberNum(), Sort.by(Sort.Order.desc("week")));
 
-        // 중복을 제거하기 위한 Set
         Set<Long> distinctWeeks = new LinkedHashSet<>();
 
         for (MixTestResult result : weeks) {
@@ -412,10 +396,8 @@ public class TestServiceImpl implements TestService {
                 break;
             }
         }
-
         List<MixTestResult> mixTestResult = mixTestResultRepository.findByMemberNumberAndWeekIn((Long) member.getMemberNum(), distinctWeeks);
 
-        //mixtestresult 를 week의 내림차순으로 정렬
         mixTestResult.sort(Comparator.comparing(MixTestResult::getWeek).reversed());
 
         List<WeekTestResultDetailResDto> resDtos = new ArrayList<>();
@@ -429,8 +411,6 @@ public class TestServiceImpl implements TestService {
                     .speedTest2(result.getSpeedTest2())
                     .build());
         }
-
-        log.info("resDtosCount : {}", resDtos.size());
 
         return resDtos;
     }

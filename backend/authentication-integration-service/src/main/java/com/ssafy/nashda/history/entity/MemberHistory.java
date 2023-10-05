@@ -16,7 +16,6 @@ public class MemberHistory {
     @Column(name = "member_history_index")
     private Long index;
 
-    //member와 one to one관계이다.
     @OneToOne
     @JoinColumn(name = "member_number")
     private Member member;

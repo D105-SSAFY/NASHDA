@@ -1,8 +1,7 @@
 package com.ssafy.nashda.statistic.repository;
 
-import com.ssafy.nashda.statistic.dto.response.BlankStatisticResDto;
-import com.ssafy.nashda.statistic.entity.GameStatistic;
 import com.ssafy.nashda.member.entity.Member;
+import com.ssafy.nashda.statistic.entity.GameStatistic;
 import com.ssafy.nashda.week.entity.Week;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

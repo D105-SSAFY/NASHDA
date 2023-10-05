@@ -22,6 +22,5 @@ public interface TestService {
     void saveWeekTestSpeed2(WeekTestReqDto reqDtos);
     void saveWeekTestScore(WeekTestResultReqDto reqDto, Member member);
     WeekTestResultAllResDto getAllWordTestResult(Member member);
-
     List<WeekTestResultDetailResDto> getWeekTestResultDetail(Member member/*, long week*/);
 }

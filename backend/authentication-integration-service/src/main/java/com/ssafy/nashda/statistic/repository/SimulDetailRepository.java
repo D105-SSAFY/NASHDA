@@ -8,6 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface SimulDetailRepository extends JpaRepository<SimulDetail, Long> {
-
     List<SimulDetail> findAllBySimulAndType(SimulStatistic simulStatistic, SimulType simulType);
 }

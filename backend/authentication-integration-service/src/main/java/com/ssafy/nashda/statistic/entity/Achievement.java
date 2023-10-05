@@ -1,6 +1,5 @@
 package com.ssafy.nashda.statistic.entity;
 
-import com.ssafy.nashda.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

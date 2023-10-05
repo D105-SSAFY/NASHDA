@@ -26,7 +26,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/history")
 public class MemberHistoryController {
-
     private final MemberController memberController;
     private final MemberHistoryService memberHistoryService;
     @GetMapping("/all")

@@ -1,7 +1,6 @@
 package com.ssafy.nashda.practice.dto;
 
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -11,5 +10,4 @@ import org.springframework.web.multipart.MultipartFile;
 public class PracticePronRequestDto {
     private long index;
     private String type;
-//    private MultipartFile sound;
 }
