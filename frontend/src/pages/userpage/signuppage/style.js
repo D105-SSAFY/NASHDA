@@ -8,11 +8,12 @@ export const StyledMainSection = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
     max-width: 910px;
 `;
 export const StyledVid = styled.video`
     width: 100%;
-    height: 510px;
+    max-height: 510px;
 `;
 
 export const StyledSignupBtn = styled.button`
@@ -30,8 +31,12 @@ export const StyledImg = styled.img`
 export const StyledSignupTitle = styled.h3`
     font-size: 35px;
     font-weight: bold;
-    margin-top: -110px;
+    margin-top: -12%;
     margin-bottom: 35px;
+
+    @media screen and (max-width: 500px) {
+        font-size: 28px;
+    }
 `;
 export const StyledForm = styled.form`
     display: flex;

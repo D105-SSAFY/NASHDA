@@ -92,14 +92,13 @@ export default function SigninPage() {
                     <s.StyledSiginBtn onClick={handleCheck}>
                         <s.StyledImg src={image2} alt="로그인" />
                     </s.StyledSiginBtn>
+                    <s.StyledLinkSection>
+                        <s.StyledLink to="/resetpw">비밀번호 찾기</s.StyledLink>
+                        <s.StyledLink to="/signup">회원가입</s.StyledLink>
+                    </s.StyledLinkSection>
                 </s.StyledForm>
-
-                <s.StyledLinkSection>
-                    <s.StyledLink to="/resetpw">비밀번호 찾기</s.StyledLink>
-                    <s.StyledLink to="/signup">회원가입</s.StyledLink>
-                </s.StyledLinkSection>
+                <s.StyledFooter></s.StyledFooter>
             </s.StyledMainSection>
-            <s.StyledFooter></s.StyledFooter>
             <SigninModal props={{ text: onModalText, visible: onModal, callback: onClickModal }} />
         </s.StyledMain>
     );
