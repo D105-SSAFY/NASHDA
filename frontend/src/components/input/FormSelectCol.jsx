@@ -28,7 +28,7 @@ export default function FormSelectCol({ data: { list, target, callback, Idx = 0,
     }, [target]);
 
     useEffect(() => {
-        if (Idx === 0 || !list) setSelectedItem("없음");
+        if (!list || list.length === 0 || Idx === 0) setSelectedItem("없음");
         else {
             setSelectedItem(
                 list.find((item) => {
