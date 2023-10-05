@@ -10,7 +10,7 @@ export const StyledMainSection = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 910px;
+    max-width: 910px;
 `;
 export const StyledVid = styled.video`
     width: 100%;
@@ -36,6 +36,7 @@ export const StyledForm = styled.form`
     flex-direction: column;
     align-items: center;
     width: 35%;
+    min-width: 200px;
     margin-top: 20px;
 `;
 export const StyledLinkSection = styled.section`
