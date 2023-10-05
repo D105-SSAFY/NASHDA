@@ -10,7 +10,6 @@ import ContactsIcon from "@mui/icons-material/Contacts";
 import SpeedIcon from "@mui/icons-material/Speed";
 import MicIcon from "@mui/icons-material/Mic";
 import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
-import TagFacesIcon from "@mui/icons-material/TagFaces";
 
 export default function MainPage() {
     return (
@@ -87,17 +86,6 @@ export default function MainPage() {
                                 <s.ArticleHeader>
                                     <h3>대화 시뮬레이션</h3>
                                     <p>실제 상황과 같이 대화를 연습해보세요.</p>
-                                </s.ArticleHeader>
-                            </s.Article>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/1">
-                            <s.Article color="#A38FA1">
-                                <TagFacesIcon />
-                                <s.ArticleHeader>
-                                    <h3>스트레칭</h3>
-                                    <p>연습 시작 전에 간단한 스트레칭을 해보세요.</p>
                                 </s.ArticleHeader>
                             </s.Article>
                         </Link>
