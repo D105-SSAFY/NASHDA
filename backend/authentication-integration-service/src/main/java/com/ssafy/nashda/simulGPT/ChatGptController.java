@@ -156,7 +156,13 @@ public class ChatGptController {
         if (message.contains("상황 종료")) {
             String temp[] = message.split("상황 종료");
             chatResDto.setFinish(Boolean.TRUE);
-            chatResDto.getChoices().get(0).getMessage().setContent(temp[0].strip());
+
+            if (temp.length == 0) {
+                chatResDto.getChoices().get(0).getMessage().setContent("시뮬레이션이 성공적으로 종료되었습니다.");
+            } else {
+                chatResDto.getChoices().get(0).getMessage().setContent(temp[0].strip());
+            }
+
         } else {
             chatResDto.setFinish(Boolean.FALSE);
         }
