@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import * as s from "./style";
 
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import eetch from "apis/eetch";
 
 const diffWord = {
@@ -71,9 +70,6 @@ export default function ProblemSection({ props: { diff, problem, setProblem, upd
             <s.RightPron>올바른 발음</s.RightPron>
             <s.SpeakWrapper>
                 <s.Pron>&quot;{problem.convert}&quot;</s.Pron>
-                <s.SpeakButton>
-                    <VolumeUpIcon />
-                </s.SpeakButton>
             </s.SpeakWrapper>
         </s.Section>
     );
