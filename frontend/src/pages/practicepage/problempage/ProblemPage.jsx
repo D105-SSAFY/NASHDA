@@ -9,7 +9,7 @@ import PronunciationSection from "./pronunciationsection/PronunciationSection";
 import DiffSelectSection from "components/section/diffselectsection/DiffSelectSection";
 import ErrorModal from "components/modals/errormodal/ErrorModal";
 
-const diffList = ["단어", "단락", "단순절", "복합절"];
+const diffList = ["단어", "단락", "단순절"];
 
 export default function ProblemPage() {
     const [diff, setDiff] = useState("");
