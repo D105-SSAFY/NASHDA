@@ -118,13 +118,13 @@ export default function ProblemSection({
             return;
         }
 
-        let sentence = problemList[problemIndex].answer;
+        let sentence = problemList[problemIndex].answer.replaceAll(" ", "  ");
         const hint = [];
 
         if (diff === "쉬움") {
             const index = Math.floor(Math.random() * problemList[problemIndex].word.length);
 
-            sentence = sentence.replace(problemList[problemIndex].word[index], "__");
+            sentence = sentence.replace(problemList[problemIndex].word[index], "__ ".repeat(problemList[problemIndex].word[index].length));
             hint.push(problemList[problemIndex].hint[index]);
         } else if (diff === "중간") {
             const exec = Math.floor(Math.random() * problemList[problemIndex].word.length);
@@ -134,7 +134,7 @@ export default function ProblemSection({
                     return;
                 }
 
-                sentence = sentence.replace(word, "__");
+                sentence = sentence.replace(word, "__ ".repeat(word.length));
             });
 
             problemList[problemIndex].hint.forEach((nowHint, index) => {
@@ -146,7 +146,7 @@ export default function ProblemSection({
             });
         } else {
             problemList[problemIndex].word.forEach((word) => {
-                sentence = sentence.replace(word, "__");
+                sentence = sentence.replace(word, "__ ".repeat(word.length));
             });
 
             problemList[problemIndex].hint.forEach((nowHint) => {
