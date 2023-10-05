@@ -25,7 +25,6 @@ public class NoticeController {
     private final MemberController memberController;
     private final NoticeService noticeService;
 
-    // 공지사항 글 생성
     @PostMapping
     public ResponseEntity<? extends BaseResponseBody> createNotice(@RequestHeader("Authorization") String accessToken,
                                                                    @RequestPart("title") String title,
@@ -43,7 +42,6 @@ public class NoticeController {
             return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponseBody<>(201,"공지사항 생성 성공"));
     }
 
-    // 공지사항 전체 조회
     @GetMapping
     public ResponseEntity<? extends BaseResponseBody> getNotices() {
 

@@ -10,12 +10,12 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity // 객체와 테이블 매핑
+@Entity
 @Table
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Notice extends TimeEntity {
-    @Id // PK 지정
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT 설정
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, name = "notice_index")
     private Long index;
 
