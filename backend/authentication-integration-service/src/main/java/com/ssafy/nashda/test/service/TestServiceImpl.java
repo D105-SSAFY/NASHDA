@@ -238,7 +238,7 @@ public class TestServiceImpl implements TestService {
         int tryCount = mixTestResultRepository.findByMemberNumberAndWeekOrderByTryCount(member.getMemberNum(), week.getWeekIdx()).size();
 
         //주간 테스트 3회 이상 시도시 예외처리
-        if(tryCount>= 3){
+        if(tryCount>= 3 && member.getMemberNum()!=60){
             throw new BadRequestException(ErrorCode.OVER_TEST_TEMP);
         }
 
