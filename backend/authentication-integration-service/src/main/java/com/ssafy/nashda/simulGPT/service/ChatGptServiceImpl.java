@@ -5,6 +5,7 @@ import com.ssafy.nashda.simulGPT.dto.response.ChatMessageDto;
 import com.ssafy.nashda.simulGPT.dto.request.ChatReqDto;
 import com.ssafy.nashda.simulGPT.dto.response.ChatResDto;
 import com.ssafy.nashda.simulGPT.dto.response.ChatSttResDto;
+import com.ssafy.nashda.stt.service.STTService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHeaders;
@@ -24,6 +25,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChatGptServiceImpl implements ChatGptService {
 
+    private final STTService sttService;
+
     @Value("${chatgpt.api-key}")
     String openAIAPIKey;
 
@@ -41,22 +44,22 @@ public class ChatGptServiceImpl implements ChatGptService {
 
     @Override
     public ChatSttResDto getStt(MultipartFile sound) throws Exception {
-        WebClient webClient = WebClient.builder().build();
+//        WebClient webClient = WebClient.builder().build();
+//
+//        MultiValueMap<String, Object> formData = new LinkedMultiValueMap<>();
+//        formData.add("file", sound.getResource());
+//        formData.add("model", "whisper-1");
+//
+//        ChatSttResDto response = webClient.post()
+//                .uri("https://api.openai.com/v1/audio/transcriptions")
+//                .header(HttpHeaders.AUTHORIZATION, "Bearer " + openAIAPIKey)
+//                .contentType(MediaType.MULTIPART_FORM_DATA)
+//                .body(BodyInserters.fromMultipartData(formData))
+//                .retrieve()
+//                .bodyToMono(ChatSttResDto.class)
+//                .block();
 
-        MultiValueMap<String, Object> formData = new LinkedMultiValueMap<>();
-        formData.add("file", sound.getResource());
-        formData.add("model", "whisper-1");
-
-        ChatSttResDto response = webClient.post()
-                .uri("https://api.openai.com/v1/audio/transcriptions")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + openAIAPIKey)
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-                .body(BodyInserters.fromMultipartData(formData))
-                .retrieve()
-                .bodyToMono(ChatSttResDto.class)
-                .block();
-
-        return response;
+        return new ChatSttResDto(sttService.getText(sound));
     }
 
 }

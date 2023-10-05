@@ -1,28 +1,44 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 import * as s from "./style";
 
-import DiffSelectSection from "components/section/diffselectsection/DiffSelectSection";
 import ProblemSection from "./problemsection/ProblemSection";
 import PronunciationSection from "./pronunciationsection/PronunciationSection";
 
-const diffList = ["단어", "구", "절", "복합절"];
+import DiffSelectSection from "components/section/diffselectsection/DiffSelectSection";
+import ErrorModal from "components/modals/errormodal/ErrorModal";
+
+const diffList = ["단어", "단락", "단순절", "복합절"];
 
 export default function ProblemPage() {
     const [diff, setDiff] = useState("");
     const [problem, setProblem] = useState({});
     const [update, setUpdate] = useState(true);
 
+    const [error, setError] = useState(false);
+    const navigate = useNavigate();
+
     return (
         <s.Main>
-            {diff ? (
-                <>
-                    <ProblemSection props={{ diff, problem, setProblem, update, setUpdate }} />
-                    <PronunciationSection props={{ problem, diff, setUpdate }} />
-                </>
-            ) : (
-                <DiffSelectSection props={{ diffList, setDiff, title: "난이도 선택", description: "발음 연습의 난이도를 선택해주세요." }} />
-            )}
+            <DiffSelectSection
+                props={{ diff, diffList, setDiff, title: "발음 연습", description: "주어진 단어 혹은 문장을 읽고, 발음을 연습해보세요." }}
+            />
+            <>
+                <ProblemSection props={{ diff, problem, setProblem, update, setUpdate, setError }} />
+                <PronunciationSection props={{ problem, diff, setUpdate, setError }} />
+            </>
+
+            <ErrorModal
+                props={{
+                    title: "에러 발생",
+                    content: "서버에 에러가 발생했습니다. 잠시 후 다시 시도해주세요.",
+                    display: error,
+                    callback() {
+                        navigate("/main");
+                    }
+                }}
+            />
         </s.Main>
     );
 }

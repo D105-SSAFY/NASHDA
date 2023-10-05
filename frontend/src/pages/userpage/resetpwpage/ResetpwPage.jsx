@@ -22,22 +22,21 @@ export default function ResetpwPage() {
     const [validPassword, setValidPassword] = useState(null);
     const timeoutIdRef = useRef(null);
     const checkEmailText = [
-        "",
-        "이메일 형식을 확인하세요!",
-        "인증버튼을 눌러주세요!",
-        "인증번호를 입력하세요!",
-        "인증번호가 일치하지 않습니다!",
-        "인증 성공!"
+        "*입력하신 이메일을 찾을 수 없습니다!",
+        "*이메일 형식을 확인하세요!",
+        "*인증버튼을 눌러주세요!",
+        "*인증번호를 입력하세요!",
+        "*인증번호가 일치하지 않습니다!",
+        "*인증 성공!"
     ];
     const checkPasswordText = [
-        "8~16자, 특수문자 1자 이상을 포함해야 합니다!",
-        "사용 가능한 비밀번호 입니다!",
-        "비밀번호가 일치하지 않습니다!",
-        "비밀번호가 일치합니다!"
+        "*8~16자, 특수문자 1자 이상을 포함해야 합니다!",
+        "*사용 가능한 비밀번호 입니다!",
+        "*비밀번호가 일치하지 않습니다!",
+        "*비밀번호가 일치합니다!"
     ];
     const emailPattern =
-        // eslint-disable-next-line no-useless-escape
-        /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*()\-_=+[\]{};:'",.<>/?\\|~`])[a-zA-Z\d!@#$%^&*()\-_=+[\]{};:'",.<>/?\\|~`]{8,16}$/;
 
     const navigate = useNavigate();
@@ -49,6 +48,8 @@ export default function ResetpwPage() {
         });
 
         if (e.target.name === "email") {
+            if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
+
             if (!e.target.value) {
                 setValidEmail(null);
                 return;
@@ -59,7 +60,15 @@ export default function ResetpwPage() {
                 return;
             }
 
-            setValidEmail(2);
+            timeoutIdRef.current = setTimeout(async () => {
+                const result = await eetch.checkEmail({ email: e.target.value });
+
+                if (result.status === 200) {
+                    setValidEmail(0);
+                } else {
+                    setValidEmail(2);
+                }
+            }, 400);
         }
 
         if (e.target.name === "code") {
@@ -123,8 +132,6 @@ export default function ResetpwPage() {
                 setValidPassword(2);
             }
         }
-
-        console.log(inputs);
     };
 
     const handleClick = async (e) => {
@@ -148,13 +155,13 @@ export default function ResetpwPage() {
         e.preventDefault();
 
         const result = await eetch.resetPw({ email: inputs.email, newpassword: inputs.password, code: inputs.code });
-        console.log(result);
+
         if (result.status === 200) {
             setOnModal("success");
             setOnModalText("비밀번호 변경 성공!");
         } else {
             setOnModal("false");
-            setOnModalText("회원가입에 실패했습니다!");
+            setOnModalText("비밀번호 변경에 실패했습니다!");
         }
     };
 

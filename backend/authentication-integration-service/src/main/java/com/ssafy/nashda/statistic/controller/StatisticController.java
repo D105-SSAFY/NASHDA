@@ -42,11 +42,11 @@ public class StatisticController {
     private final WeekTestStatisticService weekTestResultService;
     private final TestService testService;
 
-    @GetMapping("/test/week/detail/{week}")
-    public ResponseEntity<? extends BaseResponseBody> weekTestDetail(@RequestHeader("Authorization") String token, @PathVariable("week") long week) throws Exception {
+    @GetMapping("/test/week/detail")
+    public ResponseEntity<? extends BaseResponseBody> weekTestDetail(@RequestHeader("Authorization") String token/*, @PathVariable("week") long week*/) throws Exception {
 
         Member member = memberController.findMemberByToken(token);
-        List<WeekTestResultDetailResDto> weekTestResultDetailResDto = testService.getWeekTestResultDetail(member, week);
+        List<WeekTestResultDetailResDto> weekTestResultDetailResDto = testService.getWeekTestResultDetail(member/*, week*/);
 
         return new ResponseEntity<>(new BaseResponseBody(200, "통합 시험 디테일 불러오기 성공", weekTestResultDetailResDto),
                 HttpStatus.OK);

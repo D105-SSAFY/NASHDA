@@ -4,20 +4,21 @@ import { useNavigate } from "react-router";
 
 import * as s from "./style";
 
-import DiffSelectSection from "components/section/diffselectsection/DiffSelectSection";
 import ProblemSection from "./problemsection/ProblemSection";
 import PronunciationSection from "./pronunciationsection/PronunciationSection";
 import ProgressSection from "./progresssection/ProgressSection";
 
+import DiffSelectSection from "components/section/diffselectsection/DiffSelectSection";
 import FilledButton from "components/buttons/filledbutton/FilledButton";
 import BorderButton from "components/buttons/borderbutton/BorderButton";
+import ErrorModal from "components/modals/errormodal/ErrorModal";
 
 import RedoIcon from "@mui/icons-material/Redo";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 import eetch from "apis/eetch";
 
-const diffList = ["상", "중", "하"];
+const diffList = ["쉬움", "중간", "어려움"];
 
 export default function DramaPlayPage() {
     const [diff, setDiff] = useState("");
@@ -28,6 +29,8 @@ export default function DramaPlayPage() {
     const [showHint, setShowHint] = useState(false);
     const [hint, setHint] = useState([]);
     const [onHintModal, setOnHintModal] = useState(false);
+
+    const [error, setError] = useState(false);
 
     const [totalTime, setTotaltime] = useState(200);
     const totalTimer = useRef(null);
@@ -68,6 +71,7 @@ export default function DramaPlayPage() {
         }
 
         endTotalTimer();
+        setProblemIndex(4);
     }, [totalTime]);
 
     useEffect(() => {
@@ -108,69 +112,89 @@ export default function DramaPlayPage() {
 
     return (
         <s.Main>
-            {diff ? (
-                problemIndex === 4 ? (
-                    <s.Section>
-                        <s.Header>
-                            <h2>테스트 종료</h2>
-                        </s.Header>
-                        <s.ButtonWrapper>
-                            <FilledButton
-                                props={{
-                                    background: "rgba(68, 71, 90, 0.7)",
-                                    color: "#ffffff",
-                                    hovercolor: "#44475A",
-                                    callback() {
-                                        setProblemList([]);
-                                        setProblemIndex(-1);
-                                        setSentence("");
-                                        setCorrect(0);
-                                    }
-                                }}
-                            >
-                                <RedoIcon />
-                                <span>계속 풀기</span>
-                            </FilledButton>
-                            <BorderButton
-                                props={{
-                                    color: "rgba(68, 71, 90, 0.7)",
-                                    callback() {
-                                        navigate("/main");
-                                    }
-                                }}
-                            >
-                                <ExitToAppIcon />
-                                <span>종료</span>
-                            </BorderButton>
-                        </s.ButtonWrapper>
-                    </s.Section>
-                ) : (
-                    <>
-                        <ProgressSection props={{ total: 200, now: totalTime }} />
-                        <ProblemSection
+            <DiffSelectSection props={{ diff, diffList, setDiff, title: "드라마 플레이", description: "그림을 보고 문장의 빈칸을 채워주세요." }} />
+            {problemIndex === 4 ? (
+                <s.Section>
+                    <s.Header>
+                        <h2>테스트 종료</h2>
+                        <s.Content>4 문제 중 {correct} 문제 정답</s.Content>
+                    </s.Header>
+                    <s.ButtonWrapper>
+                        <FilledButton
                             props={{
-                                diff,
-                                problemList,
-                                setProblemList,
-                                problemIndex,
-                                setProblemIndex,
-                                sentence,
-                                setSentence,
-                                setHint,
-                                setShowHint,
-                                onHintModal,
-                                startTotalTimer,
-                                stopTotalTimer
+                                background: "rgba(68, 71, 90, 0.7)",
+                                color: "#ffffff",
+                                hovercolor: "#44475A",
+                                callback() {
+                                    setProblemList([]);
+                                    setProblemIndex(-1);
+                                    setSentence("");
+                                    setCorrect(0);
+                                }
                             }}
-                        />
-                        <PronunciationSection
-                            props={{ problemList, problemIndex, sentence, setProblemIndex, setCorrect, hint, showHint, onHintModal, setOnHintModal }}
-                        />
-                    </>
-                )
+                        >
+                            <RedoIcon />
+                            <span>계속 풀기</span>
+                        </FilledButton>
+                        <BorderButton
+                            props={{
+                                color: "rgba(68, 71, 90, 0.7)",
+                                callback() {
+                                    navigate("/main");
+                                }
+                            }}
+                        >
+                            <ExitToAppIcon />
+                            <span>종료</span>
+                        </BorderButton>
+                    </s.ButtonWrapper>
+                </s.Section>
             ) : (
-                <DiffSelectSection props={{ diffList, setDiff, title: "드라마 플레이", description: "그림을 보고 문장을 채워주세요." }} />
+                <>
+                    <ProgressSection props={{ total: 200, now: totalTime }} />
+                    <ProblemSection
+                        props={{
+                            diff,
+                            problemList,
+                            setProblemList,
+                            problemIndex,
+                            setProblemIndex,
+                            sentence,
+                            setSentence,
+                            setHint,
+                            setShowHint,
+                            onHintModal,
+                            startTotalTimer,
+                            stopTotalTimer,
+                            setError
+                        }}
+                    />
+                    <PronunciationSection
+                        props={{
+                            problemList,
+                            problemIndex,
+                            sentence,
+                            setProblemIndex,
+                            setCorrect,
+                            hint,
+                            showHint,
+                            onHintModal,
+                            setOnHintModal,
+                            setError
+                        }}
+                    />
+                </>
             )}
+            <ErrorModal
+                props={{
+                    title: "에러 발생",
+                    content: "서버에 에러가 발생했습니다. 잠시 후 다시 시도해주세요.",
+                    display: error,
+                    callback() {
+                        navigate("/main");
+                    }
+                }}
+            />
         </s.Main>
     );
 }

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 
 import * as s from "./style";
 
@@ -19,7 +18,8 @@ export default function ProblemSection({
         setShowHint,
         onHintModal,
         startTotalTimer,
-        stopTotalTimer
+        stopTotalTimer,
+        setError
     }
 }) {
     const [problemTime, setProblemtime] = useState(30);
@@ -27,7 +27,6 @@ export default function ProblemSection({
 
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const startProblemTimer = () => {
         if (problemTimer.current) {
@@ -86,17 +85,21 @@ export default function ProblemSection({
                 setProblemList(result.data);
             })
             .catch(() => {
-                navigate("/signin");
+                setError(true);
             });
     }, []);
 
     useEffect(() => {
+        if (!diff) {
+            return;
+        }
+
         if (problemIndex !== -1) {
             return;
         }
 
         getProblem();
-    }, [problemIndex]);
+    }, [diff, problemIndex]);
 
     useEffect(() => {
         if (problemList.length === 0) {
@@ -118,12 +121,12 @@ export default function ProblemSection({
         let sentence = problemList[problemIndex].answer;
         const hint = [];
 
-        if (diff === "하") {
+        if (diff === "쉬움") {
             const index = Math.floor(Math.random() * problemList[problemIndex].word.length);
 
             sentence = sentence.replace(problemList[problemIndex].word[index], "__");
             hint.push(problemList[problemIndex].hint[index]);
-        } else if (diff === "중") {
+        } else if (diff === "중간") {
             const exec = Math.floor(Math.random() * problemList[problemIndex].word.length);
 
             problemList[problemIndex].word.forEach((word, index) => {
@@ -169,16 +172,12 @@ export default function ProblemSection({
         }
     }, [onHintModal]);
 
-    if (!sentence) {
-        return;
-    }
-
     return (
         <s.Section>
             <s.Header>
                 <h2>문제 영역</h2>
             </s.Header>
-            <img src={problemList[problemIndex].imgURL} alt="" />
+            {sentence ? <img src={problemList[problemIndex].imgURL} alt="" /> : <div style={{ height: "260px" }}></div>}
             <s.Text>올바른 문장</s.Text>
             <s.Sentence>{sentence}</s.Sentence>
             <s.Time alret={problemTime <= 10}>{problemTime}</s.Time>

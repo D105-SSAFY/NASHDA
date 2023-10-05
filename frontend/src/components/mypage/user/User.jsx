@@ -17,7 +17,6 @@ export default function Setting() {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
 
-    // 테스트로 5로 해놨음!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 0으로 돌려야 함!!!!!!!!!
     const [more, setMore] = useState(0);
     const [userInfo, setUserInfo] = useState({});
     const [achievements, setAchievements] = useState([]);

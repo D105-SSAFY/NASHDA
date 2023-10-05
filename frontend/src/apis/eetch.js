@@ -27,7 +27,15 @@ eetch.tokenValidation = async (call, values, dispatch) => {
                         })
                     );
 
-                    return call(values);
+                    const newValues = {
+                        ...values,
+                        user: {
+                            accessToken: res.accessToken,
+                            refreshToken: values.user.refreshToken
+                        }
+                    };
+
+                    return call(newValues);
                 })
                 .catch(() => {
                     throw new Error("토큰이 만료되었습니다. 다시 로그인해주세요.");

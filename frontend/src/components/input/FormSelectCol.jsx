@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import * as S from "./style";
 
-export default function FormSelectCol({ data: { list, target, callback, Idx = 0 } }) {
+export default function FormSelectCol({ data: { list, target, callback, Idx = 0, label = target } }) {
     const [clicked, setClicked] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
-    // 드랍 다운 버튼 클릭
+
     const onClickButton = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -12,26 +12,23 @@ export default function FormSelectCol({ data: { list, target, callback, Idx = 0 
         setClicked(!clicked);
     };
 
-    // 드랍 박스 이외의 영역을 눌렀을 때
     window.addEventListener("click", () => {
         setClicked(false);
     });
 
-    // 드랍 박스 리스트 버튼 클릭
     const onClickListButton = (e, idx, text) => {
         e.preventDefault();
         setSelectedItem(text);
-        setClicked(false); // 드롭다운 닫기
+        setClicked(false);
         callback(target, idx);
     };
 
-    // 타겟 값 변경 시
     useEffect(() => {
         setClicked(false);
     }, [target]);
 
     useEffect(() => {
-        if (Idx === 0 || !list) setSelectedItem("없음");
+        if (!list || list.length === 0 || Idx === 0) setSelectedItem("없음");
         else {
             setSelectedItem(
                 list.find((item) => {
@@ -43,7 +40,7 @@ export default function FormSelectCol({ data: { list, target, callback, Idx = 0 
 
     return (
         <S.StyledDiv>
-            <S.StyledLabel isFill={Boolean(selectedItem)}>{target}</S.StyledLabel>
+            <S.StyledLabel isFill={Boolean(selectedItem)}>{label}</S.StyledLabel>
             <S.Button clicked={clicked} onClick={onClickButton}>
                 <span>{selectedItem}</span>
             </S.Button>

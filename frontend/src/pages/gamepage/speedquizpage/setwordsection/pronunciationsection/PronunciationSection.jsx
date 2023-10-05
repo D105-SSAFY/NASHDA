@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 
 import * as s from "./style";
 
@@ -15,7 +14,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import voice from "utils/VoiceFunc";
 import eetch from "apis/eetch";
 
-export default function PronunciationSection({ props: { problem, getNextProblem, setCorrect } }) {
+export default function PronunciationSection({ props: { problem, getNextProblem, setCorrect, setError } }) {
     const [audioText, setAudioText] = useState({
         text: "",
         correct: false
@@ -27,7 +26,6 @@ export default function PronunciationSection({ props: { problem, getNextProblem,
 
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const showModal = useCallback(() => {
         setOnModal(true);
@@ -96,7 +94,7 @@ export default function PronunciationSection({ props: { problem, getNextProblem,
                 });
             })
             .catch(() => {
-                navigate("/signin");
+                setError(true);
             });
     };
 

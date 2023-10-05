@@ -7,7 +7,7 @@ import com.ssafy.nashda.member.dto.request.MemberResetPasswordReqDto;
 import com.ssafy.nashda.member.dto.response.MemberInfoResDto;
 import com.ssafy.nashda.member.dto.request.MemberSignInReqDto;
 import com.ssafy.nashda.member.dto.request.MemberSignUpReqDto;
-//import com.ssafy.nashda.member.dto.response.MemberStatisticResDto;
+// import com.ssafy.nashda.member.dto.response.MemberStatisticResDto;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.member.repository.MemberRepository;
 import com.ssafy.nashda.statistic.service.GameStatisticService;

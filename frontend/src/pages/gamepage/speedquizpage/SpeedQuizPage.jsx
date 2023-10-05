@@ -7,6 +7,7 @@ import * as s from "./style";
 import DiffSelectSection from "components/section/diffselectsection/DiffSelectSection";
 import FilledButton from "components/buttons/filledbutton/FilledButton";
 import BorderButton from "components/buttons/borderbutton/BorderButton";
+import ErrorModal from "components/modals/errormodal/ErrorModal";
 
 import ProgressSection from "./progresssection/ProgressSection";
 import SetWordSection from "./setwordsection/SetWordSection";
@@ -17,7 +18,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 import eetch from "apis/eetch";
 
-const diffList = ["상", "중", "하"];
+const diffList = ["쉬움", "중간", "어려움"];
 
 export default function SpeedQuizPage() {
     const [diff, setDiff] = useState("");
@@ -26,6 +27,8 @@ export default function SpeedQuizPage() {
     const passedProblemList = useRef([]);
     const [end, setEnd] = useState(false);
     const [correct, setCorrect] = useState(0);
+
+    const [error, setError] = useState(false);
 
     const [totalTime, setTotaltime] = useState(120);
     const totalTimer = useRef(null);
@@ -67,6 +70,7 @@ export default function SpeedQuizPage() {
         }
 
         endTotalTimer();
+        setEnd(true);
     }, [totalTime]);
 
     useEffect(() => {
@@ -77,12 +81,10 @@ export default function SpeedQuizPage() {
         eetch
             .tokenValidation(eetch.speed, values, dispatch)
             .then((result) => {
-                console.log(result);
-                // setNumProblem(result.data);
-                setNumProblem(10);
+                setNumProblem(result.data);
             })
             .catch(() => {
-                navigate("/signin");
+                setError(true);
             });
     }, []);
 
@@ -106,9 +108,9 @@ export default function SpeedQuizPage() {
 
         let callback = () => {};
 
-        if (diff === "하") {
+        if (diff === "쉬움") {
             callback = eetch.speedOne;
-        } else if (diff === "중") {
+        } else if (diff === "중간") {
             callback = eetch.speedTwo;
         } else {
             callback = Math.floor(Math.random() * 2) ? eetch.speedOne : eetch.speedTwo;
@@ -121,7 +123,7 @@ export default function SpeedQuizPage() {
                 setProblem({ ...result.data });
             })
             .catch(() => {
-                navigate("/signin");
+                setError(true);
             });
     };
 
@@ -152,7 +154,7 @@ export default function SpeedQuizPage() {
                 // console.log(result);
             })
             .catch(() => {
-                navigate("/signin");
+                setError(true);
             });
     }, [end]);
 
@@ -193,20 +195,30 @@ export default function SpeedQuizPage() {
                         </BorderButton>
                     </s.ButtonWrapper>
                 </s.Section>
-            ) : diff ? (
+            ) : (
                 <>
+                    <DiffSelectSection
+                        props={{ diff, diffList, setDiff, title: "스피드 퀴즈", description: "제한 시간 안에 최대한 많은 문제를 맞춰주세요." }}
+                    />
                     <ProgressSection props={{ total: 120, now: totalTime }} />
                     {problem.type === 1 ? (
-                        <SetWordSection props={{ problem, getNextProblem, setCorrect }} />
+                        <SetWordSection props={{ problem, getNextProblem, setCorrect, setError }} />
                     ) : (
                         <SetImageSection props={{ problem, getNextProblem, setCorrect }} />
                     )}
                 </>
-            ) : (
-                <DiffSelectSection
-                    props={{ diffList, setDiff, title: "스피드 퀴즈", description: "제한 시간 안에 최대한 많은 문제를 맞춰주세요." }}
-                />
             )}
+
+            <ErrorModal
+                props={{
+                    title: "에러 발생",
+                    content: "서버에 에러가 발생했습니다. 잠시 후 다시 시도해주세요.",
+                    display: error,
+                    callback() {
+                        navigate("/main");
+                    }
+                }}
+            />
         </s.Main>
     );
 }

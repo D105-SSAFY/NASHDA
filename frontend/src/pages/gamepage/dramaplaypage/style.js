@@ -6,7 +6,7 @@ export const Main = styled.main`
     height: calc(100vh - 72px);
 
     margin: 0 auto;
-    padding: 0 55px 60px;
+    padding: 0 55px 30px;
 
     display: flex;
     flex-direction: column;
@@ -41,6 +41,14 @@ export const Header = styled.header`
 
         margin-bottom: 30px;
     }
+`;
+
+export const Content = styled.p`
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: rgb(170, 170, 170);
+
+    margin-bottom: 45px;
 `;
 
 export const ButtonWrapper = styled.div`

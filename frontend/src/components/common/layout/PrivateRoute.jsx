@@ -9,14 +9,16 @@ export default function PrivateRoute({ isPrivate = true }) {
     const [isValid, setIsValid] = useState(null);
 
     useEffect(() => {
-        eetch
-            .tokenValidation(eetch.valid, { user }, dispatch)
-            .then(() => {
-                setIsValid(true);
-            })
-            .catch(() => {
-                setIsValid(false);
-            });
+        if (user.accessToken) {
+            eetch
+                .tokenValidation(eetch.valid, { user }, dispatch)
+                .then(() => {
+                    setIsValid(true);
+                })
+                .catch(() => {
+                    setIsValid(false);
+                });
+        } else setIsValid(false);
     }, [dispatch, user]);
 
     if (isValid === null) return null;

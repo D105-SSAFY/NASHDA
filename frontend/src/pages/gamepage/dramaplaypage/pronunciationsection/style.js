@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Section = styled.section`
-    margin-top: 40px;
+    margin-top: 30px;
     width: 100%;
 
     flex-grow: 1;
@@ -22,7 +22,7 @@ export const Header = styled.header`
 `;
 
 export const Box = styled.div`
-    padding: 50px 35px;
+    padding: 25px 30px;
 
     background-color: #f8f8f8;
 
@@ -32,7 +32,7 @@ export const Box = styled.div`
 `;
 
 export const Pron = styled.p`
-    font-size: 2.4rem;
+    font-size: 2rem;
     font-weight: 500;
 
     color: ${(props) => (props.correct ? "#57ea74" : "#ff4455")};

@@ -49,6 +49,13 @@ export const HeaderLarge = styled.span`
     color: ${(props) => (props.correct ? "#000000D0" : "#ff7777")};
 `;
 
+export const ResultText = styled.p`
+    font-size: 3.6rem;
+    font-weight: 800;
+
+    color: "#000000D0";
+`;
+
 export const RegistLink = styled(Link)`
     position: relative;
     top: 20px;

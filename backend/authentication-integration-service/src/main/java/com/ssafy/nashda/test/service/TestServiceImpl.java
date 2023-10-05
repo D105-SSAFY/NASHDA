@@ -8,6 +8,8 @@ import com.ssafy.nashda.common.s3.S3Uploader;
 import com.ssafy.nashda.member.entity.Member;
 
 import com.ssafy.nashda.member.service.MemberService;
+import com.ssafy.nashda.simulGPT.dto.response.ChatSttResDto;
+import com.ssafy.nashda.simulGPT.service.ChatGptService;
 import com.ssafy.nashda.statistic.service.WeekTestStatisticService;
 import com.ssafy.nashda.stt.service.STTService;
 import com.ssafy.nashda.test.dto.request.*;
@@ -26,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -37,10 +40,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -60,10 +61,17 @@ public class TestServiceImpl implements TestService {
     private final WeekTestStatisticService weekTestStatisticService;
     private final MemberService memberService;
     private final STTService sttService;
+    private final ChatGptService chatGptService;
 
     //단어 문제를 불러오고, mongo에 저장
     @Override
     public WordTestStartResDto wordTestStart(Member member) {
+        Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        int tryCount = wordTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
+
+        if (tryCount >= 3) {
+            throw new BadRequestException(ErrorCode.OVER_TEST_TEMP);
+        }
 
         WebClient client = WebClient.builder()
                 .baseUrl(URL)
@@ -92,10 +100,6 @@ public class TestServiceImpl implements TestService {
 
         List<String> problem = internalWordTestReqDto.getProblem();
         List<String> convert = internalWordTestReqDto.getConvert();
-
-
-        Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
-        int tryCount = wordTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
 
 
         WordTestResult testResult = WordTestResult.builder()
@@ -130,6 +134,14 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public WordTestStartResDto sentenceTestStart(Member member) {
+        Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        int tryCount = sentenceTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
+
+        if (tryCount >= 3) {
+            throw new BadRequestException(ErrorCode.OVER_TEST_TEMP);
+        }
+
+
         WebClient client = WebClient.builder()
                 .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -159,9 +171,7 @@ public class TestServiceImpl implements TestService {
         List<String> convert = internalWordTestReqDto.getConvert();
 
 
-        Week week = weekService.getCurrentWeek().orElseThrow();
 //        int tryCount = sentenceTestResultRepository.findByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx()).size();
-        int tryCount = sentenceTestResultRepository.countByMemberNumberAndWeek(member.getMemberNum(), week.getWeekIdx());
         SentenceTestResult testResult = SentenceTestResult.builder()
                 .memberNumber(member.getMemberNum())
                 .week(week.getWeekIdx())
@@ -171,7 +181,7 @@ public class TestServiceImpl implements TestService {
         String index = sentenceTestResultRepository.save(testResult).getId();
 
         WordTestStartResDto resDto = WordTestStartResDto.builder()
-                .try_count(tryCount+1)
+                .try_count(tryCount + 1)
                 .index(index)
                 .problem(problem)
                 .convert(convert)
@@ -220,7 +230,6 @@ public class TestServiceImpl implements TestService {
         String url = s3Uploader.uploadFiles(sound, "sentence_test");
 
         String stt = sttService.getPronunciation(sound);
-
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
         Update update = new Update().set("user_pronunciation_url." + (reqDto.getOrder() - 1), url);
         mongoTemplate.updateFirst(query, update, SentenceTestResult.class);
@@ -233,6 +242,14 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public MixTestStartResDto mixTestStart(Member member) {
+
+        Week week = weekService.getCurrentWeek().orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
+        int tryCount = mixTestResultRepository.findByMemberNumberAndWeekOrderByTryCount(member.getMemberNum(), week.getWeekIdx()).size();
+
+/*        if(tryCount>=3){
+            log.info("tryCount : {}", tryCount);
+            throw new BadRequestException(ErrorCode.OVER_TEST_TEMP);
+        }*/
 
         WebClient client = WebClient.builder()
                 .baseUrl(URL)
@@ -294,14 +311,12 @@ public class TestServiceImpl implements TestService {
                 .block();
 
         List<SpeedTest2> speed2List = (List<SpeedTest2>) speed2.get("data");
-        Week week = weekService.getCurrentWeek().orElseThrow();
-        int tryCount = mixTestResultRepository.findByMemberNumberAndWeekOrderByTryCount(member.getMemberNum(), week.getWeekIdx()).size();
 
 
         MixTestResult mixTestResult = MixTestResult.builder()
                 .memberNumber(member.getMemberNum())
                 .week(week.getWeekIdx())
-                .tryCount(tryCount+1)
+                .tryCount(tryCount + 1)
                 .blankTest(blankList)
                 .speedTest1(speed1List)
                 .speedTest2(speed2List)
@@ -311,7 +326,7 @@ public class TestServiceImpl implements TestService {
 
         MixTestStartResDto mixTestStartResDto = MixTestStartResDto.builder()
                 .index(index)
-                .try_count(tryCount)
+                .try_count(tryCount + 1)
                 .blank(blankList)
                 .speed1(speed1List)
                 .speed2(speed2List)
@@ -327,8 +342,7 @@ public class TestServiceImpl implements TestService {
         String url = s3Uploader.uploadFiles(sound, "week_test" + type);
 
         //받아온 soundfile을 stt로 변환
-//        String stt = sttService.getPronunciation(sound);
-        String stt = sttService.getText(sound); // 발음이 아닌 단어로 반환
+        String stt = sttService.getText(sound);
 
         //url을 mongodb에 저장
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
@@ -385,13 +399,29 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public List<WeekTestResultDetailResDto> getWeekTestResultDetail(Member member, long week) {
+    public List<WeekTestResultDetailResDto> getWeekTestResultDetail(Member member/*, long week*/) {
 
-        List<MixTestResult> mixTestResult = mixTestResultRepository.findByMemberNumberAndWeekOrderByTryCount(member.getMemberNum(), week);
+        List<MixTestResult> weeks = mixTestResultRepository.findDistinctWeeksByMemberNumber(member.getMemberNum(), Sort.by(Sort.Order.desc("week")));
+
+        // 중복을 제거하기 위한 Set
+        Set<Long> distinctWeeks = new LinkedHashSet<>();
+
+        for (MixTestResult result : weeks) {
+            distinctWeeks.add(result.getWeek());
+            if (distinctWeeks.size() == 3) {
+                break;
+            }
+        }
+
+        List<MixTestResult> mixTestResult = mixTestResultRepository.findByMemberNumberAndWeekIn((Long) member.getMemberNum(), distinctWeeks);
+
+        //mixtestresult 를 week의 내림차순으로 정렬
+        mixTestResult.sort(Comparator.comparing(MixTestResult::getWeek).reversed());
 
         List<WeekTestResultDetailResDto> resDtos = new ArrayList<>();
         for (MixTestResult result : mixTestResult) {
             resDtos.add(WeekTestResultDetailResDto.builder()
+                    .week(result.getWeek())
                     .try_count(result.getTryCount())
                     .score(result.getScore())
                     .blankTest(result.getBlankTest())
@@ -399,6 +429,8 @@ public class TestServiceImpl implements TestService {
                     .speedTest2(result.getSpeedTest2())
                     .build());
         }
+
+        log.info("resDtosCount : {}", resDtos.size());
 
         return resDtos;
     }

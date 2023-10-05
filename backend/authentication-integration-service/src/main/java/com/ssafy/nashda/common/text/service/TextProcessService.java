@@ -19,6 +19,100 @@ public class TextProcessService {
     public final static String[] CODA = {"", "ㄱ", "ㄲ", "ㄳ", "ㄴ", "ㄵ", "ㄶ", "ㄷ", "ㄹ", "ㄺ", "ㄻ", "ㄼ",
             "ㄽ", "ㄾ", "ㄿ", "ㅀ", "ㅁ", "ㅂ", "ㅄ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"}; // 종성
 
+
+    public final static String[] CONSONANT = {
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%84%B1.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%84%B2.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%84%B4.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%84%B7.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%84%B8.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%84%B9.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%81.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%82.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%83.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%85.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%86.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%87.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%88.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%89.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%8A.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%8B.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%8C.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%8D.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%8E.png"
+    };
+
+    //    "ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ", "ㅔ", "ㅕ", "ㅖ", "ㅗ", "ㅘ",
+//            "ㅙ", "ㅚ", "ㅛ", "ㅜ", "ㅝ", "ㅞ", "ㅟ", "ㅠ", "ㅡ", "ㅢ", "ㅣ"
+    // 모음 발음 사진 모음
+    public final static String[] VOWEL = {
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%8F.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%90.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%91.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%92.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%93.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%94.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%95.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%96.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%97.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%98.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%99.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%9A.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%9B.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%9C.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%9D.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%9E.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%9F.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%A0.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%A1.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%A2.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/vowel/%E3%85%A3.png"
+    };
+
+    public final static String[] CONSONANT_CODA = {
+            "",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%84%B1.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%84%B2.png",
+            "",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%84%B4.png",
+            "",
+            "",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%84%B7.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%84%B9.png",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%81.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%82.png", // ㅂ
+            "",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%85.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%86.png", // ㅆ
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%87.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%88.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%8A.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%8B.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%8C.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%8D.png",
+            "https://nashda.s3.ap-northeast-2.amazonaws.com/mouth/consonant/%E3%85%8E.png"
+    };
+
+    public int getOnsetIndex(char uniVal) throws Exception {
+        // 한글일 경우만 시작해야 하기 때문에 0xAC00부터 아래의 로직을 실행한다
+        if (uniVal >= 0xAC00) {
+            uniVal = (char) (uniVal - 0xAC00);
+
+            char onset = (char) (uniVal / 28 / 21);
+            return onset;
+        }
+
+        // 한글이 아닌 경우
+        throw new BadRequestException(ErrorCode.NOT_KOREAN);
+    }
+
     public String getOnset(char uniVal) throws Exception {
         // 한글일 경우만 시작해야 하기 때문에 0xAC00부터 아래의 로직을 실행한다
         if (uniVal >= 0xAC00) {
@@ -45,6 +139,19 @@ public class TextProcessService {
         throw new BadRequestException(ErrorCode.NOT_KOREAN);
     }
 
+    public int getNucleusIndex(char uniVal) throws Exception {
+        // 한글일 경우만 시작해야 하기 때문에 0xAC00부터 아래의 로직을 실행한다
+        if (uniVal >= 0xAC00) {
+            uniVal = (char) (uniVal - 0xAC00);
+
+            char nucleus = (char) ((uniVal) / 28 % 21);
+            return nucleus;
+        }
+
+        // 한글이 아닌 경우
+        throw new BadRequestException(ErrorCode.NOT_KOREAN);
+    }
+
     public String getCoda(char uniVal) throws Exception {
         // 한글일 경우만 시작해야 하기 때문에 0xAC00부터 아래의 로직을 실행한다
         if (uniVal >= 0xAC00) {
@@ -52,6 +159,19 @@ public class TextProcessService {
 
             char coda = (char) (uniVal % 28);
             return CODA[coda];
+        }
+
+        // 한글이 아닌 경우
+        throw new BadRequestException(ErrorCode.NOT_KOREAN);
+    }
+
+    public int getCodaIndex(char uniVal) throws Exception {
+        // 한글일 경우만 시작해야 하기 때문에 0xAC00부터 아래의 로직을 실행한다
+        if (uniVal >= 0xAC00) {
+            uniVal = (char) (uniVal - 0xAC00);
+
+            char coda = (char) (uniVal % 28);
+            return coda;
         }
 
         // 한글이 아닌 경우
@@ -129,5 +249,5 @@ public class TextProcessService {
 
         return new String(lcs);
     }
-    
+
 }
