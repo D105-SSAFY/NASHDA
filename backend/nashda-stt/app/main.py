@@ -20,7 +20,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-model_01 = "base"
+model_01 = "/var/lib/jenkins/workspace/nashda/backend/nashda-stt/app/base"
 
 transcribe_01 = pipeline(
     task="automatic-speech-recognition",
@@ -51,10 +51,8 @@ async def file(file_upload: UploadFile):
 
         with open("audio.wav", "wb") as f:
             f.write(data)
-        
 
-        outputs = transcribe_01("audio.wav")["text"][1:]    
-        
+        outputs = transcribe_01("audio.wav")["text"][1:]
         outputs = outputs.split(' ')
 
         rst = ""
@@ -77,7 +75,6 @@ async def file(file_upload: UploadFile):
 
         with open("audio.wav", "wb") as f:
             f.write(data)
-        
 
         output = transcribe_02("audio.wav")["text"][1:]
 
