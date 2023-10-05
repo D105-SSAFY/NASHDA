@@ -33,6 +33,9 @@ export default function Intro() {
 
         if (step < 3) {
             setStep(step + 1);
+        }
+
+        if (step < 3) {
             SpeechRecognition.startListening({ language: "ko" });
         }
     };
@@ -46,10 +49,6 @@ export default function Intro() {
     };
 
     useEffect(() => {
-        if (step < 3) {
-            return;
-        }
-
         SpeechRecognition.stopListening();
     }, [step]);
 
@@ -66,6 +65,8 @@ export default function Intro() {
             nextStep();
         }, 2000);
     }, [transcript]);
+
+    console.log(result);
 
     return (
         <>
@@ -87,11 +88,10 @@ export default function Intro() {
                 <q.Greet src={greet}></q.Greet>
             </q.Box>
             {step === 3 ? (
-                () => {
-                    SpeechRecognition.stopListening();
-
-                    return <Result props={{ origin: questionTexts, result }} />;
-                }
+                <>
+                    {/* {SpeechRecognition.stopListening()} */}
+                    <Result props={{ origin: questionTexts, result }} />
+                </>
             ) : (
                 <></>
             )}
