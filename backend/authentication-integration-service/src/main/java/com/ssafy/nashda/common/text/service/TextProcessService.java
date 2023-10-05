@@ -1,7 +1,5 @@
 package com.ssafy.nashda.common.text.service;
 
-import com.ssafy.nashda.common.error.code.ErrorCode;
-import com.ssafy.nashda.common.error.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -101,81 +99,57 @@ public class TextProcessService {
     };
 
     public int getOnsetIndex(char uniVal) throws Exception {
-        // 한글일 경우만 시작해야 하기 때문에 0xAC00부터 아래의 로직을 실행한다
-        if (uniVal >= 0xAC00) {
-            uniVal = (char) (uniVal - 0xAC00);
 
-            char onset = (char) (uniVal / 28 / 21);
-            return onset;
-        }
+        uniVal = (char) (uniVal - 0xAC00);
 
-        // 한글이 아닌 경우
-        throw new BadRequestException(ErrorCode.NOT_KOREAN);
+        char onset = (char) (uniVal / 28 / 21);
+        return onset;
+
     }
 
     public String getOnset(char uniVal) throws Exception {
-        // 한글일 경우만 시작해야 하기 때문에 0xAC00부터 아래의 로직을 실행한다
-        if (uniVal >= 0xAC00) {
-            uniVal = (char) (uniVal - 0xAC00);
 
-            char onset = (char) (uniVal / 28 / 21);
-            return ONSET[onset];
-        }
+        uniVal = (char) (uniVal - 0xAC00);
 
-        // 한글이 아닌 경우
-        throw new BadRequestException(ErrorCode.NOT_KOREAN);
+        char onset = (char) (uniVal / 28 / 21);
+        return ONSET[onset];
+
     }
 
     public String getNucleus(char uniVal) throws Exception {
-        // 한글일 경우만 시작해야 하기 때문에 0xAC00부터 아래의 로직을 실행한다
-        if (uniVal >= 0xAC00) {
-            uniVal = (char) (uniVal - 0xAC00);
 
-            char nucleus = (char) ((uniVal) / 28 % 21);
-            return NUCLEUS[nucleus];
-        }
+        uniVal = (char) (uniVal - 0xAC00);
 
-        // 한글이 아닌 경우
-        throw new BadRequestException(ErrorCode.NOT_KOREAN);
+        char nucleus = (char) ((uniVal) / 28 % 21);
+        return NUCLEUS[nucleus];
+
     }
 
     public int getNucleusIndex(char uniVal) throws Exception {
-        // 한글일 경우만 시작해야 하기 때문에 0xAC00부터 아래의 로직을 실행한다
-        if (uniVal >= 0xAC00) {
-            uniVal = (char) (uniVal - 0xAC00);
 
-            char nucleus = (char) ((uniVal) / 28 % 21);
-            return nucleus;
-        }
+        uniVal = (char) (uniVal - 0xAC00);
 
-        // 한글이 아닌 경우
-        throw new BadRequestException(ErrorCode.NOT_KOREAN);
+        char nucleus = (char) ((uniVal) / 28 % 21);
+        return nucleus;
+
     }
 
     public String getCoda(char uniVal) throws Exception {
-        // 한글일 경우만 시작해야 하기 때문에 0xAC00부터 아래의 로직을 실행한다
-        if (uniVal >= 0xAC00) {
-            uniVal = (char) (uniVal - 0xAC00);
 
-            char coda = (char) (uniVal % 28);
-            return CODA[coda];
-        }
+        uniVal = (char) (uniVal - 0xAC00);
 
-        // 한글이 아닌 경우
-        throw new BadRequestException(ErrorCode.NOT_KOREAN);
+        char coda = (char) (uniVal % 28);
+        return CODA[coda];
+
     }
 
     public int getCodaIndex(char uniVal) throws Exception {
-        // 한글일 경우만 시작해야 하기 때문에 0xAC00부터 아래의 로직을 실행한다
-        if (uniVal >= 0xAC00) {
-            uniVal = (char) (uniVal - 0xAC00);
 
-            char coda = (char) (uniVal % 28);
-            return coda;
-        }
+        uniVal = (char) (uniVal - 0xAC00);
 
-        // 한글이 아닌 경우
-        throw new BadRequestException(ErrorCode.NOT_KOREAN);
+        char coda = (char) (uniVal % 28);
+        return coda;
+
     }
 
 
