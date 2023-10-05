@@ -11,6 +11,8 @@ import com.ssafy.nashda.member.service.MemberService;
 import com.ssafy.nashda.token.config.TokenProvider;
 import com.ssafy.nashda.token.dto.resonse.TokenResDto;
 import com.ssafy.nashda.token.service.TokenService;
+import com.ssafy.nashda.week.entity.Week;
+import com.ssafy.nashda.week.service.WeekService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,13 @@ public class MemberController {
     private final TokenProvider tokenProvider;
     private final TokenService tokenService;
     private final MailSenderService mailSenderService;
+    private final WeekService weekService;
+
+    @GetMapping("/current")
+    public ResponseEntity<? extends BaseResponseBody> curWeek(){
+        Week week = weekService.getCurrentWeek().orElseThrow(() -> new IllegalArgumentException("내부 에러"));
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseBody<>(200, "현재 주차 조회 성공", week.getWeekIdx()));
+    }
 
 
     @PostMapping("/signup")

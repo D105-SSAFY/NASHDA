@@ -99,14 +99,12 @@ public class MemberServiceImpl implements MemberService {
             //strick 생성, 로그인 할때마다
             if (!strickService.isExistStrick(member)) {
                 strickService.initStrick(member);
+                memberHistoryService.increaseContinuousLoginCount(member);
             }
-
             //member_history 생성
             if (!memberHistoryService.isExistMemberHistory(member)) {
                 memberHistoryService.initMemberHistory(member);
             }
-
-            memberHistoryService.increaseContinuousLoginCount(member);
 
             return new MemberInfoResDto(member);
         } else {
