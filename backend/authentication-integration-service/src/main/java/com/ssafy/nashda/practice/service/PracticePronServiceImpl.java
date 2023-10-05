@@ -221,6 +221,7 @@ public class PracticePronServiceImpl implements PracticePronService {
 
         for (int i = 0; i < origin.length(); ++i) {
             log.info("cur Char : {}", correctSentence.charAt(i));
+            log.info("cur OriginChar : {}", origin.charAt(i));
             String onset = textProcessService.getOnset(origin.charAt(i)); // 초성
             String nucleus = textProcessService.getNucleus(origin.charAt(i)); // 중성
             String coda = textProcessService.getCoda(origin.charAt(i)); // 종성
