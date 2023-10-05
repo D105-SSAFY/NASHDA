@@ -1,10 +1,20 @@
 import IROnly from "style/IROnly";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const loading = keyframes`
+    0% {
+        transform: translateY(6px);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+    100% {
+        transform: translateY(6px);
+    }
+`;
 
 export const Section = styled.section`
     height: 100%;
-
-    position: relative;
 
     display: flex;
     flex-direction: column;
@@ -20,7 +30,7 @@ export const Explain = styled.p`
     padding: 14px 22px;
 
     position: absolute;
-    top: 30px;
+    top: 102px;
     left: 50%;
     transform: translateX(-50%);
 
@@ -33,7 +43,7 @@ export const Explain = styled.p`
     font-weight: 500;
     color: rgb(170, 170, 170);
 
-    & > span {
+    & > span > span {
         color: rgb(40, 40, 40);
     }
 `;
@@ -108,6 +118,30 @@ export const BotChat = styled(Chat)`
     color: white;
 
     border-radius: 0 10px 10px 10px;
+`;
+
+export const BotChatAnimation = styled(BotChat)`
+    display: flex;
+    gap: 5px;
+
+    & > span {
+        display: block;
+
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #ffffff;
+
+        animation: ${loading} 1.5s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    }
+
+    & > span:nth-child(1) {
+        animation-delay: -0.25s;
+    }
+
+    & > span:nth-child(2) {
+        animation-delay: -0.125s;
+    }
 `;
 
 export const MyChat = styled(Chat)`

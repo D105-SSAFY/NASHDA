@@ -7,18 +7,21 @@ import * as s from "./style";
 import FilledButton from "components/buttons/filledbutton/FilledButton";
 import SoundWave from "components/soundwave/SoundWave";
 import BorderButton from "components/buttons/borderbutton/BorderButton";
+import LoadingModal from "components/modals/loadingmodal/LoadingModal";
 
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 import voice from "utils/VoiceFunc";
 import eetch from "apis/eetch";
 
-export default function VoiceSection({ props: { moveToEnd, updateConvs, id, background, setError } }) {
+export default function VoiceSection({ props: { moveToEnd, updateConvs, id, background, setError, end, setEnd } }) {
     const [onRecord, setOnRecord] = useState(false);
     const [onUpdate, setOnUpdate] = useState(false);
     const [next, setNext] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
@@ -51,6 +54,8 @@ export default function VoiceSection({ props: { moveToEnd, updateConvs, id, back
             return false;
         }
 
+        setLoading(true);
+
         const formData = new FormData();
 
         formData.append("sound", file);
@@ -76,6 +81,7 @@ export default function VoiceSection({ props: { moveToEnd, updateConvs, id, back
                     return updated;
                 });
                 setNext(result.data.text);
+                setLoading(false);
             })
             .catch(() => {
                 setError(true);
@@ -93,6 +99,12 @@ export default function VoiceSection({ props: { moveToEnd, updateConvs, id, back
         eetch
             .tokenValidation(eetch.nextSimulation, values, dispatch)
             .then((result) => {
+                if (result.data.finish) {
+                    setEnd(true);
+
+                    return;
+                }
+
                 updateConvs((convs) => {
                     const updated = [...convs];
 
@@ -159,7 +171,21 @@ export default function VoiceSection({ props: { moveToEnd, updateConvs, id, back
                 <SoundWave props={{ start: onRecord }} />
             </s.SoundWrapper>
             <s.ButtonWrapper>
-                {onRecord ? (
+                {end ? (
+                    <>
+                        <BorderButton
+                            props={{
+                                color: "rgba(68, 71, 90, 0.7)",
+                                callback() {
+                                    window.location.reload();
+                                }
+                            }}
+                        >
+                            <RestartAltIcon />
+                            <span>다시하기</span>
+                        </BorderButton>
+                    </>
+                ) : onRecord ? (
                     <FilledButton
                         props={{ background: "rgba(68, 71, 90, 0.7)", color: "#ffffff", hovercolor: "#44475A", callback: onClickRecordOff }}
                     >
@@ -178,6 +204,7 @@ export default function VoiceSection({ props: { moveToEnd, updateConvs, id, back
                     <span>종료</span>
                 </BorderButton>
             </s.ButtonWrapper>
+            {loading ? <LoadingModal /> : <></>}
         </s.Section>
     );
 }

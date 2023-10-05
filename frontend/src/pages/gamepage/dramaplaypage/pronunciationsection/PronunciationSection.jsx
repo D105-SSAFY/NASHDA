@@ -7,6 +7,7 @@ import HintModal from "components/modals/hintmodal/HintModal";
 import FilledButton from "components/buttons/filledbutton/FilledButton";
 import BorderButton from "components/buttons/borderbutton/BorderButton";
 import VoiceModal from "components/modals/voicemodal/VoiceModal";
+import LoadingModal from "components/modals/loadingmodal/LoadingModal";
 
 import MicIcon from "@mui/icons-material/Mic";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
@@ -25,6 +26,7 @@ export default function PronunciationSection({
     });
     const [onModal, setOnModal] = useState(false);
     const [onUpdate, setOnUpdate] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const timerRef = useRef(null);
 
@@ -85,6 +87,8 @@ export default function PronunciationSection({
             return false;
         }
 
+        setLoading(true);
+
         const formData = new FormData();
 
         formData.append("sound", file);
@@ -103,6 +107,7 @@ export default function PronunciationSection({
                     text: result.data.convert,
                     correct: result.data.result
                 });
+                setLoading(false);
             })
             .catch(() => {
                 setError(true);
@@ -168,6 +173,7 @@ export default function PronunciationSection({
                 </s.ButtonWrapper>
                 {problemList.length !== 0 && problemIndex !== -1 && <HintModal props={{ hint, display: onHintModal, hideModal: unshowHintModal }} />}
                 <VoiceModal props={{ title: "정답을 말해보세요.", content: sentence, visible: onModal, callback: onClickRecordOff }} />
+                {loading ? <LoadingModal /> : <></>}
             </s.Section>
         </>
     );
