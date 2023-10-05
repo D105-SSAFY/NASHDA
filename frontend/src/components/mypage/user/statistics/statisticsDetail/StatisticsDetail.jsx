@@ -64,6 +64,7 @@ export default function StatisticsDetail({ setMore, isToggle, setIsToggle }) {
         if (!isToggle[0] && !isToggle[1] && !isToggle[2] && !isToggle[3] && true) {
             if (isChar) charRef.current.style.height = 250 + "px";
             if (isConv) convRef.current.style.height = 116 + "px";
+            if (isWeek) weekRef.current.style.height = 260 + "px";
             if (isGame) gameRef.current.style.height = 190 + "px";
         }
     }, [isToggle]);

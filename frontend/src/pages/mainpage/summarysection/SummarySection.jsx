@@ -8,9 +8,13 @@ export default function SummarySection() {
     const [userName, setUserName] = useState("");
     const [strickDays, setStrickDays] = useState(0);
     const [history, setHistory] = useState([]);
+    const [isTested, setIsTested] = useState(false);
+    const [testLeft, setTestLeft] = useState(3);
 
     useEffect(() => {
         eetch.mypage({ user }).then((res) => {
+            setIsTested(res.data.remain_count !== 3);
+            setTestLeft(res.data.remain_count);
             setUserName(res.data.nickname);
         });
 
@@ -40,7 +44,13 @@ export default function SummarySection() {
                     지금까지 <s.Words>단어 {history[0]}개</s.Words> / <s.Sentences>문장 {history[1]}개</s.Sentences> /{" "}
                     <s.Chats>대화 {history[2]}번</s.Chats> 완료
                 </p>
-                <p>* 아직 주간 시험에 응시하지 않으셨어요.</p>
+                <p>
+                    {isTested
+                        ? testLeft === 0
+                            ? "* 모든 주간 테스트에 응시했어요!"
+                            : `앞으로 ${testLeft}회 더 주간테스트 응시가 가능해요.`
+                        : "* 아직 주간 시험에 응시하지 않으셨어요."}
+                </p>
             </s.TextWrapper>
         </s.Section>
     );

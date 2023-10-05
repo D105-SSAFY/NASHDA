@@ -13,7 +13,8 @@ export const DeFocusTouch = styled.div`
 export const UserSection = styled.section`
     position: relative;
     width: 950px;
-    height: fit-content;
+    height: ${(props) => (props.more === 5 ? "auto" : "700px")};
+
     min-height: 700px;
 
     margin: 0 auto;
@@ -89,6 +90,7 @@ export const UserSection = styled.section`
         position: relative;
 
         margin-top: 40px;
+        margin-bottom: 200px;
         left: ${(props) => (props.more === 5 && props.tabChanged ? "0px" : "-930px")};
         width: 910px;
         height: fit-content;

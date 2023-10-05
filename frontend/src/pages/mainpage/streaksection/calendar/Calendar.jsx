@@ -123,6 +123,7 @@ export default function Calendar({ theme, props }) {
 
             const dom = contribution.isAchieved ? (
                 <image
+                    key={"panel_key_" + i + "_" + j}
                     href={`https://nashda.s3.ap-northeast-2.amazonaws.com/emoji/${theme}/${theme}_${contribution.icon}.png`}
                     x={pos.x - 2}
                     y={pos.y - 2}

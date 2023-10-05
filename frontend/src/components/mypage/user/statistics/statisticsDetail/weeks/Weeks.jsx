@@ -211,7 +211,6 @@ export default function Weeks({ isWeek, setIsWeek }) {
     };
 
     const WeekSpeed2Card = ({ b }) => {
-        console.log(b);
         return (
             <w.WeekSpeedTwoItem>
                 <w.WeekSpeedTwoQuizTitle>다음 중 &apos;{b.answer}&apos; 사진을 골라볼까요?</w.WeekSpeedTwoQuizTitle>
