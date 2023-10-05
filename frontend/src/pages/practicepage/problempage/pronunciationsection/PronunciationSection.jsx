@@ -158,6 +158,7 @@ export default function PronunciationSection({ props: { problem, diff, setUpdate
             })
             .catch(() => {
                 setError(true);
+                setLoading(false);
             });
     };
 
@@ -168,8 +169,6 @@ export default function PronunciationSection({ props: { problem, diff, setUpdate
 
         setOnUpdate(true);
     }, [onModal]);
-
-    console.log(loading);
 
     useEffect(() => {
         if (!onUpdate) {

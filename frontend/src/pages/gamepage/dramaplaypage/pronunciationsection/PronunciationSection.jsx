@@ -111,6 +111,7 @@ export default function PronunciationSection({
             })
             .catch(() => {
                 setError(true);
+                setLoading(false);
             });
     };
 

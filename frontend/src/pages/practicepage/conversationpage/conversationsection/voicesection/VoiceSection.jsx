@@ -124,6 +124,7 @@ export default function VoiceSection({ props: { moveToEnd, updateConvs, id, back
             })
             .catch(() => {
                 setError(true);
+                setLoading(false);
             });
     };
 
