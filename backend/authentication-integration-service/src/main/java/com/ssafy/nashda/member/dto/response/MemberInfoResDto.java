@@ -19,7 +19,7 @@ public class MemberInfoResDto {
     private int hobby;
     private int progress;
     private LocalDateTime createOn;
-    private boolean isTest;
+    private int remain_count;   //시험 남은 횟수
     private long current_week;
 
     public MemberInfoResDto(Member member) {
