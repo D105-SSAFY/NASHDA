@@ -2,8 +2,10 @@ package com.ssafy.nashda.practice.repository;
 
 
 import com.ssafy.nashda.practice.entity.PronWordSet;
+import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -13,4 +15,8 @@ import java.util.Optional;
  * */
 public interface PronWordSetRepository extends MongoRepository<PronWordSet, String>{
     public Optional<PronWordSet> findByNum(long num);
+
+    @Aggregation(pipeline = {"{'$sample':{size: 10}}",})
+    public List<PronWordSet> findRandomWord();
+
 }

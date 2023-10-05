@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @Getter
 @Builder
@@ -11,4 +12,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PronSTTResponseDto {
     private String stt;
+    List<PronImgDto> pronImgDtoList;
 }

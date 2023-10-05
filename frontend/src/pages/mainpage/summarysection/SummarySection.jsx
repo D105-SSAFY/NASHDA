@@ -1,19 +1,56 @@
-import * as s from "./style";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import eetch from "apis/eetch";
 
+import * as s from "./style";
 export default function SummarySection() {
+    const user = useSelector((state) => state.user);
+    const [userName, setUserName] = useState("");
+    const [strickDays, setStrickDays] = useState(0);
+    const [history, setHistory] = useState([]);
+    const [isTested, setIsTested] = useState(false);
+    const [testLeft, setTestLeft] = useState(3);
+
+    useEffect(() => {
+        eetch.mypage({ user }).then((res) => {
+            setIsTested(res.data.remain_count !== 3);
+            setTestLeft(res.data.remain_count);
+            setUserName(res.data.nickname);
+        });
+
+        eetch.continuous({ user }).then((res) => {
+            setStrickDays(res.data.continuous);
+        });
+
+        eetch.weekTest({ user }).then((res) => {
+            setHistory([
+                res.data.member_info.word_count.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
+                res.data.member_info.sentence_count.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
+                res.data.member_info.conversation_count.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+            ]);
+        });
+    }, []);
+
     return (
         <s.Section>
             <s.Header>
                 <h2>다시 보아 너무 반갑네요!</h2>
                 <p>
-                    <span>@consolas</span> 님의 연속격파 <span>12일차</span>, 더 달려볼까요?
+                    <s.NameLink to="/mypage">@{userName}</s.NameLink> 님의 연속격파 <span>{strickDays}일차</span>, 더 달려볼까요?
                 </p>
             </s.Header>
             <s.TextWrapper>
                 <p>
-                    지금까지 <s.Words>단어 12,854개</s.Words> / <s.Sentences>문장 2,480개</s.Sentences> / <s.Chats>대화 711번</s.Chats> 완료
+                    지금까지 <s.Words>단어 {history[0]}개</s.Words> / <s.Sentences>문장 {history[1]}개</s.Sentences> /{" "}
+                    <s.Chats>대화 {history[2]}번</s.Chats> 완료
                 </p>
-                <p>* 아직 주간 시험에 응시하지 않으셨어요.</p>
+                <p>
+                    {isTested
+                        ? testLeft === 0
+                            ? "* 모든 주간 테스트에 응시했어요!"
+                            : `앞으로 ${testLeft}회 더 주간테스트 응시가 가능해요.`
+                        : "* 아직 주간 시험에 응시하지 않으셨어요."}
+                </p>
             </s.TextWrapper>
         </s.Section>
     );

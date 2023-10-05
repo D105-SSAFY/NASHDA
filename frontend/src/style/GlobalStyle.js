@@ -16,7 +16,7 @@ export const GlobalStyle = createGlobalStyle`
         font-size: 10px;
     }
 
-    body {
+    body, input, textarea {
         font-family: "PrVr", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;;
         text-rendering: optimizeLegibility;
     }
@@ -49,5 +49,22 @@ export const GlobalStyle = createGlobalStyle`
     a {
         color: inherit;
         text-decoration: none;
+    }
+
+    *::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background: #ffffffcc; /* 스크롤바 색상 */
+        border-radius: 3px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0); /*스크롤바 뒷 배경 색상*/
+    }
+
+    *::-webkit-scrollbar-button {
+        height: 6px;
     }
 `;

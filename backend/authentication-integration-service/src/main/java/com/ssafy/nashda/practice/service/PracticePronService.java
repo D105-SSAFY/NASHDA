@@ -1,10 +1,9 @@
 package com.ssafy.nashda.practice.service;
 
+import com.ssafy.nashda.member.entity.Member;
+import com.ssafy.nashda.practice.dto.PracticePronRequestDto;
 import com.ssafy.nashda.practice.dto.PronResponseDto;
-import com.ssafy.nashda.practice.entity.PronComplexSet;
-import com.ssafy.nashda.practice.entity.PronPhaseSet;
-import com.ssafy.nashda.practice.entity.PronSimpleSet;
-import com.ssafy.nashda.practice.entity.PronWordSet;
+import com.ssafy.nashda.practice.dto.PronSTTResponseDto;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -31,6 +30,5 @@ public interface PracticePronService {
     // 어떤 문제 불러올지를 인자로 받아옴
     long getPronSetNum(String seqName) throws Exception;
 
-
-    String getSTT(MultipartFile multipartFile, long index, String type) throws Exception;
+    PronSTTResponseDto getPracSTT(Member member, MultipartFile sound, PracticePronRequestDto practicePronRequestDto) throws Exception;
 }

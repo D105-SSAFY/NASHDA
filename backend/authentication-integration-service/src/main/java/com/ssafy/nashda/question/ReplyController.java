@@ -1,9 +1,9 @@
 package com.ssafy.nashda.question;
 
 import com.ssafy.nashda.common.dto.BaseResponseBody;
-import com.ssafy.nashda.member.MemberController;
+import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.question.dto.ReplyReqDto;
+import com.ssafy.nashda.question.dto.request.ReplyReqDto;
 import com.ssafy.nashda.question.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,20 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "redux/slice/userSlice";
 
 import * as t from "./style";
 
 import AirIcon from "@mui/icons-material/Air";
+import { useNavigate } from "react-router";
 
 export default function Topbar() {
-    const user = useSelector((state) => state.user);
+    // Dispath 초기화
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    console.log(user, dispatch);
+    // 유저 정보 가져오기
+    const user = useSelector((state) => state.user);
 
+    // Topbar 로그인 상태
     const [isLogin, setIsLogin] = useState(false);
 
-    const loginToggle = () => {
-        setIsLogin(!isLogin);
+    // 유저 정보가 바뀔 때마다 Topbar:isLogin 상태 변경
+    useEffect(() => {
+        if (user.accessToken) {
+            setIsLogin(true);
+        } else {
+            setIsLogin(false);
+        }
+    }, [user]);
+
+    // 로그아웃
+    const signout = () => {
+        dispatch(clearUser()).then(() => navigate("/"));
     };
 
     return (
@@ -24,7 +39,6 @@ export default function Topbar() {
                     <AirIcon />
                     <h1>내쉬다</h1>
                 </t.Title>
-                <button onClick={loginToggle}>로그인 토글 테스트</button>
                 <nav>
                     <t.NavList>
                         <li>
@@ -33,11 +47,13 @@ export default function Topbar() {
                         <t.NavListItem visible={isLogin}>
                             <t.NavLink to="/mypage">내 정보</t.NavLink>
                         </t.NavListItem>
-                        <t.NavListItem visible={isLogin}>
+                        {/* <t.NavListItem visible={isLogin}>
                             <t.NavLink to="/settings">설정</t.NavLink>
-                        </t.NavListItem>
+                        </t.NavListItem> */}
                         <t.NavListItem visible={isLogin}>
-                            <t.NavLink to="/signout">로그아웃</t.NavLink>
+                            <t.NavLink to="/" onClick={signout}>
+                                로그아웃
+                            </t.NavLink>
                         </t.NavListItem>
                         <t.NavListItem visible={!isLogin}>
                             <t.NavLink to="/signin">로그인</t.NavLink>

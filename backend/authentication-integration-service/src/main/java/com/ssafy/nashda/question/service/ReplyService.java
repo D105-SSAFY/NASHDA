@@ -1,14 +1,8 @@
 package com.ssafy.nashda.question.service;
 
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.question.dto.QuestionReqDto;
-import com.ssafy.nashda.question.dto.QuestionResDto;
-import com.ssafy.nashda.question.dto.ReplyReqDto;
-import com.ssafy.nashda.question.dto.ReplyResDto;
-import com.ssafy.nashda.question.entity.Question;
-import com.ssafy.nashda.question.entity.Reply;
+import com.ssafy.nashda.question.dto.request.ReplyReqDto;
 
-import java.util.List;
 
 public interface ReplyService {
     void createReply (Member member, Long boardIndex, ReplyReqDto replyReqDto);

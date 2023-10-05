@@ -5,15 +5,11 @@ import * as s from "./style";
 import SummarySection from "./summarysection/SummarySection";
 import StreakSection from "./streaksection/StreakSection";
 
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import AccessibilityIcon from "@mui/icons-material/Accessibility";
-import SurroundSoundIcon from "@mui/icons-material/SurroundSound";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import SpeedIcon from "@mui/icons-material/Speed";
 import MicIcon from "@mui/icons-material/Mic";
 import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
-import TagFacesIcon from "@mui/icons-material/TagFaces";
 
 export default function MainPage() {
     return (
@@ -26,40 +22,7 @@ export default function MainPage() {
                 </s.SectionHeader>
                 <s.SectionList>
                     <li>
-                        <Link to="/">
-                            <s.Article color="#E0BBE4">
-                                <MenuBookIcon />
-                                <s.ArticleHeader>
-                                    <h3>단어</h3>
-                                    <p>발음을 확인하기 위한 간단한 단어 테스트입니다.</p>
-                                </s.ArticleHeader>
-                            </s.Article>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/">
-                            <s.Article color="#957DAD">
-                                <AccessibilityIcon />
-                                <s.ArticleHeader>
-                                    <h3>인지</h3>
-                                    <p>스스로의 인지 능력을가늠할 수 있는 테스트입니다.</p>
-                                </s.ArticleHeader>
-                            </s.Article>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/">
-                            <s.Article color="#D291BC">
-                                <SurroundSoundIcon />
-                                <s.ArticleHeader>
-                                    <h3>발음</h3>
-                                    <p>차례대로 주어지는 문장을 읽는발음 정확도 테스트입니다.</p>
-                                </s.ArticleHeader>
-                            </s.Article>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/">
+                        <Link to="/weeklytest">
                             <s.Article color="#B1B8E8">
                                 <CalendarTodayIcon />
                                 <s.ArticleHeader>
@@ -77,7 +40,7 @@ export default function MainPage() {
                 </s.SectionHeader>
                 <s.SectionList>
                     <li>
-                        <Link to="/">
+                        <Link to="/dramaplay">
                             <s.Article color="#FDE4AD">
                                 <ContactsIcon />
                                 <s.ArticleHeader>
@@ -88,7 +51,7 @@ export default function MainPage() {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/">
+                        <Link to="/speedquiz">
                             <s.Article color="#FF9DA5">
                                 <SpeedIcon />
                                 <s.ArticleHeader>
@@ -106,7 +69,7 @@ export default function MainPage() {
                 </s.SectionHeader>
                 <s.SectionList>
                     <li>
-                        <Link to="/">
+                        <Link to="/practice">
                             <s.Article color="#8CBCCF">
                                 <MicIcon />
                                 <s.ArticleHeader>
@@ -117,23 +80,12 @@ export default function MainPage() {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/">
+                        <Link to="/simulation">
                             <s.Article color="#BEE7E3">
                                 <ConnectWithoutContactIcon />
                                 <s.ArticleHeader>
                                     <h3>대화 시뮬레이션</h3>
                                     <p>실제 상황과 같이 대화를 연습해보세요.</p>
-                                </s.ArticleHeader>
-                            </s.Article>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/">
-                            <s.Article color="#A38FA1">
-                                <TagFacesIcon />
-                                <s.ArticleHeader>
-                                    <h3>스트레칭</h3>
-                                    <p>연습 시작 전에 간단한 스트레칭을 해보세요.</p>
                                 </s.ArticleHeader>
                             </s.Article>
                         </Link>

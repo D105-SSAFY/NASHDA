@@ -24,6 +24,8 @@ export const QuestionTitle = styled.h3`
 export const QuestionContent = styled.p`
     margin-bottom: 2.4rem;
     font-size: 1.6rem;
+
+    line-height: 1.2;
 `;
 
 export const QuestionDate = styled.p`
@@ -33,4 +35,35 @@ export const QuestionDate = styled.p`
     font-size: 1.6rem;
     font-weight: 500;
     opacity: 0.8;
+`;
+
+export const QuestionAnswer = styled.h3`
+    position: absolute;
+    bottom: 10px;
+    left: -55px;
+
+    font-size: 1.6rem;
+    font-weight: 400;
+`;
+
+export const QuestionFileWrapper = styled.div`
+    margin-bottom: 24px;
+`;
+
+export const QuestionFile = styled.a`
+    display: flex;
+
+    margin-top: 5px;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #6446ff;
+
+    & > svg {
+        margin-top: -1px;
+        margin-right: 2px;
+    }
+
+    &:hover {
+        text-decoration: underline;
+    }
 `;

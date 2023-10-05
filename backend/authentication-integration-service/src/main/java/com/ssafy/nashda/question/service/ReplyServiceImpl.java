@@ -3,7 +3,7 @@ package com.ssafy.nashda.question.service;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.member.entity.Member;
-import com.ssafy.nashda.question.dto.ReplyReqDto;
+import com.ssafy.nashda.question.dto.request.ReplyReqDto;
 import com.ssafy.nashda.question.entity.Question;
 import com.ssafy.nashda.question.entity.Reply;
 import com.ssafy.nashda.question.repository.QuestionRepository;
@@ -31,6 +31,14 @@ public class ReplyServiceImpl implements ReplyService {
 
         if (question.getReply() != null) {
             throw new BadRequestException(ErrorCode.EXIST_REPLY);
+        }
+
+        if (replyReqDto.getTitle() == null || replyReqDto.getTitle().trim().isEmpty()) {
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_TITLE);
+        }
+
+        if (replyReqDto.getContent() == null || replyReqDto.getContent().trim().isEmpty()) {
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_CONTENT);
         }
 
         if (member.getStatus() == 0) {
@@ -66,16 +74,16 @@ public class ReplyServiceImpl implements ReplyService {
                 String title = replyReqDto.getTitle();
                 String content = replyReqDto.getContent();
 
-                if (title != null) {
-                    reply.setTitle(title);
-                } else {
+                if (title == null || title.trim().isEmpty()) {
                     throw new BadRequestException(ErrorCode.NOT_EXISTS_TITLE);
+                } else {
+                    reply.setTitle(title);
                 }
 
-                if (content != null) {
-                    reply.setContent(content);
-                } else {
+                if (content == null || content.trim().isEmpty()) {
                     throw new BadRequestException(ErrorCode.NOT_EXISTS_CONTENT);
+                } else {
+                    reply.setContent(content);
                 }
                 return;
 

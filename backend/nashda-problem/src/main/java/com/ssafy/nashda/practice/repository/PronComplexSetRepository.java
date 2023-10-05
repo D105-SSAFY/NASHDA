@@ -1,8 +1,11 @@
 package com.ssafy.nashda.practice.repository;
 
 import com.ssafy.nashda.practice.entity.PronComplexSet;
+import com.ssafy.nashda.practice.entity.PronWordSet;
+import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -12,4 +15,5 @@ import java.util.Optional;
  * */
 public interface PronComplexSetRepository extends MongoRepository<PronComplexSet, String> {
     public Optional<PronComplexSet> findByNum(int num);
+
 }

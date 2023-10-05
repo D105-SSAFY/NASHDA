@@ -3,7 +3,8 @@ import styled from "styled-components";
 export const AnswerBox = styled.li`
     position: relative;
 
-    margin-top: 50px;
+    margin-top: 30px;
+    margin-bottom: 60px;
     width: fit-content;
     max-width: 500px;
     padding: 20px;
@@ -24,6 +25,8 @@ export const AnswerTitle = styled.h3`
 export const AnswerContent = styled.p`
     margin-bottom: 2.4rem;
     font-size: 1.6rem;
+
+    line-height: 1.2;
 `;
 
 export const AnswerDate = styled.p`

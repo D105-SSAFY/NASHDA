@@ -2,8 +2,17 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export const Header = styled.header`
+    position: relative;
     width: 100%;
+    height: 72px;
+
+    background-color: #fff;
+
+    top: 0;
+    left: 0;
+
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    z-index: 1000;
 `;
 
 export const Wrapper = styled.div`

@@ -30,11 +30,6 @@ public class RedisUtil {
         return (String) redisTemplate.opsForHash().get("email:code", email);
     }
 
-/*    //refreshToken저장
-    public void saveRefreshToken(String email, String token) {
-        redisTemplate.opsForHash().put("email:refresh", email, token);
-        redisTemplate.expire("email:refresh", 2, TimeUnit.HOURS);
-    }*/
 
     public void saveRefreshToken(String email, String accessToken) {
         redisTemplate.opsForHash().put("email:token", email, accessToken);
@@ -53,7 +48,8 @@ public class RedisUtil {
         if(redisToken!=null && redisToken.equals(redisToken)) return true;
         return false;
 
-
     }
+
+
 
 }

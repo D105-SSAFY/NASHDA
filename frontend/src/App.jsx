@@ -17,10 +17,19 @@ import SigninPage from "pages/userpage/signinpage/SigninPage";
 import SignupPage from "pages/userpage/signuppage/SignupPage";
 import ResetpwPage from "pages/userpage/resetpwpage/ResetpwPage";
 import Layout from "components/common/layout/Layout";
+import PrivateRoute from "components/common/layout/PrivateRoute";
 import Intro from "pages/intropage/Intro";
 import MyPage from "pages/userpage/mypage/MyPage";
-import SentenceTestPage from "pages/testpage/sentencepage/SentenceTestPage";
 import MainPage from "pages/mainpage/MainPage";
+
+import ConversationPage from "pages/practicepage/conversationpage/ConversationPage";
+import ProblemPage from "pages/practicepage/problempage/ProblemPage";
+import StretchingPage from "pages/practicepage/stretchingpage/StretchingPage";
+
+import DramaPlayPage from "pages/gamepage/dramaplaypage/DramaPlayPage";
+import SpeedQuizPage from "pages/gamepage/speedquizpage/SpeedQuizPage";
+
+import TestPage from "pages/testpage/TestPage";
 
 export default function App() {
     return (
@@ -31,17 +40,50 @@ export default function App() {
                     <BrowserRouter forceRefresh={true}>
                         <Routes>
                             <Route path="/" element={<Layout />}>
-                                <Route path="/" element={<Intro />} />
+                                <Route path="/" element={<PrivateRoute isPrivate={false} />}>
+                                    <Route index element={<Intro />} />
+                                </Route>
+                                {/* <Route path="/greeting" element={<Intro />} /> */}
 
                                 {/* user pages */}
-                                <Route path="/signin" element={<SigninPage />} />
-                                <Route path="/signup" element={<SignupPage />} />
-                                <Route path="/mypage" element={<MyPage />} />
-                                <Route path="/resetpw" element={<ResetpwPage />} />
-                                <Route path="/main" element={<MainPage />} />
-                                <Route path="/sentencetest" element={<SentenceTestPage />} />
+                                <Route path="/signin" element={<PrivateRoute isPrivate={false} />}>
+                                    <Route index element={<SigninPage />} />
+                                </Route>
+                                <Route path="/signup" element={<PrivateRoute isPrivate={false} />}>
+                                    <Route index element={<SignupPage />} />
+                                </Route>
+                                <Route path="/resetpw" element={<PrivateRoute isPrivate={false} />}>
+                                    <Route index element={<ResetpwPage />} />
+                                </Route>
+
+                                {/* private pages */}
+                                <Route path="/mypage" element={<PrivateRoute />}>
+                                    <Route index element={<MyPage />} />
+                                </Route>
+                                <Route path="/main" element={<PrivateRoute />}>
+                                    <Route index element={<MainPage />} />
+                                </Route>
+                                <Route path="/practice" element={<PrivateRoute />}>
+                                    <Route index element={<ProblemPage />} />
+                                </Route>
+                                <Route path="/simulation" element={<PrivateRoute />}>
+                                    <Route index element={<ConversationPage />} />
+                                </Route>
+                                <Route path="/dramaplay" element={<PrivateRoute />}>
+                                    <Route index element={<DramaPlayPage />} />
+                                </Route>
+                                <Route path="/speedquiz" element={<PrivateRoute />}>
+                                    <Route index element={<SpeedQuizPage />} />
+                                </Route>
+                                <Route path="/weeklytest" element={<PrivateRoute />}>
+                                    <Route index element={<TestPage />} />
+                                </Route>
+                                <Route path="/greeting" element={<PrivateRoute />}>
+                                    <Route index element={<Intro />} />
+                                </Route>
+
+                                <Route path="/1" element={<StretchingPage />} />
                             </Route>
-                            {/* main page */}
                         </Routes>
                     </BrowserRouter>
                 </ThemeProvider>

@@ -7,72 +7,118 @@ export const DeFocusTouch = styled.div`
     left: 0;
 
     width: 100%;
-    height: calc(100% - 123px);
+    height: 100%;
 `;
 
 export const UserSection = styled.section`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 2rem;
-
     position: relative;
     width: 950px;
+    height: ${(props) => (props.more === 5 ? "auto" : "700px")};
+
+    min-height: 700px;
 
     margin: 0 auto;
-    margin-top: 50px;
+    margin-top: 25px;
     padding: 0 20px;
+
+    overflow: hidden;
 
     font-weight: 700;
     font-size: 3rem;
 
     & > :first-child {
+        position: relative;
+
+        top: 20px;
+        left: ${(props) => (props.more === 5 ? "-280px" : "0px")};
         width: 260px;
+
+        flex-direction: column;
     }
 
     & > :nth-child(2) {
-        width: 630px;
+        top: 20px;
+        right: 20px;
+        width: ${(props) => (props.more === 5 ? "910px" : "630px")};
+        height: ${(props) => (props.more === 3 ? "660px" : "320px")};
 
-        background-color: #64acef;
-        & > button {
+        flex-direction: column;
+
+        background-color: ${(props) => (props.more === 1 ? "#44475a" : props.more === 3 ? "#faf8f2" : "#64acef")};
+
+        z-index: 1000;
+
+        & > div > button,
+        h3 {
             color: #ffffff;
 
             font-weight: 400;
         }
+
+        & > div > button {
+            opacity: ${(props) => (props.more === 5 ? "0.3" : "1")};
+            pointer-events: ${(props) => (props.more === 5 ? "none" : "auto")};
+
+            transition: opacity ease 0.5s;
+        }
+
+        overflow-x: hidden;
+        overflow-y: ${(props) => (props.more === 3 ? "auto" : "hidden")};
     }
 
     & > :nth-child(3) {
+        top: 360px;
+        left: ${(props) => (props.more === 5 && props.tabChanged ? "950px" : "20px")};
+
         width: 260px;
+
+        transition: ${(props) => (props.more === 5 ? "all ease 0.9s" : "all ease 0.5s")};
     }
 
     & > :nth-child(4) {
-        width: 350px;
+        top: 360px;
+        left: ${(props) => (props.more === 5 && props.tabChanged ? "1230px" : "300px")};
+
+        width: ${(props) => (props.more === 4 ? "630px" : "260px")};
+
+        transition: ${(props) => (props.more === 5 ? "all ease 0.9s" : "all ease 0.5s")};
+
+        background-color: #faf8f2;
     }
 
     & > :nth-child(5) {
-        width: 260px;
+        position: relative;
 
-        opacity: 0;
-        border-radius: 0px;
+        margin-top: 40px;
+        margin-bottom: 200px;
+        left: ${(props) => (props.more === 5 && props.tabChanged ? "0px" : "-930px")};
+        width: 910px;
+        height: fit-content;
+
+        visibility: ${(props) => (props.more === 5 && props.tabChanged ? "show" : "hidden")};
+
+        background-color: #f2f2f2;
+
+        transition: ${(props) => (props.more === 5 ? "all ease 0.9s" : "all ease 0.5s")};
     }
 `;
 
 export const UserCard = styled.article`
-    position: relative;
+    position: absolute;
     width: 300px;
     height: 320px;
 
     display: flex;
-    flex-direction: column;
     justify-content: center;
 
     opacity: ${(props) => (props.defocus ? "1" : "0.5")};
+    pointer-events: ${(props) => (props.defocus ? "auto" : "none")};
 
     border: ${(props) => (props.focus ? "2px solid #cccccc;" : "2px solid #ffffff00;")};
     border-radius: 12px;
     background-color: #f2f2f2;
 
-    transition: all ease 0.3s;
+    transition: all ease 0.5s;
 `;
 
 export const MoreButton = styled.button`
@@ -94,11 +140,26 @@ export const MoreButton = styled.button`
     }
 `;
 
-export const ProfileName = styled.h2`
-    display: flex;
-    justify-content: center;
+export const CloseButton = styled.button`
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
 
-    text-decoration: underline;
-    text-underline-position: under;
-    text-underline-offset: -2px;
+    width: 15px;
+    height: 15px;
+
+    background-color: #ff5555;
+    opacity: 0.9;
+
+    border-radius: 10px;
+
+    visibility: ${(props) => (props.toggle ? "hidden" : "show")};
+    opacity: ${(props) => (props.toggle ? "0" : "1")};
+    transition: ease 0.4s;
+`;
+
+export const modeChange = styled.div`
+    visibility: ${(props) => (props.toggle ? "show" : "hidden")};
+    opacity: ${(props) => (props.toggle ? "1" : "0")};
+    transition: ease 0.4s;
 `;

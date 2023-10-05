@@ -35,12 +35,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // CSRF 토큰을 활성화, CSRF 토큰의 생성, 저장, 검증 등은 Spring Security가 자동으로 처리
+                .cors(cors -> cors
+                        .configurationSource(corsConfigurationSource())
+                )
                 .csrf(csrf -> csrf
-                                .disable()
+                        .disable()
                 )
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                                .antMatchers("/user/signin","/user/signup", "/user/checkemail", "/user/checknickname", "/user/sendcode","/user/checkcode","/user/resetpw").permitAll()
+                        .antMatchers("/user/signin", "/user/signup", "/user/checkemail"
+                                , "/user/checknickname", "/user/sendcode", "/user/checkcode"
+                                , "/user/resetpw", "/user/domain").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new TokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
@@ -56,9 +60,11 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*")); // 모든 출처 허용
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // 모든 HTTP 메서드 허용
-        configuration.setAllowedHeaders(Arrays.asList("*")); // 모든 헤더 허용
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://j9d105.p.ssafy.io"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
+        configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

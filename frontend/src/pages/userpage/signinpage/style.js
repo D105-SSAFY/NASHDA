@@ -10,10 +10,12 @@ export const StyledMainSection = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 910px;
+    text-align: center;
+    max-width: 910px;
 `;
 export const StyledVid = styled.video`
     width: 100%;
+    max-height: 510px;
 `;
 
 export const StyledSiginBtn = styled.button`
@@ -27,20 +29,25 @@ export const StyledImg = styled.img`
 export const StyledSigninTitle = styled.h3`
     font-size: 35px;
     font-weight: bold;
-    margin-top: -110px;
+    margin-top: -12%;
     margin-bottom: 35px;
+
+    @media screen and (max-width: 500px) {
+        font-size: 28px;
+    }
 `;
 export const StyledForm = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 30%;
+    width: 35%;
+    min-width: 250px;
     margin-top: 20px;
 `;
 export const StyledLinkSection = styled.section`
     display: flex;
     flex-direction: column;
-    width: 30%;
+    width: 100%;
     margin-top: 20px;
 `;
 export const StyledLink = styled(Link)`
@@ -52,6 +59,5 @@ export const StyledLink = styled(Link)`
 export const StyledFooter = styled.footer`
     display: flex;
     flex-direction: column;
-    width: 910px;
     height: 30px;
 `;

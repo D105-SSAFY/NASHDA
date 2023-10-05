@@ -1,13 +1,18 @@
 package com.ssafy.nashda.practice.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.nashda.common.dto.InternalResponseDto;
 import com.ssafy.nashda.common.error.code.ErrorCode;
 import com.ssafy.nashda.common.error.exception.BadRequestException;
 import com.ssafy.nashda.common.error.response.ErrorResponse;
-import com.ssafy.nashda.practice.dto.InternalPronNumResponseDto;
-import com.ssafy.nashda.practice.dto.InternalPronResponse;
-import com.ssafy.nashda.practice.dto.PronResponseDto;
+import com.ssafy.nashda.common.text.service.TextProcessService;
+import com.ssafy.nashda.member.entity.Member;
+import com.ssafy.nashda.practice.dto.*;
+import com.ssafy.nashda.statistic.service.PracticeStatisticService;
+import com.ssafy.nashda.stt.service.STTService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,22 +21,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class PracticePronServiceImpl implements PracticePronService {
+    private final ObjectMapper mapper;
     private final TextProcessService textProcessService;
-    private static final String DOCKER_ADDRESS = "http://172.17.0.5:";
-    private static final String LOCAL_ADDRESS = "http://localhost:";
+    private final STTService sttService;
+    private final PracticeStatisticService practiceStatisticService;
+    @Value("${env.PROBLEM_URL}")
+    private String URL;
 
     @Override
     public PronResponseDto getPronWordSets(int index) throws Exception {
         WebClient client = WebClient.builder()
-                .baseUrl(DOCKER_ADDRESS + "8082")
+                .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        ResponseEntity<InternalPronResponse> response = client.get()
+        ResponseEntity<InternalResponseDto> response = client.get()
                 .uri("/practice/pron/word/" + index)
                 .retrieve()
                 .onStatus(
@@ -46,25 +57,25 @@ public class PracticePronServiceImpl implements PracticePronService {
                             return new BadRequestException(ErrorCode.TEST);
                         })
                 )
-                .toEntity(InternalPronResponse.class)
+                .toEntity(InternalResponseDto.class)
                 .block();
 
-//        log.info("response : {}", response.getBody().getData());
-        return response.getBody().getData();
+        log.info("response : {}, type : {}", response.getBody().getData(), response.getBody().getData().getClass().getName());
+
+
+        return mapper.convertValue(response.getBody().getData(), PronResponseDto.class);
     }
 
 
     @Override
     public PronResponseDto getPronPhaseSets(int index) throws Exception {
-//        PronPhaseSet pronPhaseSet = pronPhaseSetRepository.findByNum(index)
-//                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         // 문제 서버에 요청
         WebClient client = WebClient.builder()
-                .baseUrl(DOCKER_ADDRESS + "8082")
+                .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        ResponseEntity<InternalPronResponse> response = client.get()
+        ResponseEntity<InternalResponseDto> response = client.get()
                 .uri("/practice/pron/phase/" + index)
                 .retrieve()
                 .onStatus(
@@ -79,23 +90,21 @@ public class PracticePronServiceImpl implements PracticePronService {
                             return new BadRequestException(ErrorCode.TEST);
                         })
                 )
-                .toEntity(InternalPronResponse.class)
+                .toEntity(InternalResponseDto.class)
                 .block();
 
-        return response.getBody().getData();
+        return mapper.convertValue(response.getBody().getData(), PronResponseDto.class);
     }
 
 
     @Override
     public PronResponseDto getPronSimpleSets(int index) throws Exception {
-//        PronSimpleSet pronSimpleSet = pronSimpleSetRepository.findByNum(index)
-//                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_DATA));
         WebClient client = WebClient.builder()
-                .baseUrl(DOCKER_ADDRESS + "8082")
+                .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        ResponseEntity<InternalPronResponse> response = client.get()
+        ResponseEntity<InternalResponseDto> response = client.get()
                 .uri("/practice/pron/simple/" + index)
                 .retrieve()
                 .onStatus(
@@ -110,20 +119,20 @@ public class PracticePronServiceImpl implements PracticePronService {
                             return new BadRequestException(ErrorCode.TEST);
                         })
                 )
-                .toEntity(InternalPronResponse.class)
+                .toEntity(InternalResponseDto.class)
                 .block();
-        return response.getBody().getData();
+        return mapper.convertValue(response.getBody().getData(), PronResponseDto.class);
     }
 
 
     @Override
     public PronResponseDto getPronComplexSets(int index) throws Exception {
         WebClient client = WebClient.builder()
-                .baseUrl(DOCKER_ADDRESS + "8082")
+                .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        ResponseEntity<InternalPronResponse> response = client.get()
+        ResponseEntity<InternalResponseDto> response = client.get()
                 .uri("/practice/pron/complex/" + index)
                 .retrieve()
                 .onStatus(
@@ -138,50 +147,47 @@ public class PracticePronServiceImpl implements PracticePronService {
                             return new BadRequestException(ErrorCode.TEST);
                         })
                 )
-                .toEntity(InternalPronResponse.class)
+                .toEntity(InternalResponseDto.class)
                 .block();
 
-        return response.getBody().getData();
+        return mapper.convertValue(response.getBody().getData(), PronResponseDto.class);
     }
 
 
     @Override
     public long getPronSetNum(String seqName) throws Exception {
-        // 문제 서버에 요청
         WebClient client = WebClient.builder()
-                .baseUrl(DOCKER_ADDRESS + "8082")
+                .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        ResponseEntity<InternalPronNumResponseDto> response = client.get()
+        ResponseEntity<InternalResponseDto> response = client.get()
                 .uri("/practice/pron/nums/" + seqName)
                 .retrieve()
-                .toEntity(InternalPronNumResponseDto.class)
+                .toEntity(InternalResponseDto.class)
                 .block();
-        log.info("response : {}", response.getBody().getData());
-
-        return response.getBody().getData();
+        log.info("response : {}, type : {}", response.getBody().getData(), response.getBody().getData().getClass().getName());
+        return (long) (int) response.getBody().getData();
     }
 
+
     @Override
-    public String getSTT(MultipartFile multipartFile, long index, String type) throws Exception {
+    public PronSTTResponseDto getPracSTT(Member member, MultipartFile sound, PracticePronRequestDto practicePronRequestDto) throws Exception {
 
+        List<PronImgDto> pronImgDtoList = new ArrayList<>();
         // STT 부분
-        // MultipartFile to  File
         // FAST API 와 소통하기
-
-
-        String sttResult = "발따"; // 받아온 STT
-        // 통계 저장 부분
-
+        log.info("name : {}", sound.getOriginalFilename());
+        String sttResult = sttService.getPronunciation(sound); // 받아온 STT
+        log.info("STT : {}", sttResult);
         // 1. 해당 문제를 받아온다.
         WebClient client = WebClient.builder()
-                .baseUrl(DOCKER_ADDRESS + "8082")
+                .baseUrl(URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        ResponseEntity<InternalPronResponse> response = client.get()
-                .uri("/practice/pron/" + type + "/" + index)
+        ResponseEntity<InternalResponseDto> response = client.get()
+                .uri("/practice/pron/" + practicePronRequestDto.getType() + "/" + practicePronRequestDto.getIndex())
                 .retrieve()
                 .onStatus(
                         HttpStatus.BAD_REQUEST::equals,
@@ -195,48 +201,70 @@ public class PracticePronServiceImpl implements PracticePronService {
                             return new BadRequestException(ErrorCode.TEST);
                         })
                 )
-                .toEntity(InternalPronResponse.class)
+                .toEntity(InternalResponseDto.class)
                 .block();
 
-        PronResponseDto pronResponse = response.getBody().getData();
+        PronResponseDto pronResponse = mapper.convertValue(response.getBody().getData(), PronResponseDto.class);
+
         String convertOrigin = pronResponse.getConvert(); // 원발음
-        String origin = pronResponse.getOrigin(); // 원문
 
-        // 2. STT와 발음을 비교 하여 틀린 부분을 찾는다.
-        // 1. STT의 발음 길이가 원문의 길이보다 긴 경우
-        // 만약 앞에 헛소리해서 긴 경우 -> 다시 요청하기
+        String convertOriginTrim = convertOrigin.trim().replaceAll("[\\s!@#$%^&*().]", "");
+        String sttTrim = sttResult.trim().replaceAll("[\\s!@#$%^&*().]", "");
 
-        // 2. STT의 발음 길이가 원문의 길이보다 짧은 경우
-        // 만약 앞에 소리가 짤렸다면? -> 다시 요청하기
+        String origin = pronResponse.getOrigin().trim().replaceAll("[\\s!@#$%^&*().]", ""); // 빈칸이 제거된 원문
+        log.info("origin : {}", origin);
 
-        // 3. 길이가 같은 경우
-        for (int i = 0; i < convertOrigin.length(); ++i) {
-            // 초성 비교
-            String onsetResult = textProcessService.getOnset(sttResult.charAt(i));
-            String onsetOrigin = textProcessService.getOnset(convertOrigin.charAt(i));
-            if (!onsetOrigin.equals(onsetResult)) { // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
-                String onset = textProcessService.getOnset(origin.charAt(i));
-                log.info("초성 오류 !!! : {}", onset);
-            }
+        // 일치하는 문자열 저장
+        String correctSentence = textProcessService.findLCS(convertOriginTrim, sttTrim); // 발음과 원문과 매치되는 문자열
+        log.info("correctSentence : {}", correctSentence);
+        int compIndex = 0;
 
-            // 중성 비교
-            String nucleusResult = textProcessService.getNucleus(sttResult.charAt(i));
-            String nucleusOrigin = textProcessService.getNucleus(convertOrigin.charAt(i));
-            if (!nucleusOrigin.equals(nucleusResult)) { // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
-                String nucleus = textProcessService.getNucleus(origin.charAt(i));
-                log.info("중성 오류 !!! : {}", nucleus);
-            }
+        for (int i = 0; i < origin.length(); ++i) {
+            if(correctSentence.length() == 0) break;
+            log.info("cur OriginChar : {}", origin.charAt(i));
+            String onset = textProcessService.getOnset(origin.charAt(i)); // 초성
+            String nucleus = textProcessService.getNucleus(origin.charAt(i)); // 중성
+            String coda = textProcessService.getCoda(origin.charAt(i)); // 종성
 
-            // 종성 비교
-            String codaResult = textProcessService.getCoda(sttResult.charAt(i));
-            String codaOrigin = textProcessService.getCoda(convertOrigin.charAt(i));
-            if (!codaOrigin.equals(codaResult)) { // 틀린 발음의 경우 초성, 중성, 종성으로 분리하여 저장한다.
-                String coda = textProcessService.getCoda(origin.charAt(i));
-                log.info("종성 오류 !!! : {}", coda);
+            // 일치하는 패턴의 길이보다 인덱스가 안크면서
+            if (compIndex < correctSentence.length() && convertOriginTrim.charAt(i) == correctSentence.charAt(compIndex)) {
+                // 사용자의 발음과 원문의 발음이 일치하는 경우 해당 문자를 정답으로 기록
+                log.info("맞는 발음 : {}", origin.charAt(i));
+                practiceStatisticService.updateOnsetByMemberAndLetter(member, onset, true);
+                practiceStatisticService.updateNucleusByMemberAndLetter(member, nucleus, true);
+                practiceStatisticService.updateCodaByMemberAndLetter(member, coda, true);
+
+                compIndex++;
+            } else {
+                // 발음이 틀린 경우 해당 문자를 오답으로 기록
+                log.info("틀린 발음 : {}", origin.charAt(i));
+                String convertOnset = textProcessService.getOnset(convertOriginTrim.charAt(i)); // 발음의 초성
+                int onsetIndex = textProcessService.getOnsetIndex(convertOriginTrim.charAt(i)); // 발음의 초성 인덱스
+
+                String consonantURL = TextProcessService.CONSONANT[onsetIndex];
+                pronImgDtoList.add(new PronImgDto(convertOnset, consonantURL));
+                practiceStatisticService.updateOnsetByMemberAndLetter(member, onset, false);
+
+                String convertNucleus = textProcessService.getNucleus(convertOriginTrim.charAt(i));
+                int nucleusIndex = textProcessService.getNucleusIndex(convertOriginTrim.charAt(i));
+
+                String vowelURL = TextProcessService.VOWEL[nucleusIndex];
+                pronImgDtoList.add(new PronImgDto(convertNucleus, vowelURL));
+                practiceStatisticService.updateNucleusByMemberAndLetter(member, nucleus, false);
+
+                String convertCoda = textProcessService.getCoda(convertOriginTrim.charAt(i));
+                if (!"".equals(convertCoda)) {
+                    int codaIndex = textProcessService.getCodaIndex(convertOriginTrim.charAt(i));
+
+                    String consonantCodaURL = TextProcessService.CONSONANT_CODA[codaIndex];
+                    pronImgDtoList.add(new PronImgDto(convertCoda, consonantCodaURL));
+                    practiceStatisticService.updateCodaByMemberAndLetter(member, coda, false);
+                }
             }
         }
 
-        return sttResult;
+
+        return new PronSTTResponseDto(sttResult, pronImgDtoList);
     }
 
 

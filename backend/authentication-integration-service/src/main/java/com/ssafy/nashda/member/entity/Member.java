@@ -1,6 +1,7 @@
 package com.ssafy.nashda.member.entity;
 
 import com.ssafy.nashda.common.entity.TimeEntity;
+import com.ssafy.nashda.statistic.entity.MemberAchievement;
 import com.sun.istack.NotNull;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -9,8 +10,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -19,15 +21,17 @@ import javax.persistence.*;
 @Table(name = "members")
 public class Member extends TimeEntity {
     @Id //Primary Key
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //autoincreasement 설정
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_number")
     private Long memberNum;
 
     @NotNull
+    @Column(unique = true)
     private String email;
     @NotNull
     private String name;
     @NotNull
+    @Column(unique = true)
     private String nickname;
     @NotNull
     private String password;
@@ -40,7 +44,7 @@ public class Member extends TimeEntity {
     @Column(name = "job_index")
     private int jobIdx;
 
-    private int status=1;
+    private int status;
 
     @ColumnDefault("0")
     private int progress;
@@ -57,6 +61,10 @@ public class Member extends TimeEntity {
     @ColumnDefault("0")
     private int conversationCount;
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    private Set<MemberAchievement> memberAchievements = new HashSet<>();
+
+
     @Builder
     public Member(String email, String name, String nickname, String password, int age, int hobbyIdx, int jobIdx) {
         this.email = email;
@@ -66,6 +74,7 @@ public class Member extends TimeEntity {
         this.age = age;
         this.hobbyIdx = hobbyIdx;
         this.jobIdx = jobIdx;
+        this.status = 1;
     }
 
 

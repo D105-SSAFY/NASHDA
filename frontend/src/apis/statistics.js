@@ -1,18 +1,18 @@
-export const strick = async ({ email, user }) => {
+import eetch from "apis/eetch";
+
+export const strick = async ({ user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/strick`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/statistic/strick`;
+        const options = {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ email }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
+        return await eetch(url, options);
     } catch (error) {
         console.log(error);
     }
@@ -20,140 +20,201 @@ export const strick = async ({ email, user }) => {
 
 export const strickDetail = async ({ email, date, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/strick/detail`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/statistic/strick/detail`;
+        const options = {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ email, date }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
-export const achievement = async ({ email, user }) => {
+export const achievement = async ({ user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/achievement`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/statistic/achievement`;
+        const options = {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ email }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
-export const gameBlankWeek = async ({ email, week, user }) => {
+export const games = async ({ user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/game/blank/${week}`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/statistic/game`;
+        const options = {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ email }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
-export const gameSpeedWeek = async ({ email, week, user }) => {
+export const gameBlankWeek = async ({ week, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/game/speed/${week}`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/statistic/game/blank/${week}`;
+        const options = {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ email }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
-export const practiceWord = async ({ email, user }) => {
+export const gameSpeedWeek = async ({ week, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/practice/word`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/statistic/game/speed/${week}`;
+        const options = {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ email }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
-export const practiceSimul = async ({ email, user }) => {
+export const practiceWord = async ({ user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/practice/simul`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/statistic/practice/word`;
+        const options = {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ email }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
-export const practiceSimulBackground = async ({ email, background, user }) => {
+export const practiceSimul = async ({ user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/statistics/practice/simul/${background}`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/statistic/practice/simul`;
+        const options = {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ email }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
+    }
+};
 
-        return result;
-    } catch (error) {
-        console.log(error);
+export const practiceSimulBackground = async ({ background, user }) => {
+    try {
+        const url = `${process.env.REACT_APP_API_URL}/statistic/practice/simul/${background}`;
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.accessToken}`
+            },
+            credentials: "include"
+        };
+
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+export const weekTest = async ({ user }) => {
+    try {
+        const url = `${process.env.REACT_APP_API_URL}/statistic/test`;
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.accessToken}`
+            },
+            credentials: "include"
+        };
+
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+export const weekTestDetail = async ({ user }) => {
+    try {
+        const url = `${process.env.REACT_APP_API_URL}/statistic/test/week/detail`;
+
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.accessToken}`
+            },
+            credentials: "include"
+        };
+
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+export const weekTestAll = async ({ user }) => {
+    try {
+        const url = `${process.env.REACT_APP_API_URL}/statistic/test/week/all`;
+
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.accessToken}`
+            },
+            credentials: "include"
+        };
+
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };

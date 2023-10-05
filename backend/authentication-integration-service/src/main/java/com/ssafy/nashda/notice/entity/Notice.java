@@ -6,15 +6,16 @@ import com.ssafy.nashda.member.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
-@Entity // 객체와 테이블 매핑
+@Entity
 @Table
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Notice extends TimeEntity {
-    @Id // PK 지정
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT 설정
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, name = "notice_index")
     private Long index;
 
@@ -31,13 +32,17 @@ public class Notice extends TimeEntity {
 
     private Long view;
 
+    @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<NoticeFile> files;
+
 
     @Builder
-    public Notice(Long index, String title, String content, Long view, Member member) {
+    public Notice(Long index, String title, String content, Long view, Member member, List<NoticeFile> files) {
         this.title = title;
         this.content = content;
         this.view = 0L;
         this.member = member;
+        this.files = files;
     }
 
     public void update(String title, String content, Member member) {

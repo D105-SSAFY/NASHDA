@@ -1,25 +1,26 @@
 import React from "react";
 import * as s from "./style";
 
-// Import { questionGet } from "apis/question";
+import AttachmentIcon from "@mui/icons-material/Attachment";
 
-export default function Question({ index }) {
-    // Const [question, setQuestion] = useState({});
-
-    // setQuestion();
-    const question = {
-        title: "테스트 타이틀",
-        content:
-            "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aliquam vero sed dolores quis, molestiae libero sequi quibusdam mollitia rem, sit officia ullam eaque nemo, explicabo atque autem reprehenderit veniam facere! uis, molestiae libero sequi quibusdam mollitia rem, sit officia ullam eaque nemo, explicabo atque autem reprehenderit veniam facere!",
-        regDate: "2021-10-10"
-    };
-    console.log(index);
+export default function Question({ question }) {
+    const files = question.files.map((file, idx) => {
+        return (
+            <s.QuestionFile key={idx} href={file.url} download>
+                <AttachmentIcon />
+                {file.fileName}
+            </s.QuestionFile>
+        );
+    });
     return (
         <>
             <s.QuestionBox>
+                {question.url}
                 <s.QuestionTitle>{question.title}</s.QuestionTitle>
                 <s.QuestionContent>{question.content}</s.QuestionContent>
-                <s.QuestionDate>{question.regDate}</s.QuestionDate>
+                {question.files.length > 0 ? <s.QuestionFileWrapper>{files}</s.QuestionFileWrapper> : null}
+                <s.QuestionDate>{question.updateOn.substring(0, 10)}</s.QuestionDate>
+                {question.reply ? null : <s.QuestionAnswer>미 답변</s.QuestionAnswer>}
             </s.QuestionBox>
         </>
     );

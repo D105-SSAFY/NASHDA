@@ -2,13 +2,17 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import Measure from "react-measure";
 
-// Const weekNames = ["일", "월", "화", "수", "목", "금", "토"];
 const weekNames = ["일", "월", "화", " ", " ", " ", " "];
 const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
-const panelColors = ["#EEE", "rgba(100, 172, 239, 0.6)", "rgba(100, 172, 239, 0.86)", "rgba(100, 172, 239, 1)"];
+const panelColors = {};
+panelColors.default = ["#EEE", "rgba(98, 100, 108, 0.50)", "rgba(98, 100, 108, 0.73)", "rgba(98, 100, 108, 1)"];
+panelColors.fruit = ["#EEE", "rgba(255, 28, 97, 0.50)", "rgba(255, 28, 97, 0.73)", "rgba(255, 28, 97, 1)"];
+panelColors.animal = ["#EEE", "rgba(255, 169, 28, 0.50)", "rgba(255, 169, 28, 0.73)", "rgba(255, 169, 28, 1)"];
+panelColors.ocean = ["#EEE", "rgba(100, 172, 239, 0.50)", "rgba(100, 172, 239, 0.73)", "rgba(100, 172, 239, 1)"];
+panelColors.plant = ["#EEE", "rgba(28, 255, 143, 0.50)", "rgba(28, 255, 143, 0.73)", "rgba(28, 255, 143, 1)"];
 const dateFormat = "YYYY-MM-DD";
 
-export default function Calendar({ props }) {
+export default function Calendar({ theme, props }) {
     const monthLabelHeight = 15;
     const weekLabelWidth = 15;
     const panelSize = 13;
@@ -17,6 +21,7 @@ export default function Calendar({ props }) {
         columns: 53,
         maxWidth: 53
     });
+    // const [theme, setTheme] = useState("default");
 
     const getPanelPosition = (row, col) => {
         const bounds = panelSize + panelMargin;
@@ -27,12 +32,18 @@ export default function Calendar({ props }) {
         };
     };
 
-    const makeCalendarData = (history, lastDay, columns) => {
+    const makeCalendarData = (icons, history, lastDay, columns) => {
         const d = dayjs(lastDay, { format: dateFormat });
         const lastWeekend = d.endOf("week");
         const endDate = d.endOf("day");
 
         const result = [];
+
+        const iconsIdx = {};
+        icons.forEach((icon) => {
+            iconsIdx[icon.create_on] = icon.achievement_index;
+        });
+        const iconsDates = Object.keys(iconsIdx);
 
         for (let i = 0; i < columns; i++) {
             result[i] = [];
@@ -40,7 +51,18 @@ export default function Calendar({ props }) {
             for (let j = 0; j < 7; j++) {
                 const date = lastWeekend.subtract((columns - i - 1) * 7 + (6 - j), "day");
 
-                if (date <= endDate) {
+                if (iconsDates.includes(date.format(dateFormat))) {
+                    if (date <= endDate) {
+                        result[i][j] = {
+                            value: history[date.format(dateFormat)] || 0,
+                            month: date.month(),
+                            isAchieved: true,
+                            icon: iconsIdx[date.format(dateFormat)]
+                        };
+                    } else {
+                        result[i][j] = null;
+                    }
+                } else if (date <= endDate) {
                     result[i][j] = {
                         value: history[date.format(dateFormat)] || 0,
                         month: date.month()
@@ -68,14 +90,15 @@ export default function Calendar({ props }) {
     };
 
     const { columns } = state;
-    const { values } = props;
+    const { achievements } = props;
+    const { stricks } = props;
     const { until } = props;
 
-    if (panelColors === undefined || weekNames === undefined || monthNames === undefined) {
+    if (panelColors[theme] === undefined || weekNames === undefined || monthNames === undefined) {
         return;
     }
 
-    const contributions = makeCalendarData(values, until, columns);
+    const contributions = makeCalendarData(achievements, stricks, until, columns);
     const innerDom = [];
 
     for (let i = 0; i < columns; i++) {
@@ -87,10 +110,30 @@ export default function Calendar({ props }) {
             }
 
             const pos = getPanelPosition(i, j);
-            const numOfColors = panelColors.length;
+            const numOfColors = panelColors[theme].length;
             // 여기서 색 구간 나중에 정해주기
-            const color = contribution.value >= numOfColors ? panelColors[numOfColors - 1] : panelColors[contribution.value];
-            const dom = <rect key={"panel_key_" + i + "_" + j} x={pos.x} y={pos.y} width={panelSize} height={panelSize} fill={color} rx="3" />;
+            const color =
+                contribution.value >= 20
+                    ? panelColors[theme][numOfColors - 1]
+                    : contribution.value >= 10
+                    ? panelColors[theme][numOfColors - 2]
+                    : contribution.value > 0
+                    ? panelColors[theme][numOfColors - 3]
+                    : panelColors[theme][0];
+
+            const dom = contribution.isAchieved ? (
+                <image
+                    key={"panel_key_" + i + "_" + j}
+                    href={`https://nashda.s3.ap-northeast-2.amazonaws.com/emoji/${theme}/${theme}_${contribution.icon}.png`}
+                    x={pos.x - 2}
+                    y={pos.y - 2}
+                    width={panelSize + 4}
+                    height={panelSize + 4}
+                    rx="3"
+                />
+            ) : (
+                <rect key={"panel_key_" + i + "_" + j} x={pos.x} y={pos.y} width={panelSize} height={panelSize} fill={color} rx="3" />
+            );
 
             innerDom.push(dom);
         }

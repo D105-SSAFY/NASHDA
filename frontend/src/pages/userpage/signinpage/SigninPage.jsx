@@ -1,44 +1,20 @@
-/* eslint-disable no-alert */
 import * as s from "./style";
 import video1 from "assets/image/nashda_move.mov";
 import image2 from "assets/image/signinbtn.png";
 import SigninInput from "components/input/FormInputCol";
-// Import { login } from "apis/user";
+import SigninModal from "components/modals/signupmodal/SignupModal";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "redux/slice/userSlice";
 import { useNavigate } from "react-router";
-
-// 임시 사용
-export const login = async ({ email, password }) => {
-    try {
-        const response = await fetch("https://j9d105.p.ssafy.io/api/user/signin", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ email, password })
-        });
-
-        const result = await response.json();
-        if (result.errorCode === 4001) {
-            return;
-        }
-
-        if (result.errorCode === 4002) {
-            return;
-        }
-
-        return result;
-    } catch (error) {
-        console.log(error);
-    }
-};
-//
+import eetch from "apis/eetch";
 
 export default function SigninPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const [onModal, setOnModal] = useState(false);
+    const [onModalText, setOnModalText] = useState("");
 
     const [inputs, setInputs] = useState({
         email: "",
@@ -50,35 +26,41 @@ export default function SigninPage() {
             ...inputs,
             [e.target.name]: e.target.value
         });
-
-        console.log(inputs);
     };
 
     const handleCheck = async (e) => {
         e.preventDefault();
 
         if (!inputs.email) {
-            alert("이메일을 입력해주세요!");
+            setOnModal("false");
+            setOnModalText("이메일을 입력해주세요!");
             return;
         }
 
         if (!inputs.password) {
-            alert("비밀번호를 입력해주세요!");
+            setOnModal("false");
+            setOnModalText("비밀번호를 입력해주세요!");
             return;
         }
 
-        const result = await login({ email: inputs.email, password: inputs.password });
-        console.log(result.data.accessToken);
-        if (result) {
+        const result = await eetch.signin({ email: inputs.email, password: inputs.password });
+
+        if (result.status === 201) {
             dispatch(
                 loginUser({
-                    accessToken: result.data.accessToken
+                    accessToken: result.data.accessToken,
+                    refreshToken: result.data.refreshToken
                 })
-            );
-            navigate("/");
+            ).then(() => navigate("/main"));
         } else {
-            alert("로그인에 실패했습니다!");
+            setOnModal("false");
+            setOnModalText("아이디 또는 비밀번호를 잘못 입력했습니다!");
         }
+    };
+
+    const onClickModal = () => {
+        setOnModal(false);
+        setOnModalText("");
     };
 
     return (
@@ -86,7 +68,7 @@ export default function SigninPage() {
             <s.StyledMainSection>
                 <s.StyledVid src={video1} alt="그림" autoPlay muted loop></s.StyledVid>
                 <s.StyledSigninTitle>오늘 잘 부탁드릴게요.</s.StyledSigninTitle>
-                <s.StyledForm>
+                <s.StyledForm onSubmit={(e) => e.preventDefault()}>
                     <SigninInput
                         data={{
                             text: "이메일",
@@ -110,14 +92,14 @@ export default function SigninPage() {
                     <s.StyledSiginBtn onClick={handleCheck}>
                         <s.StyledImg src={image2} alt="로그인" />
                     </s.StyledSiginBtn>
+                    <s.StyledLinkSection>
+                        <s.StyledLink to="/resetpw">비밀번호 찾기</s.StyledLink>
+                        <s.StyledLink to="/signup">회원가입</s.StyledLink>
+                    </s.StyledLinkSection>
                 </s.StyledForm>
-
-                <s.StyledLinkSection>
-                    <s.StyledLink to="/resetpw">비밀번호 찾기</s.StyledLink>
-                    <s.StyledLink to="/signup">회원가입</s.StyledLink>
-                </s.StyledLinkSection>
+                <s.StyledFooter></s.StyledFooter>
             </s.StyledMainSection>
-            <s.StyledFooter></s.StyledFooter>
+            <SigninModal props={{ text: onModalText, visible: onModal, callback: onClickModal }} />
         </s.StyledMain>
     );
 }

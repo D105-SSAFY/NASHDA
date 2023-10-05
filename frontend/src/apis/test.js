@@ -1,18 +1,19 @@
+import eetch from "apis/eetch";
+
 export const wordList = async ({ email, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/test/word`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/test/word`;
+        const options = {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ email }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
+        return await eetch(url, options);
     } catch (error) {
         console.log(error);
     }
@@ -20,160 +21,150 @@ export const wordList = async ({ email, user }) => {
 
 export const wordSubmit = async ({ index, sound, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/test/word/user`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/test/word/user`;
+        const options = {
+            method: "POST",
             headers: {
-                'Content-Type': 'mulitpart/form-data',
+                "Content-Type": "mulitpart/form-data",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ index, sound }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const wordResult = async ({ index, score, pron, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/test/word/result`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/test/word/result`;
+        const options = {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ index, score, pron }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const sentenceList = async ({ email, order, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/test/sentence`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/test/sentence`;
+        const options = {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ email, order }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const sentenceSubmit = async ({ index, order, sound, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/test/sentence/user`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/test/sentence/user`;
+        const options = {
+            method: "POST",
             headers: {
-                'Content-Type': 'mulitpart/form-data',
+                "Content-Type": "mulitpart/form-data",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ index, order, sound }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const sentenceResult = async ({ index, score, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/test/sentence/result`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/test/sentence/result`;
+        const options = {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ index, score }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
-export const weekList = async ({ email, user }) => {
+export const weekList = async ({ user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/test/week`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/test/week`;
+        const options = {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ email }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
-export const weekSubmit = async ({ index, order, sound, user }) => {
+export const weekSubmit = async ({ formData, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/test/week/user`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/test/week/user`;
+        const options = {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.accessToken}`
             },
-            body: JSON.stringify({ index, order, sound }),
-            credentials: 'include'
-        });
+            body: formData,
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
 
 export const weekResult = async ({ index, idxImg, score, user }) => {
     try {
-        const response = fetch(`${process.env.REACT_APP_API_URL}/test/week/result`, {
-            method: 'POST',
+        const url = `${process.env.REACT_APP_API_URL}/test/week/result`;
+        const options = {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${user.accessToken}`
             },
             body: JSON.stringify({ index, idxImg, score }),
-            credentials: 'include'
-        });
+            credentials: "include"
+        };
 
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log(error);
+        return await eetch(url, options);
+    } catch (err) {
+        console.error(err);
     }
 };
