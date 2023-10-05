@@ -14,7 +14,7 @@ import java.util.Set;
 
 public interface MixTestResultRepository extends MongoRepository<MixTestResult, String> {
     List<MixTestResult> findByMemberNumberAndWeekOrderByTryCount(long memberNumber, long week);
-
+    List<MixTestResult> findByMemberNumberAndWeek(long memberNumber, long week);
     List<MixTestResult> findByMemberNumberOrderByWeekAscTryCountAsc(long memberNumber);
 
     @Query(value = "{'memberNumber': ?0}", fields = "{'week': 1}")
