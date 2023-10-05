@@ -4,10 +4,6 @@ import com.ssafy.nashda.common.dto.BaseResponseBody;
 import com.ssafy.nashda.member.controller.MemberController;
 import com.ssafy.nashda.member.entity.Member;
 import com.ssafy.nashda.question.dto.request.QuestionReqDto;
-import com.ssafy.nashda.question.dto.response.QuestionFileResDto;
-import com.ssafy.nashda.question.dto.response.QuestionResDto;
-import com.ssafy.nashda.question.dto.response.ReplyResDto;
-import com.ssafy.nashda.question.entity.Reply;
 import com.ssafy.nashda.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor

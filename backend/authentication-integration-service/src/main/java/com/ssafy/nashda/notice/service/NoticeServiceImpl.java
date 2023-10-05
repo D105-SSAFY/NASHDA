@@ -23,10 +23,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor // final이 붙거나 @NotNull이 붙은 필드의 생성자 추가
+@RequiredArgsConstructor
 @Transactional
 @Slf4j
-@Service// 빈으로 등록
+@Service
 public class NoticeServiceImpl implements NoticeService {
     private final NoticeRepository noticeRepository;
     private final NoticeFileRepository noticeFileRepository;
@@ -118,9 +118,9 @@ public class NoticeServiceImpl implements NoticeService {
                 } else {
                     notice.setContent(content);
                 }
-                // 기존 공지사항에 연결된 파일 목록 조회
+
                 List<NoticeFile> oldFiles = new ArrayList<>(notice.getFiles());
-                // 새로운 파일 목록 생성
+
                 List<String> newFileNames = new ArrayList<>();
 
                 if (files != null) {
@@ -128,9 +128,9 @@ public class NoticeServiceImpl implements NoticeService {
                     for(MultipartFile file : files) {
                         String fileName = file.getOriginalFilename();
                         newFileNames.add(file.getOriginalFilename());
-                        // 해당 파일이 기존 목록에 존재하면 pass
+
                         if (oldFiles.stream().anyMatch(of -> of.getFileName().equals(fileName))) continue;
-                        // 해당 파일이 기존 목록에 존재하지 않으면 s3 업로드
+
                         String uploadUrl;
                         try {
                             if (file.getOriginalFilename().endsWith(".txt")) {

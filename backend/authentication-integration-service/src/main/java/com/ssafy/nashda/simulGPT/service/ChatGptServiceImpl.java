@@ -1,7 +1,6 @@
 package com.ssafy.nashda.simulGPT.service;
 
 import com.ssafy.nashda.simulGPT.ChatGptFeignClient;
-import com.ssafy.nashda.simulGPT.dto.request.ChatSttReqDto;
 import com.ssafy.nashda.simulGPT.dto.response.ChatMessageDto;
 import com.ssafy.nashda.simulGPT.dto.request.ChatReqDto;
 import com.ssafy.nashda.simulGPT.dto.response.ChatResDto;
@@ -11,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
