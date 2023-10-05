@@ -22,6 +22,7 @@ export default function SignupPage() {
     const [inputs2, setInputs2] = useState({
         password: "",
         checkedPassword: "",
+        age: "",
         hobby: "",
         job: ""
     });
@@ -52,6 +53,7 @@ export default function SignupPage() {
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*()\-_=+[\]{};:'",.<>/?\\|~`])[a-zA-Z\d!@#$%^&*()\-_=+[\]{};:'",.<>/?\\|~`]{8,16}$/;
     const nicknamePattern = /^[\u3131-\u318E\uAC00-\uD7A3a-zA-Z\d]{2,6}$/;
+    const agePattern = /^(?:\s*|[0-9]|[1-9][0-9]?)$/;
 
     useEffect(() => {
         async function fetchData() {
@@ -212,11 +214,18 @@ export default function SignupPage() {
             return;
         }
 
+        if (!agePattern.test(inputs2.age)) {
+            setOnModal("false");
+            setOnModalText("나이를 확인해주세요!");
+            return;
+        }
+
         const result = await eetch.signup({
             email: inputs.email,
             password: inputs2.password,
             name: inputs.name,
             nickname: inputs.nickname,
+            age: Number(inputs2.age),
             jobIdx: Number(inputs2.job),
             hobbyIdx: Number(inputs2.hobby)
         });
@@ -314,6 +323,16 @@ export default function SignupPage() {
                     />
                     <s.StyledText colorPassword={overlapPassword2}>{checkPassword2Text[overlapPassword2]}</s.StyledText>
                     <s.StyledLine></s.StyledLine>
+                    <SignupInput
+                        data={{
+                            text: "나이",
+                            id: "age",
+                            name: "age",
+                            type: "number",
+                            onChangeFunc: handleChange2,
+                            value: inputs2.age
+                        }}
+                    />
                     <SignupInput
                         data={{
                             text: "본명",
