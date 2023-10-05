@@ -9,7 +9,6 @@ export const StyledMainSection = styled.section`
     flex-direction: column;
     align-items: center;
     max-width: 910px;
-    /* border : black solid 1px; */
 `;
 export const StyledVid = styled.video`
     width: 100%;
@@ -60,7 +59,6 @@ export const StyledAnchorSection = styled.section`
     flex-direction: column;
     width: 30%;
     height: 10%;
-    /* border : black solid 1px; */
     margin-top: 20px;
 `;
 
@@ -68,7 +66,6 @@ export const StyledFooter = styled.footer`
     display: flex;
     flex-direction: column;
     height: 90px;
-    /* border : black solid 1px; */
 `;
 
 export const StyledLine = styled.hr`
