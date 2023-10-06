@@ -66,8 +66,6 @@ export default function Intro() {
         }, 2000);
     }, [transcript]);
 
-    console.log(result);
-
     return (
         <>
             <q.Box visible={step !== 3} micOn={isMicOn}>
