@@ -94,10 +94,10 @@
 <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=ffffff"/>
 <img src="https://img.shields.io/badge/springsecurity-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=ffffff"/>
 <img src="https://img.shields.io/badge/jwt-6DB33F?style=for-the-badge&logo=jwt&logoColor=ffffff"/>
-<img src="https://img.shields.io/badge/gpt-6DB33F?style=for-the-badge&logo=jwt&logoColor=ffffff"/>
-<img src="https://img.shields.io/badge/smtp-6DB33F?style=for-the-badge&logo=jwt&logoColor=ffffff"/>
-<img src="https://img.shields.io/badge/fastapi-009688?style=for-the-badge&logo=jwt&logoColor=ffffff"/>
-<img src="https://img.shields.io/badge/pytorch-EE4C2C?style=for-the-badge&logo=css3&logoColor=white"/>
+<img src="https://img.shields.io/badge/gpt-6DB33F?style=for-the-badge&logo=gpt&logoColor=ffffff"/>
+<img src="https://img.shields.io/badge/smtp-6DB33F?style=for-the-badge&logo=smtp&logoColor=ffffff"/>
+<img src="https://img.shields.io/badge/fastapi-009688?style=for-the-badge&logo=fastapi&logoColor=ffffff"/>
+<img src="https://img.shields.io/badge/pytorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white"/>
 
 </tr>
 <tr>
@@ -116,8 +116,8 @@
   <img src="https://img.shields.io/badge/amazons3-569A31?style=for-the-badge&logo=amazons3&logoColor=ffffff"/>
   <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=ffffff"/>
   <img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=ffffff"/>
-    <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=jenkins&logoColor=ffffff"/>
-        <img src="https://img.shields.io/badge/mongodb-47A248?style=for-the-badge&logo=jenkins&logoColor=ffffff"/>
+    <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=ffffff"/>
+        <img src="https://img.shields.io/badge/mongodb-47A248?style=for-the-badge&logo=mongodb&logoColor=ffffff"/>
   
 </tr>
 <tr>
@@ -145,7 +145,7 @@
     <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white"/>
     <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white"/> 
     <img src="https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white"/>
-        <img src="https://img.shields.io/badge/postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white"/>
+    <img src="https://img.shields.io/badge/postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white"/>
  </td>
 </tr>
 </table>
