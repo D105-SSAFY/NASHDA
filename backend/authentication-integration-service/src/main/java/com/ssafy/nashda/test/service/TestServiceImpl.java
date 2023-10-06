@@ -359,7 +359,7 @@ public class TestServiceImpl implements TestService {
     public void saveWeekTestScore(WeekTestResultReqDto reqDto, Member member) {
         Query query = new Query(Criteria.where("_id").is(reqDto.getIndex()));
         Update update = new Update();
-        update.set("score", reqDto.getScore());
+        update.set("score", reqDto.getScore()*10);
         mongoTemplate.updateFirst(query, update, MixTestResult.class);
         Week week = weekService.getCurrentWeek().orElseThrow();
         weekTestStatisticService.updateWeekTestResult(member, week, reqDto);
