@@ -35,9 +35,9 @@ export default function Intro() {
             setStep(step + 1);
         }
 
-        if (step < 3) {
-            SpeechRecognition.startListening({ language: "ko" });
-        }
+        // if (step < 3) {
+        //     SpeechRecognition.startListening({ language: "ko" });
+        // }
     };
 
     const startRecognition = () => {
@@ -45,12 +45,12 @@ export default function Intro() {
             setIsMicOn(true);
         }
 
-        SpeechRecognition.startListening({ language: "ko" });
+        SpeechRecognition.startListening({ continuous: true, language: "ko" });
     };
 
-    useEffect(() => {
-        SpeechRecognition.stopListening();
-    }, [step]);
+    // useEffect(() => {
+    //     SpeechRecognition.stopListening();
+    // }, [step]);
 
     useEffect(() => {
         if (!transcript) {
