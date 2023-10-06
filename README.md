@@ -96,7 +96,6 @@
 <img src="https://img.shields.io/badge/jwt-6DB33F?style=for-the-badge&logo=jwt&logoColor=ffffff"/>
 <img src="https://img.shields.io/badge/gpt-6DB33F?style=for-the-badge&logo=jwt&logoColor=ffffff"/>
 <img src="https://img.shields.io/badge/smtp-6DB33F?style=for-the-badge&logo=jwt&logoColor=ffffff"/>
-<img src="https://img.shields.io/badge/smtp-6DB33F?style=for-the-badge&logo=jwt&logoColor=ffffff"/>
 <img src="https://img.shields.io/badge/fastapi-009688?style=for-the-badge&logo=jwt&logoColor=ffffff"/>
 <img src="https://img.shields.io/badge/pytorch-EE4C2C?style=for-the-badge&logo=css3&logoColor=white"/>
 
