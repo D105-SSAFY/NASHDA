@@ -10,7 +10,11 @@ export default function result({ props: { result } }) {
         <>
             <r.Box>
                 <r.AnswerList>
-                    {result.map((sentence) => {
+                    {result.map((sentence, index) => {
+                        if (index > 2) {
+                            return;
+                        }
+
                         return (
                             <r.AnswerListItem key={sentence}>
                                 <r.ResultText>&quot;{sentence}&quot;</r.ResultText>

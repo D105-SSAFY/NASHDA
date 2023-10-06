@@ -39,7 +39,7 @@ export const Section = styled.section`
     left: 50%;
     transform: translate(-50%, -50%);
     width: 600px;
-    padding: 50px 40px;
+    padding: 40px 20px;
 
     background-color: #ffffff;
     border-radius: 10px;
@@ -58,9 +58,9 @@ export const Read = styled.p`
 `;
 
 export const Pron = styled.p`
-    font-size: 24px;
+    font-size: 2.2rem;
     font-weight: 500;
-    color: rgb(174, 126, 242);
+    color: rgb(170, 170, 170);
 
     margin-bottom: 40px;
 `;
