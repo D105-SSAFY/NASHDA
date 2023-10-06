@@ -77,7 +77,7 @@
  <td>
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=ffffff"/>
   <img src="https://img.shields.io/badge/Java-orange?style=for-the-badge&logo=Java&logoColor=white"/>
-	<img src="https://img.shields.io/badge/pytorch-EE4C2C?style=for-the-badge&logo=css3&logoColor=white"/>
+	
 	
  </td>
 </tr>
@@ -98,6 +98,7 @@
 <img src="https://img.shields.io/badge/smtp-6DB33F?style=for-the-badge&logo=jwt&logoColor=ffffff"/>
 <img src="https://img.shields.io/badge/smtp-6DB33F?style=for-the-badge&logo=jwt&logoColor=ffffff"/>
 <img src="https://img.shields.io/badge/fastapi-009688?style=for-the-badge&logo=jwt&logoColor=ffffff"/>
+<img src="https://img.shields.io/badge/pytorch-EE4C2C?style=for-the-badge&logo=css3&logoColor=white"/>
 
 </tr>
 <tr>
