@@ -164,22 +164,22 @@
 ![로그인.gif](./img/로그인.gif)
 
 ### 🟣 비밀번호 찾기
-![비밀번호 찾기.gif](./img/비밀번호 찾기.gif)
+<img src="./img/비밀번호 찾기.gif" alt="10MB 이상의 파일입니다. img 폴더를 확인해 주세요:)">
 
 ### 🟣 회원가입
 ![회원가입.gif](./img/회원가입.gif)
 
 ### 🟣 회원정보 수정
-![회원정보 수정.gif](./img/회원정보 수정.gif)
+![회원정보 수정](https://github.com/D105-SSAFY/NASHDA/assets/129479086/5474324c-c4f8-42c2-bbed-0264717f8220)
 
 ### 🟣 스피드게임
-![스피드 게임.gif](./img/스피드 게임.gif)
+![스피드 게임](https://github.com/D105-SSAFY/NASHDA/assets/129479086/bee573e9-0e75-40c0-ae05-f2a1f9eb7c24)
 
 ### 🟣 드라마플레이
-![드라마 플레이.gif](./img/드라마 플레이.gif)
+![드라마 플레이](https://github.com/D105-SSAFY/NASHDA/assets/129479086/4878cee2-de6d-41af-bd65-664e3331395e)
 
 ### 🟣 주간 테스트
-![주간 테스트.gif](./img/주간 테스트.gif)
+![주간 테스트](https://github.com/D105-SSAFY/NASHDA/assets/129479086/ef45e2b0-4383-4644-bdcb-a02783f10cca)
 
 ### 🟣 발음 연습
 ![발음.gif](./img/발음.gif)
@@ -194,25 +194,25 @@
 ![시뮬_영화관.gif](./img/시뮬_영화관.gif)
 
 ### 🟣 스트릭
-![스트릭 테마.gif](./img/스트릭 테마.gif)
+![스트릭 테마](https://github.com/D105-SSAFY/NASHDA/assets/129479086/c8a7c0cb-8bfb-4a7c-864a-8fce93e61225)
 
 ### 🟣 관리자에게 문의
-![파일 다운로드_다변 확인_질문 등록.gif](./img/파일 다운로드_다변 확인_질문 등록.gif)
+![파일 다운로드_다변 확인_질문 등록](https://github.com/D105-SSAFY/NASHDA/assets/129479086/b161674a-7618-4c67-a953-9a1815df9a30)
 
 ### 🟣 업적
 ![업적.gif](./img/업적.gif)
 
 ### 🟣 게임 통계
-![게임 통계.gif](./img/게임 통계.gif)
+![게임 통계](https://github.com/D105-SSAFY/NASHDA/assets/129479086/6e7c2ba9-d138-4e57-bae0-ec937d08cffa)
 
 ### 🟣 시뮬레이션 통계
 ![시뮬레이션_통계.gif](./img/시뮬레이션_통계.gif)
 
 ### 🟣 주간 테스트 통계
-![주간 테스트_통계.gif](./img/주간 테스트_통계.gif)
+![주간 테스트_통계](https://github.com/D105-SSAFY/NASHDA/assets/129479086/eec5a23a-8862-49c6-b781-81b2aef1fae1)
 
 ### 🟣 사용자 발음 통계
-![초성_중성_종성 통계.gif](./img/초성_중성_종성 통계.gif)
+![초성_중성_종성 통계](https://github.com/D105-SSAFY/NASHDA/assets/129479086/39c517b5-355d-47dc-8654-cbda292f4ab0)
 
 ## 🧚‍♀️팀원 소개 및 역할
 | 이름   | 기능 및 역할 |
